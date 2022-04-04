@@ -9,7 +9,6 @@ public class SegmentMovement : MonoBehaviour
     private GameObject nextSeg;
     private int nextSegInt;
 
-    private float dist;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +25,8 @@ public class SegmentMovement : MonoBehaviour
         {
             UpdateNextSeg();
         }
+
+        
     }
 
     private void UpdateNextSeg()
@@ -37,7 +38,7 @@ public class SegmentMovement : MonoBehaviour
 
         float dist = Vector3.Distance(nextSeg.transform.position, transform.position);
 
-        if (dist >= 1.5)
+        if (dist >= 1.25)
         {
             float moveDist = dist - 0.0416f;
             float x = Mathf.Cos(angle * Mathf.Deg2Rad) * moveDist;
@@ -46,5 +47,10 @@ public class SegmentMovement : MonoBehaviour
             nextSeg.transform.position = new Vector3(x, y, 0f) + transform.position;
 
         }
+    }
+    public void CheckForNextSeg()
+    {
+        nextSegInt = int.Parse(gameObject.name) + 1;
+        nextSeg = GameObject.Find(nextSegInt.ToString());
     }
 }

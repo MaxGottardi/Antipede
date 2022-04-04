@@ -69,7 +69,7 @@ public class Movement : MonoBehaviour
 
         float dist = Vector3.Distance(nextSeg.transform.position, transform.position);
 
-        if (dist >= 1.5)
+        if (dist >= 1.25)
         {
             float moveDist = dist - 0.0416f;
             float x = Mathf.Cos(angle * Mathf.Deg2Rad) * moveDist;
@@ -79,5 +79,4 @@ public class Movement : MonoBehaviour
 
         }
     }
-
 }
