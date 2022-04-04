@@ -37,7 +37,7 @@ public class Movement : MonoBehaviour
         dirY = Input.GetAxis("Vertical");
         dirX = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(dirX * moveSpeed, dirY * moveSpeed);
-
+        //Checks if this is the tail of the centipede
         if (nextSeg != null)
         {
             UpdateNextSeg();

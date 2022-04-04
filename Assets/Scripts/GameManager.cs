@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //fps counter
         timer += Time.deltaTime;
         fpsCount++;
         if (timer >= 1)
@@ -36,7 +37,7 @@ public class GameManager : MonoBehaviour
             timer = 0;
             fpsCount = 0;
         }
-
+        //Spawns a new segment
         if (Input.GetKeyDown(KeyCode.Space))
         {
             foreach (int i in numSegments)
@@ -48,7 +49,7 @@ public class GameManager : MonoBehaviour
                     int tailSeg = newSegNum - 1;
                     newSeg = Instantiate(cloneSeg, GameObject.Find(tailSeg.ToString()).transform.position, GameObject.Find(tailSeg.ToString()).transform.rotation);
                     newSeg.name = newSegNum.ToString();
-                    Debug.Log(tailSeg);
+                    //Debug.Log(tailSeg);
                     GameObject.Find(tailSeg.ToString()).GetComponent<SegmentMovement>().CheckForNextSeg();
                     break;
                 }
