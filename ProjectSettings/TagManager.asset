@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - FPS
+  - Add Segment
   layers:
   - Default
   - TransparentFX
