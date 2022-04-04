@@ -12,19 +12,20 @@ public class Movement : MonoBehaviour
     private float dirY;
     private float dirX;
     public float moveSpeed = 5f;
+    private float dist;
 
     private float timer = 0;
     private int fpsCount;
 
-    private bool wHeld = false;
-    private bool aHeld = false;
-    private bool sHeld = false;
-    private bool dHeld = false;
+    public bool wHeld = false;
+    public bool aHeld = false;
+    public bool sHeld = false;
+    public bool dHeld = false;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        nextSeg = GameObject.Find("Seg 1");
+        nextSeg = GameObject.Find("1");
         fps = GameObject.FindGameObjectWithTag("FPS");
         fpsText = fps.GetComponent<TextMesh>();
     }
@@ -42,35 +43,35 @@ public class Movement : MonoBehaviour
             fpsCount = 0;
         }
         AreButtonsHeld();
-        float dist = Vector3.Distance(transform.position, nextSeg.transform.position);
+        dist = Vector3.Distance(transform.position, nextSeg.transform.position);
 
+        //Updates the segment after the player
+        //Going UP
         if (wHeld && dist >= 1.05f)
         {
             //Debug.Log(dist);
             nextSeg.transform.position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 1);
         }
+        //Going Down
         if (sHeld && dist >= 1.05f)
         {
             //Debug.Log(dist);
             nextSeg.transform.position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 1);
         }
-
+        //Going Left
         if (aHeld && dist >= 1.05f)
         {
             //Debug.Log(dist);
             nextSeg.transform.position = new Vector2(gameObject.transform.position.x + 1, gameObject.transform.position.y);
         }
-        
+        //Going Right
         if (dHeld && dist >= 1.05f)
         {
             //Debug.Log(dist);
             nextSeg.transform.position = new Vector2(gameObject.transform.position.x - 1, gameObject.transform.position.y);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log(dist);
-        }
+        
         dirY = Input.GetAxis("Vertical");
         dirX = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(dirX * moveSpeed, dirY * moveSpeed);
