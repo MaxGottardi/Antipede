@@ -6,16 +6,12 @@ public class Movement : MonoBehaviour
 {
     private Rigidbody2D rb;
     private GameObject nextSeg;
-    private GameObject fps;
-    private TextMesh fpsText;
+
 
     private float dirY;
     private float dirX;
     public float moveSpeed = 10f;
-    private float dist;
 
-    private float timer = 0;
-    private int fpsCount;
 
     public bool wHeld = false;
     public bool aHeld = false;
@@ -28,8 +24,7 @@ public class Movement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         //nextSeg = GameObject.Find("1");
-        fps = GameObject.FindGameObjectWithTag("FPS");
-        fpsText = fps.GetComponent<TextMesh>();
+
 
         nextSegInt = int.Parse(gameObject.name) + 1;
         nextSeg = GameObject.Find(nextSegInt.ToString());
@@ -38,17 +33,6 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //FPS counter, i put it here because i was checking something it should probably be moved
-        timer += Time.deltaTime;
-        fpsCount++;
-        if (timer >= 1)
-        {
-            fpsText.text = "FPS: " + fpsCount;
-            timer = 0;
-            fpsCount = 0;
-        }
-        
-        
 
         dirY = Input.GetAxis("Vertical");
         dirX = Input.GetAxis("Horizontal");
