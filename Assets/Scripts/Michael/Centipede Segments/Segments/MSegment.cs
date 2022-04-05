@@ -7,7 +7,7 @@ public class MSegment : MonoBehaviour
 {
 	public Transform ForwardNeighbour;
 	Rigidbody rb;
-	float FollowSpeed, MaxTurnDegreesPerFrame;
+	public float FollowSpeed, MaxTurnDegreesPerFrame;
 	float Tolerance;
 
 	public void Initialise(Transform forwardNeighbour, float FollowSpeed, float MaxTurnDegreesPerFrame, float Tolerance)

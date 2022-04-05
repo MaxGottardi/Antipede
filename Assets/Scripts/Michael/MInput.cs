@@ -27,6 +27,14 @@ public class MInput : MonoBehaviour
         {
 			body.RemoveSegment();
         }
+		if (Input.GetKeyDown(KeyCode.K))
+        {
+			body.IncreaseSpeed(100.0f);
+        }
+		if (Input.GetKeyDown(KeyCode.L))
+        {
+			body.DecreaseSpeed(100.0f);
+        }
 
 		Horizontal = Input.GetAxisRaw("Horizontal");
 		Vertical = Input.GetAxisRaw("Vertical");
