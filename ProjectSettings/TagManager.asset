@@ -6,6 +6,7 @@ TagManager:
   tags:
   - FPS
   - Add Segment
+  - PlayerSegment
   layers:
   - Default
   - TransparentFX
