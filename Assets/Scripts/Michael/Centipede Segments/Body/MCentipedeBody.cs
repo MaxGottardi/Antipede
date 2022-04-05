@@ -34,7 +34,13 @@ public partial class MCentipedeBody : MonoBehaviour
 		defaultSpeed = 150;
 	}
 
-	public void AddSegment()
+    private void Update()
+    {
+		//Debug.Log(Segments.Count);
+		Debug.Log(U2I(SegmentsInfo.End));
+    }
+
+    public void AddSegment()
 	{
 		float Z = NumberOfSegments * SegmentsInfo.SegmentScale.z + DeltaZ;
 		if (SegmentsInfo.End > 0)
@@ -97,19 +103,22 @@ public partial class MCentipedeBody : MonoBehaviour
 			return;
         }
 
-		MSegment lastSegment = Segments[0];
-		foreach (MSegment segment in Segments)
+		MSegment lastSegment = Segments[Segments.Count - 1];
+		/*foreach (MSegment segment in Segments)
         {
 			lastSegment = segment;
-        }
+        }*/
 
 		Destroy(lastSegment.gameObject);
-		Segments.Remove(lastSegment);
+		//Segments.Remove(Segments[Segments.Count - 1]);
+		Segments.RemoveAt(Segments.Count - 1);
 		--NumberOfSegments;
 
 		int lastSegIndex = Segments.Count - 1;
 		TailSegment.Initialise(Segments[lastSegIndex], FollowSpeed, MaxTurnDegreesPerFrame, 
 		SegmentsInfo.TailScale.z * SegmentsInfo.TailScale.z);
+
+		SegmentsInfo.RemoveSegment();
 	}
 
 	public void IncreaseSpeed(float value)

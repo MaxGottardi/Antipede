@@ -74,4 +74,9 @@ struct SegmentsInformation
 	{
 		++Internal_End;
 	}
+
+	public void RemoveSegment()
+    {
+		--Internal_End;
+    }
 }
