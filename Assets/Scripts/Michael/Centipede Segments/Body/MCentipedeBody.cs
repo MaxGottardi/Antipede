@@ -85,6 +85,18 @@ public partial class MCentipedeBody : MonoBehaviour
 		SegmentsInfo.AddSegment();
 	}
 
+	public void RemoveSegment()
+    {
+		MSegment lastSegment = Segments[0];
+		foreach (MSegment segment in Segments)
+        {
+			lastSegment = segment;
+        }
+		Destroy(lastSegment.gameObject);
+		Segments.Remove(lastSegment);
+		--NumberOfSegments;
+	}
+
 	int U2I(uint U)
 	{
 		return Convert.ToInt32(U);

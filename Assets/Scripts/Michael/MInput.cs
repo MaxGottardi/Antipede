@@ -23,6 +23,10 @@ public class MInput : MonoBehaviour
 		{
 			body.AddSegment();
 		}
+		if (Input.GetKeyDown(KeyCode.H))
+        {
+			//body.RemoveSegment();
+        }
 
 		Horizontal = Input.GetAxisRaw("Horizontal");
 		Vertical = Input.GetAxisRaw("Vertical");
