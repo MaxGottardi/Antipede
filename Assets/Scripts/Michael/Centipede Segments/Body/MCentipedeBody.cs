@@ -87,14 +87,24 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	public void RemoveSegment()
     {
+		if (NumberOfSegments <= 1)
+        {
+			return;
+        }
+
 		MSegment lastSegment = Segments[0];
 		foreach (MSegment segment in Segments)
         {
 			lastSegment = segment;
         }
+
 		Destroy(lastSegment.gameObject);
 		Segments.Remove(lastSegment);
 		--NumberOfSegments;
+
+		int lastSegIndex = Segments.Count - 1;
+		TailSegment.Initialise(Segments[lastSegIndex], FollowSpeed, MaxTurnDegreesPerFrame, 
+		SegmentsInfo.TailScale.z * SegmentsInfo.TailScale.z);
 	}
 
 	int U2I(uint U)

@@ -25,7 +25,7 @@ public class MInput : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.H))
         {
-			//body.RemoveSegment();
+			body.RemoveSegment();
         }
 
 		Horizontal = Input.GetAxisRaw("Horizontal");
