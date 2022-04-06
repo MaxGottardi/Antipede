@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ExpressShock : Node
 {
-    float shockTime = 1.0f;
+    float shockTime = 0.55f;
     public ExpressShock(GenericAnt blackboard)
     {
         this.blackboard = blackboard;
@@ -15,7 +15,7 @@ public class ExpressShock : Node
         Debug.Log(shockTime);
         if (shockTime <= 0)
         {
-            shockTime = 1.0f;
+            shockTime = 0.55f;
             return NodeState.Success;
         }
         else

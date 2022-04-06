@@ -7,6 +7,8 @@ public class DetermineShockState
     //Node topNode;
     public float smallShockDist = 5.0f, medShockDist = 3f, largeShockDist = 1f;
     int state = 0;
+    float backupRadius = 7.5f;
+
     GenericAnt owner;
     ExpressShock shockWait;
     bool expressingShock = false;
@@ -77,6 +79,7 @@ public class DetermineShockState
             state = 2;
             owner.shockBars[1].SetActive(true);
             expressingShock = true;
+            CallReinforcements();
         }
         if (state == 2 && Vector3.Distance(owner.transform.position, owner.newNode.transform.position) < largeShockDist)
         {
@@ -90,7 +93,20 @@ public class DetermineShockState
             //switch to the attacking state here
 
         }
+    }
 
+    void CallReinforcements()
+    { 
+        Collider[] hitColliders = Physics.OverlapSphere(owner.transform.position, backupRadius);
+
+        foreach (Collider obj in hitColliders)
+        {
+            if(obj.gameObject.CompareTag("Enemy") && obj.gameObject.GetComponent<GenericAnt>().stateMachine.currState == obj.gameObject.GetComponent<GenericAnt>().stateMachine.Movement)
+            {
+                obj.gameObject.GetComponent<GenericAnt>().isRienforcement = true;
+                obj.gameObject.GetComponent<GenericAnt>().newNode = owner.newNode;
+            }
+        }
     }
 
     public void exit()

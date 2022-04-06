@@ -31,8 +31,11 @@ public class MovementState : State
 
     public void execute()
     {
-        if (owner.DetectPlayer())
+        if (owner.DetectPlayer() || owner.isRienforcement)
+        {
+            owner.isRienforcement = false;
             owner.stateMachine.changeState(owner.stateMachine.Investigate);
+        }
 
             topNode.evaluate();
     }
@@ -82,8 +85,8 @@ public class InvestigateState : State
                 owner.stateMachine.changeState(owner.stateMachine.Movement);
             }
         }
-       // else if (Vector3.Distance(owner.transform.position, owner.newNode.transform.position) < owner.attachDist)
-         //   owner.stateMachine.changeState(owner.stateMachine.Attack);
+        else if (Vector3.Distance(owner.transform.position, owner.newNode.transform.position) < owner.attachDist)
+            owner.stateMachine.changeState(owner.stateMachine.Attack);
         else
             detectPlayerTime = 3.0f;
 

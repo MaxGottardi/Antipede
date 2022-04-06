@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2567157035986638122}
   - component: {fileID: 8527782723320213498}
   - component: {fileID: 5209020939966721364}
-  - component: {fileID: 8217012463009253832}
   m_Layer: 0
   m_Name: Ant (2)
   m_TagString: Untagged
@@ -83,19 +82,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8217012463009253832
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 927420025103435200}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1268419148971259024
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,7 +93,6 @@ GameObject:
   - component: {fileID: 9190355613143266373}
   - component: {fileID: 1374006363810225604}
   - component: {fileID: 4050314322544626165}
-  - component: {fileID: 3451712153819868975}
   m_Layer: 0
   m_Name: Ant (1)
   m_TagString: Untagged
@@ -179,19 +164,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3451712153819868975
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1268419148971259024}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2251455701555386813
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,7 +503,6 @@ GameObject:
   - component: {fileID: 5485854422958091754}
   - component: {fileID: 7976109547746920392}
   - component: {fileID: 1923611854380857099}
-  - component: {fileID: 6515519242458380920}
   m_Layer: 0
   m_Name: Ant (3)
   m_TagString: Untagged
@@ -603,19 +574,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6515519242458380920
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6858729904413863045}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7174518769501596324
 GameObject:
   m_ObjectHideFlags: 0
@@ -709,7 +667,6 @@ GameObject:
   - component: {fileID: 6398512299056673960}
   - component: {fileID: 2136201759760890274}
   - component: {fileID: 846842300443261873}
-  - component: {fileID: 6134716232360104262}
   m_Layer: 0
   m_Name: Ant
   m_TagString: Untagged
@@ -781,19 +738,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6134716232360104262
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8011558373415568725}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8531618194261706558
 GameObject:
   m_ObjectHideFlags: 0
@@ -808,7 +752,7 @@ GameObject:
   - component: {fileID: 1853081508}
   m_Layer: 0
   m_Name: FarmerAnt
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -860,8 +804,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 4}
+  m_Center: {x: 0, y: 0.5, z: -1.75}
 --- !u!114 &1853081508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -979,7 +923,6 @@ GameObject:
   - component: {fileID: 475349069551307300}
   - component: {fileID: 8721346047686799542}
   - component: {fileID: 1099763793987347646}
-  - component: {fileID: 4598569188158342211}
   m_Layer: 0
   m_Name: Ant (4)
   m_TagString: Untagged
@@ -1051,19 +994,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4598569188158342211
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9194831285582207745}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2264023880025415413
 PrefabInstance:
   m_ObjectHideFlags: 0

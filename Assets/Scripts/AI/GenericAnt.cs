@@ -9,6 +9,8 @@ public class GenericAnt : MonoBehaviour
     public float Speed = 1.5f, attachDist = 0.85f, sightDist = 5.0f;
 
     public LayerMask playerLayer;
+    public bool isRienforcement = false;
+
     [HideInInspector] public StateMachine stateMachine;
     void Start()
     {
@@ -42,5 +44,12 @@ public class GenericAnt : MonoBehaviour
         //player pos is the global position of a player
         //if found set the found pos to the player position
         return false;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(transform.position, 7.5f);
     }
 }
