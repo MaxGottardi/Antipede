@@ -16,7 +16,7 @@ public class PerformAttack : Node
 
 public class AttackWait : Node
 {
-    float waitTime = 1.5f;
+    float waitTime = 0.5f;
     public AttackWait(GenericAnt blackboard)
     {
         this.blackboard = blackboard;
