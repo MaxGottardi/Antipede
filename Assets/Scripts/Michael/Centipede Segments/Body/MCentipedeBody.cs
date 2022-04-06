@@ -21,15 +21,26 @@ public partial class MCentipedeBody : MonoBehaviour
 	List<MSegment> Segments;
 	SegmentsInformation SegmentsInfo;
 
+	public float maxSpeed;
+	public float defaultSpeed;
+
 	void Start()
 	{
 		TailSegment = Tail.GetComponent<MSegment>();
 		TailSegment.Initialise(Head, FollowSpeed, MaxTurnDegreesPerFrame, SegmentsInfo.TailScale.z * SegmentsInfo.TailScale.z);
 		TailSegment.transform.parent = null;
 		Construct();
+		maxSpeed = 750;
+		defaultSpeed = 150;
 	}
 
-	public void AddSegment()
+    private void Update()
+    {
+		//Debug.Log(Segments.Count);
+		Debug.Log(U2I(SegmentsInfo.End));
+    }
+
+    public void AddSegment()
 	{
 		float Z = NumberOfSegments * SegmentsInfo.SegmentScale.z + DeltaZ;
 		if (SegmentsInfo.End > 0)
@@ -83,6 +94,88 @@ public partial class MCentipedeBody : MonoBehaviour
 
 		Segments.Add(Seg);
 		SegmentsInfo.AddSegment();
+	}
+
+	public void RemoveSegment()
+    {
+		if (NumberOfSegments <= 1)
+        {
+			return;
+        }
+
+		MSegment lastSegment = Segments[Segments.Count - 1];
+		/*foreach (MSegment segment in Segments)
+        {
+			lastSegment = segment;
+        }*/
+
+		Destroy(lastSegment.gameObject);
+		//Segments.Remove(Segments[Segments.Count - 1]);
+		Segments.RemoveAt(Segments.Count - 1);
+		--NumberOfSegments;
+
+		int lastSegIndex = Segments.Count - 1;
+		TailSegment.Initialise(Segments[lastSegIndex], FollowSpeed, MaxTurnDegreesPerFrame, 
+		SegmentsInfo.TailScale.z * SegmentsInfo.TailScale.z);
+
+		SegmentsInfo.RemoveSegment();
+	}
+
+	public void IncreaseSpeed(float value)
+    {
+		if (FollowSpeed + value > maxSpeed)
+		{
+			SetSpeed(maxSpeed);
+		}
+		else
+		{
+			FollowSpeed += value;
+			foreach (MSegment segment in Segments)
+			{
+				segment.FollowSpeed += value;
+			}
+			TailSegment.FollowSpeed += value;
+		}
+    }
+
+	public void SetSpeed(float value)
+    {
+		if (value > maxSpeed)
+        {
+			FollowSpeed = maxSpeed;
+			foreach (MSegment segment in Segments)
+            {
+				segment.FollowSpeed = maxSpeed;
+            }
+			TailSegment.FollowSpeed = maxSpeed;
+			return;
+        }
+		else
+        {
+			FollowSpeed = value;
+			foreach (MSegment segment in Segments)
+			{
+				segment.FollowSpeed = value;
+			}
+			TailSegment.FollowSpeed = value;
+		}
+    }
+
+	public void DecreaseSpeed(float value)
+	{
+		if (FollowSpeed - value < 0)
+		{
+			SetSpeed(defaultSpeed);
+		}
+		else
+		{
+			FollowSpeed -= value;
+			foreach (MSegment segment in Segments)
+			{
+				segment.FollowSpeed -= value;
+			}
+			TailSegment.FollowSpeed -= value;
+		}
 	}
 
 	int U2I(uint U)
