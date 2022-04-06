@@ -12,6 +12,7 @@ public class ExpressShock : Node
     public override NodeState evaluate()
     {
         shockTime -= Time.deltaTime;
+        Debug.Log(shockTime);
         if (shockTime <= 0)
         {
             shockTime = 1.0f;

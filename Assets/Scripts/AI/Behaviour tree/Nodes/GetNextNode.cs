@@ -10,7 +10,11 @@ public class GetNextNode : Node
     }
     public override NodeState evaluate()
     {
-        blackboard.newNode = blackboard.newNode.GetComponent<NodeReferences>().nextNode;
-        return NodeState.Success;   
+        if (blackboard.newNode.GetComponent<NodeReferences>())
+        {
+            blackboard.newNode = blackboard.newNode.GetComponent<NodeReferences>().nextNode;
+            return NodeState.Success;
+        }
+        return NodeState.Failure;
     }
 }
