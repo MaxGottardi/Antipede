@@ -39,32 +39,32 @@ public class StateMachine
     }
 }
 
-public class InvestigateStateMachine
-{
-    public State currState;
-    //contain a list of all possible states
-    public State DetermineShock, HaveShock, Movement, CallBackup;
-    GenericAnt owner;
+//public class InvestigateStateMachine
+//{
+//    public State currState;
+//    //contain a list of all possible states
+//    public State DetermineShock, HaveShock, Movement, CallBackup;
+//    GenericAnt owner;
 
-    public InvestigateStateMachine(GenericAnt owner)
-    {
-        this.owner = owner;
-        // Movement = new MovementState(owner);
-        DetermineShock = new InvestigateState(owner);
-        HaveShock = new InvestigateState(owner);
-        CallBackup = new AttackState(owner);
-    }
-    public void changeState(State newState)
-    {
-        if (currState != null)
-            currState.exit();
-        currState = newState;
-        currState.enter();
-    }
+//    public InvestigateStateMachine(GenericAnt owner)
+//    {
+//        this.owner = owner;
+//        // Movement = new MovementState(owner);
+//        DetermineShock = new InvestigateState(owner);
+//        HaveShock = new InvestigateState(owner);
+//        CallBackup = new AttackState(owner);
+//    }
+//    public void changeState(State newState)
+//    {
+//        if (currState != null)
+//            currState.exit();
+//        currState = newState;
+//        currState.enter();
+//    }
 
-    public void Update()
-    {
-        if (currState != null)
-            currState.execute();
-    }
-}
+//    public void Update()
+//    {
+//        if (currState != null)
+//            currState.execute();
+//    }
+//}
