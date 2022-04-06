@@ -25,6 +25,10 @@ public class MovementState : State
                 closestNode = node;
         }
         owner.newNode = closestNode;
+
+        owner.shockBars[0].SetActive(false);
+        owner.shockBars[1].SetActive(false);
+        owner.shockBars[2].SetActive(false);
         //find the nearest node to this object as it would have been lost
         //stuff do when enter the state
     }
@@ -69,6 +73,8 @@ public class InvestigateState : State
 
         //stuff do when enter the state
         detectPlayerTime = 3.0f;
+
+
     }
 
     public void execute()
@@ -90,12 +96,12 @@ public class InvestigateState : State
         else
             detectPlayerTime = 3.0f;
 
-        Debug.Log(shockState);
         shockState.execute();
     }
 
     public void exit()
     {
+        detectPlayerTime = 3.0f;
         //deactivate all showing warning symbols
         //throw new System.NotImplementedException();
     }
@@ -105,32 +111,48 @@ public class AttackState : State
 {
     Node topNode;
 
+    float detectPlayerTime = 1.0f;
     GenericAnt owner;
     public AttackState(GenericAnt owner) //also initilize any behaviour tree used on the state as well
     {
         this.owner = owner;
-        // ExpressShock expressShock = new ExpressShock(owner);
+
+
+        PerformAttack performAttack = new PerformAttack(owner);
+        AttackWait attackWait = new AttackWait(owner);
         //MoveTowards moveTowards = new MoveTowards(owner);
         //CallBackup callBackup = new CallBackup(owner);
 
 
-        //topNode = new Sequence(new List<Node> { expressShock, moveTowards, expressShock, callBackup });
+        topNode = new Sequence(new List<Node> { performAttack, attackWait });
     }
     public void enter()
     {
+        detectPlayerTime = 1.0f;
         //stuff do when enter the state
     }
 
     public void execute()
     {
         if (!owner.DetectPlayer())
-            owner.stateMachine.changeState(owner.stateMachine.Movement);
+        {
+            detectPlayerTime -= Time.deltaTime;
+            if (detectPlayerTime <= 0)
+            {
+                owner.shockBars[0].SetActive(false);
+                owner.shockBars[1].SetActive(false);
+                owner.shockBars[2].SetActive(false);
+                detectPlayerTime = 3.0f;
+                owner.stateMachine.changeState(owner.stateMachine.Movement);
+            }
+        }
 
         topNode.evaluate();
     }
 
     public void exit()
     {
+        detectPlayerTime = 1.0f;
         //deactivate all showing warning symbols
         //throw new System.NotImplementedException();
     }

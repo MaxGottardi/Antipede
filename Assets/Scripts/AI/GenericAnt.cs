@@ -6,8 +6,8 @@ public class GenericAnt : MonoBehaviour
 {
     public GameObject newNode;
     public GameObject[] nodesList, shockBars;
-    public float Speed = 1.5f, attachDist = 0.85f, sightDist = 5.0f;
-
+    public float Speed = 1.5f, attachDist = 0.5f, sightDist = 5.0f;
+    public Animator anim;
     public LayerMask playerLayer;
     public bool isRienforcement = false;
 
@@ -17,6 +17,7 @@ public class GenericAnt : MonoBehaviour
         nodesList = GameObject.FindGameObjectsWithTag("FarmerNode");
         stateMachine = new StateMachine(this);
         stateMachine.changeState(stateMachine.Movement);
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame

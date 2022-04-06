@@ -5,7 +5,7 @@ using UnityEngine;
 public class DetermineShockState
 {
     //Node topNode;
-    public float smallShockDist = 5.0f, medShockDist = 3f, largeShockDist = 1f;
+    public float smallShockDist = 6.0f, medShockDist = 4f, largeShockDist = 2f;
     int state = 0;
     float backupRadius = 7.5f;
 
@@ -59,7 +59,6 @@ public class DetermineShockState
         {
             Movement();
             AdjustShock();
-            Debug.Log("Running shocked player");
         }
     }
 

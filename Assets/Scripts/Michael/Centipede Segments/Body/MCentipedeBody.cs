@@ -24,6 +24,8 @@ public partial class MCentipedeBody : MonoBehaviour
 	public float maxSpeed;
 	public float defaultSpeed;
 
+	public GameObject DeathScreen;
+
 	void Start()
 	{
 		TailSegment = Tail.GetComponent<MSegment>();
@@ -37,11 +39,12 @@ public partial class MCentipedeBody : MonoBehaviour
     private void Update()
     {
 		//Debug.Log(Segments.Count);
-		Debug.Log(U2I(SegmentsInfo.End));
+//		Debug.Log(U2I(SegmentsInfo.End));
     }
 
     public void AddSegment()
 	{
+		IncreaseSpeed(10);
 		float Z = NumberOfSegments * SegmentsInfo.SegmentScale.z + DeltaZ;
 		if (SegmentsInfo.End > 0)
 		{
@@ -98,8 +101,13 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	public void RemoveSegment()
     {
+		DecreaseSpeed(10);
+		Debug.Log("Killing Player");
 		if (NumberOfSegments <= 1)
         {
+			Debug.Log("You Died");
+			DeathScreen.SetActive(true);
+			Time.timeScale = 0;
 			return;
         }
 
