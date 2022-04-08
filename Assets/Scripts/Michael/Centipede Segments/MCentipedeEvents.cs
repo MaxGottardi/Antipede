@@ -17,6 +17,8 @@ public class MCentipedeEvents : MonoBehaviour
 
 	void OnTriggerEnter(Collider other)
 	{
+		// Handle Centipede Trigger Entries here...
+
 		if (other.CompareTag("Add Segment"))
 		{
 			body.AddSegment();
@@ -25,6 +27,8 @@ public class MCentipedeEvents : MonoBehaviour
 
 	void OnDestroy()
 	{
+		// Garbage collection.
+
 		OnSegmentTriggerEnter -= null;
 	}
 }
