@@ -128,13 +128,13 @@ public partial class MCentipedeBody : MonoBehaviour
 		--NumberOfSegments;
 
 		int lastSegIndex = Segments.Count - 1;
-		TailSegment.Initialise(Segments[lastSegIndex], FollowSpeed, MaxTurnDegreesPerFrame, SegmentsInfo.TailScale.z);
+		TailSegment.SetForwardNeighbour(Segments[lastSegIndex]);
 
 		SegmentsInfo.RemoveSegment();
 
 		// Ensure the Tail is properly 'attached' to the end Segment.
 		Transform newLast = GetLast();
-		Tail.position = newLast.position - newLast.forward * SegmentsInfo.TailScale.z;
+		Tail.position = newLast.position - newLast.forward * SegmentsInfo.SegmentScale.z;
 	}
 
 	public void IncreaseSpeed(float value)

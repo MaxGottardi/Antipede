@@ -29,6 +29,6 @@ public class MCentipedeEvents : MonoBehaviour
 	{
 		// Garbage collection.
 
-		OnSegmentTriggerEnter -= null;
+		OnSegmentTriggerEnter = null;
 	}
 }
