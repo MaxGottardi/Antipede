@@ -18,11 +18,16 @@ public class MSegment : MonoBehaviour
 	/// <param name="Distance">How close should this Segment go until it stops following ForwardNeighbour?</param>
 	public void Initialise(Transform ForwardNeighbour, float FollowSpeed, float MaxTurnDegreesPerFrame, float Distance)
 	{
-		this.ForwardNeighbour = ForwardNeighbour;
+		SetForwardNeighbour(ForwardNeighbour);
 		rb = GetComponent<Rigidbody>();
 		this.FollowSpeed = FollowSpeed;
 		this.MaxTurnDegreesPerFrame = MaxTurnDegreesPerFrame * 20;
 		this.Distance = Distance;
+	}
+
+	public void SetForwardNeighbour(Transform NewForwardNeighbour)
+	{
+		ForwardNeighbour = NewForwardNeighbour;
 	}
 
 	void FixedUpdate()

@@ -1,28 +1,21 @@
 using UnityEngine;
 
+[RequireComponent(typeof(CentipedeMovement))]
 public class MInput : MonoBehaviour
 {
 
-	Rigidbody rb;
-
 	MCentipedeBody body;
+	CentipedeMovement movement;
 	public LayerMask EnemyLayer;
-
-	float Horizontal;
-	float Vertical;
-	Vector3 InDirection;
 
 	bool doneAttack = false;
 
 	void Start()
 	{
 		body = GetComponent<MCentipedeBody>();
-		rb = GetComponent<Rigidbody>();
+		movement = GetComponent<CentipedeMovement>();
 	}
-	void wait()
-    {
-		doneAttack = false;
-    }
+
 	void Update()
 	{
 		Vector3 rayPos = new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z);
@@ -31,36 +24,40 @@ public class MInput : MonoBehaviour
 		{
 			DoAttack();
 			doneAttack = true;
-			Invoke("wait", 0.5f);
+			Invoke(nameof(wait), 0.5f);
 		}
+
 		if (Input.GetKeyDown(KeyCode.J))
 		{
 			body.AddSegment();
 		}
-		if (Input.GetKeyDown(KeyCode.H))
-        {
+		else if (Input.GetKeyDown(KeyCode.H))
+		{
 			body.RemoveSegment();
-        }
+		}
+
 		if (Input.GetKeyDown(KeyCode.K))
-        {
+		{
 			body.IncreaseSpeed(100.0f);
-        }
-		if (Input.GetKeyDown(KeyCode.L))
-        {
+		}
+		else if (Input.GetKeyDown(KeyCode.L))
+		{
 			body.DecreaseSpeed(100.0f);
-        }
+		}
 
-		Horizontal = Input.GetAxisRaw("Horizontal");
-		Vertical = Input.GetAxisRaw("Vertical");
+		float Horizontal = Input.GetAxisRaw("Horizontal");
+		float Vertical = Input.GetAxisRaw("Vertical");
 
-		InDirection = new Vector3(Horizontal, 0, Vertical).normalized;
+		movement.Set(ref Horizontal, ref Vertical);
+	}
 
-		InDirection += transform.position;
-
+	void FixedUpdate()
+	{
+		movement.HandleMovement(ref body);
 	}
 
 	void DoAttack()
-    {
+	{
 		GetComponent<Animator>().SetTrigger("Pincer");
 		Vector3 rayPos = new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z);
 
@@ -72,19 +69,11 @@ public class MInput : MonoBehaviour
 		{
 			Destroy(hit.collider.gameObject);
 			body.AddSegment();
-        }
+		}
 
 	}
-
-	void FixedUpdate()
+	void wait()
 	{
-		if (Horizontal != 0 || Vertical != 0)
-		{
-			MMathStatics.HomeTowards(rb, InDirection, body.FollowSpeed, body.MaxTurnDegreesPerFrame);
-		}
-		else
-		{
-			rb.velocity = Vector3.zero;
-		}
+		doneAttack = false;
 	}
 }
