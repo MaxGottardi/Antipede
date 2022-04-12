@@ -1,17 +1,19 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MCentipedeEvents))]
 public partial class MCentipedeBody : MonoBehaviour
 {
+	[Header("Construction References.")]
 
-	[SerializeField] Transform Head, Tail;
+	[SerializeField] Transform Head;
+	[SerializeField] Transform Tail;
 	MSegment TailSegment;
 
 	[SerializeField] MSegment Segment;
 	[SerializeField, Tooltip("The number of Segments now (during runtime), and to begin with.")] uint NumberOfSegments;
-	float DeltaZ;
+
+	[Header("Movement Settings.")]
 
 	[SerializeField, Min(Vector3.kEpsilon)] public float FollowSpeed = 150f;
 	[SerializeField, Min(Vector3.kEpsilon)] public float MaxTurnDegreesPerFrame = 7f;
@@ -24,35 +26,37 @@ public partial class MCentipedeBody : MonoBehaviour
 	public float maxSpeed;
 	public float defaultSpeed;
 
+	[Space(10)]
+
 	public GameObject DeathScreen;
 
 	void Start()
 	{
 		TailSegment = Tail.GetComponent<MSegment>();
-		TailSegment.Initialise(Head, FollowSpeed, MaxTurnDegreesPerFrame, SegmentsInfo.TailScale.z * SegmentsInfo.TailScale.z);
+		TailSegment.Initialise(Head, FollowSpeed, MaxTurnDegreesPerFrame, SegmentsInfo.TailScale.z);
 		TailSegment.transform.parent = null;
 		Construct();
 		maxSpeed = 750;
 		defaultSpeed = 150;
 	}
 
-    private void Update()
-    {
+	private void Update()
+	{
 		//Debug.Log(Segments.Count);
-//		Debug.Log(U2I(SegmentsInfo.End));
-    }
+		//		Debug.Log(U2I(SegmentsInfo.End));
+	}
 
-    public void AddSegment()
+	public void AddSegment()
 	{
 		IncreaseSpeed(10);
 		float Z = NumberOfSegments * SegmentsInfo.SegmentScale.z + DeltaZ;
 		if (SegmentsInfo.End > 0)
 		{
-			Transform End = this[U2I(SegmentsInfo.End)];
+			Transform End = GetLast();
 
-			Tail.position += SegmentsInfo.SegmentScale.z * -Head.forward;
+			Tail.position += SegmentsInfo.SegmentScale.z * -End.forward;
 
-			Quaternion Rot = MMathStatics.DirectionToQuat(((Transform)this[U2I(SegmentsInfo.End - 1)]).position, End.position);
+			Quaternion Rot = MMathStatics.DirectionToQuat(((Transform)GetLast(1)).position, End.position);
 
 			AddSegment(Z, Rot);
 		}
@@ -69,27 +73,28 @@ public partial class MCentipedeBody : MonoBehaviour
 	{
 		// Inherit Centipede's rotation.
 		MSegment Seg = Instantiate(Segment, Vector3.zero, Rot);
-		Seg.Initialise(Segments.Count == 0 ? Head : this[SegmentsInfo.End], FollowSpeed, MaxTurnDegreesPerFrame, SegmentsInfo.SegmentScale.z * SegmentsInfo.SegmentScale.z);
+		Seg.Initialise(Segments.Count == 0 ? Head : GetLast(), FollowSpeed, MaxTurnDegreesPerFrame, SegmentsInfo.SegmentScale.z);
 
 		Seg.name = "Segment: " + SegmentsInfo.End;
 
 		// Implicit conversion to Transform.
 		Transform T = Seg;
 
-		// Set parent to the Centipede's object and inherit local position.
 		if (Segments.Count == 0)
 		{
+			// Set parent to the Centipede's object and inherit local position.
 			T.SetParent(transform);
 			T.localPosition = Head.localPosition - new Vector3(0, 0, Z);
+
 			T.parent = null;
 		}
 		else
 		{
-			Transform End = ((Transform)this[SegmentsInfo.End]);
+			Transform End = GetLast();
 			T.position = End.position - End.forward * SegmentsInfo.SegmentScale.z;
 			T.LookAt(End);
 
-			TailSegment.Initialise(Segments.Count == 0 ? Head : this[SegmentsInfo.End], FollowSpeed, MaxTurnDegreesPerFrame, SegmentsInfo.TailScale.z * SegmentsInfo.TailScale.z);
+			TailSegment.Initialise(End, FollowSpeed, MaxTurnDegreesPerFrame, SegmentsInfo.TailScale.z);
 		}
 
 		// Subscribe listening events.
@@ -100,22 +105,22 @@ public partial class MCentipedeBody : MonoBehaviour
 	}
 
 	public void RemoveSegment()
-    {
+	{
 		DecreaseSpeed(10);
 		Debug.Log("Killing Player");
 		if (NumberOfSegments <= 1)
-        {
+		{
 			Debug.Log("You Died");
 			DeathScreen.SetActive(true);
 			Time.timeScale = 0;
 			return;
-        }
+		}
 
-		MSegment lastSegment = Segments[Segments.Count - 1];
+		MSegment lastSegment = GetLast();
 		/*foreach (MSegment segment in Segments)
-        {
+		{
 			lastSegment = segment;
-        }*/
+		}*/
 
 		Destroy(lastSegment.gameObject);
 		//Segments.Remove(Segments[Segments.Count - 1]);
@@ -123,14 +128,17 @@ public partial class MCentipedeBody : MonoBehaviour
 		--NumberOfSegments;
 
 		int lastSegIndex = Segments.Count - 1;
-		TailSegment.Initialise(Segments[lastSegIndex], FollowSpeed, MaxTurnDegreesPerFrame, 
-		SegmentsInfo.TailScale.z * SegmentsInfo.TailScale.z);
+		TailSegment.Initialise(Segments[lastSegIndex], FollowSpeed, MaxTurnDegreesPerFrame, SegmentsInfo.TailScale.z);
 
 		SegmentsInfo.RemoveSegment();
+
+		// Ensure the Tail is properly 'attached' to the end Segment.
+		Transform newLast = GetLast();
+		Tail.position = newLast.position - newLast.forward * SegmentsInfo.TailScale.z;
 	}
 
 	public void IncreaseSpeed(float value)
-    {
+	{
 		if (FollowSpeed + value > maxSpeed)
 		{
 			SetSpeed(maxSpeed);
@@ -144,22 +152,22 @@ public partial class MCentipedeBody : MonoBehaviour
 			}
 			TailSegment.FollowSpeed += value;
 		}
-    }
+	}
 
 	public void SetSpeed(float value)
-    {
+	{
 		if (value > maxSpeed)
-        {
+		{
 			FollowSpeed = maxSpeed;
 			foreach (MSegment segment in Segments)
-            {
+			{
 				segment.FollowSpeed = maxSpeed;
-            }
+			}
 			TailSegment.FollowSpeed = maxSpeed;
 			return;
-        }
+		}
 		else
-        {
+		{
 			FollowSpeed = value;
 			foreach (MSegment segment in Segments)
 			{
@@ -167,7 +175,7 @@ public partial class MCentipedeBody : MonoBehaviour
 			}
 			TailSegment.FollowSpeed = value;
 		}
-    }
+	}
 
 	public void DecreaseSpeed(float value)
 	{
@@ -185,12 +193,4 @@ public partial class MCentipedeBody : MonoBehaviour
 			TailSegment.FollowSpeed -= value;
 		}
 	}
-
-	int U2I(uint U)
-	{
-		return Convert.ToInt32(U);
-	}
-
-	public MSegment this[int i] => Segments[i];
-	public MSegment this[uint i] => Segments[U2I(i)];
 }

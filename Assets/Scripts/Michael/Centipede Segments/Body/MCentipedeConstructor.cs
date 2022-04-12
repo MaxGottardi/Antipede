@@ -1,9 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public partial class MCentipedeBody : MonoBehaviour
 {
+	/// <summary>The distances between Segments.</summary>
+	float DeltaZ;
 
 	void Awake()
 	{
@@ -47,6 +48,8 @@ struct SegmentsInformation
 	public Vector3 TailScale;
 	public Vector3 SegmentScale;
 
+	/// <summary>The index position of the last Segment.</summary>
+	/// <remarks>Zero if there are no Segments.</remarks>
 	public uint End
 	{
 		get
