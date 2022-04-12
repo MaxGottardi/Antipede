@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class GenericAnt : MonoBehaviour
 {
-    public GameObject newNode;
+    public Transform nextPosTransform;
     public GameObject[] nodesList, shockBars;
-    public float Speed = 1.5f, attachDist = 0.5f, sightDist = 5.0f;
+    public float Speed = 1.5f, rotSpeed = 5, attachDist = 0.5f, sightDist = 5.0f;
     public Animator anim;
     public LayerMask playerLayer;
     public bool isRienforcement = false;
@@ -26,7 +26,7 @@ public class GenericAnt : MonoBehaviour
         stateMachine.Update();
     }
 
-    public bool DetectPlayer()
+    public bool DetectPlayer() //here use the proper vision cone
     {
 
         RaycastHit hit;
@@ -39,7 +39,7 @@ public class GenericAnt : MonoBehaviour
             || Physics.Raycast(rayPos, (transform.forward + transform.right / 2), out hit, sightDist, playerLayer)
             || Physics.Raycast(rayPos, (transform.forward - transform.right / 2), out hit, sightDist, playerLayer))
         {
-            newNode = hit.collider.gameObject;
+            nextPosTransform = hit.collider.gameObject.transform;
             return true;
         }
         //player pos is the global position of a player

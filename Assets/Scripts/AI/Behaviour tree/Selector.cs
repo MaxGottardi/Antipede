@@ -15,6 +15,8 @@ public class Selector : Node
 
     public override NodeState evaluate() 
     {
+        doInit();
+
         while (currChild < children.Count)// && nodeState != NodeState.Running)
         {
             switch (children[currChild].evaluate())
@@ -24,15 +26,18 @@ public class Selector : Node
                     return nodeState;
                 case NodeState.Success:
                     nodeState = NodeState.Success;
+                    children[currChild].end();
                     currChild = 0;
                     return nodeState;
                 case NodeState.Failure:
+                    children[currChild].end();
                     currChild++;
                     nodeState = NodeState.Failure;
                     break;
             }
         }
         nodeState = NodeState.Failure;
+        end();
         currChild = 0;
         return nodeState; //everything didn't execute as whole lot failed
 

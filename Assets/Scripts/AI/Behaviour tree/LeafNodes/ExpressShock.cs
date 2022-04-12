@@ -11,6 +11,8 @@ public class ExpressShock : Node
     }
     public override NodeState evaluate()
     {
+        doInit();
+
         shockTime -= Time.deltaTime;
         if (shockTime <= 0)
         {

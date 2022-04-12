@@ -13,6 +13,8 @@ public class Inverter : Node //invert the value recieved
 
     public override NodeState evaluate()
     {
+        doInit();
+
         switch (child.evaluate())
         {
             case NodeState.Running:
@@ -20,12 +22,16 @@ public class Inverter : Node //invert the value recieved
                 break;
             case NodeState.Success:
                 nodeState = NodeState.Failure;
+                child.end();
                 break;
             case NodeState.Failure:
                 nodeState = NodeState.Success;
+                child.end();
                 break;
            // default: break;
         }
+        if (nodeState != NodeState.Running)
+            end();
         //as all children were either running or a success
         return nodeState;
     }

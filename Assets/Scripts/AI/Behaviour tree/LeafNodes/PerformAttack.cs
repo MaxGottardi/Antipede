@@ -23,6 +23,8 @@ public class AttackWait : Node
     }
     public override NodeState evaluate()
     {
+        doInit();
+
         if (waitTime <= 0)
         {
             //apply the damages to the health here and junk
@@ -33,7 +35,7 @@ public class AttackWait : Node
                 pos.y = 1.566f;
                 warning.transform.localPosition = pos;
             }
-            if (Vector3.Distance(blackboard.transform.position, blackboard.newNode.transform.position) < blackboard.attachDist)
+            if (Vector3.Distance(blackboard.transform.position, blackboard.nextPosTransform.transform.position) < blackboard.attachDist)
                 GameObject.Find("Centipede").GetComponent<MCentipedeBody>().RemoveSegment();
             blackboard.stateMachine.changeState(blackboard.stateMachine.Movement);
             return NodeState.Success;

@@ -16,7 +16,7 @@ public class MovementState : State
 
         topNode = new Sequence(new List<Node> { getNextNode, moveTowards });
     }
-    public void enter()
+    public void enter() //omly important when other states also added in
     {
         GameObject closestNode = owner.nodesList[0];
         foreach (GameObject node in owner.nodesList)
@@ -24,7 +24,7 @@ public class MovementState : State
             if(Vector3.Distance(node.transform.position, owner.transform.position) < Vector3.Distance(closestNode.transform.position, owner.transform.position))
                 closestNode = node;
         }
-        owner.newNode = closestNode;
+        owner.nextPosTransform = closestNode.transform;
 
         owner.shockBars[0].SetActive(false);
         owner.shockBars[1].SetActive(false);
@@ -35,11 +35,11 @@ public class MovementState : State
 
     public void execute()
     {
-        if (owner.DetectPlayer() || owner.isRienforcement)
-        {
-            owner.isRienforcement = false;
-            owner.stateMachine.changeState(owner.stateMachine.Investigate);
-        }
+        //////////if (owner.DetectPlayer() || owner.isRienforcement)
+        //////////{
+        //////////    owner.isRienforcement = false;
+        //////////    owner.stateMachine.changeState(owner.stateMachine.Investigate);
+        //////////}
 
             topNode.evaluate();
     }
@@ -91,7 +91,7 @@ public class InvestigateState : State
                 owner.stateMachine.changeState(owner.stateMachine.Movement);
             }
         }
-        else if (Vector3.Distance(owner.transform.position, owner.newNode.transform.position) < owner.attachDist)
+        else if (Vector3.Distance(owner.transform.position, owner.nextPosTransform.transform.position) < owner.attachDist)
             owner.stateMachine.changeState(owner.stateMachine.Attack);
         else
             detectPlayerTime = 3.0f;

@@ -13,6 +13,8 @@ public class ParallelSequence : Node
 
     public override NodeState evaluate()
     {
+        doInit();
+
         bool isAnyChildRunning = false; //set to true if at any point come across a child thats running
         foreach (var node in children) //for each child node
         {
@@ -24,15 +26,19 @@ public class ParallelSequence : Node
                     break;
                 //return NodeState.Running;
                 case NodeState.Success: //do nothing, just evaluate the next child
+                    node.end();
                     break;
                 case NodeState.Failure: //whole sequence failed so break out of the method
                     nodeState = NodeState.Failure;
+                    node.end();
                     return nodeState;
                 default: break;
             }
         }
         //as all children were either running or a success
         nodeState = isAnyChildRunning ? NodeState.Running : NodeState.Success;
+        if (nodeState != NodeState.Running)
+            end();
         return nodeState;
     }
 }

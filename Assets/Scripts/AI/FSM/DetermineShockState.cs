@@ -23,7 +23,7 @@ public class DetermineShockState
         Debug.Log("Running shocked player");
 
         //stuff do when enter the state
-        if (Vector3.Distance(owner.transform.position, owner.newNode.transform.position) < largeShockDist)
+        if (Vector3.Distance(owner.transform.position, owner.nextPosTransform.transform.position) < largeShockDist)
         {
             owner.shockBars[0].SetActive(true);
             owner.shockBars[1].SetActive(true);
@@ -31,7 +31,7 @@ public class DetermineShockState
             state = 3;
             expressingShock = true;
         }
-        else if (Vector3.Distance(owner.transform.position, owner.newNode.transform.position) < medShockDist)
+        else if (Vector3.Distance(owner.transform.position, owner.nextPosTransform.transform.position) < medShockDist)
         {
             owner.shockBars[0].SetActive(true);
             owner.shockBars[1].SetActive(true);
@@ -65,7 +65,7 @@ public class DetermineShockState
     void Movement()
     {
         owner.transform.position += owner.transform.forward * Time.deltaTime * owner.Speed;
-        Vector3 lookPos = owner.newNode.transform.position;
+        Vector3 lookPos = owner.nextPosTransform.transform.position;
         lookPos.y = owner.transform.position.y;
 
         owner.transform.LookAt(lookPos);
@@ -73,21 +73,21 @@ public class DetermineShockState
 
     void AdjustShock()
     {
-        if (state == 1 && Vector3.Distance(owner.transform.position, owner.newNode.transform.position) < medShockDist)
+        if (state == 1 && Vector3.Distance(owner.transform.position, owner.nextPosTransform.transform.position) < medShockDist)
         {
             state = 2;
             owner.shockBars[1].SetActive(true);
             expressingShock = true;
             CallReinforcements();
         }
-        if (state == 2 && Vector3.Distance(owner.transform.position, owner.newNode.transform.position) < largeShockDist)
+        if (state == 2 && Vector3.Distance(owner.transform.position, owner.nextPosTransform.transform.position) < largeShockDist)
         {
             owner.shockBars[2].SetActive(true);
             state = 3;
             expressingShock = true;
             //call for backup
         }
-        if (state == 3 && Vector3.Distance(owner.transform.position, owner.newNode.transform.position) < owner.attachDist)
+        if (state == 3 && Vector3.Distance(owner.transform.position, owner.nextPosTransform.transform.position) < owner.attachDist)
         {
             //switch to the attacking state here
 
@@ -103,7 +103,7 @@ public class DetermineShockState
             if(obj.gameObject.CompareTag("Enemy") && obj.gameObject.GetComponent<GenericAnt>().stateMachine.currState == obj.gameObject.GetComponent<GenericAnt>().stateMachine.Movement)
             {
                 obj.gameObject.GetComponent<GenericAnt>().isRienforcement = true;
-                obj.gameObject.GetComponent<GenericAnt>().newNode = owner.newNode;
+                obj.gameObject.GetComponent<GenericAnt>().nextPosTransform = owner.nextPosTransform;
             }
         }
     }

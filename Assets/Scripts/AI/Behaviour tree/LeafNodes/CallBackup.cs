@@ -11,6 +11,9 @@ public class CallBackup : Node
     }
     public override NodeState evaluate()
     {
+        doInit();
+
+
         //within a certain range of the AI cast out and see who responds
         if (runTime <= 0)
         {

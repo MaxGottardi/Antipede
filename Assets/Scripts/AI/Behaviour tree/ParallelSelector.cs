@@ -13,6 +13,8 @@ public class ParallelSelector : Node
 
     public override NodeState evaluate()
     {
+        doInit();
+
         foreach (var node in children) //for each child node
         {
             switch (node.evaluate()) //issue as every frame still updating the tree, only want to do when complete the tree and everything fails
@@ -23,14 +25,17 @@ public class ParallelSelector : Node
                     return nodeState;
                 case NodeState.Success: //do nothing, just evaluate the next child
                     nodeState = NodeState.Success;
+                    node.end();
                     return nodeState;
                 case NodeState.Failure: //whole sequence failed so break out of the method
                     nodeState = NodeState.Failure;
+                    node.end();
                     break;
                 default: break;
             }
         }
         nodeState = NodeState.Failure;
+        end();
         return nodeState; //everything didn't execute as whole lot failed
     }
 }
