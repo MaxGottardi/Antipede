@@ -46,8 +46,36 @@ public static class MMathStatics
 	/// <inheritdoc cref="HomeTowards(Rigidbody, Transform, float, float)"/>
 	public static void HomeTowards(Rigidbody Rigidbody, Vector3 Target, float Velocity, float MaxDegreesDeltaPerFrame)
 	{
+		if (Target == Vector3.zero)
+			return;
+
 		Transform _self = Rigidbody.transform;
 		Rigidbody.velocity = _self.forward * Velocity * Time.deltaTime;
-		Rigidbody.MoveRotation(Quaternion.RotateTowards(_self.rotation, Quaternion.LookRotation(Target - _self.position, _self.up), MaxDegreesDeltaPerFrame));
+
+		Vector3 LookForwardTarget = Target - _self.position;
+
+		if (CheckZeroVector(LookForwardTarget))
+			return;
+
+		Rigidbody.MoveRotation(Quaternion.RotateTowards(_self.rotation, Quaternion.LookRotation(LookForwardTarget, _self.up), MaxDegreesDeltaPerFrame));
+	}
+
+	public static void Abs(ref Vector3 In)
+	{
+		In.x = Mathf.Abs(In.x);
+		In.y = Mathf.Abs(In.y);
+		In.z = Mathf.Abs(In.z);
+	}
+
+	/// <summary>Checks if a vector is close enough to zero.</summary>
+	/// <param name="In"></param>
+	/// <returns></returns>
+	public static bool CheckZeroVector(Vector3 In)
+	{
+		bool bIsZero = In == Vector3.zero;
+
+		Abs(ref In);
+
+		return bIsZero || In.x < Vector3.kEpsilon && In.y < Vector3.kEpsilon && In.z < Vector3.kEpsilon;
 	}
 }
