@@ -2,35 +2,91 @@ using UnityEngine;
 
 public class CentipedeMovement : MonoBehaviour
 {
+
+	[Header("Player Movement Preference.")]
 	[SerializeField] bool bGlobalMovement = true;
-	[SerializeField] float HeightOffGround;
 
-	[SerializeField, Tooltip("How far ahead of the Centipede should Terrain Surface Normals be checked?"), Min(0f)]
+
+	[Header("Height From Ground Setting. (Can't change during Play)")]
+	[SerializeField, Tooltip("How far should the Centipede walk above the terrain?")]
+	float HeightOffGround;
+	Vector3 HeightAsVector;
+
+	[Header("Terrain Checker Settings.")]
+	[SerializeField, Tooltip("How far ahead of the Centipede should Terrain Ground be checked?"), Min(0f)]
 	float Lead;
+	[SerializeField, Tooltip("How high up should the Centipede begin to check for Ground?"), Min(0f)]
+	float GroundHeightDistance = 2f;
+	[SerializeField, Tooltip("How far downwards should the Centipede check for Ground?"), Min(.1f)]
+	float GroundDistanceCheck = 5f;
 
-	[SerializeField, Tooltip("How far downwards should the Centipede check for Surface Normals?")]
-	float GroundDistanceCheck = 5;
+	[Header("Interpolation Settings.")]
+	[SerializeField] bool bInterpolateHillClimb;
+	[SerializeField, Min(Vector3.kEpsilon)] float InterpTime = .2f;
+	float YMatchSpeed;
+	float FromY;
+	float TargetY;
+
 
 	Rigidbody rb;
 
+	// Movement.
 	float Horizontal;
 	float Vertical;
 	Vector3 InDirection;
 
+	// Surface Normals.
+	Vector3 PreviousNormal;
+	Vector3 SurfaceNormal;
+
 	void Start()
 	{
 		rb = GetComponent<Rigidbody>();
+		HeightAsVector = new Vector3(0, HeightOffGround);
+		YMatchSpeed = 1 / InterpTime;
 	}
 
+	float t = 0;
+
+	void Update()
+	{
+		if (!bInterpolateHillClimb)
+			return;
+
+		if (t <= 1f)
+		{
+			t += Time.deltaTime * YMatchSpeed;
+
+			float Interp = Mathf.Lerp(FromY, TargetY, t);
+			InDirection.y = Interp + transform.position.y;
+
+			// Debug.Log(" F:" + FromY.ToString("F2") + " T: " + TargetY.ToString("F2") + "\t\tInterp: " + Interp.ToString("F2") + " Time:" + t.ToString("F2"));
+			// Debug.DrawLine(transform.position, InDirection, Color.white);
+		}
+	}
+
+	/// <summary>Send instructions for Horizontal (+X) and Vertical (+Z) Movement.</summary>
+	/// <param name="H">Horizontal. -X &lt; 0 &gt; +X.</param>
+	/// <param name="V">Vertical. -Z &lt; 0 &gt; +Z.</param>
 	public void Set(ref float H, ref float V)
 	{
 		Horizontal = H;
 		Vertical = V;
 
-		Vector3 SurfaceNormal = GetSurfaceNormal(out bool bGroundWasHit, out RaycastHit Surface);
+		PreviousNormal = SurfaceNormal;
+		SurfaceNormal = GetSurfaceNormal(out bool bGroundWasHit, out RaycastHit Surface);
 
 		if (bGroundWasHit)
 		{
+			// Update interpolation targets when the Centipede goes on another face (a triangle in the terrain).
+			if (PreviousNormal != SurfaceNormal)
+			{
+				FromY = transform.forward.y;
+			}
+
+			Vector3 NormalForward;
+			Vector3 NormalRight;
+
 			if (bGlobalMovement)
 			{
 				//Vector3 ForwardPitch = transform.forward;
@@ -39,17 +95,13 @@ public class CentipedeMovement : MonoBehaviour
 				//Vector3 GlobalForwardRelativePitch = Vector3.forward + ForwardPitch;
 				//InDirection = GlobalForwardRelativePitch * Vertical + Vector3.right * Horizontal;
 
-				Vector3 NormalForward = Vector3.Cross(Vector3.right, SurfaceNormal);
-				Vector3 NormalRight = Vector3.Cross(SurfaceNormal, Vector3.forward);
-
-				InDirection = NormalForward * Vertical + NormalRight * Horizontal;
+				NormalForward = Vector3.Cross(Vector3.right, SurfaceNormal);
+				NormalRight = Vector3.Cross(SurfaceNormal, Vector3.forward);
 			}
 			else
 			{
-				Vector3 NormalRelativeForward = Vector3.Cross(transform.right, SurfaceNormal);
-				Vector3 NormalRelativeRight = Vector3.Cross(SurfaceNormal, transform.forward);
-
-				InDirection = NormalRelativeForward * Vertical + NormalRelativeRight * Horizontal;
+				NormalForward = Vector3.Cross(transform.right, SurfaceNormal);
+				NormalRight = Vector3.Cross(SurfaceNormal, transform.forward);
 
 				// Problem when pressing 'S' or 'DOWN' (going directly backwards) when using Relative Movement (NOT Global Movement)
 				// where the centipede doesn't want to rotate behind.
@@ -59,15 +111,42 @@ public class CentipedeMovement : MonoBehaviour
 				// For now, you cannot move directly backwards when moving Relatively.
 			}
 
+			InDirection = NormalForward * Vertical + NormalRight * Horizontal;
 			InDirection += transform.position;
-			transform.position = Surface.point - (transform.forward * Lead) + new Vector3(0, HeightOffGround);
+			transform.position = Surface.point - (transform.forward * Lead) + HeightAsVector;
+
+			if (PreviousNormal != SurfaceNormal)
+			{
+				TargetY = NormalForward.y;
+				t = 0;
+			}
 		}
 		else
 		{
-			if (Physics.Raycast(transform.position, Vector3.up, out RaycastHit UpHit, 5, 256))
+			// If nothing was hit, shoot a ray from above back down to the terrain and teleport to that position.
+			// This usually happens when the Centipede falls out of the world when going up steep terrain.
+			if (Physics.Raycast(transform.position + Vector3.up * GroundDistanceCheck, Vector3.down, out RaycastHit SkyRay, GroundDistanceCheck, 256))
 			{
-				transform.position = UpHit.point;
-				Set(ref Horizontal, ref Horizontal);
+				transform.position = SkyRay.point + HeightAsVector;
+				transform.LookAt(transform.position + Vector3.Cross(transform.right, SkyRay.normal));
+			}
+			else
+			{
+				bool bUnderneathIsGround = Physics.Raycast(transform.position, Vector3.down, out RaycastHit Anything, 50000);
+				if (!bUnderneathIsGround)
+				{
+					// The Centipede has fallen out of the world.
+
+					// ...
+
+					Debug.LogError("Centipede has nothing underneath! Maybe under the terrain?");
+					return;
+				}
+
+				// TODO: Interpolate the downward fall to Anything.point so that it doesn't look as bad.
+
+				transform.position = Anything.point + HeightAsVector;
+				transform.LookAt(transform.position + Vector3.Cross(transform.right, Anything.normal));
 			}
 		}
 	}
@@ -87,9 +166,13 @@ public class CentipedeMovement : MonoBehaviour
 		}
 	}
 
-	Vector3 GetSurfaceNormal(out bool bDidHitSomething, out RaycastHit Hit)
+	/// <summary>Grabs the Normal of the terrain the Centipede is on.</summary>
+	/// <param name="bHasHitSomething">True if terrain was hit downwards from GroundHeightDistance to GroundDistanceCheck.</param>
+	/// <param name="Hit"><see cref="RaycastHit"/>.</param>
+	/// <returns>The Surface Normal, out bool true if something was hit, out RaycastHit information.</returns>
+	Vector3 GetSurfaceNormal(out bool bHasHitSomething, out RaycastHit Hit)
 	{
-		bDidHitSomething = Physics.Raycast(transform.position + (transform.forward * Lead), Vector3.down, out Hit, GroundDistanceCheck, 256);
+		bHasHitSomething = Physics.Raycast(transform.position + (transform.forward * Lead) + (Vector3.up * GroundHeightDistance), Vector3.down, out Hit, GroundDistanceCheck + GroundHeightDistance, 256);
 
 		// The Surface Normal of the terrain.
 		Debug.DrawLine(Hit.point, Hit.point + Hit.normal * 3, Color.red);
@@ -97,19 +180,25 @@ public class CentipedeMovement : MonoBehaviour
 		// The Centipede's up.
 		Debug.DrawLine(transform.position, transform.position + transform.up * 3, Color.blue);
 
-		return bDidHitSomething ? Hit.normal : Vector3.zero;
+		// Draw the line towards the ground.
+		Debug.DrawRay(transform.position, Vector3.down, Color.white);
+
+		// For some reason, Physics registers a hit, but sometimes there's no collider.
+		// Check for a collider.
+		bHasHitSomething &= Hit.collider;
+
+		return bHasHitSomething ? Hit.normal : Vector3.zero;
 	}
 
+#if UNITY_EDITOR
 	void OnDrawGizmos()
 	{
 		Gizmos.color = Color.green;
-		Gizmos.DrawSphere(transform.position + (transform.forward * Lead), .05f);
+		Gizmos.DrawSphere(transform.position + (transform.forward * Lead) + (Vector3.up * GroundHeightDistance), .05f);
 		Gizmos.color = Color.cyan;
 		Gizmos.DrawLine(transform.position + Vector3.down * HeightOffGround, transform.position);
-	}
 
-	void OnValidate()
-	{
-		transform.position = new Vector3(transform.position.x, HeightOffGround, transform.position.z);
+		Gizmos.DrawSphere(InDirection, .1f);
 	}
+#endif
 }

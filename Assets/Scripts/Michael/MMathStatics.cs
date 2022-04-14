@@ -13,10 +13,20 @@ public static class MMathStatics
 	public static Quaternion DirectionToQuat(Vector3 From, Vector3 To)
 	{
 		Vector3 Direction = (To - From).normalized;
+
+		return V2Q(Direction);
+	}
+
+	/// <summary>Converts a normalised vector to a Quaternion rotation.</summary>
+	/// <remarks>Roll (Z) cannot be calculated from a direction vector.</remarks>
+	/// <param name="V">Normalised direction vector.</param>
+	/// <returns>Quaternion rotation without roll.</returns>
+	public static Quaternion V2Q(Vector3 V)
+	{
 		Vector3 EulerRadians = new Vector3
 		{
-			x = Mathf.Asin(Direction.y),
-			y = Mathf.Atan2(Direction.x, Direction.z),
+			x = Mathf.Asin(V.y),
+			y = Mathf.Atan2(V.x, V.z),
 			z = 0
 		};
 

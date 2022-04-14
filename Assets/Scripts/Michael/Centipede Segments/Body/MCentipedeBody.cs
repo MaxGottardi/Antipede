@@ -6,8 +6,8 @@ public partial class MCentipedeBody : MonoBehaviour
 {
 	[Header("Construction References.")]
 
-	[SerializeField] Transform Head;
-	[SerializeField] Transform Tail;
+	public Transform Head;
+	public Transform Tail;
 	MSegment TailSegment;
 
 	[SerializeField] MSegment Segment;
