@@ -9,6 +9,7 @@ TagManager:
   - PlayerSegment
   - FarmerNode
   - Enemy
+  - Weapon Pickup
   layers:
   - Default
   - TransparentFX

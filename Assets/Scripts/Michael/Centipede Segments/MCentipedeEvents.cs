@@ -7,11 +7,11 @@ public class MCentipedeEvents : MonoBehaviour
 	/// <summary>The delegate to call when a Segment of the Centipede collides with something.</summary>
 	public Action<Collider> OnSegmentTriggerEnter;
 
-	MCentipedeBody body;
+	MCentipedeBody Body;
 
 	void Awake()
 	{
-		body = GetComponent<MCentipedeBody>();
+		Body = GetComponent<MCentipedeBody>();
 		OnSegmentTriggerEnter += OnTriggerEnter;
 	}
 
@@ -19,9 +19,21 @@ public class MCentipedeEvents : MonoBehaviour
 	{
 		// Handle Centipede Trigger Entries here...
 
-		if (other.CompareTag("Add Segment"))
+		if (other.CompareTag("Weapon Pickup"))
 		{
-			body.AddSegment();
+			MSegment Added = Body.AddSegment();
+			WeaponPickup PickedUp = other.GetComponentInParent<WeaponPickup>();
+
+			if (PickedUp != null)
+			{
+				Added.SetWeapon(PickedUp.Pickup);
+			}
+			else
+			{
+				Debug.LogError("Weapon Pickup has no WeaponPickup Component: " + other.name);
+			}
+
+			Destroy(other.gameObject);
 		}
 	}
 

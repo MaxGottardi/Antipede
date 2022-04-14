@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public partial class MCentipedeBody : MonoBehaviour
+public partial class MCentipedeBody : MonoBehaviour, IEnumerable<MSegment>
 {
 	/// <summary>Converts an unsigned integer to a signed integer.</summary>
 	/// <param name="U">Unsigned integer to convert.</param>
@@ -17,6 +19,21 @@ public partial class MCentipedeBody : MonoBehaviour
 	MSegment GetLast(byte Offset = 0)
 	{
 		return this[U2I(SegmentsInfo.End - Offset)];
+	}
+
+	public MSegment[] GetSegments()
+	{
+		return Segments.ToArray();
+	}
+
+	public IEnumerator<MSegment> GetEnumerator()
+	{
+		return ((IEnumerable<MSegment>)Segments).GetEnumerator();
+	}
+
+	IEnumerator IEnumerable.GetEnumerator()
+	{
+		return ((IEnumerable)Segments).GetEnumerator();
 	}
 
 	public MSegment this[int i] => Segments[i];

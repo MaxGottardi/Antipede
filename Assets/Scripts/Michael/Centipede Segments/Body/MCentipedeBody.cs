@@ -9,6 +9,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	public Transform Head;
 	public Transform Tail;
 	MSegment TailSegment;
+	[HideInInspector] public MCentipedeWeapons Weapons;
 
 	[SerializeField] MSegment Segment;
 	[SerializeField, Tooltip("The number of Segments now (during runtime), and to begin with.")] uint NumberOfSegments;
@@ -38,6 +39,8 @@ public partial class MCentipedeBody : MonoBehaviour
 		Construct();
 		maxSpeed = 750;
 		defaultSpeed = 150;
+
+		Weapons = GetComponent<MCentipedeWeapons>();
 	}
 
 	private void Update()
@@ -46,10 +49,13 @@ public partial class MCentipedeBody : MonoBehaviour
 		//		Debug.Log(U2I(SegmentsInfo.End));
 	}
 
-	public void AddSegment()
+	public MSegment AddSegment()
 	{
 		IncreaseSpeed(10);
 		float Z = NumberOfSegments * SegmentsInfo.SegmentScale.z + DeltaZ;
+
+		MSegment AddedSegment;
+
 		if (SegmentsInfo.End > 0)
 		{
 			Transform End = GetLast();
@@ -58,18 +64,24 @@ public partial class MCentipedeBody : MonoBehaviour
 
 			Quaternion Rot = MMathStatics.DirectionToQuat(((Transform)GetLast(1)).position, End.position);
 
-			AddSegment(Z, Rot);
+			AddedSegment = AddSegment(Z, Rot);
 		}
 		else
 		{
 			Tail.position += SegmentsInfo.SegmentScale.z * -Head.forward;
-			AddSegment(Z, Head.rotation);
+			AddedSegment = AddSegment(Z, Head.rotation);
 		}
 
 		++NumberOfSegments;
+
+		if (AddedSegment)
+			return AddedSegment;
+
+		Debug.LogError("No Segment was added!");
+		return null;
 	}
 
-	void AddSegment(float Z, Quaternion Rot)
+	MSegment AddSegment(float Z, Quaternion Rot)
 	{
 		// Inherit Centipede's rotation.
 		MSegment Seg = Instantiate(Segment, Vector3.zero, Rot);
@@ -102,6 +114,8 @@ public partial class MCentipedeBody : MonoBehaviour
 
 		Segments.Add(Seg);
 		SegmentsInfo.AddSegment();
+
+		return Seg;
 	}
 
 	public void RemoveSegment()

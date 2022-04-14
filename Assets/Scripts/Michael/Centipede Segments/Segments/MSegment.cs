@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MCentipedeSegmentEvents))]
@@ -9,6 +7,8 @@ public class MSegment : MonoBehaviour
 	Rigidbody rb;
 	public float FollowSpeed, MaxTurnDegreesPerFrame;
 	float Distance;
+
+	Weapon Weapon;
 
 	/// <summary>Initialises this Segment to follow ForwardNeighbour at FollowSpeed and turning at MaxTurnDegreesPerFrame.</summary>
 	/// <remarks>MaxTurnDegreesPerFrame will be multiplied to try and prevent disconnection. Increase as needed.</remarks>
@@ -25,11 +25,6 @@ public class MSegment : MonoBehaviour
 		this.Distance = Distance;
 	}
 
-	public void SetForwardNeighbour(Transform NewForwardNeighbour)
-	{
-		ForwardNeighbour = NewForwardNeighbour;
-	}
-
 	void FixedUpdate()
 	{
 		if (!MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance))
@@ -42,5 +37,26 @@ public class MSegment : MonoBehaviour
 		}
 	}
 
+	public void SetForwardNeighbour(Transform NewForwardNeighbour)
+	{
+		ForwardNeighbour = NewForwardNeighbour;
+	}
+
+	public void SetWeapon(Weapon Weapon)
+	{
+		Transform WeaponSocket = transform.Find("Weapon Attachment Socket");
+
+		if (!WeaponSocket)
+		{
+			Debug.Log("No Weapon Socket attached onto this Segment: " + name);
+			return;
+		}
+
+		Weapon AttachedWeapon = Instantiate(Weapon, WeaponSocket.position, Quaternion.identity);
+		this.Weapon = AttachedWeapon;
+		AttachedWeapon.transform.SetParent(WeaponSocket);
+	}
+
 	public static implicit operator Transform(MSegment s) => s.transform;
+	public static implicit operator Weapon(MSegment s) => s.Weapon;
 }

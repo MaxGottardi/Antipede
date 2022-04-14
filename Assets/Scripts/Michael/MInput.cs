@@ -10,10 +10,13 @@ public class MInput : MonoBehaviour
 
 	bool doneAttack = false;
 
+	Camera MainCamera;
+
 	void Start()
 	{
 		body = GetComponent<MCentipedeBody>();
 		movement = GetComponent<CentipedeMovement>();
+		MainCamera = Camera.main;
 	}
 
 	void Update()
@@ -49,6 +52,8 @@ public class MInput : MonoBehaviour
 		float Vertical = Input.GetAxisRaw("Vertical");
 
 		movement.Set(ref Horizontal, ref Vertical);
+
+		body.Weapons.ReceiveMouseCoords(MouseToWorldCoords());
 	}
 
 	void FixedUpdate()
@@ -75,5 +80,13 @@ public class MInput : MonoBehaviour
 	void wait()
 	{
 		doneAttack = false;
+	}
+
+	Vector3 MouseToWorldCoords()
+	{
+		Ray Ray = MainCamera.ScreenPointToRay(Input.mousePosition);
+		Physics.Raycast(Ray, out RaycastHit Hit, 5000);
+
+		return Hit.point;
 	}
 }
