@@ -50,7 +50,7 @@ public class CentipedeMovement : MonoBehaviour
 
 	void Update()
 	{
-		if (!bInterpolateHillClimb)
+		if (!bInterpolateHillClimb || bGlobalMovement)
 			return;
 
 		if (t <= 1f)
@@ -199,6 +199,12 @@ public class CentipedeMovement : MonoBehaviour
 		Gizmos.DrawLine(transform.position + Vector3.down * HeightOffGround, transform.position);
 
 		Gizmos.DrawSphere(InDirection, .1f);
+	}
+
+	private void OnValidate()
+	{
+		if (bInterpolateHillClimb && bGlobalMovement)
+			Debug.LogWarning("Interpolation and Global Movement are incompatible with each other.");
 	}
 #endif
 }
