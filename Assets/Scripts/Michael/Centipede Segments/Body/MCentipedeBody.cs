@@ -20,7 +20,7 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	MCentipedeEvents Listener;
 
-	List<MSegment> Segments;
+	[HideInInspector] public List<MSegment> Segments;
 	SegmentsInformation SegmentsInfo;
 
 	public float maxSpeed;
@@ -104,7 +104,7 @@ public partial class MCentipedeBody : MonoBehaviour
 		SegmentsInfo.AddSegment();
 	}
 
-	public void RemoveSegment()
+	public void RemoveSegment()//MSegment deadSegment)
 	{
 		DecreaseSpeed(10);
 		Debug.Log("Killing Player");
@@ -122,10 +122,19 @@ public partial class MCentipedeBody : MonoBehaviour
 			lastSegment = segment;
 		}*/
 
-		Destroy(lastSegment.gameObject);
 		//Segments.Remove(Segments[Segments.Count - 1]);
+
+		Destroy(lastSegment.gameObject);
+
+		//int nextIndex = 1;
+		//while (segmentIndex + nextIndex < Segments.Count - 1 && !Segments[segmentIndex + nextIndex]) //if multiple in a row get destroyed at same time, prevents it from bugging out
+		//	nextIndex++;
+		//if (segmentIndex + nextIndex < Segments.Count - 1)
+		//	Segments[segmentIndex + nextIndex].ForwardNeighbour = lastSegment.ForwardNeighbour;
+
 		Segments.RemoveAt(Segments.Count - 1);
 		--NumberOfSegments;
+		GameManager1.cameraController.camShake();
 
 		int lastSegIndex = Segments.Count - 1;
 		TailSegment.Initialise(Segments[lastSegIndex], FollowSpeed, MaxTurnDegreesPerFrame, SegmentsInfo.TailScale.z);

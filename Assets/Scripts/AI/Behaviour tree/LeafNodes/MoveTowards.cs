@@ -5,40 +5,50 @@ using UnityEngine;
 public class MoveTowards : Node
 {
     float previousDistToNode = 0;
-    public MoveTowards(GenericAnt blackboard)
+    bool doDistCheck;
+    public MoveTowards(GenericAnt blackboard, bool doDistCheck)
     {
         this.blackboard = blackboard;
+        this.doDistCheck = doDistCheck;
     }
 
     public override void init()
     {
         base.init();
 
-        previousDistToNode = NodeDistance();
+        if (blackboard.nextPosTransform != null)
+            previousDistToNode = NodeDistance();
     }
     public override NodeState evaluate()
     {
-        doInit();
-
         blackboard.transform.position += blackboard.transform.forward * Time.deltaTime * blackboard.Speed;
-        Vector3 lookPos = blackboard.nextPosTransform.transform.position;
-        lookPos.y = blackboard.transform.position.y;
+        blackboard.transform.position = new Vector3(blackboard.transform.position.x, 0.193f, blackboard.transform.position.z);
 
-        Quaternion targetRotation = Quaternion.LookRotation(lookPos);
-        blackboard.transform.rotation = targetRotation;//Quaternion.RotateTowards(blackboard.transform.rotation, targetRotation, Time.deltaTime * blackboard.rotSpeed); //need fast turning towards desired position instead here
+        if (blackboard.nextPosTransform == null)
+            return NodeState.Failure;
 
-        float currDist = NodeDistance();
-        if (currDist < 1) //here if say a large lag spike and goes over the node but as never within range will always fail otherwise
+        float currDist = 0; //current distance away from the segment
+        if (doDistCheck)
+            currDist = NodeDistance();
+
+        Vector3 lookPos = blackboard.nextPosTransform.position;
+        lookPos.y = 0.193f;//blackboard.transform.position.y;
+
+        Quaternion targetRotation = Quaternion.LookRotation(lookPos - blackboard.transform.position); //get a vector pointing from current position to the new one and convert it to a rotation
+        blackboard.transform.rotation = Quaternion.RotateTowards(blackboard.transform.rotation, targetRotation, Time.deltaTime * blackboard.rotSpeed);
+
+
+
+
+        if (!doDistCheck || currDist < 1) //here if say a large lag spike and goes over the node but as never within range will always fail otherwise
             return NodeState.Success;
         else
-        {
-            previousDistToNode = currDist;
             return NodeState.Running;
-        }
+
     }
 
     float NodeDistance()
     {
-        return Vector3.Distance(blackboard.transform.position, blackboard.nextPosTransform.transform.position);
+        return Vector3.Distance(blackboard.transform.position, blackboard.nextPosTransform.position);
     }
 }

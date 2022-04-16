@@ -9,6 +9,7 @@ public class MSegment : MonoBehaviour
 	Rigidbody rb;
 	public float FollowSpeed, MaxTurnDegreesPerFrame;
 	float Distance;
+	//public bool beingAttacked = false;
 
 	/// <summary>Initialises this Segment to follow ForwardNeighbour at FollowSpeed and turning at MaxTurnDegreesPerFrame.</summary>
 	/// <remarks>MaxTurnDegreesPerFrame will be multiplied to try and prevent disconnection. Increase as needed.</remarks>
@@ -16,6 +17,7 @@ public class MSegment : MonoBehaviour
 	/// <param name="FollowSpeed">The speed to follow ForwardNeighbour.</param>
 	/// <param name="MaxTurnDegreesPerFrame">How many DEGREES can this Segment turn towards ForwardNeighbour?</param>
 	/// <param name="Distance">How close should this Segment go until it stops following ForwardNeighbour?</param>
+	/////// <param name="beingAttacked">Has an  ant chosen to attack this segment or not</param>
 	public void Initialise(Transform ForwardNeighbour, float FollowSpeed, float MaxTurnDegreesPerFrame, float Distance)
 	{
 		this.ForwardNeighbour = ForwardNeighbour;
@@ -27,7 +29,7 @@ public class MSegment : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		if (!MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance))
+		if (ForwardNeighbour && !MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance))
 		{
 			MMathStatics.HomeTowards(rb, ForwardNeighbour, FollowSpeed, MaxTurnDegreesPerFrame);
 		}

@@ -15,11 +15,9 @@ public class Selector : Node
 
     public override NodeState evaluate() 
     {
-        doInit();
-
         while (currChild < children.Count)// && nodeState != NodeState.Running)
         {
-            switch (children[currChild].evaluate())
+            switch (children[currChild].execute())
             {
                 case NodeState.Running:
                     nodeState = NodeState.Running; //do not move onto the next node as the current one is still running
@@ -40,25 +38,16 @@ public class Selector : Node
         end();
         currChild = 0;
         return nodeState; //everything didn't execute as whole lot failed
+    }
 
-        ////count thing to store the current child which is running
-        //foreach (var node in children) //for each child node
-        //{
-        //    switch (node.evaluate())
-        //    {
-        //        case NodeState.Running:
-        //            nodeState = NodeState.Running;
-        //            return nodeState;
-        //        case NodeState.Success:
-        //            nodeState = NodeState.Success;
-        //            return nodeState;
-        //        case NodeState.Failure:
-        //            break; //just evaluate the next child node
-        //        default: break;
-        //    }
-        //}
-        ////as all children were either running or a success
-        //nodeState = NodeState.Failure; //as no child ran everything failed
-        //return nodeState;
+    public override void interupt() //force any all nodes to stop any execution
+    {
+        base.interupt();
+
+        currChild = 0;
+        foreach (Node childNode in children)
+        {
+            childNode.interupt();
+        }
     }
 }

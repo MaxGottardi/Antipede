@@ -12,7 +12,7 @@ public class MInput : MonoBehaviour
 	float Vertical;
 	Vector3 InDirection;
 
-	bool doneAttack = false;
+	bool doneAttack = false, attackRequested = false;
 
 	void Start()
 	{
@@ -27,11 +27,18 @@ public class MInput : MonoBehaviour
 	{
 		Vector3 rayPos = new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z);
 		Debug.DrawRay(rayPos, transform.forward * 2, Color.green);
-		if (Input.GetKeyDown(KeyCode.Space) && !doneAttack)
+		if (Input.GetKeyDown(KeyCode.Space) || attackRequested)
 		{
-			DoAttack();
-			doneAttack = true;
-			Invoke("wait", 0.5f);
+			if (!doneAttack)
+			{
+				DoAttack();
+				doneAttack = true;
+				attackRequested = false;
+				Invoke("wait", 0.5f);
+			}
+			else if(!attackRequested)
+				attackRequested = true;
+
 		}
 		if (Input.GetKeyDown(KeyCode.J))
 		{
@@ -70,8 +77,9 @@ public class MInput : MonoBehaviour
 			|| Physics.Raycast(rayPos, (transform.forward + transform.right / 3), out hit, dist, EnemyLayer)
 			|| Physics.Raycast(rayPos, (transform.forward - transform.right / 3), out hit, dist, EnemyLayer))
 		{
-			Destroy(hit.collider.gameObject);
-			body.AddSegment();
+			if(hit.collider.gameObject.GetComponent<GenericAnt>())
+				hit.collider.gameObject.GetComponent<GenericAnt>().ReduceHealth(100);
+			//body.AddSegment();
         }
 
 	}

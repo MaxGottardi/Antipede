@@ -2,35 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inverter : Node //invert the value recieved
+public class Succeeder : Node
 {
     protected Node child;
-
-    public Inverter(Node child)
+    public Succeeder(Node child)
     {
-        this.child = child;//when this class initialized set the node to be the one created upon initilization
+        this.child = child;//when this class initialized set the list to be the one created upon initilization
     }
 
     public override NodeState evaluate()
     {
+
         switch (child.execute())
         {
             case NodeState.Running:
                 nodeState = NodeState.Running;
-                break;
+                return nodeState;
             case NodeState.Success:
-                nodeState = NodeState.Failure;
                 child.end();
                 break;
             case NodeState.Failure:
-                nodeState = NodeState.Success;
                 child.end();
                 break;
-           // default: break;
         }
-        if (nodeState != NodeState.Running)
-            end();
-        //as all children were either running or a success
+        nodeState = NodeState.Success; //no matter node state return success to parent
+        end();
         return nodeState;
     }
 }
+

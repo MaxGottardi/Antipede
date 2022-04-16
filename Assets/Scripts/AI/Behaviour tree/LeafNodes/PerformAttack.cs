@@ -23,32 +23,30 @@ public class AttackWait : Node
     }
     public override NodeState evaluate()
     {
-        doInit();
-
         if (waitTime <= 0)
         {
             //apply the damages to the health here and junk
             waitTime = 0.5f;
-            foreach (GameObject warning in blackboard.shockBars)
-            {
-                Vector3 pos = warning.transform.localPosition;
-                pos.y = 1.566f;
-                warning.transform.localPosition = pos;
-            }
-            if (Vector3.Distance(blackboard.transform.position, blackboard.nextPosTransform.transform.position) < blackboard.attachDist)
-                GameObject.Find("Centipede").GetComponent<MCentipedeBody>().RemoveSegment();
+            //foreach (GameObject warning in blackboard.shockBars)
+            //{
+            //    Vector3 pos = warning.transform.localPosition;
+            //    pos.y = 1.566f;
+            //    warning.transform.localPosition = pos;
+            //}
+            //////if (Vector3.Distance(blackboard.transform.position, blackboard.nextPosTransform.transform.position) < blackboard.attachDist)
+              //////  GameObject.Find("Centipede").GetComponent<MCentipedeBody>().RemoveSegment();
             blackboard.stateMachine.changeState(blackboard.stateMachine.Movement);
             return NodeState.Success;
         }
         else
         {
             waitTime -= Time.deltaTime;
-            foreach (GameObject warning in blackboard.shockBars)
-            {
-                Vector3 pos = warning.transform.localPosition;
-                pos.y = 1.566f + (0.5f - waitTime) * 2;
-                warning.transform.localPosition = pos;
-            }
+            //foreach (GameObject warning in blackboard.shockBars)
+            //{
+            //    Vector3 pos = warning.transform.localPosition;
+            //    pos.y = 1.566f + (0.5f - waitTime) * 2;
+            //    warning.transform.localPosition = pos;
+            //}
 
             return NodeState.Running;
         }

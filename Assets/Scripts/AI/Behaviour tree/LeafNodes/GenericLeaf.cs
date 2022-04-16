@@ -18,7 +18,6 @@ public class GenericLeaf : Node
     }
     public override NodeState evaluate()
     {
-        doInit();
 
         return NodeState.Running; //can be whatever retrun is nessesary
     }

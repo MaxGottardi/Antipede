@@ -15,16 +15,23 @@ public abstract class Node
         isRunning = true;
     }
 
-    public void doInit()
+    public NodeState execute()
     {
         if (!isRunning)
             init();
+
+        return evaluate();
     }
 
     public abstract NodeState evaluate(); //determine the state the node is in upon completion, what the node does while it is running
 
-    public virtual void end()     //called whenever the node has finished running
+    public virtual void end()     //called whenever the node stops running
     {
         isRunning = false;
+    }
+
+    public virtual void interupt() //called when node is interupted and forced to stop execution
+    {
+        end();
     }
 }

@@ -13,11 +13,9 @@ public class Sequence : Node
 
     public override NodeState evaluate() 
     {
-        doInit();
-
         while (currChild < children.Count)// && nodeState != NodeState.Running)
         {
-            switch (children[currChild].evaluate())
+            switch (children[currChild].execute())
             {
                 case NodeState.Running:
                     nodeState = NodeState.Running;
@@ -39,5 +37,16 @@ public class Sequence : Node
         end();
         currChild = 0;
         return nodeState;
+    }
+
+    public override void interupt() //force any all nodes to stop any execution
+    {
+        base.interupt();
+
+        currChild = 0;
+        foreach (Node childNode in children)
+        {
+            childNode.interupt();
+        }
     }
 }

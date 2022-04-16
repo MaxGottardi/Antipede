@@ -1219,6 +1219,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FarmerAnt (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
 --- !u!1 &152708443
@@ -2670,6 +2674,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FarmerAnt (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
 --- !u!1001 &355617554
@@ -2822,6 +2830,10 @@ PrefabInstance:
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_Name
       value: FarmerAnt (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -3071,6 +3083,10 @@ PrefabInstance:
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_Name
       value: FarmerAnt (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -3416,6 +3432,10 @@ PrefabInstance:
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_Name
       value: FarmerAnt (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -3763,6 +3783,10 @@ PrefabInstance:
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_Name
       value: FarmerAnt (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -4713,6 +4737,10 @@ PrefabInstance:
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_Name
       value: FarmerAnt (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -6120,9 +6148,10 @@ MonoBehaviour:
   Head: {fileID: 1289053977}
   Tail: {fileID: 978763717}
   Segment: {fileID: 6840749143041071638, guid: 5f9badff00596854592f36f53d9e3d4a, type: 3}
-  NumberOfSegments: 4
+  NumberOfSegments: 20
   FollowSpeed: 250
   MaxTurnDegreesPerFrame: 7
+  Segments: []
   maxSpeed: 0
   defaultSpeed: 0
   DeathScreen: {fileID: 1190100289}
@@ -6150,7 +6179,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 785625933}
   m_LocalRotation: {x: 0, y: -0.5224984, z: 0, w: 0.8526403}
-  m_LocalPosition: {x: -7.326, y: 0, z: -0.416}
+  m_LocalPosition: {x: -7.326, y: 0.011, z: -0.416}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1289053977}
@@ -6329,6 +6358,10 @@ PrefabInstance:
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_Name
       value: FarmerAnt (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -8092,6 +8125,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FarmerAnt (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
 --- !u!1 &1053178598
@@ -9607,6 +9644,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FarmerAnt (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
 --- !u!1 &1174870168
@@ -10703,6 +10744,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FarmerAnt (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
 --- !u!1 &1313241399
@@ -11171,6 +11216,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FarmerAnt (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
 --- !u!1 &1382945599
@@ -11463,6 +11512,10 @@ PrefabInstance:
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_Name
       value: FarmerAnt (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -11907,7 +11960,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -22.8
+      value: -23.9
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11915,7 +11968,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -18.7
+      value: -21.8
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalRotation.w
@@ -11948,6 +12001,10 @@ PrefabInstance:
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_Name
       value: FarmerAnt (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -13568,6 +13625,8 @@ GameObject:
   - component: {fileID: 1800499858}
   - component: {fileID: 1800499857}
   - component: {fileID: 1800499860}
+  - component: {fileID: 1800499861}
+  - component: {fileID: 1800499862}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -13653,6 +13712,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerHead: {fileID: 1289053976}
+--- !u!114 &1800499861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800499856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a673be972ee63bc49a04aafaee4ea310, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &1800499862
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800499856}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 292146916c3c66c49bd18c2e11ba081b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1821372147
 GameObject:
   m_ObjectHideFlags: 0
@@ -15098,6 +15188,10 @@ PrefabInstance:
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_Name
       value: FarmerAnt
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
