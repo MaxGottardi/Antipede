@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BarrelEndSocket: {fileID: 6927093786163578037}
-  Projectile: {fileID: -6691305767071978364, guid: 1c3134078b4a73246a1939f8175f203f, type: 3}
+  ProjectileObject: {fileID: -6691305767071978364, guid: 1c3134078b4a73246a1939f8175f203f, type: 3}
   LaunchSpeed: 5000
 --- !u!1 &5645349026055870392
 GameObject:

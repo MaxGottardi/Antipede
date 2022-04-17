@@ -158,7 +158,7 @@ public class CentipedeMovement : MonoBehaviour
 
 		if (bHasInput && (bGlobalMovement && bHasInput || bInputIsRelative))
 		{
-			MMathStatics.HomeTowards(rb, InDirection, Body.FollowSpeed, Body.MaxTurnDegreesPerFrame);
+			MMathStatics.HomeTowards(rb, InDirection, Body.MovementSpeed, Body.TurnDegrees);
 		}
 		else
 		{

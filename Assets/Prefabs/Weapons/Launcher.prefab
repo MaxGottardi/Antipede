@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BarrelEndSocket: {fileID: 6927093786163578037}
-  Projectile: {fileID: 8236571481672462520, guid: d843395a913645b4ea0915dc1d3934d1, type: 3}
+  ProjectileObject: {fileID: 8236571481672462520, guid: d843395a913645b4ea0915dc1d3934d1, type: 3}
   LaunchHeight: 2.5
 --- !u!1 &5645349026055870392
 GameObject:

@@ -43,6 +43,18 @@ public static class MMathStatics
 		return SqrDistance <= ((ToleranceInUnits * ToleranceInUnits) + Vector3.kEpsilon);
 	}
 
+	/// <param name="Location">The location of the GameObject.</param>
+	/// <param name="Target">The location to test whether the GameObject has reached.</param>
+	/// <param name="ToleranceInUnits">The distance to consider 'reached'.</param>
+	/// <param name="SquareDistance">Outs the square distance that was calculated.</param>
+	/// <returns>True if the square distance between Location and Target &lt;= ToleranceInSquareUnits.</returns>
+	public static bool HasReached(Vector3 Location, Vector3 Target, float ToleranceInUnits, out float SquareDistance)
+	{
+		float SqrDistance = Mathf.Abs((Target - Location).sqrMagnitude);
+		SquareDistance = SqrDistance;
+		return SqrDistance <= ((ToleranceInUnits * ToleranceInUnits) + Vector3.kEpsilon);
+	}
+
 	/// <summary>Moves a Rigidbody towards Target moving at Velocity and turning at MaxDegreesDeltaPerFrame.</summary>
 	/// <param name="Rigidbody">The body to move.</param>
 	/// <param name="Target">The position to home towards.</param>

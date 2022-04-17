@@ -11,12 +11,12 @@ public partial class MCentipedeBody : MonoBehaviour
 		Listener = GetComponent<MCentipedeEvents>();
 		Head.GetComponent<MCentipedeSegmentEvents>().Initialise(Listener);
 		Tail.GetComponent<MCentipedeSegmentEvents>().Initialise(Listener);
+		SegmentsInfo = new SegmentsInformation(Head.localScale, Tail.localScale, ((Transform)Segment).localScale);
 	}
 
 	void Construct()
 	{
 		Segments = new List<MSegment>();
-		SegmentsInfo = new SegmentsInformation(Head.localScale, Tail.localScale, ((Transform)Segment).localScale);
 
 		// Set the positions of the segments.
 		DeltaZ = (SegmentsInfo.HeadScale.z + SegmentsInfo.SegmentScale.z) * .5f;

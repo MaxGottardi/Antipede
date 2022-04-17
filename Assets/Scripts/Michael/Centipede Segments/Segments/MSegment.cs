@@ -39,7 +39,10 @@ public class MSegment : MonoBehaviour
 
 	public void SetForwardNeighbour(Transform NewForwardNeighbour)
 	{
-		ForwardNeighbour = NewForwardNeighbour;
+		if (NewForwardNeighbour != null)
+		{
+			ForwardNeighbour = NewForwardNeighbour;
+		}
 	}
 
 	public void SetWeapon(Weapon Weapon)
@@ -48,7 +51,7 @@ public class MSegment : MonoBehaviour
 
 		if (!WeaponSocket)
 		{
-			Debug.Log("No Weapon Socket attached onto this Segment: " + name);
+			Debug.LogError("No Weapon Socket attached onto this Segment: " + name);
 			return;
 		}
 
