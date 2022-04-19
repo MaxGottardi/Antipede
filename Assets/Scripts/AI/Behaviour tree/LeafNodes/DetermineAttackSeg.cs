@@ -25,6 +25,37 @@ public class DetermineAttackSeg : Node
         if (currSegment != null)
         {
             blackboard.nextPosTransform = currSegment.gameObject.transform;
+            blackboard.pathToNextPos = GameManager1.generateGrid.APathfinding(blackboard.transform.position, blackboard.nextPosTransform.position);//generate the new path
+
+            blackboard.nextPosVector = blackboard.pathToNextPos[blackboard.pathToNextPos.Count - 1];
+            blackboard.pathToNextPos.RemoveAt(blackboard.pathToNextPos.Count - 1);
+            if (blackboard.pathToNextPos.Count <= 0) //as no new tiles to move towards can safely say move towards the final goal
+                blackboard.nextPosVector = blackboard.nextPosTransform.position;
+            //currSegment.beingAttacked = true;
+            return NodeState.Success; //assigned segment
+        }
+
+        return NodeState.Failure; //no segments found
+    }
+}
+
+public class PathToSegment : Node
+{
+    public PathToSegment(GenericAnt blackboard)
+    {
+        this.blackboard = blackboard;
+    }
+
+    public override NodeState evaluate()
+    {
+        if (blackboard.nextPosTransform != null)
+        {
+            blackboard.pathToNextPos = GameManager1.generateGrid.APathfinding(blackboard.transform.position, blackboard.nextPosTransform.position);//generate the new path
+
+            blackboard.nextPosVector = blackboard.pathToNextPos[blackboard.pathToNextPos.Count - 1]; //get the next node to move towards
+            blackboard.pathToNextPos.RemoveAt(blackboard.pathToNextPos.Count - 1);
+            if (blackboard.pathToNextPos.Count <= 0) //as no new tiles to move towards can safely say move towards the final goal
+                blackboard.nextPosVector = blackboard.nextPosTransform.position;
             //currSegment.beingAttacked = true;
             return NodeState.Success; //assigned segment
         }

@@ -96,6 +96,7 @@ public class InvestigateState : State
 
         DetermineAttackSeg determineAttackSeg = new DetermineAttackSeg(owner);
 
+        PathToSegment pathToSegment = new PathToSegment(owner);
         MoveTowards moveTowards = new MoveTowards(owner, false);
 
         CanCallBackup canCallBackup = new CanCallBackup(owner);
@@ -103,7 +104,7 @@ public class InvestigateState : State
         Sequence callBackupSeq = new Sequence(new List<Node> { canCallBackup, callBackup });
         Succeeder backupSucceeder = new Succeeder(callBackupSeq);
 
-        Sequence moveSequence = new Sequence(new List<Node> { moveTowards, backupSucceeder });
+        Sequence moveSequence = new Sequence(new List<Node> { pathToSegment, moveTowards, backupSucceeder });
         RepeatUntilFail repeatUntilFail = new RepeatUntilFail(moveSequence);
 
         topNode = new Sequence(new List<Node> { determineAttackSeg, repeatUntilFail });

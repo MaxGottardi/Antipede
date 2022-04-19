@@ -5,12 +5,14 @@ using UnityEngine;
 public class GenericAnt : MonoBehaviour
 {
     public Transform nextPosTransform;
+    public List<Vector3> pathToNextPos;
+    public Vector3 nextPosVector;
     public GameObject[] nodesList;
     public GameObject shockBar;
 
     public float Speed = 1.5f, rotSpeed = 5, attachDist = 0.5f, sightDist = 5.0f, maxBackupDist, backupCallDist = 7.5f;
     public Animator anim;
-    public LayerMask playerLayer, EnemyLayer;
+    public LayerMask playerLayer, EnemyLayer, groundLayer;
 
     [Range(0, 360)]
     public float largeViewAnlge, shortViewAngle;
@@ -20,8 +22,10 @@ public class GenericAnt : MonoBehaviour
     [HideInInspector] public float callBackupWait = 0;
     [HideInInspector] public StateMachine stateMachine;
     [HideInInspector] public bool canInvestigate = false, callingBackup = false;
+
     void Start()
     {
+        pathToNextPos = new List<Vector3>();
         nodesList = GameObject.FindGameObjectsWithTag("FarmerNode");
         stateMachine = new StateMachine(this);
         stateMachine.changeState(stateMachine.Movement);
@@ -70,12 +74,12 @@ public class GenericAnt : MonoBehaviour
         return (distAway < 1 && Vector3.Angle(transform.forward, dirToPoint) < shortViewAngle/ 2 || Vector3.Angle(transform.forward, dirToPoint) < largeViewAnlge / 2);
     }
 
-    void OnDrawGizmosSelected()
-    {
-        // Draw a yellow sphere at the transform's position
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(transform.position, 7.5f);
-    }
+    ////void OnDrawGizmosSelected()
+    ////{
+    ////    // Draw a yellow sphere at the transform's position
+    ////    Gizmos.color = Color.yellow;
+    ////    Gizmos.DrawSphere(transform.position, 7.5f);
+    ////}
 
 
     /// <summary>
