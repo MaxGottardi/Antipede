@@ -60,7 +60,7 @@ public class CentipedeMovement : MonoBehaviour
 			float Interp = Mathf.Lerp(FromY, TargetY, t);
 			InDirection.y = Interp + transform.position.y;
 
-			// Debug.Log(" F:" + FromY.ToString("F2") + " T: " + TargetY.ToString("F2") + "\t\tInterp: " + Interp.ToString("F2") + " Time:" + t.ToString("F2"));
+			// Debug.Log("F: " + FromY.ToString("F2") + " T: " + TargetY.ToString("F2") + "\t\tInterp: " + Interp.ToString("F2") + " Time:" + t.ToString("F2"));
 			// Debug.DrawLine(transform.position, InDirection, Color.white);
 		}
 	}
@@ -89,12 +89,6 @@ public class CentipedeMovement : MonoBehaviour
 
 			if (bGlobalMovement)
 			{
-				//Vector3 ForwardPitch = transform.forward;
-				//ForwardPitch.x = 0;
-				//ForwardPitch.z = 0;
-				//Vector3 GlobalForwardRelativePitch = Vector3.forward + ForwardPitch;
-				//InDirection = GlobalForwardRelativePitch * Vertical + Vector3.right * Horizontal;
-
 				NormalForward = Vector3.Cross(Vector3.right, SurfaceNormal);
 				NormalRight = Vector3.Cross(SurfaceNormal, Vector3.forward);
 			}
@@ -102,13 +96,6 @@ public class CentipedeMovement : MonoBehaviour
 			{
 				NormalForward = Vector3.Cross(transform.right, SurfaceNormal);
 				NormalRight = Vector3.Cross(SurfaceNormal, transform.forward);
-
-				// Problem when pressing 'S' or 'DOWN' (going directly backwards) when using Relative Movement (NOT Global Movement)
-				// where the centipede doesn't want to rotate behind.
-				// With Global Movement, this would just turn with a radius and continue.
-				// With Relative Movement, this would vigorously shake the Centipede, but not turn.
-				//
-				// For now, you cannot move directly backwards when moving Relatively.
 			}
 
 			InDirection = NormalForward * Vertical + NormalRight * Horizontal;

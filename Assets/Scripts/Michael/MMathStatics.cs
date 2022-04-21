@@ -23,6 +23,11 @@ public static class MMathStatics
 	/// <returns>Quaternion rotation without roll.</returns>
 	public static Quaternion V2Q(Vector3 V)
 	{
+		return Quaternion.Euler(V2PYR(V));
+	}
+
+	public static Vector3 V2PYR(Vector3 V)
+	{
 		Vector3 EulerRadians = new Vector3
 		{
 			x = Mathf.Asin(V.y),
@@ -30,7 +35,7 @@ public static class MMathStatics
 			z = 0
 		};
 
-		return Quaternion.Euler(EulerRadians * Mathf.Rad2Deg);
+		return EulerRadians * Mathf.Rad2Deg;
 	}
 
 	/// <param name="Location">The location of the GameObject.</param>
