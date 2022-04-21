@@ -26,10 +26,11 @@ public class GenericAnt : MonoBehaviour
     void Start()
     {
         pathToNextPos = new List<Vector3>();
+        anim = transform.GetChild(0).gameObject.GetComponent<Animator>();
+        anim.SetTrigger("Walk");
         nodesList = GameObject.FindGameObjectsWithTag("FarmerNode");
         stateMachine = new StateMachine(this);
         stateMachine.changeState(stateMachine.Movement);
-        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame

@@ -15,7 +15,7 @@ public class CallBackup : Node
         base.init();
 
         runTime = 2;
-        blackboard.GetComponent<Animator>().SetTrigger("backupCall");
+        blackboard.anim.SetTrigger("Backup");
         blackboard.callingBackup = true;
         //start call for backup
     }

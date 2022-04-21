@@ -115,6 +115,7 @@ public class InvestigateState : State
         lostPlayerTime = 3.0f;
 
         owner.callingBackup = false;
+        //owner.anim.SetTrigger("Walk");
     }
     public void execute()
     {
@@ -151,7 +152,7 @@ public class InvestigateState : State
 /// </summary>
 public class AttackState : State
 {
-    float attackTime = 1.0f;
+    float attackTime = 2;
     GenericAnt owner;
     public AttackState(GenericAnt owner) //also initilize any behaviour tree used on the state as well
     {
@@ -168,8 +169,8 @@ public class AttackState : State
     }
     public void enter()
     {
-        attackTime = 1.0f;
-        
+        attackTime = 2;
+        owner.anim.SetTrigger("Attack");
         //initiate the attack animation and junk
     }
 
@@ -186,7 +187,7 @@ public class AttackState : State
 
     public void exit()
     {
-        attackTime = 1.0f;
+        attackTime = 2;
         //deactivate all showing warning symbols
         //throw new System.NotImplementedException();
     }
@@ -194,7 +195,7 @@ public class AttackState : State
 
 public class DamageState : State
 {
-    float damageTime = 1.0f;
+    float damageTime = 1.7f;
     GenericAnt owner;
     public DamageState(GenericAnt owner) //also initilize any behaviour tree used on the state as well
     {
@@ -211,8 +212,10 @@ public class DamageState : State
     }
     public void enter()
     {
-        damageTime = 1.0f;
-        owner.transform.rotation = Quaternion.Euler(90, 67, 180);
+        damageTime = 1.7f;
+        owner.anim.SetTrigger("Dazed");
+        
+        //owner.transform.rotation = Quaternion.Euler(90, 67, 180);
         //initiate the attack animation and junk
     }
 
@@ -227,14 +230,14 @@ public class DamageState : State
 
     public void exit()
     {
-        damageTime = 1.0f;
-        owner.transform.rotation = Quaternion.Euler(0, 180, 0);
+        damageTime = 1.7f;
+        //owner.transform.rotation = Quaternion.Euler(0, 180, 0);
     }
 }
 
 public class DeadState : State
 {
-    float deadTime = 1.0f;
+    float deadTime = 3;
     GenericAnt owner;
     public DeadState(GenericAnt owner) //also initilize any behaviour tree used on the state as well
     {
@@ -251,9 +254,10 @@ public class DeadState : State
     }
     public void enter()
     {
-        deadTime = 1.0f;
+        deadTime = 3;
 
-        owner.transform.rotation = Quaternion.Euler(0, 0, 180);
+        //owner.transform.rotation = Quaternion.Euler(0, 0, 180);
+        owner.anim.SetTrigger("Dead");
         //initiate the attack animation and junk
     }
 
@@ -268,6 +272,6 @@ public class DeadState : State
 
     public void exit()
     {
-        deadTime = 1.0f;
+        deadTime = 3;
     }
 }

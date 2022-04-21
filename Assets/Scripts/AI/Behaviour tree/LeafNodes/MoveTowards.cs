@@ -21,6 +21,9 @@ public class MoveTowards : Node
     }
     public override NodeState evaluate()
     {
+        if (!blackboard.anim.GetCurrentAnimatorStateInfo(0).IsTag("isWalk"))
+            blackboard.anim.SetTrigger("Walk");
+
         blackboard.transform.position += blackboard.transform.forward * Time.deltaTime * blackboard.Speed;
         // blackboard.transform.position = new Vector3(blackboard.transform.position.x, 0.193f, blackboard.transform.position.z);
 
@@ -48,6 +51,7 @@ public class MoveTowards : Node
 
         Quaternion antRotation = Quaternion.RotateTowards(blackboard.transform.rotation, targetRotation, Time.deltaTime * blackboard.rotSpeed);
 
+
 ////        Debug.Log(targetRotation + "the ants rotation");
         //blackboard.transform.localRotation = finalRote;//Quaternion.Euler(SetGround().x, antRotation.y, SetGround().z);
 
@@ -56,7 +60,8 @@ public class MoveTowards : Node
         //targetRotation.eulerAngles = ground.eulerAngles;
         //targetRotation.z = ground.z;
         //        targetRotation.eulerAngles = new Vector3(ground.eulerAngles.x, targetRotation.eulerAngles.y, ground.eulerAngles.z);
-        blackboard.transform.GetChild(0).rotation = Quaternion.LookRotation(Vector3.Cross(blackboard.transform.GetChild(0).right, ground));
+        Quaternion currRote = Quaternion.LookRotation(Vector3.Cross(blackboard.transform.GetChild(0).right, ground));
+//////////////////////////        blackboard.transform.GetChild(0).rotation = currRote;
         //        blackboard.transform.GetChild(0).right = NormalRight;
         // blackboard.transform.GetChild(0).forward = blackboard.transform.forward;
 
