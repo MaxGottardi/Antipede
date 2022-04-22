@@ -11,6 +11,7 @@ public class Projectile : MonoBehaviour
 	public virtual void Initialise()
 	{
 		rb = GetComponent<Rigidbody>();
+		Destroy(gameObject, 10f);
 	}
 
 	/// <summary>Launches this projectile at LaunchVelocity.</summary>

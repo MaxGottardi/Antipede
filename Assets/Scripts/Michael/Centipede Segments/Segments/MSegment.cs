@@ -8,6 +8,8 @@ public class MSegment : MonoBehaviour
 	public float FollowSpeed, MaxTurnDegreesPerFrame;
 	float Distance;
 
+	public bool bIgnoreFromWeapons;
+	Transform WeaponSocket;
 	Weapon Weapon;
 
 	/// <summary>Initialises this Segment to follow ForwardNeighbour at FollowSpeed and turning at MaxTurnDegreesPerFrame.</summary>
@@ -23,6 +25,8 @@ public class MSegment : MonoBehaviour
 		this.FollowSpeed = FollowSpeed;
 		this.MaxTurnDegreesPerFrame = MaxTurnDegreesPerFrame * 20;
 		this.Distance = Distance;
+
+		WeaponSocket = transform.Find("Weapon Attachment Socket");
 	}
 
 	void FixedUpdate()
@@ -47,7 +51,8 @@ public class MSegment : MonoBehaviour
 
 	public void SetWeapon(Weapon Weapon)
 	{
-		Transform WeaponSocket = transform.Find("Weapon Attachment Socket");
+		if (bIgnoreFromWeapons)
+			return;
 
 		if (!WeaponSocket)
 		{
@@ -58,6 +63,12 @@ public class MSegment : MonoBehaviour
 		Weapon AttachedWeapon = Instantiate(Weapon, WeaponSocket.position, Quaternion.identity);
 		this.Weapon = AttachedWeapon;
 		AttachedWeapon.transform.SetParent(WeaponSocket);
+	}
+
+	public bool TryGetWeaponSocket(out Transform Socket)
+	{
+		Socket = WeaponSocket;
+		return Socket;
 	}
 
 	public static implicit operator Transform(MSegment s) => s.transform;

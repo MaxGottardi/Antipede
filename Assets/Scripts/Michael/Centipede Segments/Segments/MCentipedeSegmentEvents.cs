@@ -12,11 +12,4 @@ public class MCentipedeSegmentEvents : MonoBehaviour
 	{
 		this.Listener = Listener;
 	}
-
-	void OnTriggerEnter(Collider other)
-	{
-		// Call the event when this Segment enters a Collider.
-		Listener.OnSegmentTriggerEnter?.Invoke(other);
-	}
-
 }

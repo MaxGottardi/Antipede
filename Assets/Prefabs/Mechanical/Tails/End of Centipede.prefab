@@ -370,6 +370,7 @@ MonoBehaviour:
   ForwardNeighbour: {fileID: 7567231832085882524, guid: 92bd0dc9587b4ca4c862c9f6a59a2d32, type: 3}
   FollowSpeed: 0
   MaxTurnDegreesPerFrame: 0
+  bIgnoreFromWeapons: 1
 --- !u!1 &3348754827741846706
 GameObject:
   m_ObjectHideFlags: 0

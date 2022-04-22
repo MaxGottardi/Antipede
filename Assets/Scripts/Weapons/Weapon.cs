@@ -21,4 +21,6 @@ public abstract class Weapon : MonoBehaviour
 	/// <summary>Spawn a <see cref="Projectile"/> to fire.</summary>
 	/// <returns>The newly spawned <see cref="Projectile"/> object for <see cref="Projectile.Launch(Vector3)"/>.</returns>
 	protected Projectile InstantiateProjectile() { return Instantiate(ProjectileObject, BarrelEndSocket.position, transform.rotation); }
+
+	public override int GetHashCode() => name.GetHashCode();
 }
