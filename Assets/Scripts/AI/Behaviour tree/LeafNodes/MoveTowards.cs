@@ -41,18 +41,19 @@ public class MoveTowards : Node
 
         Quaternion targetRotation = Quaternion.LookRotation((lookDir), Vector3.up); //get a vector pointing from current position to the new one and convert it to a rotation
 
-        Vector3 ground = SetGround();
-
-        Vector3 NormalForward = Vector3.Cross(blackboard.transform.GetChild(0).forward, ground);
-        Vector3 NormalRight = Vector3.Cross(blackboard.transform.right, ground);
+ 
 
 
         //Debug.DrawRay(blackboard.transform.position, 25 * Vector3.Cross(SetGround(), (lookPos - blackboard.transform.position)).normalized, Color.blue);
 
         Quaternion antRotation = Quaternion.RotateTowards(blackboard.transform.rotation, targetRotation, Time.deltaTime * blackboard.rotSpeed);
 
+        Vector3 ground = SetGround();
 
-////        Debug.Log(targetRotation + "the ants rotation");
+        Vector3 NormalForward = Vector3.Cross(blackboard.transform.GetChild(0).forward, ground);
+        Vector3 NormalRight = Vector3.Cross(blackboard.transform.right, ground);
+
+        ////        Debug.Log(targetRotation + "the ants rotation");
         //blackboard.transform.localRotation = finalRote;//Quaternion.Euler(SetGround().x, antRotation.y, SetGround().z);
 
         blackboard.transform.rotation = antRotation;
@@ -60,8 +61,10 @@ public class MoveTowards : Node
         //targetRotation.eulerAngles = ground.eulerAngles;
         //targetRotation.z = ground.z;
         //        targetRotation.eulerAngles = new Vector3(ground.eulerAngles.x, targetRotation.eulerAngles.y, ground.eulerAngles.z);
-        Quaternion currRote = Quaternion.LookRotation(Vector3.Cross(blackboard.transform.GetChild(0).right, ground));
+////        Quaternion currRote = Quaternion.LookRotation(Vector3.Cross(blackboard.transform.GetChild(0).forward, -ground));
+        blackboard.transform.GetChild(0).forward = -ground;
 //////////////////////////        blackboard.transform.GetChild(0).rotation = currRote;
+///
         //        blackboard.transform.GetChild(0).right = NormalRight;
         // blackboard.transform.GetChild(0).forward = blackboard.transform.forward;
 
@@ -110,18 +113,35 @@ public class MoveTowards : Node
     {
         RaycastHit raycastHit, raycastHit1;
         bool didHit = Physics.Raycast(blackboard.transform.position, -Vector3.up, out raycastHit, 15, blackboard.groundLayer);
-        Physics.Raycast(blackboard.transform.position + blackboard.transform.forward * -0.5f, -Vector3.up, out raycastHit1, 15, blackboard.groundLayer);
-
-        Vector3 groundPoint = blackboard.transform.position;
-        groundPoint.y = raycastHit.point.y + 0.15f;
-        blackboard.transform.position = groundPoint;
-
-        Vector3 upos = Vector3.Cross(blackboard.transform.GetChild(0).right, (raycastHit1.point - raycastHit.point).normalized);
-        Debug.DrawRay(blackboard.transform.position + blackboard.transform.forward * -0.5f, 5 * (upos), Color.green);
+        Physics.Raycast(blackboard.transform.position + blackboard.transform.forward * -2f + blackboard.transform.up*2f, -Vector3.up, out raycastHit1, 15, blackboard.groundLayer);
 
         if (didHit)
-            return raycastHit.normal;
+        {
+            Vector3 groundPoint = blackboard.transform.position;
+            groundPoint.y = raycastHit.point.y + 0.15f;
+            // Debug.Log(groundPoint.y +"y ground");
+            blackboard.transform.position = groundPoint;
+
+            Vector3 childGroundPoint = blackboard.transform.GetChild(0).position;
+            childGroundPoint.y = raycastHit.point.y + 0.45f;
+            blackboard.transform.GetChild(0).position = childGroundPoint;
+        }
+
+        Vector3 upSmooth = Vector3.Cross(blackboard.transform.forward, -(raycastHit.point - raycastHit1.point).normalized);
+
+
+        Vector3 upos = Vector3.Cross(blackboard.transform.forward, raycastHit.normal);
+        Debug.DrawRay(blackboard.transform.position + blackboard.transform.forward * -0.5f, 5 * (upos), Color.red);
+        Debug.DrawRay(blackboard.transform.position + blackboard.transform.forward * -0.5f, 5 * (blackboard.transform.forward), Color.green);
+        Debug.DrawRay(blackboard.transform.position, 5 * (raycastHit.normal), Color.blue);
+        Debug.DrawRay(blackboard.transform.position + blackboard.transform.forward * -2f, 5 * (raycastHit1.normal), Color.blue);
+
+        if (didHit)
+            return upos;
         else
-            return blackboard.transform.GetChild(0).up;
+        {
+            Debug.Log("Nothing Hit to return");
+            return Vector3.up;
+        }
     }
 }

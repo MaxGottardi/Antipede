@@ -75,8 +75,8 @@ public class GenerateGrid : MonoBehaviour
         int gridY = Mathf.Clamp(Mathf.RoundToInt(startPosition.y / tileSize), 0, height - 1);
         int gridZ = Mathf.Clamp(Mathf.RoundToInt(startPosition.z / tileSize), 0, depth - 1);
 
-        Debug.Log(gridX + " " + gridY + " " + gridZ);
-        if (grid[targetGridX, targetGridY, targetGridZ] != null)
+//        Debug.Log(gridX + " " + gridY + " " + gridZ);
+        if (grid[targetGridX, targetGridY, targetGridZ] != null && grid[gridX, gridY, gridZ] != null)
         {
             grid[gridX, gridY, gridZ].gCost = 0;
             grid[gridX, gridY, gridZ].hCost = DistToTarget(new Vector3(gridX, gridY, gridZ), new Vector3(targetGridX, targetGridY, targetGridZ));
@@ -167,7 +167,6 @@ public class GenerateGrid : MonoBehaviour
             current = current.parent;
             //Debug.Log("generating the Path!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
-        Debug.Log(worldPoints.Count);
         return worldPoints;
     }
 
