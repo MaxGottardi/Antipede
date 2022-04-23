@@ -25,8 +25,6 @@ public partial class MCentipedeBody : MonoBehaviour
 	[Min(Vector3.kEpsilon)] public float MaxTurnDegreesPerFrame = 7f;
 	[SerializeField, Tooltip("Any additional Segments that are not spawned in Constuct.")] List<MSegment> CustomSegments;
 
-	MCentipedeEvents Listener;
-
 	List<MSegment> Segments;
 	SegmentsInformation SegmentsInfo;
 
@@ -72,7 +70,11 @@ public partial class MCentipedeBody : MonoBehaviour
 		{
 			Transform End = GetLast();
 
-			Tail.position += SegmentsInfo.SegmentScale.z * -End.forward;
+			Vector3 Displacement = SegmentsInfo.SegmentScale.z * -End.forward;
+			Tail.position += Displacement;
+
+			foreach (MSegment C in CustomSegments)
+				C.transform.position += Displacement;
 
 			Quaternion Rot = MMathStatics.DirectionToQuat(((Transform)GetLast(1)).position, End.position);
 
@@ -80,7 +82,12 @@ public partial class MCentipedeBody : MonoBehaviour
 		}
 		else
 		{
-			Tail.position += SegmentsInfo.SegmentScale.z * -Head.forward;
+			Vector3 Displacement = SegmentsInfo.SegmentScale.z * -Head.forward;
+			Tail.position += Displacement;
+
+			foreach (MSegment C in CustomSegments)
+				C.transform.position += Displacement;
+
 			AddedSegment = AddSegment(Z, Head.rotation);
 		}
 
@@ -156,7 +163,11 @@ public partial class MCentipedeBody : MonoBehaviour
 
 		// Ensure the Tail is properly 'attached' to the end Segment.
 		Transform newLast = GetLast();
-		Tail.position = newLast.position - newLast.forward * SegmentsInfo.SegmentScale.z;
+		Vector3 NewPos = newLast.position - newLast.forward * SegmentsInfo.SegmentScale.z;
+		Tail.position = NewPos;
+
+		for (byte i = 0; i < CustomSegments.Count; ++i)
+			CustomSegments[i].transform.position = NewPos - (i * FollowDistance * newLast.forward);
 	}
 
 	public void IncreaseSpeed(float value)
