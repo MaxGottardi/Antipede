@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!65 &7480441774048682860
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52857515320077649}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.025214, y: 1.3652488, z: 2.4579718}
+  m_Center: {x: 0.067489855, y: 0.023820568, z: 0.003899868}
 --- !u!1 &532047534399642826
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,7 +269,6 @@ GameObject:
   m_Component:
   - component: {fileID: 533321706161545736}
   - component: {fileID: 3057205204757756230}
-  - component: {fileID: 6318701099483164223}
   - component: {fileID: 6362791239714043883}
   - component: {fileID: 283944602528465725}
   m_Layer: 7
@@ -290,19 +302,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3326833427437991793}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &6318701099483164223
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3326833427437991793}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.502036, y: 4.0685654, z: 11.061568}
-  m_Center: {x: 0.039527416, y: 1.5456581, z: -4.8307843}
 --- !u!114 &6362791239714043883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,12 +338,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   shockBar: {fileID: 8963946682367268185}
-  Speed: 4
-  rotSpeed: 300
-  attachDist: 1
-  sightDist: 6
-  maxBackupDist: 7.5
-  backupCallDist: 5
   anim: {fileID: 0}
   playerLayer:
     serializedVersion: 2
@@ -355,12 +348,18 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
-  largeViewAnlge: 60
-  shortViewAngle: 180
   health: 200
   callBackupWait: 0
   canInvestigate: 0
   callingBackup: 0
+  Speed: 5
+  rotSpeed: 500
+  sightDist: 6
+  largeViewAnlge: 60
+  shortViewAngle: 180
+  maxBackupDist: 7.5
+  backupCallDist: 5
+  attachDist: 1
 --- !u!95 &283944602528465725
 Animator:
   serializedVersion: 3
@@ -371,7 +370,7 @@ Animator:
   m_GameObject: {fileID: 3326833427437991793}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 39b9a6fd08739ca41bae1eb4308421e8, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1093,8 +1092,16 @@ PrefabInstance:
       value: FarmerAntPrefab
       objectReference: {fileID: 0}
     - target: {fileID: 416448974893499724, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 416448974893499724, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 416448974893499724, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 807876709678018379, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1581,6 +1588,11 @@ PrefabInstance:
 --- !u!4 &860215075857545195 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1048307982316216310, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+  m_PrefabInstance: {fileID: 395278293773232157}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &52857515320077649 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 416448974893499724, guid: d03430b02136fae41a430a78a3a68665, type: 3}
   m_PrefabInstance: {fileID: 395278293773232157}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4009474229924220310

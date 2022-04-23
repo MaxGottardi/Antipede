@@ -576,6 +576,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2463319860057679751
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6086566015220516842}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.4094462, y: 1.3652488, z: 3.2589526}
+  m_Center: {x: -0.12462615, y: 0.023820572, z: 0.026619432}
 --- !u!1 &7183227270090366881
 GameObject:
   m_ObjectHideFlags: 0
@@ -953,7 +966,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6028815149487376563}
   - component: {fileID: 9124651029160023037}
-  - component: {fileID: 251237340383773828}
   - component: {fileID: 901061600330161488}
   - component: {fileID: 6286141309605030278}
   m_Layer: 7
@@ -987,19 +999,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8856138776421195210}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &251237340383773828
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8856138776421195210}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.502036, y: 4.0685654, z: 11.061568}
-  m_Center: {x: 0.039527416, y: 1.5456581, z: -4.8307843}
 --- !u!114 &901061600330161488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1036,12 +1035,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   shockBar: {fileID: 2930238242701262818}
-  Speed: 4
-  rotSpeed: 300
-  attachDist: 1
-  sightDist: 6
-  maxBackupDist: 7.5
-  backupCallDist: 5
   anim: {fileID: 0}
   playerLayer:
     serializedVersion: 2
@@ -1052,12 +1045,18 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
-  largeViewAnlge: 60
-  shortViewAngle: 180
   health: 200
   callBackupWait: 0
   canInvestigate: 0
   callingBackup: 0
+  Speed: 2
+  rotSpeed: 200
+  sightDist: 6
+  largeViewAnlge: 60
+  shortViewAngle: 180
+  maxBackupDist: 7.5
+  backupCallDist: 5
+  attachDist: 1
 --- !u!95 &6286141309605030278
 Animator:
   serializedVersion: 3
@@ -1068,7 +1067,7 @@ Animator:
   m_GameObject: {fileID: 8856138776421195210}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 39b9a6fd08739ca41bae1eb4308421e8, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1093,8 +1092,16 @@ PrefabInstance:
       value: FarmerAntPrefab
       objectReference: {fileID: 0}
     - target: {fileID: 416448974893499724, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 416448974893499724, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 416448974893499724, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 807876709678018379, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1589,6 +1596,11 @@ PrefabInstance:
 --- !u!4 &6862363395788594512 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1048307982316216310, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+  m_PrefabInstance: {fileID: 5886298893699072678}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6086566015220516842 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 416448974893499724, guid: d03430b02136fae41a430a78a3a68665, type: 3}
   m_PrefabInstance: {fileID: 5886298893699072678}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7163144231706732333

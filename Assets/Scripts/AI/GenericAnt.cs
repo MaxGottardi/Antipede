@@ -23,7 +23,8 @@ public class GenericAnt : MonoBehaviour
     [HideInInspector] public bool canInvestigate = false, callingBackup = false;
 
     [Header("Movement Settings")]
-    public float Speed = 1.5f, rotSpeed = 5;
+    public float Speed = 1.5f;
+    public float rotSpeed = 5;
 
     [Header("Sight Checks")] //the view angle checks
     public float sightDist = 5.0f;
@@ -31,7 +32,8 @@ public class GenericAnt : MonoBehaviour
     public float largeViewAnlge, shortViewAngle;
 
     [Header("Backup Calling")]
-    public float maxBackupDist, backupCallDist = 7.5f;
+    public float maxBackupDist;
+    public float backupCallDist = 7.5f;
 
     [Header("Attack Settings")]
     public float attachDist = 0.5f;

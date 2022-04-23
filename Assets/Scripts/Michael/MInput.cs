@@ -77,8 +77,8 @@ public class MInput : MonoBehaviour
 			|| Physics.Raycast(rayPos, (transform.forward + transform.right / 3), out hit, dist, EnemyLayer)
 			|| Physics.Raycast(rayPos, (transform.forward - transform.right / 3), out hit, dist, EnemyLayer))
 		{
-			if(hit.collider.gameObject.GetComponent<GenericAnt>())
-				hit.collider.gameObject.GetComponent<GenericAnt>().ReduceHealth(100);
+			if(hit.collider.gameObject.transform.parent.GetComponent<GenericAnt>())
+				hit.collider.gameObject.transform.parent.GetComponent<GenericAnt>().ReduceHealth(100);
 			//body.AddSegment();
         }
 
