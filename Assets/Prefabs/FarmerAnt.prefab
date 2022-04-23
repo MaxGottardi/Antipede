@@ -888,6 +888,8 @@ MonoBehaviour:
   Speed: 4
   rotSpeed: 300
   FollowingNodes: FarmerNode
+  groundOffset: 0.1
+  backGroundCheckOffset: 1.5
   sightDist: 6
   largeViewAnlge: 60
   shortViewAngle: 180
@@ -1130,7 +1132,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1048307982316216310, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.46
+      value: 1.29
       objectReference: {fileID: 0}
     - target: {fileID: 1048307982316216310, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_LocalPosition.z

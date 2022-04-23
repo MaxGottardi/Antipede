@@ -26,6 +26,10 @@ public class GenericAnt : MonoBehaviour
     public float Speed = 1.5f;
     public float rotSpeed = 5;
     public string FollowingNodes;
+    //the offset of the y axis the ant recieves to ensure it will always appear on the ground
+    public float groundOffset;
+    //the offset for the raycast checking the ground at the back of the ant
+    public float backGroundCheckOffset;
 
     [Header("Sight Checks")] //the view angle checks
     public float sightDist = 5.0f;

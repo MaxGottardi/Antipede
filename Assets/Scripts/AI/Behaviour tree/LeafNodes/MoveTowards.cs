@@ -21,79 +21,23 @@ public class MoveTowards : Node
     }
     public override NodeState evaluate()
     {
-        if (!blackboard.anim.GetCurrentAnimatorStateInfo(0).IsTag("isWalk"))
+        if (blackboard.nextPosTransform == null)
+            return NodeState.Failure;
+
+        if (!blackboard.anim.GetCurrentAnimatorStateInfo(0).IsTag("isWalk")) //if not yet walking, initiate the walking animation
             blackboard.anim.SetTrigger("Walk");
 
         blackboard.transform.position += blackboard.transform.forward * Time.deltaTime * blackboard.Speed;
-        // blackboard.transform.position = new Vector3(blackboard.transform.position.x, 0.193f, blackboard.transform.position.z);
+        blackboard.transform.rotation = SetRotation();
 
-        if (blackboard.nextPosTransform == null)
-        {
-            Debug.Log("Failed!!!!!!!!!");
-            return NodeState.Failure;
-        }
         float currDist = 0; //current distance away from the segment
         if (doDistCheck)
             currDist = NodeDistance();
 
-        Vector3 lookDir = blackboard.nextPosVector - blackboard.transform.position;
-        //lookPos.y = 0.193f;//blackboard.transform.position.y;
-
-        Quaternion targetRotation = Quaternion.LookRotation((lookDir), Vector3.up); //get a vector pointing from current position to the new one and convert it to a rotation
-
- 
-
-
-        //Debug.DrawRay(blackboard.transform.position, 25 * Vector3.Cross(SetGround(), (lookPos - blackboard.transform.position)).normalized, Color.blue);
-
-        Quaternion antRotation = Quaternion.RotateTowards(blackboard.transform.rotation, targetRotation, Time.deltaTime * blackboard.rotSpeed);
-
-        Vector3 ground = SetGround();
-
-        Vector3 NormalForward = Vector3.Cross(blackboard.transform.GetChild(0).forward, ground);
-        Vector3 NormalRight = Vector3.Cross(blackboard.transform.right, ground);
-
-        ////        Debug.Log(targetRotation + "the ants rotation");
-        //blackboard.transform.localRotation = finalRote;//Quaternion.Euler(SetGround().x, antRotation.y, SetGround().z);
-
-        blackboard.transform.rotation = antRotation;
-
-        //targetRotation.eulerAngles = ground.eulerAngles;
-        //targetRotation.z = ground.z;
-        //        targetRotation.eulerAngles = new Vector3(ground.eulerAngles.x, targetRotation.eulerAngles.y, ground.eulerAngles.z);
-////        Quaternion currRote = Quaternion.LookRotation(Vector3.Cross(blackboard.transform.GetChild(0).forward, -ground));
-        blackboard.transform.GetChild(0).forward = -ground;
-//////////////////////////        blackboard.transform.GetChild(0).rotation = currRote;
-///
-        //        blackboard.transform.GetChild(0).right = NormalRight;
-        // blackboard.transform.GetChild(0).forward = blackboard.transform.forward;
-
-
-        //blackboard.transform.rotation = SetGround();//Quaternion.LookRotation(Vector3.right, SetGround());
-
-        //Vector3 newRote;
-        //newRote.x = blackboard.transform.GetChild(0).eulerAngles.x;
-        //newRote.y = 0;
-        //newRote.z = blackboard.transform.GetChild(0).eulerAngles.z;
-        //blackboard.transform.GetChild(0).localEulerAngles = newRote;
-
-        //blackboard.transform.rotation = Quaternion.LookRotation(Vector3.Cross(blackboard.transform.TransformDirection(Vector3.right), SetGround()));//lookPos - blackboard.transform.position));//Quaternion.Euler(SetGround().x, antRotation.y, SetGround().z);
-
-        // blackboard.transform.up += SetGround();
-        // blackboard.transform.up = SetGround();
-
-        //I have 2 different directions
-        /*
-            the normal which is the direction need to be at to be perpendicular to the ground
-
-            the forward direction which is the direction needing to be to ensure heading towards the desired object
-         */
-
-
 
         if (!doDistCheck || currDist < 1) //here if say a large lag spike and goes over the node but as never within range will always fail otherwise
         {
-            Debug.Log("Successfully reached the next node");
+//            Debug.Log("Successfully reached the next node");
             return NodeState.Success;
         }
         else
@@ -107,41 +51,63 @@ public class MoveTowards : Node
     }
 
     /// <summary>
+    /// Orient the ant so it will be facing towards its goal point while also being flat on the ground
+    /// </summary>
+    /// <returns>A smooth rotation towards this new orientation</returns>
+    Quaternion SetRotation()
+    {
+        //solved ant orientation using code from here https://forum.unity.com/threads/look-at-object-while-aligned-to-surface.515743/
+        Vector3 up = SetGround();//the the up position of the normal of the ground
+
+        Vector3 lookDir = (blackboard.nextPosVector - blackboard.transform.position);
+        lookDir.y = 0; //ignore all vertical height, so appears to be on flat ground
+        lookDir.Normalize();
+
+        //remove the up amount from the vector
+        float d = Vector3.Dot(lookDir, up); //get the amount of the direction which was up, relative to the grounds normal
+        lookDir -= d * up; //removes any upwards values, so the vectors now 90 degress to the normal and still heading in the right direction
+        lookDir.Normalize();
+
+        //convert the directional vector into a rotation
+        Quaternion targetRotation = Quaternion.LookRotation(lookDir, up);
+
+        //smoothly rotate towards this point
+        Quaternion smoothRotation = Quaternion.RotateTowards(blackboard.transform.rotation, targetRotation, Time.deltaTime * blackboard.rotSpeed);
+
+        return smoothRotation;
+    }
+
+
+
+    /// <summary>
     /// Set the ant so that it will always be on the ground
     /// </summary>
+    /// <returns>The normal of the ground used for orienting the ant correctly</returns>
     Vector3 SetGround()
     {
         RaycastHit raycastHit, raycastHit1;
         bool didHit = Physics.Raycast(blackboard.transform.position, -Vector3.up, out raycastHit, 15, blackboard.groundLayer);
-        Physics.Raycast(blackboard.transform.position + blackboard.transform.forward * -2f + blackboard.transform.up*2f, -Vector3.up, out raycastHit1, 15, blackboard.groundLayer);
+        bool didHit1 = Physics.Raycast(blackboard.transform.position + blackboard.transform.forward * -blackboard.backGroundCheckOffset, -Vector3.up, out raycastHit1, 15, blackboard.groundLayer);
 
-        if (didHit)
+        if (didHit) //set the position of the ant to the ground
         {
-            Vector3 groundPoint = blackboard.transform.position;
-            groundPoint.y = raycastHit.point.y + 0.15f;
-            // Debug.Log(groundPoint.y +"y ground");
-            blackboard.transform.position = groundPoint;
-
-            Vector3 childGroundPoint = blackboard.transform.GetChild(0).position;
-            childGroundPoint.y = raycastHit.point.y + 0.45f;
-            blackboard.transform.GetChild(0).position = childGroundPoint;
+            Vector3 groundPoint = blackboard.transform.localPosition;
+            groundPoint.y = raycastHit.point.y + blackboard.groundOffset;
+            blackboard.transform.localPosition = groundPoint;
         }
 
-        Vector3 upSmooth = Vector3.Cross(blackboard.transform.forward, -(raycastHit.point - raycastHit1.point).normalized);
+        
+        Vector3 upSmooth;
+        if (didHit1 && didHit)//when on the edge between two different triangles, get a vector which will point up ensuring a smooth rotation between the two
+            upSmooth = Vector3.Cross(blackboard.transform.right, -(raycastHit.point - raycastHit1.point).normalized);
+        //above used this link https://answers.unity.com/questions/1420677/best-way-to-rotate-player-object-to-match-the-grou.html
+        else
+            upSmooth = Vector3.up; //as nothing hit use global up
 
-
-        Vector3 upos = Vector3.Cross(blackboard.transform.forward, raycastHit.normal);
-        Debug.DrawRay(blackboard.transform.position + blackboard.transform.forward * -0.5f, 5 * (upos), Color.red);
         Debug.DrawRay(blackboard.transform.position + blackboard.transform.forward * -0.5f, 5 * (blackboard.transform.forward), Color.green);
         Debug.DrawRay(blackboard.transform.position, 5 * (raycastHit.normal), Color.blue);
-        Debug.DrawRay(blackboard.transform.position + blackboard.transform.forward * -2f, 5 * (raycastHit1.normal), Color.blue);
+        Debug.DrawRay(blackboard.transform.position + blackboard.transform.forward * -blackboard.backGroundCheckOffset, 5 * (raycastHit1.normal), Color.blue);
 
-        if (didHit)
-            return upos;
-        else
-        {
-            Debug.Log("Nothing Hit to return");
-            return Vector3.up;
-        }
+        return upSmooth;
     }
 }

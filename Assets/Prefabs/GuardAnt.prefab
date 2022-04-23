@@ -1052,6 +1052,8 @@ MonoBehaviour:
   Speed: 2
   rotSpeed: 200
   FollowingNodes: GuardNode
+  groundOffset: 0.17
+  backGroundCheckOffset: 3
   sightDist: 6
   largeViewAnlge: 60
   shortViewAngle: 180

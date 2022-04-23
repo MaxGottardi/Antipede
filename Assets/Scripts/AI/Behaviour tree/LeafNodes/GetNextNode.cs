@@ -21,7 +21,7 @@ public class GetNextNode : Node
         //blackboard.pathToNextPos.RemoveAt(blackboard.pathToNextPos.Count - 1)
         if (blackboard.pathToNextPos.Count > 0) //here would, when using proper pathfinding, would be getting the nodes position as well as the path to it
         {
-            Debug.Log("Getting Next Node");
+            //Debug.Log("Getting Next Node");
             blackboard.nextPosVector = blackboard.pathToNextPos[blackboard.pathToNextPos.Count - 1];
             blackboard.pathToNextPos.RemoveAt(blackboard.pathToNextPos.Count - 1);
             if (blackboard.pathToNextPos.Count <= 0) //as no new tiles to move towards can safely say move towards the final goal
