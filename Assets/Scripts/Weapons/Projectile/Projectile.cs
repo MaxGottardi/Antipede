@@ -19,4 +19,8 @@ public class Projectile : MonoBehaviour
 	{
 		rb.AddForce(LaunchVelocity);
 	}
+    public virtual void Ray()
+    {
+        
+    }
 }
