@@ -1051,6 +1051,7 @@ MonoBehaviour:
   callingBackup: 0
   Speed: 2
   rotSpeed: 200
+  FollowingNodes: GuardNode
   sightDist: 6
   largeViewAnlge: 60
   shortViewAngle: 180

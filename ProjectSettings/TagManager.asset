@@ -9,6 +9,7 @@ TagManager:
   - PlayerSegment
   - FarmerNode
   - Enemy
+  - GuardNode
   layers:
   - Default
   - TransparentFX

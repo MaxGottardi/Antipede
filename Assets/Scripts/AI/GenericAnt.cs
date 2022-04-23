@@ -25,6 +25,7 @@ public class GenericAnt : MonoBehaviour
     [Header("Movement Settings")]
     public float Speed = 1.5f;
     public float rotSpeed = 5;
+    public string FollowingNodes;
 
     [Header("Sight Checks")] //the view angle checks
     public float sightDist = 5.0f;
@@ -43,7 +44,7 @@ public class GenericAnt : MonoBehaviour
         pathToNextPos = new List<Vector3>();
         anim = transform.GetChild(0).gameObject.GetComponent<Animator>();
         anim.SetTrigger("Walk");
-        nodesList = GameObject.FindGameObjectsWithTag("FarmerNode");
+        nodesList = GameObject.FindGameObjectsWithTag(FollowingNodes);
         stateMachine = new StateMachine(this);
         stateMachine.changeState(stateMachine.Movement);
     }
@@ -104,11 +105,13 @@ public class GenericAnt : MonoBehaviour
     /// <param name="amount">the amount of health which gets lost</param>
     public void ReduceHealth(int amount)
     {
-        health -= amount;
-        if (health <= 0)
-            stateMachine.changeState(stateMachine.Dead);
-        else
-            stateMachine.changeState(stateMachine.Damage);
-
+        if (stateMachine.currState != stateMachine.Dead)
+        {
+            health -= amount;
+            if (health <= 0)
+                stateMachine.changeState(stateMachine.Dead);
+            else
+                stateMachine.changeState(stateMachine.Damage);
+        }
     }
 }

@@ -887,6 +887,7 @@ MonoBehaviour:
   callingBackup: 0
   Speed: 4
   rotSpeed: 300
+  FollowingNodes: FarmerNode
   sightDist: 6
   largeViewAnlge: 60
   shortViewAngle: 180
