@@ -37,20 +37,20 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	void Start()
 	{
+		Weapons = GetComponent<MCentipedeWeapons>();
+
 		TailSegment = Tail.GetComponent<MSegment>();
-		TailSegment.Initialise(Head, FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
+		TailSegment.Initialise(Weapons, Head, FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
 		TailSegment.transform.parent = null;
 
 		foreach (MSegment MS in CustomSegments)
 		{
-			MS.Initialise(null, FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
+			MS.Initialise(Weapons, null, FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
 			MS.transform.localEulerAngles = Vector3.zero;
 			MS.transform.parent = null;
 		}
 
 		Construct();
-
-		Weapons = GetComponent<MCentipedeWeapons>();
 	}
 
 	private void Update()
@@ -104,7 +104,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	{
 		// Inherit Centipede's rotation.
 		MSegment Seg = Instantiate(Segment, Vector3.zero, Rot);
-		Seg.Initialise(Segments.Count == 0 ? Head : GetLast(), FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
+		Seg.Initialise(Weapons, Segments.Count == 0 ? Head : GetLast(), FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
 		Seg.name = "Segment: " + Segments.Count;
 
 		Segments.Add(Seg);
@@ -128,7 +128,7 @@ public partial class MCentipedeBody : MonoBehaviour
 			T.LookAt(End);
 		}
 
-		TailSegment.Initialise(GetLast(), FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
+		TailSegment.Initialise(Weapons, GetLast(), FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
 
 		return Seg;
 	}
