@@ -46,7 +46,6 @@ public partial class MCentipedeBody : MonoBehaviour
 		foreach (MSegment MS in CustomSegments)
 		{
 			MS.Initialise(null, FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
-			MS.transform.GetComponent<MCentipedeSegmentEvents>().Initialise(Listener);
 			MS.transform.localEulerAngles = Vector3.zero;
 			MS.transform.parent = null;
 		}
@@ -123,9 +122,6 @@ public partial class MCentipedeBody : MonoBehaviour
 		}
 
 		TailSegment.Initialise(GetLast(), FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
-
-		// Subscribe listening events.
-		T.transform.GetComponent<MCentipedeSegmentEvents>().Initialise(Listener);
 
 		return Seg;
 	}

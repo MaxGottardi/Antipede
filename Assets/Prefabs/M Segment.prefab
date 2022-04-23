@@ -208,7 +208,6 @@ GameObject:
   - component: {fileID: -826154666899616143}
   - component: {fileID: 9212538989184267048}
   - component: {fileID: 6840749143041071638}
-  - component: {fileID: 1724302600817645762}
   m_Layer: 6
   m_Name: M Segment
   m_TagString: PlayerSegment
@@ -327,15 +326,4 @@ MonoBehaviour:
   ForwardNeighbour: {fileID: 0}
   FollowSpeed: 0
   MaxTurnDegreesPerFrame: 0
---- !u!114 &1724302600817645762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9212538989184267054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad40175619ac54a4e81de2cb27feae87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  bIgnoreFromWeapons: 0

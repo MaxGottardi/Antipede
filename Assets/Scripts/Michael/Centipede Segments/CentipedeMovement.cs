@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class CentipedeMovement : MonoBehaviour
 {
+#if UNITY_EDITOR
+	[Header("Show Gizmos. [EDITOR ONLY]")]
+	[SerializeField] bool bShowGizmos;
+	[SerializeField] bool bPrintDebugLogs;
+#endif
 
 	[Header("Player Movement Preference.")]
 	[SerializeField] bool bGlobalMovement = true;
@@ -59,9 +64,12 @@ public class CentipedeMovement : MonoBehaviour
 
 			float Interp = Mathf.Lerp(FromY, TargetY, t);
 			InDirection.y = Interp + transform.position.y;
-
-			// Debug.Log("F: " + FromY.ToString("F2") + " T: " + TargetY.ToString("F2") + "\t\tInterp: " + Interp.ToString("F2") + " Time:" + t.ToString("F2"));
-			// Debug.DrawLine(transform.position, InDirection, Color.white);
+#if UNITY_EDITOR
+			if (bPrintDebugLogs)
+				Debug.Log("From: " + FromY.ToString("F2") + " To: " + TargetY.ToString("F2") + "\t\tInterp: " + Interp.ToString("F2") + " Time:" + t.ToString("F2"));
+			if (bShowGizmos)
+				Debug.DrawLine(transform.position, InDirection, Color.white);
+#endif
 		}
 	}
 
@@ -126,7 +134,10 @@ public class CentipedeMovement : MonoBehaviour
 
 					// ...
 
-					Debug.LogError("Centipede has nothing underneath! Maybe under the terrain?");
+#if UNITY_EDITOR
+					if (bPrintDebugLogs)
+						Debug.LogError("Centipede has nothing underneath!");
+#endif
 					return;
 				}
 
@@ -161,14 +172,19 @@ public class CentipedeMovement : MonoBehaviour
 	{
 		bHasHitSomething = Physics.Raycast(transform.position + (transform.forward * Lead) + (Vector3.up * GroundHeightDistance), Vector3.down, out Hit, GroundDistanceCheck + GroundHeightDistance, 256);
 
-		// The Surface Normal of the terrain.
-		Debug.DrawLine(Hit.point, Hit.point + Hit.normal * 3, Color.red);
+#if UNITY_EDITOR
+		if (bShowGizmos)
+		{
+			// The Surface Normal of the terrain.
+			Debug.DrawLine(Hit.point, Hit.point + Hit.normal * 3, Color.red);
 
-		// The Centipede's up.
-		Debug.DrawLine(transform.position, transform.position + transform.up * 3, Color.blue);
+			// The Centipede's up.
+			Debug.DrawLine(transform.position, transform.position + transform.up * 3, Color.blue);
 
-		// Draw the line towards the ground.
-		Debug.DrawRay(transform.position, Vector3.down, Color.white);
+			// Draw the line towards the ground.
+			Debug.DrawRay(transform.position, Vector3.down, Color.white);
+		}
+#endif
 
 		// For some reason, Physics registers a hit, but sometimes there's no collider.
 		// Check for a collider.
@@ -180,12 +196,15 @@ public class CentipedeMovement : MonoBehaviour
 #if UNITY_EDITOR
 	void OnDrawGizmos()
 	{
-		Gizmos.color = Color.green;
-		Gizmos.DrawSphere(transform.position + (transform.forward * Lead) + (Vector3.up * GroundHeightDistance), .05f);
-		Gizmos.color = Color.cyan;
-		Gizmos.DrawLine(transform.position + Vector3.down * HeightOffGround, transform.position);
+		if (bShowGizmos)
+		{
+			Gizmos.color = Color.green;
+			Gizmos.DrawSphere(transform.position + (transform.forward * Lead) + (Vector3.up * GroundHeightDistance), .05f);
+			Gizmos.color = Color.cyan;
+			Gizmos.DrawLine(transform.position + Vector3.down * HeightOffGround, transform.position);
 
-		Gizmos.DrawSphere(InDirection, .1f);
+			Gizmos.DrawSphere(InDirection, .1f);
+		}
 	}
 
 	private void OnValidate()

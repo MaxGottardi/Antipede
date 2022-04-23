@@ -877,7 +877,6 @@ GameObject:
   - component: {fileID: 6650771633627787018}
   - component: {fileID: 6650771633627787022}
   - component: {fileID: 6650771633627787017}
-  - component: {fileID: 6650771633627787016}
   - component: {fileID: 6650771633627787019}
   m_Layer: 0
   m_Name: Tail Begin
@@ -931,18 +930,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6650771633627787016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6650771633627787061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad40175619ac54a4e81de2cb27feae87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6650771633627787019
 MonoBehaviour:
   m_ObjectHideFlags: 0

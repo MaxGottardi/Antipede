@@ -9,8 +9,6 @@ public partial class MCentipedeBody : MonoBehaviour
 	void Awake()
 	{
 		Listener = GetComponent<MCentipedeEvents>();
-		Head.GetComponent<MCentipedeSegmentEvents>().Initialise(Listener);
-		Tail.GetComponent<MCentipedeSegmentEvents>().Initialise(Listener);
 		SegmentsInfo = new SegmentsInformation(Head.localScale, Tail.localScale, ((Transform)Segment).localScale);
 	}
 

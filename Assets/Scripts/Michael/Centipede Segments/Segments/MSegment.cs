@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(MCentipedeSegmentEvents))]
 public class MSegment : MonoBehaviour
 {
 	public Transform ForwardNeighbour;
