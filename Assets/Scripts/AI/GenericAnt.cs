@@ -4,24 +4,37 @@ using UnityEngine;
 
 public class GenericAnt : MonoBehaviour
 {
+    [Header("General Settings")]
     public Transform nextPosTransform;
     public List<Vector3> pathToNextPos;
     public Vector3 nextPosVector;
     public GameObject[] nodesList;
     public GameObject shockBar;
 
-    public float Speed = 1.5f, rotSpeed = 5, attachDist = 0.5f, sightDist = 5.0f, maxBackupDist, backupCallDist = 7.5f;
     public Animator anim;
     public LayerMask playerLayer, EnemyLayer, groundLayer;
 
-    [Range(0, 360)]
-    public float largeViewAnlge, shortViewAngle;
+    
 
 
     public float health = 100;
-    [HideInInspector] public float callBackupWait = 0;
+    [HideInInspector] public float callBackupWait = 0; //the time remaining which cannot call a backup
     [HideInInspector] public StateMachine stateMachine;
     [HideInInspector] public bool canInvestigate = false, callingBackup = false;
+
+    [Header("Movement Settings")]
+    public float Speed = 1.5f, rotSpeed = 5;
+
+    [Header("Sight Checks")] //the view angle checks
+    public float sightDist = 5.0f;
+    [Range(0, 360)]
+    public float largeViewAnlge, shortViewAngle;
+
+    [Header("Backup Calling")]
+    public float maxBackupDist, backupCallDist = 7.5f;
+
+    [Header("Attack Settings")]
+    public float attachDist = 0.5f;
 
     void Start()
     {
