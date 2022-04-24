@@ -26,6 +26,13 @@ public class CollisionManager : MonoBehaviour
             Destroy(other.gameObject);
             sfxManager.CollectPowerup();
         }
+        if (other.gameObject.tag == "Health")
+        {
+            HealthComponent health = player.GetComponent<HealthComponent>();
+            health.IncreaseHealth(10);
+            Destroy(other.gameObject);
+            sfxManager.CollectPowerup();
+        }
     }
 
 }

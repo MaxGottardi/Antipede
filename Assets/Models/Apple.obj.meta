@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: AppleMat
-    second: {fileID: 2100000, guid: 61d1f2327efdae14a837253849f08a69, type: 2}
+    second: {fileID: 2100000, guid: ab013a1491d0ce346aa55b43d23ebc55, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

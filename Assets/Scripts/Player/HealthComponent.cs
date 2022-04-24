@@ -17,7 +17,7 @@ public class HealthComponent : MonoBehaviour
     private void Awake()
     {
         maxHealth = 100;
-        currentHealth = 100;
+        currentHealth = 50;
     }
 
     void Start()
@@ -28,6 +28,9 @@ public class HealthComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        Debug.LogWarning("Health: " + currentHealth);
+
         if (currentHealth == 0)
         {
             Death();
