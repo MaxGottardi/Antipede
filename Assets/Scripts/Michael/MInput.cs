@@ -76,4 +76,9 @@ public class MInput : MonoBehaviour
 	{
 		doneAttack = false;
 	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		Debug.Log("XDFFDSAD");
+	}
 }

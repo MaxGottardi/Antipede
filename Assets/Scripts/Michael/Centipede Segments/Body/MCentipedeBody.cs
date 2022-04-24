@@ -193,4 +193,6 @@ public partial class MCentipedeBody : MonoBehaviour
 			TailSegment.FollowSpeed -= value;
 		}
 	}
+
 }
+

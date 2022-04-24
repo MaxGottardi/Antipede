@@ -9,6 +9,11 @@ TagManager:
   - PlayerSegment
   - FarmerNode
   - Enemy
+  - Speed
+  - Health
+  - Special
+  - BossTrigger
+  - CaveTrigger
   layers:
   - Default
   - TransparentFX
