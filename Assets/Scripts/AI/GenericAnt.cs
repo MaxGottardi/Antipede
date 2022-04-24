@@ -1,20 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class GenericAnt : MonoBehaviour
 {
+    [HideInInspector] public Transform nextPosTransform;
+    [HideInInspector] public List<Vector3> pathToNextPos;
+    [HideInInspector] public Vector3 nextPosVector;
+
     [Header("General Settings")]
-    public Transform nextPosTransform;
-    public List<Vector3> pathToNextPos;
-    public Vector3 nextPosVector;
     public GameObject[] nodesList;
     public GameObject shockBar;
 
-    public Animator anim;
+    [HideInInspector] public Animator anim;
     public LayerMask playerLayer, EnemyLayer, groundLayer;
 
-    
+
 
 
     public float health = 100;
@@ -32,7 +34,8 @@ public class GenericAnt : MonoBehaviour
     public float backGroundCheckOffset;
 
     [Header("Sight Checks")] //the view angle checks
-    public float sightDist = 5.0f;
+    public float maxSightDist = 5.0f;
+    public float shortSightDist = 2.0f;
     [Range(0, 360)]
     public float largeViewAnlge, shortViewAngle;
 
@@ -43,7 +46,7 @@ public class GenericAnt : MonoBehaviour
     [Header("Attack Settings")]
     public float attachDist = 0.5f;
 
-    void Start()
+    public virtual void Start()
     {
         pathToNextPos = new List<Vector3>();
         anim = transform.GetChild(0).gameObject.GetComponent<Animator>();
@@ -65,7 +68,7 @@ public class GenericAnt : MonoBehaviour
     public bool DetectPlayer() //here use the proper vision cone
     {
 
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, sightDist, playerLayer);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, maxSightDist, playerLayer);
 
         foreach (Collider playerSegment in hitColliders) //get all nearby ants to call for backup
         {
@@ -78,7 +81,7 @@ public class GenericAnt : MonoBehaviour
                     return true; //as nothing hit no walls etc. were in the way so safe to say it saw the player
                 }
                 //else
-                  //  Debug.Log("Failed to ensure no obsticals in the way");
+                //  Debug.Log("Failed to ensure no obsticals in the way");
             }
         }
         return false; //no player segment found
@@ -92,7 +95,7 @@ public class GenericAnt : MonoBehaviour
     bool ValidAngle(float distAway, Vector3 dirToPoint)
     {
         //if x distance away and within x angle then seen player, or if a much closer distance and a much larger angle
-        return (distAway < 1 && Vector3.Angle(transform.forward, dirToPoint) < shortViewAngle/ 2 || Vector3.Angle(transform.forward, dirToPoint) < largeViewAnlge / 2);
+        return (distAway < shortSightDist && Vector3.Angle(transform.forward, dirToPoint) < shortViewAngle / 2 || Vector3.Angle(transform.forward, dirToPoint) < largeViewAnlge / 2);
     }
 
     ////void OnDrawGizmosSelected()
@@ -118,4 +121,34 @@ public class GenericAnt : MonoBehaviour
                 stateMachine.changeState(stateMachine.Damage);
         }
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Handles.color = Color.white;
+        Handles.DrawWireArc(transform.position, Vector3.up, Vector3.forward, 360, maxSightDist);
+        Handles.DrawWireArc(transform.position, Vector3.up, Vector3.forward, 360, shortSightDist);
+
+        Vector3 viewAngle01 = DirectionFromAngle(transform.eulerAngles.y, -largeViewAnlge / 2);
+        Vector3 viewAngle02 = DirectionFromAngle(transform.eulerAngles.y, +largeViewAnlge / 2);
+        
+        Vector3 shortViewAngle01 = DirectionFromAngle(transform.eulerAngles.y, -shortViewAngle / 2);
+        Vector3 shortViewAngle02 = DirectionFromAngle(transform.eulerAngles.y, +shortViewAngle / 2);
+
+        Handles.color = Color.yellow;
+        Handles.DrawLine(transform.position, transform.position + viewAngle01 * maxSightDist);
+        Handles.DrawLine(transform.position, transform.position + viewAngle02 * maxSightDist);
+
+        Handles.color = Color.red;
+        Handles.DrawLine(transform.position, transform.position + shortViewAngle01 * shortSightDist);
+        Handles.DrawLine(transform.position, transform.position + shortViewAngle02 * shortSightDist);
+    }
+
+    private Vector3 DirectionFromAngle(float eulerY, float anglesInDegrees)
+    {
+        anglesInDegrees += eulerY;
+
+        return new Vector3(Mathf.Sin(anglesInDegrees * Mathf.Deg2Rad), 0,
+            Mathf.Cos(anglesInDegrees * Mathf.Deg2Rad));
+    }
+
 }
