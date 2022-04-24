@@ -94,6 +94,13 @@ public static class MMathStatics
 		In.z = Mathf.Abs(In.z);
 	}
 
+	public static Vector3 Abs(Vector3 In)
+	{
+		Abs(ref In);
+
+		return In;
+	}
+
 	/// <summary>Checks if a vector is close enough to zero.</summary>
 	/// <param name="In"></param>
 	/// <returns></returns>
