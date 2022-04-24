@@ -6,6 +6,7 @@ public abstract class Weapon : MonoBehaviour
 	[SerializeField, Tooltip("Where should projectiles shoot from?")] protected Transform BarrelEndSocket;
 	[SerializeField, Tooltip("The " + nameof(Projectile) + " to Fire.")] protected Projectile ProjectileObject;
 	public GameObject weaponPickup;
+	public bool isAntGun = false;
 
 
 	/// <summary>Fires Projectile towards Position.</summary>

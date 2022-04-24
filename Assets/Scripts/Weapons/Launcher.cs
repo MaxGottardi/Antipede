@@ -15,6 +15,7 @@ public class Launcher : Weapon
 		{
 			Projectile LaunchedProjectile = InstantiateProjectile();
 			LaunchedProjectile.Initialise();
+			LaunchedProjectile.isEnemyProjectile = isAntGun; //is this a projectile for the ants or not?
 			LaunchedProjectile.Launch(Velocity);
 
 			return LaunchedProjectile;

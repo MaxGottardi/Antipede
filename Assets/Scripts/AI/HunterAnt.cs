@@ -47,6 +47,7 @@ public class HunterAnt : GenericAnt
         weapon.transform.up = new Vector3(-90, 0, 0);
 
         weaponClass = weapon.GetComponent<Weapon>();
+        weaponClass.isAntGun = true;
         weaponClass.LookAt(transform.forward);
     }
 }

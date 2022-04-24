@@ -61,19 +61,50 @@ public class GenerateGrid : MonoBehaviour
         int z = Mathf.CeilToInt(worldPoint.z / tileSize);
     }
 
+    /// <summary>
+    /// find a valid node on the grid for the position, checking neighbours if the initially choosen one is not valid
+    /// </summary>
+    /// <param name="position">the position checking, either being the paths start or end</param>
+    /// <returns>A position on the grid</returns>
+    (int, int, int) FindValidCell(Vector3 position)
+    {
+        position -= offset;
+        int gridX = Mathf.Clamp(Mathf.RoundToInt(position.x / tileSize), 0, width - 1);
+        int gridY = Mathf.Clamp(Mathf.RoundToInt(position.y / tileSize), 0, height - 1);
+        int gridZ = Mathf.Clamp(Mathf.RoundToInt(position.z / tileSize), 0, depth - 1);
+
+        if(grid[gridX, gridY, gridZ] == null)
+        {
+            for (int i = -1; i <= 1; i++) //for every possible neighbour see if it would be valid instead
+            {
+                for (int j = -1; j <= 1; j++)
+                {
+                    for (int k = -1; k <= 1; k++)
+                    {
+                        NavigationNode neighbour;
+                        if (gridX + i >= 0 && gridX + i < width && gridY + j >= 0 && gridY + j < height
+                            && gridZ + k >= 0 && gridZ + k < depth)
+                        {
+                            neighbour = grid[gridX + i, gridY + j, gridZ + k];
+                            if (neighbour != null) //as long as this is a valid node, return it
+                            {
+                                return (gridX + i, gridY + j, gridZ + k);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return (gridX, gridY, gridZ);
+    }
+
     public List<Vector3> APathfinding(Vector3 startPosition, Vector3 targetPosition)
     {
         ResetPathFinding();
         //convert the world positions to the tiles on the grid
-        targetPosition -= offset;
-        int targetGridX = Mathf.Clamp(Mathf.RoundToInt(targetPosition.x / tileSize), 0, width - 1);
-        int targetGridY = Mathf.Clamp(Mathf.RoundToInt(targetPosition.y / tileSize), 0, height - 1);
-        int targetGridZ = Mathf.Clamp(Mathf.RoundToInt(targetPosition.z / tileSize), 0, depth - 1);
-
-        startPosition -= offset;
-        int gridX = Mathf.Clamp(Mathf.RoundToInt(startPosition.x / tileSize), 0, width - 1);
-        int gridY = Mathf.Clamp(Mathf.RoundToInt(startPosition.y / tileSize), 0, height - 1);
-        int gridZ = Mathf.Clamp(Mathf.RoundToInt(startPosition.z / tileSize), 0, depth - 1);
+        (int targetGridX, int targetGridY, int targetGridZ) = FindValidCell(targetPosition);
+        (int gridX, int gridY, int gridZ) = FindValidCell(startPosition);
 
 //        Debug.Log(gridX + " " + gridY + " " + gridZ);
         if (grid[targetGridX, targetGridY, targetGridZ] != null && grid[gridX, gridY, gridZ] != null)

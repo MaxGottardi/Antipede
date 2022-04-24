@@ -133,9 +133,8 @@ public partial class MCentipedeBody : MonoBehaviour
 		return Seg;
 	}
 
-	public void RemoveSegment()//MSegment deadSegment)
+	public void RemoveSegment(float healthReduction)//MSegment deadSegment)
 	{
-		DecreaseSpeed(10);
 		Debug.Log("Killing Player");
 		if (NumberOfSegments <= 1)
 		{
@@ -152,31 +151,34 @@ public partial class MCentipedeBody : MonoBehaviour
 		}*/
 
 		//Segments.Remove(Segments[Segments.Count - 1]);
+		if (lastSegment.ReduceHealth(healthReduction))
+		{
+			Destroy(lastSegment.gameObject);
+			DecreaseSpeed(10);
 
-		Destroy(lastSegment.gameObject);
+			//int nextIndex = 1;
+			//while (segmentIndex + nextIndex < Segments.Count - 1 && !Segments[segmentIndex + nextIndex]) //if multiple in a row get destroyed at same time, prevents it from bugging out
+			//	nextIndex++;
+			//if (segmentIndex + nextIndex < Segments.Count - 1)
+			//	Segments[segmentIndex + nextIndex].ForwardNeighbour = lastSegment.ForwardNeighbour;
 
-		//int nextIndex = 1;
-		//while (segmentIndex + nextIndex < Segments.Count - 1 && !Segments[segmentIndex + nextIndex]) //if multiple in a row get destroyed at same time, prevents it from bugging out
-		//	nextIndex++;
-		//if (segmentIndex + nextIndex < Segments.Count - 1)
-		//	Segments[segmentIndex + nextIndex].ForwardNeighbour = lastSegment.ForwardNeighbour;
+			Segments.RemoveAt(Segments.Count - 1);
+			--NumberOfSegments;
+			GameManager1.cameraController.camShake();
 
-		Segments.RemoveAt(Segments.Count - 1);
-		--NumberOfSegments;
-		GameManager1.cameraController.camShake();
+			int lastSegIndex = Segments.Count - 1;
+			TailSegment.SetForwardNeighbour(Segments[lastSegIndex]);
 
-		int lastSegIndex = Segments.Count - 1;
-		TailSegment.SetForwardNeighbour(Segments[lastSegIndex]);
+			SegmentsInfo.RemoveSegment();
 
-		SegmentsInfo.RemoveSegment();
+			// Ensure the Tail is properly 'attached' to the end Segment.
+			Transform newLast = GetLast();
+			Vector3 NewPos = newLast.position - newLast.forward * SegmentsInfo.SegmentScale.z;
+			Tail.position = NewPos;
 
-		// Ensure the Tail is properly 'attached' to the end Segment.
-		Transform newLast = GetLast();
-		Vector3 NewPos = newLast.position - newLast.forward * SegmentsInfo.SegmentScale.z;
-		Tail.position = NewPos;
-
-		for (byte i = 0; i < CustomSegments.Count; ++i)
-			CustomSegments[i].transform.position = NewPos - (i * FollowDistance * newLast.forward);
+			for (byte i = 0; i < CustomSegments.Count; ++i)
+				CustomSegments[i].transform.position = NewPos - (i * FollowDistance * newLast.forward);
+		}
 	}
 
 	public void IncreaseSpeed(float value)

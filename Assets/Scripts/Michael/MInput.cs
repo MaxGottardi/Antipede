@@ -25,7 +25,7 @@ public class MInput : MonoBehaviour
 	void Update()
 	{
 		Vector3 rayPos = new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z);
-		Debug.DrawRay(rayPos, transform.forward * 2, Color.green);
+		Debug.DrawRay(rayPos, transform.forward * 2, Color.red);
 		if (Input.GetKeyDown(KeyCode.Space) || attackRequested)
 		{
 			if (!doneAttack)
@@ -46,7 +46,7 @@ public class MInput : MonoBehaviour
 		}
 		else if (Input.GetKeyDown(KeyCode.H))
 		{
-			body.RemoveSegment();
+			body.RemoveSegment(100);
 		}
 
 		if (Input.GetKeyDown(KeyCode.K))
@@ -71,24 +71,23 @@ public class MInput : MonoBehaviour
 		movement.HandleMovement(ref body);
 	}
 
+	/// <summary>
+	/// for all enemies within a radius of the pincers, they get damaged
+	/// </summary>
 	void DoAttack()
 	{
 		////////GetComponent<Animator>().SetTrigger("Pincer");
-		Vector3 rayPos = new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z);
-
-		RaycastHit hit;
-		float dist = 4.0f;
-		if (Physics.Raycast(rayPos, transform.forward, out hit, dist, EnemyLayer)
-			|| Physics.Raycast(rayPos, (transform.forward + transform.right / 3), out hit, dist, EnemyLayer)
-			|| Physics.Raycast(rayPos, (transform.forward - transform.right / 3), out hit, dist, EnemyLayer))
-		{
-			if(hit.collider.gameObject.transform.parent.GetComponent<GenericAnt>())
-				hit.collider.gameObject.transform.parent.GetComponent<GenericAnt>().ReduceHealth(100);
+		float dist = 0.45f;
+		Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * 1.1f, dist, EnemyLayer);
+        foreach (Collider antCollider in colliders)
+        {
+			if(antCollider.gameObject.transform.parent.GetComponent<GenericAnt>())
+				antCollider.gameObject.transform.parent.GetComponent<GenericAnt>().ReduceHealth(100);
 			//body.AddSegment();
         }
 
 	}
-	void wait()
+    void wait()
 	{
 		doneAttack = false;
 	}

@@ -13,6 +13,7 @@ public class MSegment : MonoBehaviour
 	Weapon Weapon;
 
 	MCentipedeWeapons Owner;
+	public float health = 100;
 
 	/// <summary>Initialises this Segment to follow ForwardNeighbour at FollowSpeed and turning at MaxTurnDegreesPerFrame.</summary>
 	/// <remarks>MaxTurnDegreesPerFrame will be multiplied to try and prevent disconnection. Increase as needed.</remarks>
@@ -80,6 +81,12 @@ public class MSegment : MonoBehaviour
 	{
 		Owner.SegmentsWithWeapons.Remove(this);
 	}
+
+	public bool ReduceHealth(float amount)
+    {
+		health -= amount;
+		return health <= 0;
+    }
 
 	public static implicit operator Transform(MSegment s) => s.transform;
 	public static implicit operator Weapon(MSegment s) => s.Weapon;
