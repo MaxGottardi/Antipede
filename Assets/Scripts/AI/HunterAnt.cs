@@ -18,7 +18,8 @@ public class HunterAnt : GenericAnt
     {
         base.Start();
         stateMachine.Attack = new HunterAttack(this);
-        if(weaponsBag == null)
+        stateMachine.Dead = new HunterDead(this);
+        if (weaponsBag == null)
         {
             weaponsBag = new ShuffleBag();
             weaponsBag.shuffleList = weapons;
@@ -30,7 +31,12 @@ public class HunterAnt : GenericAnt
     public override void Update()
     {
         base.Update();
-       //// weaponClass.Fire(transform.forward);
+    }
+
+    public void DropWeapon()
+    {
+        //drop the weapon
+        Instantiate(weaponClass.weaponPickup, transform.position, Quaternion.identity);
     }
 
     void PickWeapon()

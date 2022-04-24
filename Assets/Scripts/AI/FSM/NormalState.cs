@@ -234,13 +234,19 @@ public class DeadState : State
         owner.anim.SetTrigger("Dead");
     }
 
-    public void execute()
+    public virtual void execute()
     {
         deadTime -= Time.deltaTime;
         if (deadTime <= 0)//when finished attacking add any damage to the appropriate segment
         {
+            dropWeapon();
             MonoBehaviour.Destroy(owner.gameObject);
         }
+    }
+
+    public virtual void dropWeapon()
+    {
+
     }
 
     public void exit()
@@ -286,5 +292,20 @@ public class HunterAttack : AttackState
     public override void exit()
     {
         shootDelay = 0.5f;
+    }
+}
+
+public class HunterDead : DeadState
+{
+    float deadTime = 3;
+    HunterAnt owner;
+    public HunterDead(GenericAnt owner) : base(owner) //also initilize any behaviour tree used on the state as well
+    {
+        this.owner = owner.gameObject.GetComponent<HunterAnt>();
+    }
+
+    public override void dropWeapon()
+    {
+        owner.DropWeapon();
     }
 }
