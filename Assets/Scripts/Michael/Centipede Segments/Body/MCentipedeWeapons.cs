@@ -1,21 +1,25 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MCentipedeBody))]
 public class MCentipedeWeapons : MonoBehaviour
 {
 
-	MCentipedeBody Body;
+	// MCentipedeBody Body;
 
 	[Header("Weapons Settings.")]
 	[SerializeField] bool bUsePropagationDelay;
 	[SerializeField] float PropagationDelay;
 
+	[HideInInspector] public List<MSegment> SegmentsWithWeapons;
+
 	Vector3 MouseToWorld;
 
 	void Start()
 	{
-		Body = GetComponent<MCentipedeBody>();
+		// Body = GetComponent<MCentipedeBody>();
+		SegmentsWithWeapons = new List<MSegment>();
 	}
 
 	void Update()
@@ -24,10 +28,8 @@ public class MCentipedeWeapons : MonoBehaviour
 		{
 			if (!bUsePropagationDelay)
 			{
-				foreach (Weapon W in Body)
-				{
-					W?.Fire(W.transform.forward);
-				}
+				foreach (Weapon W in SegmentsWithWeapons)
+					W.Fire(MouseToWorld);
 			}
 			else
 			{
@@ -39,32 +41,24 @@ public class MCentipedeWeapons : MonoBehaviour
 	public void ReceiveMouseCoords(Vector3 MouseToWorld)
 	{
 		this.MouseToWorld = MouseToWorld;
-				Debug.DrawLine(MouseToWorld + Vector3.up * 2, MouseToWorld, Color.cyan);
-		UpdateWeaponOrientations(ref MouseToWorld);
+		Debug.DrawLine(MouseToWorld + Vector3.up * 2, MouseToWorld, Color.cyan);
+
+		if (SegmentsWithWeapons.Count > 0)
+			UpdateWeaponOrientations(ref MouseToWorld);
 	}
 
 	void UpdateWeaponOrientations(ref Vector3 MouseToWorld)
 	{
-		foreach (Weapon W in Body)
-		{
-			if (W)
-			{
-				W.LookAt(MouseToWorld);
-			}
-		}
+		foreach (Weapon W in SegmentsWithWeapons)
+			W.LookAt(MouseToWorld);
 	}
 
 	IEnumerator IE_Fire()
 	{
-		MSegment[] Segments = Body.GetSegments();
-
-		foreach (Weapon W in Segments)
+		foreach (Weapon W in SegmentsWithWeapons)
 		{
-			if (W)
-			{
 				W.Fire(MouseToWorld);
 				yield return new WaitForSeconds(PropagationDelay);
-			}
 		}
 	}
 }

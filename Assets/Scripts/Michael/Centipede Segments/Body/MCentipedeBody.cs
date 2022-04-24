@@ -25,9 +25,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	[Min(Vector3.kEpsilon)] public float MaxTurnDegreesPerFrame = 7f;
 	[SerializeField, Tooltip("Any additional Segments that are not spawned in Constuct.")] List<MSegment> CustomSegments;
 
-	MCentipedeEvents Listener;
-
-	[HideInInspector] public List<MSegment> Segments;
+	List<MSegment> Segments;
 	SegmentsInformation SegmentsInfo;
 
 	public float maxSpeed = 750;
@@ -39,21 +37,20 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	void Start()
 	{
+		Weapons = GetComponent<MCentipedeWeapons>();
+
 		TailSegment = Tail.GetComponent<MSegment>();
-		TailSegment.Initialise(Head, FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
+		TailSegment.Initialise(Weapons, Head, FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
 		TailSegment.transform.parent = null;
 
 		foreach (MSegment MS in CustomSegments)
 		{
-			MS.Initialise(null, FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
-			MS.transform.GetComponent<MCentipedeSegmentEvents>().Initialise(Listener);
+			MS.Initialise(Weapons, null, FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
 			MS.transform.localEulerAngles = Vector3.zero;
 			MS.transform.parent = null;
 		}
 
 		Construct();
-
-		Weapons = GetComponent<MCentipedeWeapons>();
 	}
 
 	private void Update()
@@ -73,7 +70,11 @@ public partial class MCentipedeBody : MonoBehaviour
 		{
 			Transform End = GetLast();
 
-			Tail.position += SegmentsInfo.SegmentScale.z * -End.forward;
+			Vector3 Displacement = SegmentsInfo.SegmentScale.z * -End.forward;
+			Tail.position += Displacement;
+
+			foreach (MSegment C in CustomSegments)
+				C.transform.position += Displacement;
 
 			Quaternion Rot = MMathStatics.DirectionToQuat(((Transform)GetLast(1)).position, End.position);
 
@@ -81,7 +82,12 @@ public partial class MCentipedeBody : MonoBehaviour
 		}
 		else
 		{
-			Tail.position += SegmentsInfo.SegmentScale.z * -Head.forward;
+			Vector3 Displacement = SegmentsInfo.SegmentScale.z * -Head.forward;
+			Tail.position += Displacement;
+
+			foreach (MSegment C in CustomSegments)
+				C.transform.position += Displacement;
+
 			AddedSegment = AddSegment(Z, Head.rotation);
 		}
 
@@ -98,7 +104,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	{
 		// Inherit Centipede's rotation.
 		MSegment Seg = Instantiate(Segment, Vector3.zero, Rot);
-		Seg.Initialise(Segments.Count == 0 ? Head : GetLast(), FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
+		Seg.Initialise(Weapons, Segments.Count == 0 ? Head : GetLast(), FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
 		Seg.name = "Segment: " + Segments.Count;
 
 		Segments.Add(Seg);
@@ -122,10 +128,7 @@ public partial class MCentipedeBody : MonoBehaviour
 			T.LookAt(End);
 		}
 
-		TailSegment.Initialise(GetLast(), FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
-
-		// Subscribe listening events.
-		T.transform.GetComponent<MCentipedeSegmentEvents>().Initialise(Listener);
+		TailSegment.Initialise(Weapons, GetLast(), FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
 
 		return Seg;
 	}
@@ -169,7 +172,11 @@ public partial class MCentipedeBody : MonoBehaviour
 
 		// Ensure the Tail is properly 'attached' to the end Segment.
 		Transform newLast = GetLast();
-		Tail.position = newLast.position - newLast.forward * SegmentsInfo.SegmentScale.z;
+		Vector3 NewPos = newLast.position - newLast.forward * SegmentsInfo.SegmentScale.z;
+		Tail.position = NewPos;
+
+		for (byte i = 0; i < CustomSegments.Count; ++i)
+			CustomSegments[i].transform.position = NewPos - (i * FollowDistance * newLast.forward);
 	}
 
 	public void IncreaseSpeed(float value)

@@ -57,6 +57,7 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 
 		CameraToWorld(out RaycastHit Hit);
 		if (TryGetSegment(ref Hit, out MSegment Segment)                // If the GameObject under the mouse has a Segment.
+			&& !Segment.bIgnoreFromWeapons                          // If the Segment is NOT ignoring Weapons.
 			&& Segment.TryGetWeaponSocket(out Transform Socket))    // If the Segment has a Weapon Socket.
 		{
 			DraggingAttachment.transform.position = Socket.position;
