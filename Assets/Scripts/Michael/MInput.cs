@@ -73,7 +73,7 @@ public class MInput : MonoBehaviour
 
 	void DoAttack()
 	{
-		GetComponent<Animator>().SetTrigger("Pincer");
+		////////GetComponent<Animator>().SetTrigger("Pincer");
 		Vector3 rayPos = new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z);
 
 		RaycastHit hit;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+/// <summary>The base class for an ant.</summary>
 public class GenericAnt : MonoBehaviour
 {
     [HideInInspector] public Transform nextPosTransform;
@@ -50,14 +51,14 @@ public class GenericAnt : MonoBehaviour
     {
         pathToNextPos = new List<Vector3>();
         anim = transform.GetChild(0).gameObject.GetComponent<Animator>();
-        anim.SetTrigger("Walk");
+        //anim.SetTrigger("Walk");
         nodesList = GameObject.FindGameObjectsWithTag(FollowingNodes);
         stateMachine = new StateMachine(this);
         stateMachine.changeState(stateMachine.Movement);
     }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
         stateMachine.Update();
     }

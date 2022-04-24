@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5411999895189948905}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rotator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +51,7 @@ GameObject:
   - component: {fileID: 5171539259398644064}
   - component: {fileID: 5468897896395096536}
   - component: {fileID: 7051425106876421751}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: _Centipede 0.915 body1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 8343469513071806604}
   - component: {fileID: 4257526959244442277}
   - component: {fileID: 5354912238244683333}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: _Centipede 30 leg1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 2135477720493189618}
   - component: {fileID: 4815397565908035257}
   - component: {fileID: 4530151138694585043}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: _Centipede 24leg2 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -302,7 +302,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2619680362650405973}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NAUO40
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -335,7 +335,7 @@ GameObject:
   - component: {fileID: 8846317197261870330}
   - component: {fileID: 4827382284283145973}
   - component: {fileID: 419188832864657983}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: _Centipede 0.9 body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -418,7 +418,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6792303757425418547}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NAUO35
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -449,7 +449,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8432429795068699053}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NAUO38
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -482,7 +482,7 @@ GameObject:
   - component: {fileID: 3685322630753251337}
   - component: {fileID: 7772942046558262431}
   - component: {fileID: 3942700592108443718}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: _Centipede 24leg2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -564,7 +564,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2971907541664722742}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NAUO37
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -597,7 +597,7 @@ GameObject:
   - component: {fileID: 1545363259780797329}
   - component: {fileID: 8029379336621265781}
   - component: {fileID: 2871625112039395391}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: _Centipede body2 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -680,7 +680,7 @@ GameObject:
   - component: {fileID: 6511192076190417850}
   - component: {fileID: 6339046587062081568}
   - component: {fileID: 3223463700797751368}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: _Centipede 0.9 body 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -763,7 +763,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8771892356051260376}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NAUO39
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -794,7 +794,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6720002912596731215}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NAUO36
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -825,7 +825,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 72259982630763102}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NAUO34
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -860,9 +860,9 @@ GameObject:
   - component: {fileID: 1257723735167566948}
   - component: {fileID: 947609653933938973}
   - component: {fileID: 8759839556243553130}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Segment
-  m_TagString: Untagged
+  m_TagString: PlayerSegment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -939,6 +939,7 @@ MonoBehaviour:
   ForwardNeighbour: {fileID: 0}
   FollowSpeed: 0
   MaxTurnDegreesPerFrame: 0
+  bIgnoreFromWeapons: 0
 --- !u!1 &6443793407614854378
 GameObject:
   m_ObjectHideFlags: 0
@@ -948,7 +949,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8717678332491483610}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Weapon Attachment Socket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -980,7 +981,7 @@ GameObject:
   - component: {fileID: 6267465825932345049}
   - component: {fileID: 1570860018776978870}
   - component: {fileID: 2432462250985600904}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: _Centipede leg3 11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1062,7 +1063,7 @@ GameObject:
   - component: {fileID: 5116475877925990865}
   - component: {fileID: 2392916335737092115}
   - component: {fileID: 107760687705919007}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: _Centipede 30 leg1 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1144,7 +1145,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2847227626707325616}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NAUO33
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1177,7 +1178,7 @@ GameObject:
   - component: {fileID: 7533683642831002589}
   - component: {fileID: 7384075152875383998}
   - component: {fileID: 7496116850389324101}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: _Centipede leg3 10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1257,7 +1258,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 800647510703780740}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NAUO31
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1288,7 +1289,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3534587032893384241}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NAUO32
   m_TagString: Untagged
   m_Icon: {fileID: 0}

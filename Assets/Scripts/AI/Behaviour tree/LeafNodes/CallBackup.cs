@@ -29,7 +29,7 @@ public class CallBackup : Node
             foreach (Collider obj in hitColliders) //get all nearby ants to call for backup
             {
                 GenericAnt antObj = obj.gameObject.transform.parent.GetComponent<GenericAnt>();
-                if (obj.gameObject.CompareTag("Enemy") && antObj.stateMachine.currState == antObj.stateMachine.Movement)
+                if (obj.gameObject.CompareTag("Enemy") && antObj && antObj.stateMachine.currState == antObj.stateMachine.Movement)
                     antObj.canInvestigate = true;
             }
             runTime = 2;

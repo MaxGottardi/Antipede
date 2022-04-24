@@ -115,7 +115,8 @@ public class InvestigateState : State
         lostPlayerTime = 3.0f;
 
         owner.callingBackup = false;
-        //owner.anim.SetTrigger("Walk");
+
+        topNode.execute();
     }
     public void execute()
     {
@@ -134,7 +135,9 @@ public class InvestigateState : State
             owner.stateMachine.changeState(owner.stateMachine.Movement);
         }
         else if (owner.nextPosTransform && Vector3.Distance(owner.transform.position, owner.nextPosTransform.position) < owner.attachDist && !owner.callingBackup) //within attack range of chosen player segment
+        {
             owner.stateMachine.changeState(owner.stateMachine.Attack);
+        }
         else //as no change of state occured, can run this one
             topNode.execute();
     }
@@ -148,7 +151,7 @@ public class InvestigateState : State
     }
 }
 /// <summary>
-/// when within certain distance of player and have begun attacking
+/// when within certain distance of player can begin attacking
 /// </summary>
 public class AttackState : State
 {
@@ -157,42 +160,34 @@ public class AttackState : State
     public AttackState(GenericAnt owner) //also initilize any behaviour tree used on the state as well
     {
         this.owner = owner;
-
-
-        //PerformAttack performAttack = new PerformAttack(owner);
-        //AttackWait attackWait = new AttackWait(owner);
-        ////MoveTowards moveTowards = new MoveTowards(owner);
-        ////CallBackup callBackup = new CallBackup(owner);
-
-
-        //topNode = new Sequence(new List<Node> { performAttack, attackWait });
     }
-    public void enter()
+    public virtual void enter()
     {
         attackTime = 2;
         owner.anim.SetTrigger("Attack");
-        //initiate the attack animation and junk
     }
 
-    public void execute()
+    public virtual void execute()
     {
         attackTime -= Time.deltaTime;
         if (attackTime <= 0)//when finished attacking add any damage to the appropriate segment
         {
-            if (owner.nextPosTransform && Vector3.Distance(owner.transform.position, owner.nextPosTransform.transform.position) < owner.attachDist)
-                GameManager1.playerObj.GetComponent<MCentipedeBody>().RemoveSegment();
+            //////if (Vector3.Distance(blackboard.transform.position, blackboard.nextPosTransform.transform.position) < blackboard.attachDist)
+            //////  GameObject.Find("Centipede").GetComponent<MCentipedeBody>().RemoveSegment();
+
             owner.stateMachine.changeState(owner.stateMachine.Investigate);
         }
     }
 
-    public void exit()
+    public virtual void exit()
     {
         attackTime = 2;
-        //deactivate all showing warning symbols
-        //throw new System.NotImplementedException();
     }
 }
 
+/// <summary>
+/// called when lose all health, but not die
+/// </summary>
 public class DamageState : State
 {
     float damageTime = 1.7f;
@@ -200,23 +195,11 @@ public class DamageState : State
     public DamageState(GenericAnt owner) //also initilize any behaviour tree used on the state as well
     {
         this.owner = owner;
-
-
-        //PerformAttack performAttack = new PerformAttack(owner);
-        //AttackWait attackWait = new AttackWait(owner);
-        ////MoveTowards moveTowards = new MoveTowards(owner);
-        ////CallBackup callBackup = new CallBackup(owner);
-
-
-        //topNode = new Sequence(new List<Node> { performAttack, attackWait });
     }
     public void enter()
     {
         damageTime = 1.7f;
         owner.anim.SetTrigger("Dazed");
-        
-        //owner.transform.rotation = Quaternion.Euler(90, 67, 180);
-        //initiate the attack animation and junk
     }
 
     public void execute()
@@ -231,10 +214,12 @@ public class DamageState : State
     public void exit()
     {
         damageTime = 1.7f;
-        //owner.transform.rotation = Quaternion.Euler(0, 180, 0);
     }
 }
 
+/// <summary>
+/// called when lost 100% of the health
+/// </summary>
 public class DeadState : State
 {
     float deadTime = 3;
@@ -242,23 +227,11 @@ public class DeadState : State
     public DeadState(GenericAnt owner) //also initilize any behaviour tree used on the state as well
     {
         this.owner = owner;
-
-
-        //PerformAttack performAttack = new PerformAttack(owner);
-        //AttackWait attackWait = new AttackWait(owner);
-        ////MoveTowards moveTowards = new MoveTowards(owner);
-        ////CallBackup callBackup = new CallBackup(owner);
-
-
-        //topNode = new Sequence(new List<Node> { performAttack, attackWait });
     }
     public void enter()
     {
         deadTime = 3;
-
-        //owner.transform.rotation = Quaternion.Euler(0, 0, 180);
         owner.anim.SetTrigger("Dead");
-        //initiate the attack animation and junk
     }
 
     public void execute()
@@ -273,5 +246,45 @@ public class DeadState : State
     public void exit()
     {
         deadTime = 3;
+    }
+}
+
+
+/// <summary>
+/// The attack state of the hunter ant, where it uses a weapon to do its attacking
+/// </summary>
+public class HunterAttack : AttackState
+{
+    HunterAnt owner;
+    float shootDelay = 0.5f;
+    public HunterAttack(GenericAnt owner) : base(owner) //also initilize any behaviour tree used on the state as well
+    {
+        this.owner = owner.gameObject.GetComponent<HunterAnt>();
+    }
+    public override void enter()
+    {
+        owner = owner.gameObject.GetComponent<HunterAnt>();
+        shootDelay = 0.25f;
+        owner.anim.SetTrigger("Idle");
+    }
+
+    public override void execute()
+    {
+        shootDelay -= Time.deltaTime;
+        if (owner.nextPosTransform == null || Vector3.Distance(owner.transform.position, owner.nextPosTransform.position) > 18)
+            owner.stateMachine.changeState(owner.stateMachine.Investigate);
+        else if (shootDelay <= 0)
+        {
+            shootDelay = 0.5f;
+            Debug.Log(owner.nextPosTransform.gameObject.name);
+            owner.weaponClass.LookAt(owner.nextPosTransform.position);
+            owner.weaponClass.Fire(owner.nextPosTransform.position); //fire at the players segment
+        }
+        //also if lose sight of the player as well
+    }
+
+    public override void exit()
+    {
+        shootDelay = 0.5f;
     }
 }
