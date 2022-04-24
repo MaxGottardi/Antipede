@@ -5,6 +5,7 @@ using UnityEngine;
 public class CollisionManager : MonoBehaviour
 {
     [SerializeField] MCentipedeBody player;
+    [SerializeField] SFXManager sfxManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +24,7 @@ public class CollisionManager : MonoBehaviour
         {
             player.IncreaseSpeed(50);
             Destroy(other.gameObject);
+            sfxManager.CollectPowerup();
         }
     }
 
