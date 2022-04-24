@@ -25,7 +25,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	[Min(Vector3.kEpsilon)] public float MaxTurnDegreesPerFrame = 7f;
 	[SerializeField, Tooltip("Any additional Segments that are not spawned in Constuct.")] List<MSegment> CustomSegments;
 
-	List<MSegment> Segments;
+	public List<MSegment> Segments;
 	SegmentsInformation SegmentsInfo;
 
 	public float maxSpeed = 750;

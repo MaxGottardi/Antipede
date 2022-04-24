@@ -21,6 +21,8 @@ public class GenericAnt : MonoBehaviour
 
 
     public float health = 100;
+    float maxHealth;
+    public GameObject leftAntenna, rightAntenna;
     [HideInInspector] public float callBackupWait = 0; //the time remaining which cannot call a backup
     [HideInInspector] public StateMachine stateMachine;
     [HideInInspector] public bool canInvestigate = false, callingBackup = false;
@@ -49,6 +51,7 @@ public class GenericAnt : MonoBehaviour
 
     public virtual void Start()
     {
+        maxHealth = health;
         pathToNextPos = new List<Vector3>();
         anim = transform.GetChild(0).gameObject.GetComponent<Animator>();
         //anim.SetTrigger("Walk");
@@ -116,6 +119,19 @@ public class GenericAnt : MonoBehaviour
         if (stateMachine.currState != stateMachine.Dead)
         {
             health -= amount;
+
+            //needs to be a value between 30 and 150
+            ///curr hea
+            float healthRatio = health / maxHealth;
+            //new_value = ( (old_value - old_min) / (old_max - old_min) ) * (new_max - new_min) + new_min
+            float currRote;
+            if (health > 0)
+                currRote = (healthRatio) * (150 - 30) + 30;
+            else
+                currRote = 150;
+            leftAntenna.transform.localRotation = Quaternion.Euler(currRote, leftAntenna.transform.localRotation.y, leftAntenna.transform.localRotation.z);
+            rightAntenna.transform.localRotation = Quaternion.Euler(currRote, leftAntenna.transform.localRotation.y, leftAntenna.transform.localRotation.z);
+
             if (health <= 0)
                 stateMachine.changeState(stateMachine.Dead);
             else
