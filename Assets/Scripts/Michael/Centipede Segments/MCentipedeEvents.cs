@@ -1,34 +1,29 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(MCentipedeBody))]
 public class MCentipedeEvents : MonoBehaviour
 {
-	/// <summary>The delegate to call when a Segment of the Centipede collides with something.</summary>
-	public Action<Collider> OnSegmentTriggerEnter;
-
-	MCentipedeBody body;
-
-	void Awake()
-	{
-		body = GetComponent<MCentipedeBody>();
-		OnSegmentTriggerEnter += OnTriggerEnter;
-	}
+	// MCentipedeBody Body;
+	// void Awake() { Body = GetComponent<MCentipedeBody>(); }
 
 	void OnTriggerEnter(Collider other)
 	{
 		// Handle Centipede Trigger Entries here...
 
-		if (other.CompareTag("Add Segment"))
+		if (other.CompareTag("Weapon Pickup"))
 		{
-			body.AddSegment();
+			WeaponPickup PickedUp = other.GetComponent<WeaponPickup>();
+
+			if (PickedUp != null)
+			{
+				WeaponCardUI.Add(PickedUp.Weapon);
+			}
+			else
+			{
+				Debug.LogError("Weapon Pickup has no WeaponPickup Component: " + other.name);
+			}
+
+			Destroy(other.gameObject);
 		}
-	}
-
-	void OnDestroy()
-	{
-		// Garbage collection.
-
-		OnSegmentTriggerEnter -= null;
 	}
 }

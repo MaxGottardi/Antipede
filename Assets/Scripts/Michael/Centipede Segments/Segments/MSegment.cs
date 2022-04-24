@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MCentipedeSegmentEvents))]
@@ -11,6 +9,10 @@ public class MSegment : MonoBehaviour
 	float Distance;
 	//public bool beingAttacked = false;
 
+	public bool bIgnoreFromWeapons;
+	Transform WeaponSocket;
+	Weapon Weapon;
+
 	/// <summary>Initialises this Segment to follow ForwardNeighbour at FollowSpeed and turning at MaxTurnDegreesPerFrame.</summary>
 	/// <remarks>MaxTurnDegreesPerFrame will be multiplied to try and prevent disconnection. Increase as needed.</remarks>
 	/// <param name="ForwardNeighbour">The Transform to follow when the body moves.</param>
@@ -20,11 +22,13 @@ public class MSegment : MonoBehaviour
 	/////// <param name="beingAttacked">Has an  ant chosen to attack this segment or not</param>
 	public void Initialise(Transform ForwardNeighbour, float FollowSpeed, float MaxTurnDegreesPerFrame, float Distance)
 	{
-		this.ForwardNeighbour = ForwardNeighbour;
+		SetForwardNeighbour(ForwardNeighbour);
 		rb = GetComponent<Rigidbody>();
 		this.FollowSpeed = FollowSpeed;
 		this.MaxTurnDegreesPerFrame = MaxTurnDegreesPerFrame * 20;
 		this.Distance = Distance;
+
+		WeaponSocket = transform.Find("Weapon Attachment Socket");
 	}
 
 	void FixedUpdate()
@@ -39,5 +43,36 @@ public class MSegment : MonoBehaviour
 		}
 	}
 
+	public void SetForwardNeighbour(Transform NewForwardNeighbour)
+	{
+		if (NewForwardNeighbour != null)
+		{
+			ForwardNeighbour = NewForwardNeighbour;
+		}
+	}
+
+	public void SetWeapon(Weapon Weapon)
+	{
+		if (bIgnoreFromWeapons)
+			return;
+
+		if (!WeaponSocket)
+		{
+			Debug.LogError("No Weapon Socket attached onto this Segment: " + name);
+			return;
+		}
+
+		Weapon AttachedWeapon = Instantiate(Weapon, WeaponSocket.position, Quaternion.identity);
+		this.Weapon = AttachedWeapon;
+		AttachedWeapon.transform.SetParent(WeaponSocket);
+	}
+
+	public bool TryGetWeaponSocket(out Transform Socket)
+	{
+		Socket = WeaponSocket;
+		return Socket;
+	}
+
 	public static implicit operator Transform(MSegment s) => s.transform;
+	public static implicit operator Weapon(MSegment s) => s.Weapon;
 }

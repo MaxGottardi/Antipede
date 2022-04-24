@@ -11,6 +11,7 @@ TagManager:
   - Enemy
   - GuardNode
   - HunterNode
+  - Weapon Pickup
   layers:
   - Default
   - TransparentFX
