@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
 
 public class FABRIK : MonoBehaviour
 {
@@ -29,6 +28,7 @@ public class FABRIK : MonoBehaviour
 	[SerializeField] List<FABRIKLeg> Legs;
 
 	Vector3 LastFramePosition, ThisFramePosition;
+	/// <summary>True if this Leg is still.</summary>
 	bool bHasStopped;
 
 	void Start()
@@ -39,6 +39,7 @@ public class FABRIK : MonoBehaviour
 	void FixedUpdate()
 	{
 		ThisFramePosition = transform.position;
+
 		if (HasMovedSinceLastFrame())
 		{
 			ExecuteFABRIKLogic(false);
@@ -46,14 +47,18 @@ public class FABRIK : MonoBehaviour
 		}
 		else
 		{
+			// Only run FABRIK once more to ensure Legs are on the ground.
+			// But do not continue FABRIK when not needed - when this transform is not moving.
 			if (!bHasStopped)
 				ExecuteFABRIKLogic(true);
 
 			bHasStopped = true;
 		}
+
 		LastFramePosition = ThisFramePosition;
 	}
 
+	/// <returns>True if this transform has moved kEpsilon since the last FixedUpdate call.</returns>
 	bool HasMovedSinceLastFrame()
 	{
 		Vector3 DeltaPosition = ThisFramePosition - LastFramePosition;
@@ -85,6 +90,7 @@ public class FABRIK : MonoBehaviour
 
 			// Leg at index 1.
 			FABRIKLeg L1 = Legs[1];
+			// Mirror Random with Min and Max.
 			L1.Height = MinLegUpHeight + MaxLegUpHeight - Random;
 			Legs[1] = L1;
 		}
@@ -250,7 +256,7 @@ struct FABRIKLeg
 	public Vector3 TargetRayOrigin;
 	public List<Transform> Limbs;
 	public List<Transform> KneeOrToe;
-	public float Height;
+	[HideInInspector] public float Height;
 	public Vector3 Bias;
 
 	public Vector3[] GetJointPositions() => KneeOrToe.Select(KT => KT.position).ToArray();

@@ -2550,6 +2550,7 @@ GameObject:
   - component: {fileID: 523351801}
   - component: {fileID: 523351800}
   - component: {fileID: 523351799}
+  - component: {fileID: 523351802}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2615,13 +2616,39 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 523351798}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0.4300003}
+  m_LocalRotation: {x: 0.20364176, y: 0, z: 0, w: 0.97904545}
+  m_LocalPosition: {x: 12.18, y: 4.190195, z: 0.13597059}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &523351802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 523351798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13befcf86535b694094d415b33a4cdca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bDrawRotationalLines: 0
+  Camera: {fileID: 523351801}
+  Target: {fileID: 671602002}
+  TargetOffset: {x: 0, y: 1, z: 0}
+  Distance: 7.92
+  GimbalRotation: {x: 0, y: 22.32, z: 0}
+  CameraRotation: {x: 23.5, y: 0, z: 0}
+  bInheritRotation: 0
+  IgnoreFromCollisions:
+    serializedVersion: 2
+    m_Bits: 64
+  bUseLag: 1
+  PositionalLagStrength: 0.2
+  RotationalLagStrength: 0.2
 --- !u!1 &540146007
 GameObject:
   m_ObjectHideFlags: 0
@@ -3629,7 +3656,7 @@ MonoBehaviour:
   Tail: {fileID: 2090525231}
   Weapons: {fileID: 0}
   Segment: {fileID: 8759839556243553130, guid: bf0be84eabd112f46b057237912ecb11, type: 3}
-  NumberOfSegments: 7
+  NumberOfSegments: 0
   MovementSpeed: 250
   TurnDegrees: 7
   FollowSpeed: 250
