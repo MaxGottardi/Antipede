@@ -48,6 +48,12 @@ public class CollisionManager : MonoBehaviour
         {
             sfxManager.EnterBoss();
         }
+        if (other.gameObject.tag == "Card")
+        {
+            sfxManager.CollectSpecial();
+            //DO SOMETHING WITH CARDS
+            Destroy(other.gameObject);
+        }
     }
 
 }

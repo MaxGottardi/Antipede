@@ -11,10 +11,10 @@ TagManager:
   - Enemy
   - Speed
   - Health
-  - Special
   - BossTrigger
   - CaveTrigger
   - Larvae
+  - Card
   layers:
   - Default
   - TransparentFX
