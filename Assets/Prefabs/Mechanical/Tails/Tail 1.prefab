@@ -802,14 +802,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5167858114301206585}
-  m_LocalRotation: {x: 0.7059322, y: -0.04074077, z: 0.5145876, w: 0.4849738}
-  m_LocalPosition: {x: -0.1447626, y: -0.035183847, z: 0.05651033}
+  m_LocalRotation: {x: 0.70348305, y: -0.071494564, z: 0.5352521, w: 0.46206635}
+  m_LocalPosition: {x: -0.15576224, y: -0.04556167, z: 0.03835082}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4444329744134213659}
   m_Father: {fileID: 7346012424903517034}
   m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 11.733, y: 10.036, z: 1.034}
+  m_LocalEulerAnglesHint: {x: 12.559, y: 8.974, z: 0.99}
 --- !u!1 &5195808824929681535
 GameObject:
   m_ObjectHideFlags: 0
@@ -1261,13 +1261,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69ffbef0e5f63614b9e8f6a3009af6ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bShowJoints: 1
+  bShowJoints: 0
   JointGizmosRadius: 0.005
-  bShowBiasPoint: 1
+  bShowBiasPoint: 0
   BiasGizmosRadius: 0.005
-  bShowRays: 1
+  bShowRays: 0
   MaximumPasses: 100
   Tolerance: 0.01
+  MinLegUpHeight: 0.2
+  MaxLegUpHeight: 0.7
+  LegUpSpeed: 40
   Legs:
   - TargetRayOrigin: {x: -0.4, y: 0, z: -0.05}
     Limbs:
@@ -1280,6 +1283,7 @@ MonoBehaviour:
     - {fileID: 5429970999886546660}
     - {fileID: 2318240148809599581}
     - {fileID: 6460348367948540269}
+    Height: 0
     Bias: {x: 0, y: 10, z: 0}
   - TargetRayOrigin: {x: 0.4, y: 0, z: -0.05}
     Limbs:
@@ -1292,6 +1296,7 @@ MonoBehaviour:
     - {fileID: 3062948502546757058}
     - {fileID: 8369274135707508639}
     - {fileID: 8682112766222517939}
+    Height: 0
     Bias: {x: 0, y: 10, z: 0}
 --- !u!1 &7346012424903517035
 GameObject:
@@ -1389,8 +1394,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8323045670990572279}
-  m_LocalRotation: {x: -0.00000029802322, y: -0.00000004656613, z: 0.043619473, w: 0.9990483}
-  m_LocalPosition: {x: -0.02363154, y: -0.00008821534, z: -0.000015821308}
+  m_LocalRotation: {x: -0.000000029802322, y: -0.000000033527613, z: -0.000000026077032, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7467659675141462710}

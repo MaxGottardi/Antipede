@@ -1528,13 +1528,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69ffbef0e5f63614b9e8f6a3009af6ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bShowJoints: 1
+  bShowJoints: 0
   JointGizmosRadius: 0.005
-  bShowBiasPoint: 1
+  bShowBiasPoint: 0
   BiasGizmosRadius: 0.005
-  bShowRays: 1
+  bShowRays: 0
   MaximumPasses: 100
   Tolerance: 0.01
+  MinLegUpHeight: 0.2
+  MaxLegUpHeight: 0.7
+  LegUpSpeed: 40
   Legs:
   - TargetRayOrigin: {x: -0.4, y: 0, z: -0.05}
     Limbs:
@@ -1547,6 +1550,7 @@ MonoBehaviour:
     - {fileID: 5314379529645251003}
     - {fileID: 8120380675555163932}
     - {fileID: 679034516629741017}
+    Height: 0
     Bias: {x: 0, y: 10, z: 0}
   - TargetRayOrigin: {x: 0.4, y: 0, z: -0.05}
     Limbs:
@@ -1559,4 +1563,5 @@ MonoBehaviour:
     - {fileID: 39951782999568081}
     - {fileID: 3272454368241975037}
     - {fileID: 7408344314183047109}
+    Height: 0
     Bias: {x: 0, y: 10, z: 0}

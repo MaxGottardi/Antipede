@@ -1225,15 +1225,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69ffbef0e5f63614b9e8f6a3009af6ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bShowJoints: 1
+  bShowJoints: 0
   JointGizmosRadius: 0.01
-  bShowBiasPoint: 1
+  bShowBiasPoint: 0
   BiasGizmosRadius: 0.01
-  bShowRays: 1
+  bShowRays: 0
   MaximumPasses: 100
   Tolerance: 0.01
+  MinLegUpHeight: 0.2
+  MaxLegUpHeight: 0.7
+  LegUpSpeed: 40
   Legs:
-  - TargetRayOrigin: {x: -0.4, y: 0, z: -0.35}
+  - TargetRayOrigin: {x: -0.5, y: 0, z: -0.2}
     Limbs:
     - {fileID: 2251309791674776955}
     - {fileID: 5900302916877123352}
@@ -1244,8 +1247,9 @@ MonoBehaviour:
     - {fileID: 7919543665475293875}
     - {fileID: 2045370933618967156}
     - {fileID: 830329968256955418}
+    Height: 0
     Bias: {x: 0, y: 0.6, z: 0}
-  - TargetRayOrigin: {x: 0.4, y: 0, z: -0.35}
+  - TargetRayOrigin: {x: 0.5, y: 0, z: -0.2}
     Limbs:
     - {fileID: 6607783341869964762}
     - {fileID: 2851431697354026088}
@@ -1256,6 +1260,7 @@ MonoBehaviour:
     - {fileID: 6735754842928285799}
     - {fileID: 1739801358635188622}
     - {fileID: 2749425508377481841}
+    Height: 0
     Bias: {x: 0, y: 0.6, z: 0}
 --- !u!1 &7567231833259232951
 GameObject:
