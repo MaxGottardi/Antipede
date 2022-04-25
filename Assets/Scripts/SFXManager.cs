@@ -36,14 +36,32 @@ public class SFXManager : MonoBehaviour
 
     public void EnterBoss()
     {
-        sourceMusic.clip = bossMusic;
-        sourceMusic.Play();
+        if (sourceMusic.clip != bossMusic)
+        {
+            sourceMusic.clip = bossMusic;
+            sourceMusic.Play();
+        }
+        else
+        {
+            sourceMusic.clip = mainMusic;
+            sourceMusic.Play();
+        }
+
     }
 
     public void EnterCave()
     {
-        sourceMusic.clip = caveMusic;
-        sourceMusic.Play();
+        if (sourceMusic.clip == caveMusic)
+        {
+            sourceMusic.clip = mainMusic;
+            sourceMusic.Play();
+        }
+        else if (sourceMusic.clip == mainMusic)
+        {
+            //AudioFadeOut(sourceMusic, 7f);
+            sourceMusic.clip = caveMusic;
+            sourceMusic.Play();
+        }
     }
 
     public void CollectLarvae()
@@ -68,6 +86,22 @@ public class SFXManager : MonoBehaviour
     {
         sourceDamage.clip = damageSFX;
         sourceDamage.Play();
+    }
+
+    public static void AudioFadeOut(AudioSource audioSource, float FadeTime)
+    {
+
+        float startVolume = audioSource.volume;
+
+        while (audioSource.volume > 0)
+        {
+            audioSource.volume -= startVolume * Time.deltaTime / FadeTime;
+            Debug.Log(audioSource.volume);
+        }
+
+            //audioSource.Stop();
+            //audioSource.volume = startVolume;
+
     }
     
 

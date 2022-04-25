@@ -40,6 +40,14 @@ public class CollisionManager : MonoBehaviour
             Destroy(other.gameObject);
             sfxManager.CollectLarvae();
         }
+        if (other.gameObject.tag == "CaveTrigger")
+        {
+            sfxManager.EnterCave();
+        }
+        if (other.gameObject.tag == "BossTrigger")
+        {
+            sfxManager.EnterBoss();
+        }
     }
 
 }
