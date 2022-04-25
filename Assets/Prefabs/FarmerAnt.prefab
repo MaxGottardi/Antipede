@@ -888,6 +888,7 @@ MonoBehaviour:
   canInvestigate: 0
   callingBackup: 0
   Speed: 4
+  animMultiplier: 1
   rotSpeed: 300
   FollowingNodes: FarmerNode
   groundOffset: 0.1

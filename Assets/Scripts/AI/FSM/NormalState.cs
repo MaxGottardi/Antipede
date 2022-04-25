@@ -309,3 +309,36 @@ public class HunterDead : DeadState
         owner.DropWeapon();
     }
 }
+
+public class GuardAttack : AttackState
+{
+    float attackTime = 4;
+    GenericAnt owner;
+    public GuardAttack(GenericAnt owner) : base(owner) //also initilize any behaviour tree used on the state as well
+    {
+        this.owner = owner;
+    }
+    public override void enter()
+    {
+        attackTime = 3;
+        owner.anim.SetTrigger("Attack");
+    }
+
+    public override void execute()
+    {
+        attackTime -= Time.deltaTime;
+        if (attackTime <= 0)//when finished attacking add any damage to the appropriate segment
+        {
+            //////if (Vector3.Distance(blackboard.transform.position, blackboard.nextPosTransform.transform.position) < blackboard.attachDist)
+            //////  GameManager1.GetComponent<MCentipedeBody>().RemoveSegment(100);
+            //////  GameManager1.GetComponent<MCentipedeBody>().RemoveSegment(100);
+
+            owner.stateMachine.changeState(owner.stateMachine.Investigate);
+        }
+    }
+
+    public override void exit()
+    {
+        attackTime = 3;
+    }
+}

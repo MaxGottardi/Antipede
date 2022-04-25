@@ -29,6 +29,7 @@ public class GenericAnt : MonoBehaviour
 
     [Header("Movement Settings")]
     public float Speed = 1.5f;
+    public float animMultiplier;
     public float rotSpeed = 5;
     public string FollowingNodes;
     //the offset of the y axis the ant recieves to ensure it will always appear on the ground
@@ -54,6 +55,7 @@ public class GenericAnt : MonoBehaviour
         maxHealth = health;
         pathToNextPos = new List<Vector3>();
         anim = transform.GetChild(0).gameObject.GetComponent<Animator>();
+        anim.SetFloat("SpeedMultiplier", animMultiplier);
         //anim.SetTrigger("Walk");
         nodesList = GameObject.FindGameObjectsWithTag(FollowingNodes);
         stateMachine = new StateMachine(this);

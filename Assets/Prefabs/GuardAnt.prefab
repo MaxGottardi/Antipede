@@ -966,7 +966,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6028815149487376563}
   - component: {fileID: 9124651029160023037}
-  - component: {fileID: 901061600330161488}
+  - component: {fileID: 6554889857882964721}
   - component: {fileID: 6286141309605030278}
   m_Layer: 7
   m_Name: GuardAnt
@@ -999,7 +999,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8856138776421195210}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &901061600330161488
+--- !u!114 &6554889857882964721
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1008,7 +1008,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8856138776421195210}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 460706a6f0acb9d418692c0dacefd74c, type: 3}
+  m_Script: {fileID: 11500000, guid: e134888c7f459004c9f52a716e3504c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   nextPosTransform: {fileID: 0}
@@ -1052,6 +1052,7 @@ MonoBehaviour:
   canInvestigate: 0
   callingBackup: 0
   Speed: 2
+  animMultiplier: 0.25
   rotSpeed: 200
   FollowingNodes: GuardNode
   groundOffset: 0.17
