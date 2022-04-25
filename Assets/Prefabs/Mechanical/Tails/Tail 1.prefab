@@ -1266,13 +1266,14 @@ MonoBehaviour:
   bShowBiasPoint: 0
   BiasGizmosRadius: 0.005
   bShowRays: 0
+  bAlwaysRunRegardless: 0
   MaximumPasses: 100
   Tolerance: 0.01
   MinLegUpHeight: 0.2
   MaxLegUpHeight: 0.7
   LegUpSpeed: 40
   Legs:
-  - TargetRayOrigin: {x: -0.4, y: 0, z: -0.05}
+  - TargetRayOrigin: {x: -0.4, y: 15, z: -0.05}
     Limbs:
     - {fileID: 7132577830449820399}
     - {fileID: 3413128561049780042}
@@ -1285,7 +1286,7 @@ MonoBehaviour:
     - {fileID: 6460348367948540269}
     Height: 0
     Bias: {x: 0, y: 10, z: 0}
-  - TargetRayOrigin: {x: 0.4, y: 0, z: -0.05}
+  - TargetRayOrigin: {x: 0.4, y: 15, z: -0.05}
     Limbs:
     - {fileID: 4661370614195041747}
     - {fileID: 825221504284557441}

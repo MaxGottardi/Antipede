@@ -14,6 +14,9 @@ public class FABRIK : MonoBehaviour
 	[SerializeField] float BiasGizmosRadius = .1f;
 
 	[SerializeField] bool bShowRays = true;
+
+	[SerializeField] bool bAlwaysRunRegardless;
+	bool bHasBeenShownWarning;
 #endif
 
 	[Header("FABRIK Settings.")]
@@ -38,6 +41,21 @@ public class FABRIK : MonoBehaviour
 
 	void FixedUpdate()
 	{
+#if UNITY_EDITOR
+		if (bAlwaysRunRegardless)
+		{
+			ExecuteFABRIKLogic(true);
+
+			if (!bHasBeenShownWarning)
+			{
+				Debug.LogWarning(nameof(bAlwaysRunRegardless) + " is switched on. Remember to turn it off if you're not testing <color=#FEFE00>:)</color>");
+				bHasBeenShownWarning = true;
+			}
+
+			return;
+		}
+#endif
+
 		ThisFramePosition = transform.position;
 
 		if (HasMovedSinceLastFrame())
@@ -206,7 +224,7 @@ public class FABRIK : MonoBehaviour
 	void RaySettings(FABRIKLeg Leg, out Vector3 Origin, out Vector3 Direction)
 	{
 		Origin = transform.position + GetRelativeXYZ(Leg.TargetRayOrigin.x, Leg.TargetRayOrigin.y, Leg.TargetRayOrigin.z);
-		Direction = Vector3.down;
+		Direction = -transform.up;
 	}
 
 	Vector3 GetRelativeXYZ(Vector3 V) => GetRelativeXYZ(V.x, V.y, V.z);
