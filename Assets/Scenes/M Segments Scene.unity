@@ -17465,7 +17465,7 @@ MonoBehaviour:
   Segments: []
   maxSpeed: 450
   defaultSpeed: 250
-  DeathScreen: {fileID: 0}
+  DeathScreen: {fileID: 1190100289}
 --- !u!54 &1046383395
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -27289,13 +27289,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1661442043}
-  m_LocalRotation: {x: 0, y: 0, z: -0.38268343, w: 0.92387956}
-  m_LocalPosition: {x: -37, y: -1.22, z: 0.701081}
+  m_LocalRotation: {x: 0, y: 0, z: -0.3158974, w: 0.94879335}
+  m_LocalPosition: {x: -37.67, y: -2.02, z: 0.701081}
   m_LocalScale: {x: 1.5, y: 1, z: 1.5}
   m_Children: []
   m_Father: {fileID: 1781366544}
   m_RootOrder: 63
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -45}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -36.83}
 --- !u!64 &1661442045
 MeshCollider:
   m_ObjectHideFlags: 0
