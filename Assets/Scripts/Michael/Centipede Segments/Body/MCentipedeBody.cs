@@ -8,6 +8,7 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	public Transform Head;
 	public Transform Tail;
+	public GameObject DamageParticles;
 	MSegment TailSegment;
 	[HideInInspector] public MCentipedeWeapons Weapons;
 
@@ -139,12 +140,14 @@ public partial class MCentipedeBody : MonoBehaviour
 		if (NumberOfSegments <= 1)
 		{
 			Debug.Log("You Died");
-			DeathScreen.SetActive(true);
+			if (DeathScreen != null)
+				DeathScreen.SetActive(true);
 			Time.timeScale = 0;
 			return;
 		}
 
 		MSegment lastSegment = GetLast();
+		Instantiate(DamageParticles, lastSegment.transform.position, Quaternion.identity);
 		/*foreach (MSegment segment in Segments)
 		{
 			lastSegment = segment;

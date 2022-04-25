@@ -38,7 +38,7 @@ public class Projectile : MonoBehaviour
     {
         if(isEnemyProjectile && other.gameObject.CompareTag("PlayerSegment"))
         {
-			////////GameManager1.mCentipedeBody.RemoveSegment(30);
+			GameManager1.mCentipedeBody.RemoveSegment(30);
 			Instantiate(hitParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 			Destroy(gameObject);
         }

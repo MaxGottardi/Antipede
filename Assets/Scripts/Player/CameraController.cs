@@ -26,6 +26,6 @@ public class CameraController : MonoBehaviour
 
     public void camShake()
     {
-        animator.SetTrigger("shake");
+        transform.position += transform.forward * 2;
     }
 }

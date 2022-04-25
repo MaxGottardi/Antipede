@@ -172,8 +172,8 @@ public class AttackState : State
         attackTime -= Time.deltaTime;
         if (attackTime <= 0)//when finished attacking add any damage to the appropriate segment
         {
-            //////if (Vector3.Distance(blackboard.transform.position, blackboard.nextPosTransform.transform.position) < blackboard.attachDist)
-            //////  GameManager1.GetComponent<MCentipedeBody>().RemoveSegment(100);
+            if (owner.nextPosTransform && Vector3.Distance(owner.transform.position, owner.nextPosTransform.transform.position) < owner.attachDist)
+                GameManager1.mCentipedeBody.RemoveSegment(100);
 
             owner.stateMachine.changeState(owner.stateMachine.Investigate);
         }
@@ -312,7 +312,7 @@ public class HunterDead : DeadState
 
 public class GuardAttack : AttackState
 {
-    float attackTime = 4;
+    float attackTime = 2.5f;
     GenericAnt owner;
     public GuardAttack(GenericAnt owner) : base(owner) //also initilize any behaviour tree used on the state as well
     {
@@ -320,7 +320,7 @@ public class GuardAttack : AttackState
     }
     public override void enter()
     {
-        attackTime = 3;
+        attackTime = 2.5f;
         owner.anim.SetTrigger("Attack");
     }
 
@@ -329,9 +329,11 @@ public class GuardAttack : AttackState
         attackTime -= Time.deltaTime;
         if (attackTime <= 0)//when finished attacking add any damage to the appropriate segment
         {
-            //////if (Vector3.Distance(blackboard.transform.position, blackboard.nextPosTransform.transform.position) < blackboard.attachDist)
-            //////  GameManager1.GetComponent<MCentipedeBody>().RemoveSegment(100);
-            //////  GameManager1.GetComponent<MCentipedeBody>().RemoveSegment(100);
+            if (owner.nextPosTransform && Vector3.Distance(owner.transform.position, owner.nextPosTransform.transform.position) < owner.attachDist)
+            {
+                GameManager1.mCentipedeBody.RemoveSegment(100);
+                GameManager1.mCentipedeBody.RemoveSegment(100);
+            }
 
             owner.stateMachine.changeState(owner.stateMachine.Investigate);
         }
@@ -339,6 +341,6 @@ public class GuardAttack : AttackState
 
     public override void exit()
     {
-        attackTime = 3;
+        attackTime = 2.5f;
     }
 }

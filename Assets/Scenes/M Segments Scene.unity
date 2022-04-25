@@ -13075,6 +13075,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Head: {fileID: 1289053977}
   Tail: {fileID: 978763717}
+  DamageParticles: {fileID: 0}
   Weapons: {fileID: 0}
   Segment: {fileID: 6840749143041071638, guid: 5f9badff00596854592f36f53d9e3d4a, type: 3}
   NumberOfSegments: 20
@@ -17447,6 +17448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Head: {fileID: 799830278}
   Tail: {fileID: 1843694680}
+  DamageParticles: {fileID: 1983914251257026005, guid: 9ed20eb1978768643b467b5f79d27218, type: 3}
   Weapons: {fileID: 0}
   Segment: {fileID: 8759839556243553130, guid: bf0be84eabd112f46b057237912ecb11, type: 3}
   NumberOfSegments: 7
@@ -29919,6 +29921,7 @@ GameObject:
   - component: {fileID: 1805762204}
   - component: {fileID: 1805762210}
   - component: {fileID: 1805762209}
+  - component: {fileID: 1805762211}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -30062,6 +30065,25 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   bShowGrid: 0
+--- !u!95 &1805762211
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805762203}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1815848191
 GameObject:
   m_ObjectHideFlags: 0

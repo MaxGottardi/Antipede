@@ -8845,6 +8845,7 @@ MonoBehaviour:
   EnemyLayer:
     serializedVersion: 2
     m_Bits: 128
+  hitParticles: {fileID: 0}
 --- !u!114 &696952951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8932,6 +8933,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bUsePropagationDelay: 1
   PropagationDelay: 0.05
+  SegmentsWithWeapons: []
 --- !u!114 &696952956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9687,6 +9689,7 @@ MonoBehaviour:
   EnemyLayer:
     serializedVersion: 2
     m_Bits: 128
+  hitParticles: {fileID: 0}
 --- !u!114 &740873896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9713,6 +9716,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bUsePropagationDelay: 1
   PropagationDelay: 0.1
+  SegmentsWithWeapons: []
 --- !u!114 &740873898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9975,6 +9979,7 @@ MonoBehaviour:
   FollowSpeed: 0
   MaxTurnDegreesPerFrame: 0
   bIgnoreFromWeapons: 0
+  health: 100
 --- !u!135 &741667731
 SphereCollider:
   m_ObjectHideFlags: 0
