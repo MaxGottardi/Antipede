@@ -6,7 +6,8 @@
 public class Projectile : MonoBehaviour
 {
 	protected Rigidbody rb;
-	public bool isEnemyProjectile = false; //is the projectile shot by an enemy or not
+	public bool isEnemyProjectile = false; //is this projectile shot by an enemy or not
+	public GameObject hitParticles;
 
 	/// <remarks>Use as Awake/Start method.</remarks>
 	public virtual void Initialise()
@@ -27,10 +28,19 @@ public class Projectile : MonoBehaviour
 		if(!isEnemyProjectile && collision.gameObject.CompareTag("Enemy"))
         {
 			collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(30);
-        }
-		else if(isEnemyProjectile && collision.gameObject.CompareTag("PlayerSegment"))
+			Instantiate(hitParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
+			Destroy(gameObject);
+		}
+		
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(isEnemyProjectile && other.gameObject.CompareTag("PlayerSegment"))
         {
-			GameManager1.mCentipedeBody.RemoveSegment(30);
+			////////GameManager1.mCentipedeBody.RemoveSegment(30);
+			Instantiate(hitParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
+			Destroy(gameObject);
         }
     }
 }

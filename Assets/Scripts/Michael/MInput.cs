@@ -7,6 +7,7 @@ public class MInput : MonoBehaviour
 	MCentipedeBody body;
 	CentipedeMovement movement;
 	public LayerMask EnemyLayer;
+	public GameObject hitParticles;
 
 	float Horizontal;
 	float Vertical;
@@ -81,10 +82,18 @@ public class MInput : MonoBehaviour
 		Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * 1.1f, dist, EnemyLayer);
         foreach (Collider antCollider in colliders)
         {
-			if(antCollider.gameObject.transform.parent.GetComponent<GenericAnt>())
+			if (antCollider.gameObject.transform.parent.GetComponent<GenericAnt>())
+			{
 				antCollider.gameObject.transform.parent.GetComponent<GenericAnt>().ReduceHealth(100);
+				RaycastHit hit;
+				if (Physics.Raycast(transform.position, antCollider.gameObject.transform.position - transform.position, out hit, EnemyLayer))
+					Instantiate(hitParticles, hit.point + transform.up * 0.5f, Quaternion.identity);
+				else
+					Instantiate(hitParticles, transform.position, Quaternion.identity);
+
+			}
 			//body.AddSegment();
-        }
+		}
 
 	}
     void wait()

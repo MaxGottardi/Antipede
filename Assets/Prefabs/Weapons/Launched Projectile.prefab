@@ -235,3 +235,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 690a5f50535fc614cb108115d3dce06e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isEnemyProjectile: 0
+  hitParticles: {fileID: 1983914251257026005, guid: 9ed20eb1978768643b467b5f79d27218, type: 3}
