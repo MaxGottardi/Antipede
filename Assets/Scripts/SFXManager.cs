@@ -7,6 +7,8 @@ public class SFXManager : MonoBehaviour
 
     [SerializeField] AudioSource sourceMusic;
     [SerializeField] AudioSource sourcePlayer;
+    [SerializeField] AudioSource sourceDamage;
+    [SerializeField] AudioSource sourceWeapon;
 
     [SerializeField] AudioClip menuMusic;
     [SerializeField] AudioClip loadingMusic;
@@ -64,8 +66,9 @@ public class SFXManager : MonoBehaviour
 
     public void TakeDamage()
     {
-        sourcePlayer.clip = damageSFX;
-        sourcePlayer.Play();
+        sourceDamage.clip = damageSFX;
+        sourceDamage.Play();
     }
+    
 
 }

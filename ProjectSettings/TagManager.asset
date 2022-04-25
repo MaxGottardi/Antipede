@@ -14,6 +14,7 @@ TagManager:
   - Special
   - BossTrigger
   - CaveTrigger
+  - Larvae
   layers:
   - Default
   - TransparentFX
