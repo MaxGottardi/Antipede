@@ -29,7 +29,8 @@ public class CollisionManager : MonoBehaviour
         if (other.gameObject.tag == "Health")
         {
             HealthComponent health = player.GetComponent<HealthComponent>();
-            health.IncreaseHealth(10);
+            //health.IncreaseHealth(10);
+            player.AddSegment();
             Destroy(other.gameObject);
             sfxManager.CollectPowerup();
         }
