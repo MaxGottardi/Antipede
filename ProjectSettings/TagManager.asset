@@ -12,6 +12,7 @@ TagManager:
   - GuardNode
   - HunterNode
   - Weapon Pickup
+  - Tarantula
   layers:
   - Default
   - TransparentFX

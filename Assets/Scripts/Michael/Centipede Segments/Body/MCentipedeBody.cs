@@ -6,6 +6,7 @@ public partial class MCentipedeBody : MonoBehaviour
 {
 	[Header("Construction References.")]
 
+	public GameObject[] tarantulas;
 	public Transform Head;
 	public Transform Tail;
 	public GameObject DamageParticles;
@@ -52,6 +53,7 @@ public partial class MCentipedeBody : MonoBehaviour
 		}
 
 		Construct();
+		UpdateTarantulaTarget();
 	}
 
 	private void Update()
@@ -61,7 +63,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	}
 
 	public MSegment AddSegment()
-	{
+	{		
 		IncreaseSpeed(10);
 		float Z = NumberOfSegments * SegmentsInfo.SegmentScale.z + DeltaZ;
 
@@ -97,6 +99,7 @@ public partial class MCentipedeBody : MonoBehaviour
 		if (AddedSegment)
 			return AddedSegment;
 
+		UpdateTarantulaTarget();
 		Debug.LogError("No Segment was added!");
 		return null;
 	}
@@ -182,6 +185,10 @@ public partial class MCentipedeBody : MonoBehaviour
 			for (byte i = 0; i < CustomSegments.Count; ++i)
 				CustomSegments[i].transform.position = NewPos - (i * FollowDistance * newLast.forward);
 		}
+		// Ensure the Tail is properly 'attached' to the end Segment.
+		Transform newLast = GetLast();
+		Tail.position = newLast.position - newLast.forward * SegmentsInfo.SegmentScale.z;
+		UpdateTarantulaTarget();
 	}
 
 	public void IncreaseSpeed(float value)
@@ -259,6 +266,15 @@ public partial class MCentipedeBody : MonoBehaviour
 				S.FollowSpeed -= value;
 
 			TailSegment.FollowSpeed -= value;
+		}
+	}
+
+	public void UpdateTarantulaTarget()
+    {
+		tarantulas = GameObject.FindGameObjectsWithTag("Tarantula");
+		foreach (GameObject Tarantula in tarantulas)
+		{
+			Tarantula.GetComponent<Tarantula>().UpdateMiddleSeg();
 		}
 	}
 }
