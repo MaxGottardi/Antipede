@@ -36,7 +36,8 @@ public class CollisionManager : MonoBehaviour
         if (other.gameObject.tag == "Larvae")
         {
             HealthComponent health = player.GetComponent<HealthComponent>();
-            health.IncreaseHealth(10);
+            //health.IncreaseHealth(10);
+            player.AddSegment();
             Destroy(other.gameObject);
             sfxManager.CollectLarvae();
         }
