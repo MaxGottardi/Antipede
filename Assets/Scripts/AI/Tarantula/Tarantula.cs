@@ -21,15 +21,16 @@ public class Tarantula: MonoBehaviour
     private float distToPlayer;
 
     private GameObject middleSeg;
-    private GameObject[] segments;
+    private int middleSegInt;
 
     private Animation animator;
     private bool tarantulaMoving;
 
-    private bool attackingPlayer;
+    public bool attackingPlayer;
     private float attackDelay = 0.9f;
     private float attackTimer;
     private GameObject player;
+    //private bool attack;
     // Start is called before the first frame update
     void Awake()
     {
@@ -53,40 +54,47 @@ public class Tarantula: MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            Debug.Log(tarantulaMoving);
-            //DecreaseHealth();
+            //Debug.Log(tarantulaMoving);
+            DecreaseHealth();
         }
 
-        distToNest = Vector3.Distance(nest.transform.position, rotationPoint.transform.position);
-        distToPlayer = Vector3.Distance(rotationPoint.transform.position, middleSeg.transform.position);
-
-
-        if (distToPlayer < huntingRadius && !attackingPlayer)
+        if (middleSeg != null)
         {
-            if (distToNest < nestArea)
+            distToNest = Vector3.Distance(nest.transform.position, rotationPoint.transform.position);
+            distToPlayer = Vector3.Distance(rotationPoint.transform.position, middleSeg.transform.position);
+
+
+            if (distToPlayer < huntingRadius && !attackingPlayer)
             {
-                ChasePlayer();
+                if (distToNest < nestArea)
+                {
+                    ChasePlayer();
+                }
+                else if (nestArea > Vector3.Distance(middleSeg.transform.position, nest.transform.position))
+                {
+                    ChasePlayer();
+                }
+                else
+                {
+                    tarantulaMoving = false;
+                }
             }
-            else if (nestArea > Vector3.Distance(middleSeg.transform.position, nest.transform.position))
+
+            if (distToPlayer >= huntingRadius)
             {
-                ChasePlayer();
-            }
-            else
-            {
-                tarantulaMoving = false;
+                if (distToNest >= 1)
+                {
+                    ReturnToNest();
+                }
+                else
+                {
+                    tarantulaMoving = false;
+                }
             }
         }
-
-        if (distToPlayer >= huntingRadius)
+        else
         {
-            if (distToNest >= 1)
-            {
-                ReturnToNest();
-            }
-            else
-            {
-                tarantulaMoving = false;
-            }
+            tarantulaMoving = false;
         }
 
         if (tarantulaMoving && !attackingPlayer)
@@ -104,13 +112,15 @@ public class Tarantula: MonoBehaviour
             attackingPlayer = false;
         }
 
-        if (animator.IsPlaying("Attack"))
+        if (attackingPlayer)
         {
             attackTimer += Time.deltaTime;
             if (attackTimer >= attackDelay)
             {
-                player.GetComponent<MCentipedeBody>().RemoveSegment();
-                //player.GetComponent<HealthComponent>().DecreaseHealth(damage);
+                
+                player.GetComponent<MCentipedeBody>().RemoveSegment(100);
+                //Debug.Log(player.GetComponent<MCentipedeBody>().Segments.Count)
+
                 attackTimer = 0;
             }
         }
@@ -118,8 +128,10 @@ public class Tarantula: MonoBehaviour
 
     public void UpdateMiddleSeg()
     {
-        segments = GameObject.FindGameObjectsWithTag("PlayerSegment");
-        middleSeg = segments[segments.Length / 2];
+        
+        middleSegInt = (player.GetComponent<MCentipedeBody>().Segments.Count / 2);
+        middleSeg = player.GetComponent<MCentipedeBody>().Segments[middleSegInt].gameObject;
+        
     }
     public void ChasePlayer()
     {
@@ -168,8 +180,8 @@ public class Tarantula: MonoBehaviour
 
     public void AttackPlayer()
     {
-        attackingPlayer = true;
         animator.Play("Attack");
+        attackingPlayer = true;
         attackTimer = 0;
     }
 }

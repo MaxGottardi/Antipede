@@ -21,6 +21,7 @@ public class Jaws : MonoBehaviour
     {
         if (other.tag == "PlayerSegment")
         {
+            if (!tarantula.GetComponent<Tarantula>().attackingPlayer)
             tarantula.GetComponent<Tarantula>().AttackPlayer();
         }
     }

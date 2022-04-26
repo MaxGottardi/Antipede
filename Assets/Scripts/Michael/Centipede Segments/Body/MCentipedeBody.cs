@@ -150,6 +150,7 @@ public partial class MCentipedeBody : MonoBehaviour
 		}
 
 		MSegment lastSegment = GetLast();
+		//MSegment lastSegment = this[Segments.Count - 1];
 		Instantiate(DamageParticles, lastSegment.transform.position, Quaternion.identity);
 		/*foreach (MSegment segment in Segments)
 		{
@@ -160,6 +161,7 @@ public partial class MCentipedeBody : MonoBehaviour
 		if (lastSegment.ReduceHealth(healthReduction))
 		{
 			Destroy(lastSegment.gameObject);
+			UpdateTarantulaTarget();
 			DecreaseSpeed(10);
 
 			//int nextIndex = 1;
@@ -170,7 +172,7 @@ public partial class MCentipedeBody : MonoBehaviour
 
 			Segments.RemoveAt(Segments.Count - 1);
 			--NumberOfSegments;
-			GameManager1.cameraController.camShake();
+			//GameManager1.cameraController.camShake();
 
 			int lastSegIndex = Segments.Count - 1;
 			TailSegment.SetForwardNeighbour(Segments[lastSegIndex]);
@@ -184,11 +186,10 @@ public partial class MCentipedeBody : MonoBehaviour
 
 			for (byte i = 0; i < CustomSegments.Count; ++i)
 				CustomSegments[i].transform.position = NewPos - (i * FollowDistance * newLast.forward);
+			
 		}
-		// Ensure the Tail is properly 'attached' to the end Segment.
-		Transform newLast = GetLast();
-		Tail.position = newLast.position - newLast.forward * SegmentsInfo.SegmentScale.z;
-		UpdateTarantulaTarget();
+		
+		
 	}
 
 	public void IncreaseSpeed(float value)
