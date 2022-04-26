@@ -19,6 +19,12 @@ public class FABRIK : MonoBehaviour
 	bool bHasBeenShownWarning;
 #endif
 
+	// Optimisations
+	static SpringArm MainSpringArmComponent;
+	bool bIsVisible;
+	const float kSpringArmThreshold = 20;
+	const float kCameraDistanceThreshold = 17f;
+
 	[Header("FABRIK Settings.")]
 	[SerializeField] int MaximumPasses = 100;
 	[SerializeField] float Tolerance = .01f;
@@ -37,6 +43,14 @@ public class FABRIK : MonoBehaviour
 
 	void Start()
 	{
+		if (!MainSpringArmComponent)
+			MainSpringArmComponent = Camera.main.GetComponent<SpringArm>();
+
+#if UNITY_EDITOR
+		if (!MainSpringArmComponent)
+			Debug.LogWarning("The Camera has no Spring Arm Component. Optimisations made to FABRIK will be switched off.");
+#endif
+
 		InvokeRepeating(nameof(AssignLegHeights), 0, Mathf.PI / LegUpSpeed);
 	}
 
@@ -56,6 +70,15 @@ public class FABRIK : MonoBehaviour
 			return;
 		}
 #endif
+
+		// FABRIK will not execute if this Leg is too far from the Camera.
+		if (IsTooFarFromCamera())
+			return;
+
+		// FABRIK will not execute on *any* Leg if the Spring Arm Component is too far.
+		if (MainSpringArmComponent)
+			if (MainSpringArmComponent.Distance >= kSpringArmThreshold)
+				return;
 
 		ThisFramePosition = transform.position;
 		ThisFrameEulers = transform.eulerAngles;
@@ -252,6 +275,24 @@ public class FABRIK : MonoBehaviour
 	Vector3 GetRelativeXYZ(float X, float Y, float Z) => transform.right * X + transform.up * Y + transform.forward * Z;
 
 	#endregion
+
+	/// <returns>True if the distance between this and the Camera exceeds <see cref="kCameraDistanceThreshold"/>.</returns>
+	bool IsTooFarFromCamera()
+	{
+		if (MainSpringArmComponent)
+		{
+			Vector3 FABRIK = transform.position;
+			Vector3 Camera = MainSpringArmComponent.transform.position;
+
+			float A = FABRIK.x - Camera.x;
+			float B = FABRIK.y - Camera.y;
+			float C = FABRIK.z - Camera.z;
+
+			return (A * A + B * B + C * C) > (kCameraDistanceThreshold * kCameraDistanceThreshold);
+		}
+
+		return false;
+	}
 
 #if UNITY_EDITOR
 	void OnDrawGizmos()

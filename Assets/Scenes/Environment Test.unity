@@ -9204,6 +9204,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 742521257}
+  - component: {fileID: 742521260}
   - component: {fileID: 742521259}
   - component: {fileID: 742521258}
   m_Layer: 6
@@ -9397,6 +9398,48 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.28, y: 0.1, z: 0.1}
   m_Center: {x: 0.12, y: 0.02, z: 0}
+--- !u!23 &742521260
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742521256}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &751619793
 GameObject:
   m_ObjectHideFlags: 0
@@ -10248,6 +10291,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 7271532960614969395, guid: 64a3215ee4cb9d647abf2a63bedfaf91, type: 3}
+      propertyPath: Tolerance
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7271532960614969395, guid: 64a3215ee4cb9d647abf2a63bedfaf91, type: 3}
+      propertyPath: MaximumPasses
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 7755655236379656308, guid: 64a3215ee4cb9d647abf2a63bedfaf91, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -10746,6 +10797,14 @@ PrefabInstance:
     - target: {fileID: 3468600459112667064, guid: 92bd0dc9587b4ca4c862c9f6a59a2d32, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4438886602354123869, guid: 92bd0dc9587b4ca4c862c9f6a59a2d32, type: 3}
+      propertyPath: Tolerance
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4438886602354123869, guid: 92bd0dc9587b4ca4c862c9f6a59a2d32, type: 3}
+      propertyPath: MaximumPasses
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5957516614702154675, guid: 92bd0dc9587b4ca4c862c9f6a59a2d32, type: 3}
       propertyPath: m_Layer
@@ -11370,6 +11429,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 3225271519566883058, guid: db1841048a3ffda41a1dc4b6f22a8686, type: 3}
+      propertyPath: Tolerance
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3225271519566883058, guid: db1841048a3ffda41a1dc4b6f22a8686, type: 3}
+      propertyPath: MaximumPasses
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3924369489080238338, guid: db1841048a3ffda41a1dc4b6f22a8686, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -11634,6 +11701,8 @@ MonoBehaviour:
   GimbalRotation: {x: 0, y: 45, z: -0}
   CameraRotation: {x: 35.9, y: 0, z: 0}
   bInheritRotation: 0
+  bEnableScrollToDistance: 1
+  ScrollSensitivity: 1
   IgnoreFromCollisions:
     serializedVersion: 2
     m_Bits: 1600
@@ -21199,6 +21268,14 @@ PrefabInstance:
     - target: {fileID: 1932979764501899641, guid: 00a747c1b94695d439c2c171da56fdc6, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2093183087109085559, guid: 00a747c1b94695d439c2c171da56fdc6, type: 3}
+      propertyPath: Tolerance
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2093183087109085559, guid: 00a747c1b94695d439c2c171da56fdc6, type: 3}
+      propertyPath: MaximumPasses
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2216781366962105651, guid: 00a747c1b94695d439c2c171da56fdc6, type: 3}
       propertyPath: m_Layer

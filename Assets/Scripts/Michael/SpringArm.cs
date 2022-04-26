@@ -14,10 +14,13 @@ public class SpringArm : MonoBehaviour
 	[SerializeField] Vector3 TargetOffset;
 
 	[Header("Spring Arm Settings.")]
-	[SerializeField] float Distance;
+	public float Distance;
 	[SerializeField] Vector3 GimbalRotation;
 	[SerializeField] Vector3 CameraRotation;
 	[SerializeField] bool bInheritRotation;
+	[Space(5)]
+	[SerializeField] bool bEnableScrollToDistance;
+	[SerializeField] float ScrollSensitivity;
 
 	[Header("Collisions")]
 	[SerializeField] LayerMask IgnoreFromCollisions;
@@ -31,6 +34,7 @@ public class SpringArm : MonoBehaviour
 
 	void Update()
 	{
+		ScrollDistance();
 		PlaceCamera();
 	}
 
@@ -128,6 +132,15 @@ public class SpringArm : MonoBehaviour
 	}
 
 	Vector3 TargetPos() => Target.position + TargetOffset;
+
+	void ScrollDistance()
+	{
+		if (bEnableScrollToDistance)
+		{
+			Distance += Input.mouseScrollDelta.y * -ScrollSensitivity;
+			Distance = Mathf.Clamp(Distance, 1, 50);
+		}
+	}
 
 #if UNITY_EDITOR
 	void OnValidate()
