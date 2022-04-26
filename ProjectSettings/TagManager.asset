@@ -13,6 +13,12 @@ TagManager:
   - HunterNode
   - Weapon Pickup
   - Tarantula
+  - Speed
+  - Health
+  - BossTrigger
+  - CaveTrigger
+  - Larvae
+  - Card
   layers:
   - Default
   - TransparentFX
