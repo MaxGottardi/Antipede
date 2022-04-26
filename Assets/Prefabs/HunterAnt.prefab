@@ -386,6 +386,8 @@ MonoBehaviour:
   maxBackupDist: 7.5
   backupCallDist: 5
   attachDist: 7
+  attackAnimLength: 2
+  headTransform: {fileID: 6402207106255891079}
   weaponPos: {x: 0.55, y: 0.7, z: 0}
   weaponParent: {fileID: 3852577907258305728}
   weapons:
@@ -1589,16 +1591,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d03430b02136fae41a430a78a3a68665, type: 3}
---- !u!1 &7488454750242973145 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7102205650487676356, guid: d03430b02136fae41a430a78a3a68665, type: 3}
-  m_PrefabInstance: {fileID: 395278293773232157}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &3852577907258305728 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3461953863393772765, guid: d03430b02136fae41a430a78a3a68665, type: 3}
-  m_PrefabInstance: {fileID: 395278293773232157}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &860215075857545195 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1048307982316216310, guid: d03430b02136fae41a430a78a3a68665, type: 3}
@@ -1612,6 +1604,21 @@ GameObject:
 --- !u!1 &4122662952654073600 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4344543860200654621, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+  m_PrefabInstance: {fileID: 395278293773232157}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7488454750242973145 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7102205650487676356, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+  m_PrefabInstance: {fileID: 395278293773232157}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6402207106255891079 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6747934800060580506, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+  m_PrefabInstance: {fileID: 395278293773232157}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3852577907258305728 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3461953863393772765, guid: d03430b02136fae41a430a78a3a68665, type: 3}
   m_PrefabInstance: {fileID: 395278293773232157}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &52857515320077649 stripped

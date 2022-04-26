@@ -157,6 +157,9 @@ public class AttackState : State
 {
     float attackTime = 2;
     GenericAnt owner;
+    Quaternion headNormRote;
+
+    protected bool attackDone = false;
     public AttackState(GenericAnt owner) //also initilize any behaviour tree used on the state as well
     {
         this.owner = owner;
@@ -164,24 +167,32 @@ public class AttackState : State
     public virtual void enter()
     {
         attackTime = 2;
+        headNormRote = owner.headTransform.rotation;
+        owner.headTransform.LookAt(owner.nextPosTransform);
         owner.anim.SetTrigger("Attack");
+        attackDone = false;
     }
 
     public virtual void execute()
     {
         attackTime -= Time.deltaTime;
-        if (attackTime <= 0)//when finished attacking add any damage to the appropriate segment
+        if (attackTime <= owner.attackAnimLength)//when finished attacking add any damage to the appropriate segment
         {
-            if (owner.nextPosTransform && Vector3.Distance(owner.transform.position, owner.nextPosTransform.transform.position) < owner.attachDist)
+            if (owner.NearSegment() && !attackDone)
+            {
                 GameManager1.mCentipedeBody.RemoveSegment(100);
+                attackDone = true;
+            }
 
-            owner.stateMachine.changeState(owner.stateMachine.Investigate);
+            if (attackTime <= 0)
+                owner.stateMachine.changeState(owner.stateMachine.Investigate);
         }
     }
 
     public virtual void exit()
     {
         attackTime = 2;
+        owner.headTransform.rotation = headNormRote;
     }
 }
 
@@ -320,27 +331,29 @@ public class GuardAttack : AttackState
     }
     public override void enter()
     {
+        base.enter();
         attackTime = 2.5f;
-        owner.anim.SetTrigger("Attack");
     }
 
     public override void execute()
     {
         attackTime -= Time.deltaTime;
-        if (attackTime <= 0)//when finished attacking add any damage to the appropriate segment
+        if (attackTime <= owner.attackAnimLength)//when finished attacking add any damage to the appropriate segment
         {
-            if (owner.nextPosTransform && Vector3.Distance(owner.transform.position, owner.nextPosTransform.transform.position) < owner.attachDist)
+            if (owner.NearSegment() && !attackDone)
             {
                 GameManager1.mCentipedeBody.RemoveSegment(100);
                 GameManager1.mCentipedeBody.RemoveSegment(100);
+                attackDone = true;
             }
-
-            owner.stateMachine.changeState(owner.stateMachine.Investigate);
+            if (attackTime <= 0)
+                owner.stateMachine.changeState(owner.stateMachine.Investigate);
         }
     }
 
     public override void exit()
     {
+        base.exit();
         attackTime = 2.5f;
     }
 }

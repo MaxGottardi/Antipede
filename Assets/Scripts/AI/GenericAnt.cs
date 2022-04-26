@@ -49,6 +49,8 @@ public class GenericAnt : MonoBehaviour
 
     [Header("Attack Settings")]
     public float attachDist = 0.5f;
+    public float attackAnimLength;
+    public Transform headTransform;
 
     public virtual void Start()
     {
@@ -171,4 +173,18 @@ public class GenericAnt : MonoBehaviour
             Mathf.Cos(anglesInDegrees * Mathf.Deg2Rad));
     }
 
+    public bool NearSegment()
+    {        
+        if (Vector3.Distance(transform.position, GameManager1.mCentipedeBody.Head.position) < attachDist || Vector3.Distance(transform.position, GameManager1.mCentipedeBody.Tail.position) < attachDist)
+            return true; //first, check if near the head or tail
+               
+        foreach (MSegment segment in GameManager1.mCentipedeBody.Segments) //find if close enough to any segment for the attack to work
+        {
+            float dist = Vector3.Distance(transform.position, segment.gameObject.transform.position);
+            if (dist < attachDist) //if close enough can apply the attack damage
+                return true;
+        }
+
+        return false;
+    }
 }
