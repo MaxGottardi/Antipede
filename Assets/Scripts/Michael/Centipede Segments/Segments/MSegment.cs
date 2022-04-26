@@ -33,13 +33,23 @@ public class MSegment : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		if (!MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance))
+		if (!MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance, out float SquareDistance))
 		{
 			MMathStatics.HomeTowards(rb, ForwardNeighbour, FollowSpeed, MaxTurnDegreesPerFrame);
 		}
 		else
 		{
 			rb.velocity = Vector3.zero;
+
+			if (SquareDistance < .5f)
+			{
+				Vector3 ThisRot = transform.localEulerAngles;
+				Vector3 TargetRot = new Vector3(ThisRot.x, ThisRot.y, ForwardNeighbour.eulerAngles.z);
+
+				Quaternion To = Quaternion.Euler(TargetRot);
+
+				transform.rotation = Quaternion.Slerp(transform.rotation, To, .3f);
+			}
 		}
 	}
 

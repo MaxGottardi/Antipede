@@ -1196,11 +1196,11 @@ MonoBehaviour:
   bAlwaysRunRegardless: 0
   MaximumPasses: 100
   Tolerance: 0.01
-  MinLegUpHeight: 0.1
-  MaxLegUpHeight: 0.7
+  MinLegUpHeight: 0.2
+  MaxLegUpHeight: 0.6
   LegUpSpeed: 30
   Legs:
-  - TargetRayOrigin: {x: 0.35, y: 15, z: 0.05}
+  - TargetRayOrigin: {x: 0.35, y: 1, z: 0.05}
     Limbs:
     - {fileID: 2847227626707325616}
     - {fileID: 72259982630763102}
@@ -1213,7 +1213,7 @@ MonoBehaviour:
     - {fileID: 1745158854}
     Height: 0
     Bias: {x: 2, y: 10, z: -0.2}
-  - TargetRayOrigin: {x: -0.35, y: 15, z: 0.05}
+  - TargetRayOrigin: {x: -0.35, y: 1, z: 0.05}
     Limbs:
     - {fileID: 2971907541664722742}
     - {fileID: 8432429795068699053}

@@ -31,6 +31,7 @@ public class FABRIK : MonoBehaviour
 	[SerializeField] List<FABRIKLeg> Legs;
 
 	Vector3 LastFramePosition, ThisFramePosition;
+	Vector3 LastFrameEulers, ThisFrameEulers;
 	/// <summary>True if this Leg is still.</summary>
 	bool bHasStopped;
 
@@ -57,6 +58,7 @@ public class FABRIK : MonoBehaviour
 #endif
 
 		ThisFramePosition = transform.position;
+		ThisFrameEulers = transform.eulerAngles;
 
 		if (HasMovedSinceLastFrame())
 		{
@@ -67,13 +69,24 @@ public class FABRIK : MonoBehaviour
 		{
 			// Only run FABRIK once more to ensure Legs are on the ground.
 			// But do not continue FABRIK when not needed - when this transform is not moving.
-			if (!bHasStopped)
+			if (!bHasStopped || HasRotatedSinceLastFrame())
 				ExecuteFABRIKLogic(true);
 
 			bHasStopped = true;
 		}
 
 		LastFramePosition = ThisFramePosition;
+		LastFrameEulers = ThisFrameEulers;
+	}
+
+	bool HasRotatedSinceLastFrame()
+	{
+		Vector3 DeltaRot = ThisFrameEulers - LastFrameEulers;
+		MMathStatics.Abs(ref DeltaRot);
+
+		const float kThreshold = .1f;
+		bool bHasRotatedSinceLastFrame = DeltaRot.x >= kThreshold || DeltaRot.y >= kThreshold || DeltaRot.z >= kThreshold;
+		return bHasRotatedSinceLastFrame;
 	}
 
 	/// <returns>True if this transform has moved kEpsilon since the last FixedUpdate call.</returns>
@@ -86,12 +99,17 @@ public class FABRIK : MonoBehaviour
 		return bHasMovedSinceLastFrame;
 	}
 
-	void SineOfHeight(ref float Height, out float Clamped)
+	void SineCosOfHeight(ref float Height, out float ClampedSine, out float ClampedCosine)
 	{
-		float Unclamped = Mathf.Sin(Time.time * LegUpSpeed);
-		Clamped = (Unclamped + 1) * .5f * Height;
+		float Degrees = Time.time * LegUpSpeed;
 
-		if (Unclamped < -.9f)
+		float UnclampedSine = Mathf.Sin(Degrees);
+		ClampedSine = (UnclampedSine + 1) * .5f * Height;
+
+		float UnclampedCosine = Mathf.Cos(Degrees);
+		ClampedCosine = (UnclampedCosine + 1) * .5f * Height;
+
+		if (UnclampedSine < -.9f || UnclampedCosine < -.9f)
 			RandomHeightAlpha = UnityEngine.Random.Range(.2f, 1f);
 	}
 
@@ -135,7 +153,7 @@ public class FABRIK : MonoBehaviour
 			{
 				Vector3[] Joints = Leg.GetJointPositions();
 
-				RunFABRIK(Joints, Leg.KneeOrToe[0].position, GetTarget(Hit, Leg), GetRelativeXYZ(Leg.Bias));
+				RunFABRIK(Joints, Leg.KneeOrToe[0].position, GetTarget(Hit, Leg, L), GetRelativeXYZ(Leg.Bias));
 
 				for (int i = 0; i < Joints.Length; ++i)
 				{
@@ -162,10 +180,12 @@ public class FABRIK : MonoBehaviour
 			}
 		}
 
-		Vector3 GetTarget(RaycastHit Hit, FABRIKLeg Leg)
+		Vector3 GetTarget(RaycastHit Hit, FABRIKLeg Leg, int L)
 		{
-			SineOfHeight(ref Leg.Height, out float Clamped);
-			float HeightAlternator = Leg.Height * Clamped;
+			SineCosOfHeight(ref Leg.Height, out float Sine, out float Cos);
+
+			float Alpha = L % 2 == 0 ? Sine : Cos;
+			float HeightAlternator = Leg.Height * Alpha;
 
 			return bSnapToTarget ? Hit.point : Hit.point + transform.up * HeightAlternator;
 		}
