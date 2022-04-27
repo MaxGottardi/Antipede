@@ -67,7 +67,8 @@ public class GenericAnt : MonoBehaviour
     // Update is called once per frame
     public virtual void Update()
     {
-        stateMachine.Update();
+        if (Vector3.Distance(transform.position, GameManager1.playerObj.transform.position) <= 200)
+            stateMachine.Update();
     }
     /// <summary>
     /// Check to see if any segment of the player is within sight

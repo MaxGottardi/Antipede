@@ -122,8 +122,8 @@ public class GenerateGrid : MonoBehaviour
                 currentNode.isClosed = true;
                 currentNode.isOpen = false;
 
-                if (currentNode.x == targetGridX && currentNode.y == targetGridY && currentNode.z == targetGridZ)
-                    return RecalculatePath(targetGridX, targetGridY, targetGridZ, gridX, gridY, gridZ); //break out as have reached the goal
+                if (currentNode.x == targetGridX && currentNode.y == targetGridY && currentNode.z == targetGridZ || ClosedSet.Count > 50)
+                    return RecalculatePath(currentNode.x, currentNode.y, currentNode.z, gridX, gridY, gridZ); //break out as have reached the goal
 
                 List<NavigationNode> neighbourNodes = new List<NavigationNode>();//every valid neighbour of the current node
                 for (int i = -1; i <= 1; i++) //for every possible neighbour add it
@@ -146,10 +146,6 @@ public class GenerateGrid : MonoBehaviour
                         }
                     }
                 }
-                if (neighbourNodes.Count <= 0) //also return when no new neighbours found
-                {
-                    //Debug.Log("found no valid neighbours");
-                }
                 //as now have a valid list of neighbour nodes can loop through them
                 foreach (NavigationNode neighbour in neighbourNodes)
                 {
@@ -169,7 +165,7 @@ public class GenerateGrid : MonoBehaviour
                 }
             }
         }
-        Debug.Log("No Valid Path found");
+        //Debug.Log("No Valid Path found");
         return new List<Vector3>();
     }
 

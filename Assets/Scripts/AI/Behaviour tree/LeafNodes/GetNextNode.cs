@@ -28,7 +28,7 @@ public class GetNextNode : Node
                 blackboard.nextPosVector = blackboard.nextPosTransform.position;
             return NodeState.Success;
         }
-        Debug.Log("Failed Getting a new path");
+//        Debug.Log("Failed Getting a new path");
         return NodeState.Failure; //no node or path could be found
     }
 }
