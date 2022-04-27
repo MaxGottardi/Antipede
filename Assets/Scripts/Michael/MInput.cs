@@ -80,19 +80,22 @@ public class MInput : MonoBehaviour
 		transform.GetChild(0).GetComponent<Animator>().SetTrigger("Pincers");
 		float dist = 0.45f;
 		Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * 1.1f, dist, EnemyLayer);
+		GenericAnt closestAnt = null;
+		float currDist = -1;
         foreach (Collider antCollider in colliders)
         {
-			if (antCollider.gameObject.transform.parent.GetComponent<GenericAnt>())
-			{
-				antCollider.gameObject.transform.parent.GetComponent<GenericAnt>().ReduceHealth(100);
-				RaycastHit hit;
-				if (Physics.Raycast(transform.position, antCollider.gameObject.transform.position - transform.position, out hit, EnemyLayer))
-					Instantiate(hitParticles, hit.point + transform.up * 0.5f, Quaternion.identity);
-				else
-					Instantiate(hitParticles, transform.position, Quaternion.identity);
-
-			}
-			//body.AddSegment();
+			float newDist = Vector3.Distance(transform.position, antCollider.gameObject.transform.position);
+			if (currDist < 0 || newDist < currDist)
+				closestAnt = antCollider.gameObject.transform.parent.GetComponent<GenericAnt>();
+		}
+		if(closestAnt != null) //only reduce health on the closest ant hit
+        {
+			closestAnt.ReduceHealth(100);
+			RaycastHit hit;
+			if (Physics.Raycast(transform.position, closestAnt.gameObject.transform.position - transform.position, out hit, EnemyLayer))
+				Instantiate(hitParticles, hit.point + transform.up * 0.5f, Quaternion.identity);
+			else
+				Instantiate(hitParticles, transform.position, Quaternion.identity);
 		}
 
 	}
