@@ -35,13 +35,16 @@ public class MoveTowards : Node
             currDist = NodeDistance();
 
 
-        if (!doDistCheck || currDist < 1) //here if say a large lag spike and goes over the node but as never within range will always fail otherwise
+        if (!doDistCheck || currDist < 1 || currDist > previousDistToNode) //successful if close to the node or begun moving beyond it already
         {
-//            Debug.Log("Successfully reached the next node");
+            //            Debug.Log("Successfully reached the next node");
             return NodeState.Success;
         }
         else
+        {
+            previousDistToNode = currDist;
             return NodeState.Running;
+        }
 
     }
 
@@ -96,13 +99,13 @@ public class MoveTowards : Node
             blackboard.transform.localPosition = groundPoint;
         }
 
-        
+
         Vector3 upSmooth;
         if (didHit1 && didHit)//when on the edge between two different triangles, get a vector which will point up ensuring a smooth rotation between the two
             upSmooth = Vector3.Cross(blackboard.transform.right, -(raycastHit.point - raycastHit1.point).normalized);
         //above used this link https://answers.unity.com/questions/1420677/best-way-to-rotate-player-object-to-match-the-grou.html
         else
-            upSmooth = Vector3.up; //as nothing hit use global up
+            upSmooth = Vector3.up;
 
         Debug.DrawRay(blackboard.transform.position + blackboard.transform.forward * -0.5f, 5 * (blackboard.transform.forward), Color.green);
         Debug.DrawRay(blackboard.transform.position, 5 * (raycastHit.normal), Color.blue);

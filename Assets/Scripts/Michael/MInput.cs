@@ -77,7 +77,7 @@ public class MInput : MonoBehaviour
 	/// </summary>
 	void DoAttack()
 	{
-		////////GetComponent<Animator>().SetTrigger("Pincer");
+		transform.GetChild(0).GetComponent<Animator>().SetTrigger("Pincers");
 		float dist = 0.45f;
 		Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * 1.1f, dist, EnemyLayer);
         foreach (Collider antCollider in colliders)
