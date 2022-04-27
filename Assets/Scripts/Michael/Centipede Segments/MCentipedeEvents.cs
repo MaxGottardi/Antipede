@@ -10,9 +10,10 @@ public class MCentipedeEvents : MonoBehaviour
 	{
 		// Handle Centipede Trigger Entries here...
 
-		if (other.CompareTag("Weapon Pickup"))
+		if (other.gameObject.CompareTag("Weapon Pickup"))
 		{
-			WeaponPickup PickedUp = other.GetComponent<WeaponPickup>();
+			Debug.Log("Colledted Weapon");
+			WeaponPickup PickedUp = other.gameObject.GetComponent<WeaponPickup>();
 
 			if (PickedUp != null)
 			{
