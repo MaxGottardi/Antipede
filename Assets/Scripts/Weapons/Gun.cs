@@ -8,7 +8,7 @@ public class Gun : Weapon
 	public override Projectile Fire(Vector3 Direction)
 	{
 		Projectile StraightProjectile = InstantiateProjectile();
-		StraightProjectile.Initialise();
+		StraightProjectile.Initialise(isAntGun);
 		
 		// Ignore the Direction param. For a Gun, we don't need it.
 		StraightProjectile.Launch(transform.forward * LaunchSpeed);
