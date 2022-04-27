@@ -121,7 +121,7 @@ public class GenericAnt : MonoBehaviour
     /// <param name="amount">the amount of health which gets lost</param>
     public void ReduceHealth(int amount)
     {
-        if (stateMachine.currState != stateMachine.Dead)
+        if (stateMachine.currState != stateMachine.Dead && health > 0)
         {
             health -= amount;
 
@@ -134,14 +134,16 @@ public class GenericAnt : MonoBehaviour
 
             leftAntenna.transform.localRotation = Quaternion.Euler(currRote, leftAntenna.transform.localRotation.y, leftAntenna.transform.localRotation.z);
             rightAntenna.transform.localRotation = Quaternion.Euler(currRote, rightAntenna.transform.localRotation.y, rightAntenna.transform.localRotation.z);
-            
+
             leftAntenna.transform.GetChild(0).localRotation = Quaternion.Euler(currChildRote, leftAntenna.transform.GetChild(0).localRotation.y, leftAntenna.transform.GetChild(0).localRotation.z);
             rightAntenna.transform.GetChild(0).localRotation = Quaternion.Euler(currChildRote, rightAntenna.transform.GetChild(0).localRotation.y, rightAntenna.transform.GetChild(0).localRotation.z);
 
             if (health <= 0)
                 stateMachine.changeState(stateMachine.Dead);
             else
+            {
                 stateMachine.changeState(stateMachine.Damage);
+            }
         }
     }
 #if UNITY_EDITOR
