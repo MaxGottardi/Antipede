@@ -172,7 +172,7 @@ public partial class MCentipedeBody : MonoBehaviour
 
 			Segments.RemoveAt(Segments.Count - 1);
 			--NumberOfSegments;
-			//GameManager1.cameraController.camShake();
+			GameManager1.cameraController.gameObject.transform.position += GameManager1.cameraController.gameObject.transform.forward * 2;
 
 			int lastSegIndex = Segments.Count - 1;
 			TailSegment.SetForwardNeighbour(Segments[lastSegIndex]);

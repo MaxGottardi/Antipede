@@ -14,8 +14,7 @@ public class Launcher : Weapon
 		if (!MMathStatics.DiagnosticCheckNaN(LaunchVelocity))
 		{
 			Projectile LaunchedProjectile = InstantiateProjectile();
-			LaunchedProjectile.Initialise();
-			LaunchedProjectile.isEnemyProjectile = isAntGun; //is this a projectile for the ants or not?
+			LaunchedProjectile.Initialise(isAntGun);
 			LaunchedProjectile.Launch(Velocity);
 
 			return LaunchedProjectile;

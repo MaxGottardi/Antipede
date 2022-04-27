@@ -8504,7 +8504,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3326833427437991793, guid: 6fc6a1dedbd0cc2459ce10194ae2db20, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6860055857572793578, guid: 6fc6a1dedbd0cc2459ce10194ae2db20, type: 3}
       propertyPath: m_ConnectedAnchor.x
@@ -13148,6 +13148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af5b8c5bf06d1f4aab23ccfcf5f3ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tarantulas: []
   Head: {fileID: 1289053977}
   Tail: {fileID: 978763717}
   DamageParticles: {fileID: 0}
@@ -13635,8 +13636,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 799830278}
-  - component: {fileID: 799830280}
   - component: {fileID: 799830279}
+  - component: {fileID: 799830281}
   m_Layer: 6
   m_Name: Mechanical Head
   m_TagString: Untagged
@@ -13726,18 +13727,25 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.28, y: 0.1, z: 0.1}
   m_Center: {x: 0.12, y: 0.02, z: 0}
---- !u!114 &799830280
-MonoBehaviour:
+--- !u!95 &799830281
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 799830277}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad40175619ac54a4e81de2cb27feae87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 55a51fe9bb5363b4da1fa1db5ea4c52f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &801309937
 GameObject:
   m_ObjectHideFlags: 0
@@ -17521,6 +17529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af5b8c5bf06d1f4aab23ccfcf5f3ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tarantulas: []
   Head: {fileID: 799830278}
   Tail: {fileID: 1843694680}
   DamageParticles: {fileID: 1983914251257026005, guid: 9ed20eb1978768643b467b5f79d27218, type: 3}
@@ -21374,38 +21383,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1853081508, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
-      propertyPath: largeViewAnlge
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 1853081508, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
-      propertyPath: shortViewAngle
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 540146767184428197, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
-      propertyPath: m_ConnectedAnchor.x
-      value: -12.455611
-      objectReference: {fileID: 0}
-    - target: {fileID: 540146767184428197, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
-      propertyPath: m_ConnectedAnchor.y
-      value: 0.28988314
-      objectReference: {fileID: 0}
-    - target: {fileID: 540146767184428197, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
-      propertyPath: m_ConnectedAnchor.z
-      value: -20.013577
-      objectReference: {fileID: 0}
-    - target: {fileID: 5491404038792859857, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
-      propertyPath: m_ConnectedAnchor.x
-      value: -12.333246
-      objectReference: {fileID: 0}
-    - target: {fileID: 5491404038792859857, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
-      propertyPath: m_ConnectedAnchor.y
-      value: 0.2904909
-      objectReference: {fileID: 0}
-    - target: {fileID: 5491404038792859857, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
-      propertyPath: m_ConnectedAnchor.z
-      value: -20.01386
-      objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_RootOrder
       value: 21
@@ -21453,10 +21430,6 @@ PrefabInstance:
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_Name
       value: FarmerAnt (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -33506,7 +33479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3326833427437991793, guid: 6fc6a1dedbd0cc2459ce10194ae2db20, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6860055857572793578, guid: 6fc6a1dedbd0cc2459ce10194ae2db20, type: 3}
       propertyPath: m_ConnectedAnchor.x
@@ -34352,7 +34325,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3326833427437991793, guid: 6fc6a1dedbd0cc2459ce10194ae2db20, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6860055857572793578, guid: 6fc6a1dedbd0cc2459ce10194ae2db20, type: 3}
       propertyPath: m_ConnectedAnchor.x
@@ -34582,7 +34555,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3326833427437991793, guid: 6fc6a1dedbd0cc2459ce10194ae2db20, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6860055857572793578, guid: 6fc6a1dedbd0cc2459ce10194ae2db20, type: 3}
       propertyPath: m_ConnectedAnchor.x

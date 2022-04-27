@@ -10,8 +10,9 @@ public class Projectile : MonoBehaviour
 	public GameObject hitParticles;
 
 	/// <remarks>Use as Awake/Start method.</remarks>
-	public virtual void Initialise()
+	public virtual void Initialise(bool isEnemyProjectile)
 	{
+		this.isEnemyProjectile = isEnemyProjectile;
 		rb = GetComponent<Rigidbody>();
 		Destroy(gameObject, 10f);
 	}

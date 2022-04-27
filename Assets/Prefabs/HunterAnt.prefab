@@ -384,7 +384,7 @@ MonoBehaviour:
   largeViewAnlge: 50
   shortViewAngle: 360
   maxBackupDist: 7.5
-  backupCallDist: 5
+  backupCallDist: 10
   attachDist: 7
   attackAnimLength: 2
   headTransform: {fileID: 6402207106255891079}
