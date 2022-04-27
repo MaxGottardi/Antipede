@@ -144,7 +144,7 @@ public class GenericAnt : MonoBehaviour
                 stateMachine.changeState(stateMachine.Damage);
         }
     }
-
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         Handles.color = Color.white;
@@ -165,7 +165,7 @@ public class GenericAnt : MonoBehaviour
         Handles.DrawLine(transform.position, transform.position + shortViewAngle01 * shortSightDist);
         Handles.DrawLine(transform.position, transform.position + shortViewAngle02 * shortSightDist);
     }
-
+#endif
     private Vector3 DirectionFromAngle(float eulerY, float anglesInDegrees)
     {
         anglesInDegrees += eulerY;
