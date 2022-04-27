@@ -129,8 +129,8 @@ public class GenericAnt : MonoBehaviour
             ///curr hea
             float healthRatio = health / maxHealth;
             //new_value = ( (old_value - old_min) / (old_max - old_min) ) * (new_max - new_min) + new_min
-            float currRote = health > 0 ? healthRatio * (150 - 30) + 30 : 150;
-            float currChildRote = health > 0 ? healthRatio * (70 - 0) + 0 : 70;
+            float currRote = health > 0 ? 150 - healthRatio * (150 - 30) + 30 : 150;
+            float currChildRote = health > 0 ? 70 - healthRatio * (70 - 0) + 0 : 70;
 
             leftAntenna.transform.localRotation = Quaternion.Euler(currRote, leftAntenna.transform.localRotation.y, leftAntenna.transform.localRotation.z);
             rightAntenna.transform.localRotation = Quaternion.Euler(currRote, rightAntenna.transform.localRotation.y, rightAntenna.transform.localRotation.z);
