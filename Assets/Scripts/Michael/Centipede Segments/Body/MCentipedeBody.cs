@@ -263,6 +263,9 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	public void UpdateTarantulaTarget()
     {
+		if (SegmentsInfo.End == 0)
+			return;
+
 		tarantulas = GameObject.FindGameObjectsWithTag("Tarantula");
 		MSegment Middle = this[Segments.Count / 2];
 		foreach (GameObject Tarantula in tarantulas)

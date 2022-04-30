@@ -2442,11 +2442,12 @@ MonoBehaviour:
   bPrintDebugLogs: 0
   bGlobalMovement: 0
   HeightOffGround: 0.2
-  Lead: 0
+  Lead: 0.45
   GroundHeightDistance: 0.7
   GroundDistanceCheck: 1
   bInterpolateHillClimb: 1
   InterpTime: 0.2
+  UpObject: {fileID: 0}
 --- !u!1 &8912492245564701803
 GameObject:
   m_ObjectHideFlags: 0

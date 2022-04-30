@@ -1,4 +1,8 @@
+using System.Linq;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class CentipedeMovement : MonoBehaviour
 {
@@ -44,6 +48,10 @@ public class CentipedeMovement : MonoBehaviour
 	Vector3 PreviousNormal;
 	Vector3 SurfaceNormal;
 
+	// Ray Evaluations
+	//Vector3 PreviousEvaluation;
+	//Vector3 CurrentEvaluation;
+
 	void Start()
 	{
 		rb = GetComponent<Rigidbody>();
@@ -81,6 +89,9 @@ public class CentipedeMovement : MonoBehaviour
 		Horizontal = H;
 		Vertical = V;
 
+		if (Horizontal == 0 && Vertical == 0)
+			return;
+
 		PreviousNormal = SurfaceNormal;
 		SurfaceNormal = GetSurfaceNormal(out bool bGroundWasHit, out RaycastHit Surface);
 
@@ -108,7 +119,15 @@ public class CentipedeMovement : MonoBehaviour
 
 			InDirection = NormalForward * Vertical + NormalRight * Horizontal;
 			InDirection += transform.position;
-			transform.position = Surface.point - (transform.forward * Lead) + HeightAsVector;
+
+			//CurrentEvaluation = -Evaluate(SurfaceNormal);
+
+			//if (PreviousEvaluation != CurrentEvaluation)
+			//	transform.rotation = Quaternion.FromToRotation(transform.up, SurfaceNormal) * transform.rotation;
+
+			transform.position = Surface.point - (transform.forward * Lead) + HeightOffGround * -Evaluate(SurfaceNormal);
+
+			//PreviousEvaluation = CurrentEvaluation;
 
 			if (PreviousNormal != SurfaceNormal)
 			{
@@ -124,6 +143,11 @@ public class CentipedeMovement : MonoBehaviour
 			{
 				transform.position = SkyRay.point + HeightAsVector;
 				transform.LookAt(transform.position + Vector3.Cross(transform.right, SkyRay.normal));
+
+#if UNITY_EDITOR
+				if (bPrintDebugLogs)
+					Debug.LogWarning("Centipede fell out of the world, but it fixed itself.");
+#endif
 			}
 			else
 			{
@@ -161,6 +185,9 @@ public class CentipedeMovement : MonoBehaviour
 		else
 		{
 			rb.velocity = Vector3.zero;
+
+			transform.rotation = Quaternion.Slerp(transform.rotation,
+				Quaternion.FromToRotation(transform.up, SurfaceNormal) * transform.rotation, .3f);
 		}
 	}
 
@@ -170,7 +197,10 @@ public class CentipedeMovement : MonoBehaviour
 	/// <returns>The Surface Normal, out bool true if something was hit, out RaycastHit information.</returns>
 	Vector3 GetSurfaceNormal(out bool bHasHitSomething, out RaycastHit Hit)
 	{
-		bHasHitSomething = Physics.Raycast(transform.position + (transform.forward * Lead) + (Vector3.up * GroundHeightDistance), Vector3.down, out Hit, GroundDistanceCheck + GroundHeightDistance, 256);
+		Vector3 Direction = Evaluate(SurfaceNormal);
+
+		bHasHitSomething = Physics.Raycast(transform.position + (transform.forward * Lead) + (-Direction * GroundHeightDistance),
+			Direction, out Hit, GroundDistanceCheck + GroundHeightDistance, 256);
 
 #if UNITY_EDITOR
 		if (bShowGizmos)
@@ -193,17 +223,70 @@ public class CentipedeMovement : MonoBehaviour
 		return bHasHitSomething ? Hit.normal : Vector3.zero;
 	}
 
+	Vector3 Evaluate(Vector3 U)
+	{
+		if (U == Vector3.zero)
+			return Vector3.down;
+
+		// NOTE - THESE ARE NOT ANGLES.
+		const float kConsiderForward = .8f;
+		const float kConsiderRight = .8f;
+
+		if (U.x > kConsiderRight)
+			return Vector3.left;
+		if (U.x < -kConsiderRight)
+			return Vector3.right;
+		if (U.z > kConsiderForward)
+			return Vector3.back;
+		if (U.z < -kConsiderForward)
+			return Vector3.forward;
+		if (U.y > 0f)
+			return Vector3.down;
+		if (U.y < 0f)
+			return Vector3.up;
+
+		Debug.LogError("Failed: " + U.ToString("F2"));
+		return Vector3.down;
+	}
+
+	Vector3 Evaluate(Transform T)
+	{
+		return Evaluate(T.up);
+	}
+
 #if UNITY_EDITOR
+	[SerializeField] Transform UpObject;
 	void OnDrawGizmos()
 	{
 		if (bShowGizmos)
 		{
 			Gizmos.color = Color.green;
-			Gizmos.DrawSphere(transform.position + (transform.forward * Lead) + (Vector3.up * GroundHeightDistance), .05f);
+			Gizmos.DrawSphere(transform.position + (transform.forward * Lead) + (-Evaluate(transform) * GroundHeightDistance), .05f);
 			Gizmos.color = Color.cyan;
 			Gizmos.DrawLine(transform.position + Vector3.down * HeightOffGround, transform.position);
 
 			Gizmos.DrawSphere(InDirection, .1f);
+
+			const string kFloatAccuracy = "F2";
+
+			//Gizmos.color = Color.red;
+			//Gizmos.DrawRay(UpObject.position, UpObject.up);
+			//Vector3 res = Evaluate(UpObject);
+			//Gizmos.color = Color.blue;
+			//Gizmos.DrawRay(UpObject.position, res);
+
+			//Handles.Label(UpObject.position + UpObject.up, UpObject.up.ToString(kFloatAccuracy));
+			//Handles.Label(UpObject.position + res, res.ToString(kFloatAccuracy));
+
+			Gizmos.color = Color.yellow;
+			Gizmos.DrawRay(transform.position, transform.up);
+
+			Vector3 tu = Evaluate(transform);
+			Gizmos.color = Color.green;
+			Debug.DrawRay(transform.position, tu);
+
+			Handles.Label(transform.position + transform.up, transform.up.ToString(kFloatAccuracy));
+			Handles.Label(transform.position + tu, tu.ToString(kFloatAccuracy));
 		}
 	}
 
