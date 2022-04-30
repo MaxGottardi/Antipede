@@ -33,12 +33,18 @@ public class MSegment : MonoBehaviour
 		WeaponSocket = transform.Find("Weapon Attachment Socket");
 	}
 
+	bool bHasRayAligned = false;
+	Vector3 SurfaceNormal;
+
 	void FixedUpdate()
 	{
 		if (!MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance, out float SquareDistance))
 		{
 			if (ForwardNeighbour)
+			{
 				MMathStatics.HomeTowards(rb, ForwardNeighbour, FollowSpeed, MaxTurnDegreesPerFrame);
+				bHasRayAligned = false;
+			}
 		}
 		else
 		{
@@ -46,13 +52,35 @@ public class MSegment : MonoBehaviour
 
 			if (SquareDistance < .5f)
 			{
-				Vector3 ThisRot = transform.eulerAngles;
-				Transform Target = ForwardNeighbour.parent ?? ForwardNeighbour;
-				Vector3 TargetRot = new Vector3(ThisRot.x, ThisRot.y, Target.localEulerAngles.z);
+				if (!bHasRayAligned)
+				{
+					if (Physics.Raycast(transform.position, -transform.up, out RaycastHit Hit, 1, 256))
+					{
+						SurfaceNormal = Hit.normal;
+					}
+					else
+					{
+						SurfaceNormal = Vector3.zero;
+					}
 
-				Quaternion To = Quaternion.Euler(TargetRot);
+					bHasRayAligned = true;
+				}
 
-				transform.rotation = Quaternion.Slerp(transform.rotation, To, .3f);
+				if (bHasRayAligned && SurfaceNormal != Vector3.zero)
+				{
+					transform.rotation = Quaternion.Slerp(transform.rotation,
+						Quaternion.FromToRotation(transform.up, SurfaceNormal) * transform.rotation, .3f);
+				}
+				else
+				{
+					Vector3 ThisRot = transform.eulerAngles;
+					Transform Target = ForwardNeighbour.parent ?? ForwardNeighbour;
+					Vector3 TargetRot = new Vector3(ThisRot.x, ThisRot.y, Target.localEulerAngles.z);
+
+					Quaternion To = Quaternion.Euler(TargetRot);
+
+					transform.rotation = Quaternion.Slerp(transform.rotation, To, .3f);
+				}
 			}
 		}
 	}
@@ -91,14 +119,17 @@ public class MSegment : MonoBehaviour
 
 	void OnDestroy()
 	{
+		// If this doesn't fix the InvalidOperationException problem, then idk.
+		Owner.StopAllCoroutines();
+
 		Owner.SegmentsWithWeapons.Remove(this);
 	}
 
 	public bool ReduceHealth(float amount)
-    {
+	{
 		health -= amount;
 		return health <= 0;
-    }
+	}
 
 	public static implicit operator Transform(MSegment s) => s.transform;
 	public static implicit operator Weapon(MSegment s) => s.Weapon;
