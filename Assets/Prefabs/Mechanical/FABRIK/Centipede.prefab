@@ -2362,11 +2362,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af5b8c5bf06d1f4aab23ccfcf5f3ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tarantulas: []
   Head: {fileID: 8912492247213838006}
   Tail: {fileID: 2874354198161984264}
+  DamageParticles: {fileID: 1983914251257026005, guid: 9ed20eb1978768643b467b5f79d27218, type: 3}
   Weapons: {fileID: 0}
   Segment: {fileID: 8759839556243553130, guid: bf0be84eabd112f46b057237912ecb11, type: 3}
-  NumberOfSegments: 0
+  NumberOfSegments: 7
   MovementSpeed: 250
   TurnDegrees: 7
   FollowSpeed: 250
@@ -2377,6 +2379,7 @@ MonoBehaviour:
   - {fileID: 466134766209296027}
   - {fileID: 1345376963183836618}
   - {fileID: 6185310083578253234}
+  Segments: []
   maxSpeed: 450
   defaultSpeed: 250
   DeathScreen: {fileID: 0}
@@ -2422,6 +2425,7 @@ MonoBehaviour:
   EnemyLayer:
     serializedVersion: 2
     m_Bits: 128
+  hitParticles: {fileID: 1983914251257026005, guid: 9ed20eb1978768643b467b5f79d27218, type: 3}
 --- !u!114 &8912492245561955168
 MonoBehaviour:
   m_ObjectHideFlags: 0

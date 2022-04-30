@@ -1219,6 +1219,7 @@ MonoBehaviour:
   FollowSpeed: 0
   MaxTurnDegreesPerFrame: 0
   bIgnoreFromWeapons: 0
+  health: 100
 --- !u!114 &4972491650448456737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1233,9 +1234,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bShowJoints: 0
   JointGizmosRadius: 0.03
-  bShowBiasPoint: 1
+  bShowBiasPoint: 0
   BiasGizmosRadius: 0.02
-  bShowRays: 1
+  bShowRays: 0
   bAlwaysRunRegardless: 0
   MaximumPasses: 60
   Tolerance: 0.01

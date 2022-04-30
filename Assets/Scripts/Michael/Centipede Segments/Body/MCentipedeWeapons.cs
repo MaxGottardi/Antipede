@@ -57,8 +57,8 @@ public class MCentipedeWeapons : MonoBehaviour
 	{
 		foreach (Weapon W in SegmentsWithWeapons)
 		{
-				W.Fire(MouseToWorld);
-				yield return new WaitForSeconds(PropagationDelay);
+			W.Fire(MouseToWorld);
+			yield return new WaitForSeconds(PropagationDelay);
 		}
 	}
 }

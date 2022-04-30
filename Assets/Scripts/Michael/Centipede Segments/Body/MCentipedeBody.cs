@@ -140,14 +140,6 @@ public partial class MCentipedeBody : MonoBehaviour
 	public void RemoveSegment(float healthReduction)//MSegment deadSegment)
 	{
 		Debug.Log("Killing Player");
-		if (NumberOfSegments <= 1)
-		{
-			Debug.Log("You Died");
-			if (DeathScreen != null)
-				DeathScreen.SetActive(true);
-			Time.timeScale = 0;
-			return;
-		}
 
 		MSegment lastSegment = GetLast();
 		//MSegment lastSegment = this[Segments.Count - 1];
@@ -188,8 +180,15 @@ public partial class MCentipedeBody : MonoBehaviour
 				CustomSegments[i].transform.position = NewPos - (i * FollowDistance * newLast.forward);
 			
 		}
-		
-		
+
+		// Make the check after removing a Segment.
+		if (NumberOfSegments <= 1)
+		{
+			Debug.Log("You Died");
+			if (DeathScreen != null)
+				DeathScreen.SetActive(true);
+			Time.timeScale = 0;
+		}
 	}
 
 	public void IncreaseSpeed(float value)
@@ -204,9 +203,7 @@ public partial class MCentipedeBody : MonoBehaviour
 			MovementSpeed += value;
 
 			foreach (MSegment segment in Segments)
-			{
 				segment.FollowSpeed += value;
-			}
 
 			foreach (MSegment S in CustomSegments)
 				S.FollowSpeed += value;
@@ -222,9 +219,7 @@ public partial class MCentipedeBody : MonoBehaviour
 			FollowSpeed = maxSpeed;
 
 			foreach (MSegment segment in Segments)
-			{
 				segment.FollowSpeed = maxSpeed;
-			}
 
 			foreach (MSegment S in CustomSegments)
 				S.FollowSpeed = maxSpeed;
@@ -236,9 +231,7 @@ public partial class MCentipedeBody : MonoBehaviour
 		{
 			FollowSpeed = value;
 			foreach (MSegment segment in Segments)
-			{
 				segment.FollowSpeed = value;
-			}
 
 			foreach (MSegment S in CustomSegments)
 				S.FollowSpeed = value;
@@ -259,9 +252,7 @@ public partial class MCentipedeBody : MonoBehaviour
 			MovementSpeed -= value;
 
 			foreach (MSegment segment in Segments)
-			{
 				segment.FollowSpeed -= value;
-			}
 
 			foreach (MSegment S in CustomSegments)
 				S.FollowSpeed -= value;
@@ -273,9 +264,10 @@ public partial class MCentipedeBody : MonoBehaviour
 	public void UpdateTarantulaTarget()
     {
 		tarantulas = GameObject.FindGameObjectsWithTag("Tarantula");
+		MSegment Middle = this[Segments.Count / 2];
 		foreach (GameObject Tarantula in tarantulas)
 		{
-			Tarantula.GetComponent<Tarantula>().UpdateMiddleSeg();
+			Tarantula.GetComponent<Tarantula>().UpdateMiddleSeg(Middle);
 		}
 	}
 }

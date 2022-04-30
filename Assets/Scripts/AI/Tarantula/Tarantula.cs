@@ -29,7 +29,7 @@ public class Tarantula: MonoBehaviour
     public bool attackingPlayer;
     private float attackDelay = 0.9f;
     private float attackTimer;
-    private GameObject player;
+    private MCentipedeBody player;
     //private bool attack;
     // Start is called before the first frame update
     void Awake()
@@ -46,7 +46,7 @@ public class Tarantula: MonoBehaviour
         animator = GetComponent<Animation>();
 
         attackingPlayer = false;
-        player = GameObject.Find("Centipede");
+        player = GameObject.Find("Centipede").GetComponent<MCentipedeBody>();
     }
 
     // Update is called once per frame
@@ -118,7 +118,7 @@ public class Tarantula: MonoBehaviour
             if (attackTimer >= attackDelay)
             {
                 
-                player.GetComponent<MCentipedeBody>().RemoveSegment(100);
+                player.RemoveSegment(100);
                 //Debug.Log(player.GetComponent<MCentipedeBody>().Segments.Count)
 
                 attackTimer = 0;
@@ -126,12 +126,11 @@ public class Tarantula: MonoBehaviour
         }
     }
 
-    public void UpdateMiddleSeg()
+    public void UpdateMiddleSeg(MSegment Middle)
     {
-        
-        middleSegInt = (player.GetComponent<MCentipedeBody>().Segments.Count / 2);
-        middleSeg = player.GetComponent<MCentipedeBody>().Segments[middleSegInt].gameObject;
-        
+        middleSeg = Middle.gameObject;
+        //middleSegInt = (player.GetComponent<MCentipedeBody>().Segments.Count / 2);
+        //middleSeg = player.GetComponent<MCentipedeBody>().Segments[middleSegInt].gameObject;
     }
     public void ChasePlayer()
     {

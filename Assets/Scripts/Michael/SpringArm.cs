@@ -23,7 +23,7 @@ public class SpringArm : MonoBehaviour
 	[SerializeField] float ScrollSensitivity;
 
 	[Header("Collisions")]
-	[SerializeField] LayerMask IgnoreFromCollisions;
+	[SerializeField] LayerMask OnlyCollideWith;
 
 	[Header("Lag Settings")]
 	[SerializeField] bool bUseLag;
@@ -94,7 +94,7 @@ public class SpringArm : MonoBehaviour
 	{
 		Vector3 TP = TargetPos();
 		Ray FOV = new Ray(TP, -Direction);
-		bool bViewToTargetBlocked = Physics.Raycast(FOV, out RaycastHit Hit, Distance, ~IgnoreFromCollisions);
+		bool bViewToTargetBlocked = Physics.Raycast(FOV, out RaycastHit Hit, Distance, OnlyCollideWith);
 
 		if (bViewToTargetBlocked)
 		{

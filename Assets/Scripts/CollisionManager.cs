@@ -20,13 +20,13 @@ public class CollisionManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Speed")
+        if (other.CompareTag("Speed"))
         {
             player.IncreaseSpeed(50);
             Destroy(other.gameObject);
             sfxManager.CollectPowerup();
         }
-        if (other.gameObject.tag == "Health")
+        else if (other.CompareTag("Health"))
         {
             HealthComponent health = player.GetComponent<HealthComponent>();
             //health.IncreaseHealth(10);
@@ -34,7 +34,7 @@ public class CollisionManager : MonoBehaviour
             Destroy(other.gameObject);
             sfxManager.CollectPowerup();
         }
-        if (other.gameObject.tag == "Larvae")
+        else if (other.CompareTag("Larvae"))
         {
             HealthComponent health = player.GetComponent<HealthComponent>();
             //health.IncreaseHealth(10);
@@ -42,22 +42,21 @@ public class CollisionManager : MonoBehaviour
             Destroy(other.gameObject);
             sfxManager.CollectLarvae();
         }
-        if (other.gameObject.tag == "CaveTrigger")
+        else if (other.CompareTag("CaveTrigger"))
         {
             sfxManager.EnterCave();
         }
-        if (other.gameObject.tag == "BossTrigger")
+        else if (other.CompareTag("BossTrigger"))
         {
             sfxManager.EnterBoss();
         }
-        if (other.gameObject.tag == "Card")
+        else if (other.CompareTag("Card"))
         {
             sfxManager.CollectSpecial();
             //DO SOMETHING WITH CARDS
             Destroy(other.gameObject);
         }
-
-        if (other.gameObject.CompareTag("Weapon Pickup"))
+        else if (other.CompareTag("Weapon Pickup"))
         {
             Debug.Log("Colledted Weapon");
             WeaponPickup PickedUp = other.gameObject.GetComponent<WeaponPickup>();

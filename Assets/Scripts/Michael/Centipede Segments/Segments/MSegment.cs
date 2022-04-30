@@ -35,9 +35,10 @@ public class MSegment : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		if (ForwardNeighbour && !MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance, out float SquareDistance))
+		if (!MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance, out float SquareDistance))
 		{
-			MMathStatics.HomeTowards(rb, ForwardNeighbour, FollowSpeed, MaxTurnDegreesPerFrame);
+			if (ForwardNeighbour)
+				MMathStatics.HomeTowards(rb, ForwardNeighbour, FollowSpeed, MaxTurnDegreesPerFrame);
 		}
 		else
 		{
