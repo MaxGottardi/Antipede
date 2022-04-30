@@ -55,6 +55,17 @@ public class MCentipedeWeapons : MonoBehaviour
 
 	IEnumerator IE_Fire()
 	{
+		// If an InvalidOperationException is thrown here. It's because either the player has
+		// dragged a Weapon onto a Segment while firing.
+		// -- OR --
+		// if the Centipede has lost a Segment while firing.
+		//
+		// This only happens when bUsePropagationDelay is on; switching it off loses the delay,
+		// so all Weapons fire simultaneously.
+		//
+		// Apparently you can't use a try-catch block on an IEnumerator.
+		// It sounds bad, but just ignore it; it cancels the firing anyway.
+
 		foreach (Weapon W in SegmentsWithWeapons)
 		{
 			W.Fire(MouseToWorld);
