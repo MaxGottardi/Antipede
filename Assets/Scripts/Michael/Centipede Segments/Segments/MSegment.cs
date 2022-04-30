@@ -43,8 +43,9 @@ public class MSegment : MonoBehaviour
 
 			if (SquareDistance < .5f)
 			{
-				Vector3 ThisRot = transform.localEulerAngles;
-				Vector3 TargetRot = new Vector3(ThisRot.x, ThisRot.y, ForwardNeighbour.eulerAngles.z);
+				Vector3 ThisRot = transform.eulerAngles;
+				Transform Target = ForwardNeighbour.parent ?? ForwardNeighbour;
+				Vector3 TargetRot = new Vector3(ThisRot.x, ThisRot.y, Target.localEulerAngles.z);
 
 				Quaternion To = Quaternion.Euler(TargetRot);
 

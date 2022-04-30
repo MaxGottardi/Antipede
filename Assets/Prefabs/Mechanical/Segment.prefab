@@ -1233,9 +1233,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bShowJoints: 0
   JointGizmosRadius: 0.03
-  bShowBiasPoint: 0
+  bShowBiasPoint: 1
   BiasGizmosRadius: 0.02
-  bShowRays: 0
+  bShowRays: 1
   bAlwaysRunRegardless: 0
   MaximumPasses: 60
   Tolerance: 0.01
