@@ -2,16 +2,25 @@ using UnityEngine;
 
 public class SpringArm : MonoBehaviour
 {
+
+#if UNITY_EDITOR
+	[Header("Debug Options. [EDITOR ONLY]")]
+	[SerializeField] bool bDrawRotationalLines;
+#endif
+
 	[Header("Target Settings.")]
 	[SerializeField] Transform Camera;
 	[SerializeField] Transform Target;
 	[SerializeField] Vector3 TargetOffset;
 
 	[Header("Spring Arm Settings.")]
-	[SerializeField] float Distance;
+	public float Distance;
 	[SerializeField] Vector3 GimbalRotation;
 	[SerializeField] Vector3 CameraRotation;
 	[SerializeField] bool bInheritRotation;
+	[Space(5)]
+	[SerializeField] bool bEnableScrollToDistance;
+	[SerializeField] float ScrollSensitivity;
 
 	[Header("Collisions")]
 	[SerializeField] LayerMask IgnoreFromCollisions;
@@ -22,10 +31,10 @@ public class SpringArm : MonoBehaviour
 	[SerializeField] float RotationalLagStrength = .2f;
 	Vector3 TargetPosition;
 	Quaternion TargetRotation;
-	float t = 0;
 
 	void Update()
 	{
+		ScrollDistance();
 		PlaceCamera();
 	}
 
@@ -33,13 +42,8 @@ public class SpringArm : MonoBehaviour
 	{
 		if (bUseLag)
 		{
-			if (t <= 1f)
-			{
-				Camera.position = Vector3.Lerp(Camera.position, TargetPosition, PositionalLagStrength);
-
-				if (bInheritRotation)
-					Camera.rotation = Quaternion.Slerp(Camera.rotation, TargetRotation, RotationalLagStrength);
-			}
+			Camera.position = Vector3.Lerp(Camera.position, TargetPosition, PositionalLagStrength);
+			Camera.rotation = Quaternion.Slerp(Camera.rotation, TargetRotation, RotationalLagStrength);
 		}
 	}
 
@@ -76,9 +80,14 @@ public class SpringArm : MonoBehaviour
 
 		SetPositionAndRotation(FinalPosition, FinalRotation);
 
-		// Debug.DrawLine(Target.position, Target.position + -Ground * Distance, Color.red);
-		// Debug.DrawLine(Target.position, Target.position + -Up * Distance, Color.green);
-		// Debug.DrawLine(Target.position, Target.position + -XY, Color.yellow);
+#if UNITY_EDITOR
+		if (bDrawRotationalLines)
+		{
+			Debug.DrawLine(Target.position, Target.position + -Ground * Distance, Color.red);
+			Debug.DrawLine(Target.position, Target.position + -Up * Distance, Color.green);
+			Debug.DrawLine(Target.position, Target.position + -XY, Color.yellow);
+		}
+#endif
 	}
 
 	bool RunCollisionsCheck(ref Vector3 Direction)
@@ -118,12 +127,20 @@ public class SpringArm : MonoBehaviour
 			{
 				TargetPosition = FinalPosition;
 				TargetRotation = FinalRotation;
-				t = 0;
 			}
 		}
 	}
 
 	Vector3 TargetPos() => Target.position + TargetOffset;
+
+	void ScrollDistance()
+	{
+		if (bEnableScrollToDistance)
+		{
+			Distance += Input.mouseScrollDelta.y * -ScrollSensitivity;
+			Distance = Mathf.Clamp(Distance, 1, 50);
+		}
+	}
 
 #if UNITY_EDITOR
 	void OnValidate()
@@ -132,6 +149,9 @@ public class SpringArm : MonoBehaviour
 			PlaceCamera();
 
 		GimbalRotation.y = Mathf.Clamp(GimbalRotation.y, -90f, 90f);
+
+		PositionalLagStrength = Mathf.Clamp(PositionalLagStrength, Vector3.kEpsilon, 1f);
+		RotationalLagStrength = Mathf.Clamp(RotationalLagStrength, Vector3.kEpsilon, 1f);
 	}
 
 	void OnDrawGizmosSelected()
