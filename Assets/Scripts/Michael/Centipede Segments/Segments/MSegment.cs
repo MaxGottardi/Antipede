@@ -119,8 +119,9 @@ public class MSegment : MonoBehaviour
 
 	void OnDestroy()
 	{
-		// If this doesn't fix the InvalidOperationException problem, then idk.
-		Owner.StopAllCoroutines();
+		if (Owner)
+			// If this doesn't fix the InvalidOperationException problem, then idk.
+			Owner.StopAllCoroutines();
 
 		Owner.SegmentsWithWeapons.Remove(this);
 	}
