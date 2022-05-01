@@ -229,8 +229,8 @@ public class CentipedeMovement : MonoBehaviour
 			return Vector3.down;
 
 		// NOTE - THESE ARE NOT ANGLES.
-		const float kConsiderForward = .8f;
-		const float kConsiderRight = .8f;
+		const float kConsiderForward = .9f;
+		const float kConsiderRight = .9f;
 
 		if (U.x > kConsiderRight)
 			return Vector3.left;
@@ -255,7 +255,8 @@ public class CentipedeMovement : MonoBehaviour
 	}
 
 #if UNITY_EDITOR
-	[SerializeField] Transform UpObject;
+
+	//[SerializeField] Transform UpObject;
 	void OnDrawGizmos()
 	{
 		if (bShowGizmos)
@@ -290,7 +291,22 @@ public class CentipedeMovement : MonoBehaviour
 		}
 	}
 
-	private void OnValidate()
+	float ft = 0, FPS_NOW;
+
+	void OnGUI()
+	{
+		ft += Time.deltaTime;
+
+		if (ft > .2f)
+		{
+			FPS_NOW = MMathStatics.FPS();
+			ft = 0;
+		}
+
+		GUI.Label(new Rect(10, 10, 150, 150), "FPS: " + FPS_NOW);
+	}
+
+	void OnValidate()
 	{
 		if (bInterpolateHillClimb && bGlobalMovement)
 			Debug.LogWarning("Interpolation and Global Movement are incompatible with each other.");

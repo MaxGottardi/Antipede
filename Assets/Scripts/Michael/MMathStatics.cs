@@ -26,6 +26,10 @@ public static class MMathStatics
 		return Quaternion.Euler(V2PYR(V));
 	}
 
+	/// <summary>Converts V to Pitch Yaw Roll.</summary>
+	/// <remarks>Roll (Z) cannot be calculated from a direction vector.</remarks>
+	/// <param name="V">Normalised direction vector.</param>
+	/// <returns>X = Pitch, Y = Yaw, Z = Roll = 0.</returns>
 	public static Vector3 V2PYR(Vector3 V)
 	{
 		Vector3 EulerRadians = new Vector3
@@ -103,7 +107,7 @@ public static class MMathStatics
 
 	/// <summary>Checks if a vector is close enough to zero.</summary>
 	/// <param name="In"></param>
-	/// <returns></returns>
+	/// <returns>True if all components are &lt; <see cref="Vector3.kEpsilon"/>.</returns>
 	public static bool CheckZeroVector(Vector3 In)
 	{
 		bool bIsZero = In == Vector3.zero;
@@ -160,4 +164,6 @@ public static class MMathStatics
 	{
 		return float.IsNaN(F);
 	}
+
+	public static int FPS() => (int)(1f / Time.unscaledDeltaTime);
 }

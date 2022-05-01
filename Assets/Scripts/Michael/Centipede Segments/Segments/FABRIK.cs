@@ -71,6 +71,9 @@ public class FABRIK : MonoBehaviour
 		}
 #endif
 
+		if (MMathStatics.FPS() < 35)
+			return;
+
 		// FABRIK will not execute if this Leg is too far from the Camera.
 		if (IsTooFarFromCamera())
 			return;
