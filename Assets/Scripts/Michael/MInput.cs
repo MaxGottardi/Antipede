@@ -9,10 +9,6 @@ public class MInput : MonoBehaviour
 	public LayerMask EnemyLayer;
 	public GameObject hitParticles;
 
-	float Horizontal;
-	float Vertical;
-	Vector3 InDirection;
-
 	bool doneAttack = false, attackRequested = false;
 	Camera MainCamera;
 
@@ -63,7 +59,10 @@ public class MInput : MonoBehaviour
 		float Vertical = Input.GetAxisRaw("Vertical");
 
 		movement.Set(ref Horizontal, ref Vertical);
+	}
 
+	void LateUpdate()
+	{
 		body.Weapons.ReceiveMouseCoords(MouseToWorldCoords());
 	}
 

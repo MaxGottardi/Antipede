@@ -166,4 +166,91 @@ public static class MMathStatics
 	}
 
 	public static int FPS() => (int)(1f / Time.unscaledDeltaTime);
+
+	/// <summary>Rotates a vector at an angle of AngleDegrees around Axis.</summary>
+	/// <param name="AngleDegrees">The degrees at which to rotate this MVector.</param>
+	/// <param name="Axis">The axis to rotate this vector around.</param>
+	public static Vector3 RotateAngleAxis(Vector3 Point, float AngleDegrees, Vector3 Axis)
+	{
+		SinCos(out float S, out float C, AngleDegrees * Mathf.Deg2Rad);
+
+		float XX = Axis.x * Axis.x;
+		float YY = Axis.y * Axis.y;
+		float ZZ = Axis.z * Axis.z;
+
+		float XY = Axis.x * Axis.y;
+		float YZ = Axis.y * Axis.z;
+		float ZX = Axis.z * Axis.x;
+
+		float XS = Axis.x * S;
+		float YS = Axis.y * S;
+		float ZS = Axis.z * S;
+
+		float OMC = 1f - C;
+
+		return new Vector3(
+			(OMC * XX + C) * Point.x + (OMC * XY - ZS) * Point.y + (OMC * ZX + YS) * Point.z,
+			(OMC * XY + ZS) * Point.x + (OMC * YY + C) * Point.y + (OMC * YZ - XS) * Point.z,
+			(OMC * ZX - YS) * Point.x + (OMC * YZ + XS) * Point.y + (OMC * ZZ + C) * Point.z
+		);
+	}
+
+
+	/// <summary>The 11-Degree Minimax Approximation Sine and 10-Degree Minimax Approximation Cosine over an angle.</summary>
+	/// <param name="Sine">The Sine result over fValue.</param>
+	/// <param name="Cosine">The Cosine result over fValue.</param>
+	/// <param name="Value">The angle.</param>
+	public static void SinCos(out float Sine, out float Cosine, float Value)
+	{
+		const float kHalfPI = Mathf.PI * .5f;
+		const float kInversePI = 1 / Mathf.PI;
+
+		float Quotient = (kInversePI * 0.5f) * Value;
+		if (Value >= 0.0f)
+		{
+			Quotient = (int)(Quotient + 0.5f);
+		}
+		else
+		{
+			Quotient = (int)(Quotient - 0.5f);
+		}
+		float Y = Value - (2.0f * Mathf.PI) * Quotient;
+
+		// Map Y to [-PI / 2, PI / 2] with Sin(y) = Sin(Value).
+		float Sign;
+		if (Y > kHalfPI)
+		{
+			Y = Mathf.PI - Y;
+			Sign = -1.0f;
+		}
+		else if (Y < -kHalfPI)
+		{
+			Y = -Mathf.PI - Y;
+			Sign = -1.0f;
+		}
+		else
+		{
+			Sign = +1.0f;
+		}
+
+		float y2 = Y * Y;
+
+		// 11-degree minimax approximation
+		Sine = (((((-2.3889859e-08f * y2 + 2.7525562e-06f) * y2 - 0.00019840874f) * y2 + 0.0083333310f) * y2 - 0.16666667f) * y2 + 1.0f) * Y;
+
+		// 10-degree minimax approximation
+		float p = ((((-2.6051615e-07f * y2 + 2.4760495e-05f) * y2 - 0.0013888378f) * y2 + 0.041666638f) * y2 - 0.5f) * y2 + 1.0f;
+		Cosine = Sign * p;
+	}
+
+	public static Vector3 ComponentWiseMul(Vector3 L, Vector3 R)
+	{
+		return new Vector3
+		{
+			x = L.x * R.x,
+			y = L.y * R.y,
+			z = L.z * R.z,
+		};
+	}
+
 }

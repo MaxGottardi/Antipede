@@ -27,6 +27,14 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 	/// <summary>The Weapon currently being dragged; if it exists.</summary>
 	Weapon DraggingAttachment;
 
+	Vector3 PointUnderMouse;
+	RaycastHit Hit;
+
+	void LateUpdate()
+	{
+		PointUnderMouse = CameraToWorld(out Hit);
+	}
+
 	#region Maybe Unused Events
 
 	public void OnPointerClick(PointerEventData EventData) {  }
@@ -45,7 +53,7 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 	{
 		// ...
 
-		DraggingAttachment = Instantiate(Attachment, CameraToWorld(out _), Quaternion.identity);
+		DraggingAttachment = Instantiate(Attachment, PointUnderMouse, Quaternion.identity);
 		MeshRenderer MR = DraggingAttachment.GetComponent<MeshRenderer>();
 		Color RGB = MR.material.color;
 		MR.material.color = new Color(RGB.r, RGB.g, RGB.b, .5f);
@@ -55,7 +63,6 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 	{
 		// ...
 
-		CameraToWorld(out RaycastHit Hit);
 		if (TryGetSegment(ref Hit, out MSegment Segment)                // If the GameObject under the mouse has a Segment.
 			&& !Segment.bIgnoreFromWeapons                          // If the Segment is NOT ignoring Weapons.
 			&& Segment.TryGetWeaponSocket(out Transform Socket))    // If the Segment has a Weapon Socket.
@@ -72,7 +79,6 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 	{
 		// ...
 
-		CameraToWorld(out RaycastHit Hit);
 		if (TryGetSegment(ref Hit, out MSegment Segment))
 		{
 			if ((Weapon)Segment == null && !Segment.bIgnoreFromWeapons)

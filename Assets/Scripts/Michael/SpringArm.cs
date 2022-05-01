@@ -6,7 +6,9 @@ public class SpringArm : MonoBehaviour
 #if UNITY_EDITOR
 	[Header("Debug Options. [EDITOR ONLY]")]
 	[SerializeField] bool bDrawRotationalLines;
+	[Space(10)]
 #endif
+	public GameSettings Settings;
 
 	[Header("Target Settings.")]
 	[SerializeField] Transform Camera;
@@ -22,15 +24,23 @@ public class SpringArm : MonoBehaviour
 	[SerializeField] bool bEnableScrollToDistance;
 	[SerializeField] float ScrollSensitivity;
 
+	//[HideInInspector, SerializeField] Vector3 DefaultGimbalRotation;
+	//[HideInInspector, SerializeField] Vector3 DefaultCameraRotation;
+
 	[Header("Collisions")]
 	[SerializeField] LayerMask OnlyCollideWith;
 
 	[Header("Lag Settings")]
-	[SerializeField] bool bUseLag;
 	[SerializeField] float PositionalLagStrength = .2f;
 	[SerializeField] float RotationalLagStrength = .2f;
 	Vector3 TargetPosition;
 	Quaternion TargetRotation;
+
+	void Start()
+	{
+		Settings.OnSettingsChanged += ReceiveSettings;
+		Settings.OnReceiveInspectorDefaults?.Invoke(new Settings(bInheritRotation));
+	}
 
 	void Update()
 	{
@@ -40,54 +50,62 @@ public class SpringArm : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		if (bUseLag)
-		{
-			Camera.position = Vector3.Lerp(Camera.position, TargetPosition, PositionalLagStrength);
-			Camera.rotation = Quaternion.Slerp(Camera.rotation, TargetRotation, RotationalLagStrength);
-		}
+		Camera.position = Vector3.Lerp(Camera.position, TargetPosition, PositionalLagStrength);
+		Camera.rotation = Quaternion.Slerp(Camera.rotation, TargetRotation, RotationalLagStrength);
 	}
 
 	void PlaceCamera()
 	{
+		// Where the Spring Arm will point towards.
+		Vector3 ArmDirection;
+		Vector3 FinalPosition;
 
-		float VerticalOrbit = GimbalRotation.x;
-		float HorizontalOrbit = -GimbalRotation.y * Mathf.Deg2Rad;
-
-		if (bInheritRotation)
+		if (!bInheritRotation)
 		{
-			// Inherit the Target's Yaw.
-			VerticalOrbit += Target.localEulerAngles.y;
-			CameraRotation.y = Target.localEulerAngles.y;
+			float VerticalOrbit = GimbalRotation.x;
+			float HorizontalOrbit = -GimbalRotation.y;
+
+			VerticalOrbit *= Mathf.Deg2Rad;
+			HorizontalOrbit *= Mathf.Deg2Rad;
+
+			// Convert Angles to Vectors.
+			Vector3 Ground = new Vector3(Mathf.Sin(VerticalOrbit), 0, Mathf.Cos(VerticalOrbit)); // XZ.
+			Vector3 Up = new Vector3(0, Mathf.Sin(HorizontalOrbit), Mathf.Cos(HorizontalOrbit)); // XYZ.
+
+			// Ground's XZ and Up's Y will be used to define the direction of the Spring Arm.
+			ArmDirection = new Vector3(Ground.x, Up.y, Ground.z).normalized;
+
+#if UNITY_EDITOR
+			if (bDrawRotationalLines)
+			{
+				Debug.DrawLine(Target.position, Target.position + -Ground * Distance, Color.red);
+				Debug.DrawLine(Target.position, Target.position + -Up * Distance, Color.green);
+				Debug.DrawLine(Target.position, Target.position + -ArmDirection * Distance, Color.yellow);
+			}
+#endif
 		}
 		else
 		{
-			CameraRotation.y = 0;
+			// Rotates the Camera around Target, given the Gimbal Rotation's Pitch (Y).
+			// As a side-effect, this also inherits the Yaw.
+			Quaternion InheritRotation = Quaternion.AngleAxis(GimbalRotation.y, Target.right);
+			ArmDirection = (InheritRotation * Target.forward).normalized;
+
+			// Look at the Target, but add the CameraRotation's custom Pitch setting from the Inspector.
+			// (-) Pitches towards global up. (+) Pitches towards global down.
+			Camera.LookAt(TargetPos());
+			Camera.localEulerAngles -= new Vector3(CameraRotation.x, 0, 0);
 		}
 
-		VerticalOrbit *= Mathf.Deg2Rad;
-
-		// Convert Angles to Vectors.
-		Vector3 Ground = new Vector3(Mathf.Sin(VerticalOrbit), 0, Mathf.Cos(VerticalOrbit));
-		Vector3 Up = new Vector3(0, Mathf.Sin(HorizontalOrbit), Mathf.Cos(HorizontalOrbit));
-		Vector3 XY = new Vector3(Ground.x, Up.y, Ground.z).normalized;
-
 		// If the Spring Arm will collider with something:
-		if (RunCollisionsCheck(ref XY))
+		if (RunCollisionsCheck(ref ArmDirection))
 			return;
 
-		Vector3 FinalPosition = TargetPos() - (Distance * XY);
+		// Make the Position and Rotation for Lag.
+		FinalPosition = TargetPos() - (Distance * ArmDirection);
 		Quaternion FinalRotation = Quaternion.Euler(CameraRotation);
 
 		SetPositionAndRotation(FinalPosition, FinalRotation);
-
-#if UNITY_EDITOR
-		if (bDrawRotationalLines)
-		{
-			Debug.DrawLine(Target.position, Target.position + -Ground * Distance, Color.red);
-			Debug.DrawLine(Target.position, Target.position + -Up * Distance, Color.green);
-			Debug.DrawLine(Target.position, Target.position + -XY, Color.yellow);
-		}
-#endif
 	}
 
 	bool RunCollisionsCheck(ref Vector3 Direction)
@@ -116,18 +134,10 @@ public class SpringArm : MonoBehaviour
 		}
 #endif
 
-		if (!bUseLag)
+		if (TargetPosition != FinalPosition || TargetRotation != FinalRotation)
 		{
-			Camera.position = FinalPosition;
-			Camera.rotation = FinalRotation;
-		}
-		else
-		{
-			if (TargetPosition != FinalPosition || TargetRotation != FinalRotation)
-			{
-				TargetPosition = FinalPosition;
-				TargetRotation = FinalRotation;
-			}
+			TargetPosition = FinalPosition;
+			TargetRotation = FinalRotation;
 		}
 	}
 
@@ -140,6 +150,11 @@ public class SpringArm : MonoBehaviour
 			Distance += Input.mouseScrollDelta.y * -ScrollSensitivity;
 			Distance = Mathf.Clamp(Distance, 1, 50);
 		}
+	}
+
+	void ReceiveSettings(Settings InSettings)
+	{
+		bInheritRotation = InSettings.bInheritRotation;
 	}
 
 #if UNITY_EDITOR

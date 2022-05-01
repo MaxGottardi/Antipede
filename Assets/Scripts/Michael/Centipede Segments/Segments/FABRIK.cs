@@ -22,7 +22,7 @@ public class FABRIK : MonoBehaviour
 	// Optimisations
 	static SpringArm MainSpringArmComponent;
 	bool bIsVisible;
-	const float kSpringArmThreshold = 20;
+	const float kSpringArmThreshold = 15;
 	const float kCameraDistanceThreshold = 17f;
 
 	[Header("FABRIK Settings.")]
@@ -41,6 +41,8 @@ public class FABRIK : MonoBehaviour
 	/// <summary>True if this Leg is still.</summary>
 	bool bHasStopped;
 
+	bool bFrameLimiterActive;
+
 	void Start()
 	{
 		if (!MainSpringArmComponent)
@@ -52,6 +54,11 @@ public class FABRIK : MonoBehaviour
 #endif
 
 		InvokeRepeating(nameof(AssignLegHeights), 0, Mathf.PI / LegUpSpeed);
+	}
+
+	void Update()
+	{
+		bFrameLimiterActive = MMathStatics.FPS() < 35;
 	}
 
 	void FixedUpdate()
@@ -71,7 +78,7 @@ public class FABRIK : MonoBehaviour
 		}
 #endif
 
-		if (MMathStatics.FPS() < 35)
+		if (bFrameLimiterActive)
 			return;
 
 		// FABRIK will not execute if this Leg is too far from the Camera.
