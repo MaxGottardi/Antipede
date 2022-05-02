@@ -392,8 +392,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 382067745}
-  m_LocalRotation: {x: 0.34202015, y: 0, z: 0, w: 0.9396927}
-  m_LocalPosition: {x: 0.40960002, y: 4.627922, z: -6.6914716}
+  m_LocalRotation: {x: 0.1305262, y: 0, z: 0, w: 0.9914449}
+  m_LocalPosition: {x: 0.40960002, y: 5.37138, z: -13.209326}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -416,9 +416,9 @@ MonoBehaviour:
   Camera: {fileID: 382067748}
   Target: {fileID: 1562714019}
   TargetOffset: {x: 0, y: 0.5, z: 0}
-  Distance: 6
-  GimbalRotation: {x: 0, y: 60, z: 0}
-  CameraRotation: {x: 40, y: 0, z: 0}
+  Distance: 12
+  GimbalRotation: {x: 0, y: 25, z: 0}
+  CameraRotation: {x: 15, y: 0, z: 0}
   bInheritRotation: 0
   bEnableScrollToDistance: 1
   ScrollSensitivity: 1

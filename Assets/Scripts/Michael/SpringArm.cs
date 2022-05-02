@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SpringArm : MonoBehaviour
@@ -23,9 +24,9 @@ public class SpringArm : MonoBehaviour
 	[Space(5)]
 	[SerializeField] bool bEnableScrollToDistance;
 	[SerializeField] float ScrollSensitivity;
-
-	//[HideInInspector, SerializeField] Vector3 DefaultGimbalRotation;
-	//[HideInInspector, SerializeField] Vector3 DefaultCameraRotation;
+	[HideInInspector, SerializeField] Vector3 DefaultGimbalRotation;
+	[HideInInspector, SerializeField] Vector3 DefaultCameraRotation;
+	Vector2 PreviousMouseDragPosition;
 
 	[Header("Collisions")]
 	[SerializeField] LayerMask OnlyCollideWith;
@@ -47,10 +48,18 @@ public class SpringArm : MonoBehaviour
 		{
 			Debug.LogWarning("No Settings Object. Not needed if there is no Pause Menu. ");
 		}
+
+		DefaultGimbalRotation = GimbalRotation;
+		DefaultCameraRotation = CameraRotation;
 	}
 
 	void Update()
 	{
+		UpdateRotationOnMouse();
+
+		if (Input.GetKeyDown(KeyCode.T))
+			bInheritRotation = !bInheritRotation;
+
 		ScrollDistance();
 		PlaceCamera();
 	}
@@ -95,13 +104,13 @@ public class SpringArm : MonoBehaviour
 		{
 			// Rotates the Camera around Target, given the Gimbal Rotation's Pitch (Y).
 			// As a side-effect, this also inherits the Yaw.
-			Quaternion InheritRotation = Quaternion.AngleAxis(GimbalRotation.y, Target.right);
+			Quaternion InheritRotation = Quaternion.AngleAxis(DefaultGimbalRotation.y, Target.right);
 			ArmDirection = (InheritRotation * Target.forward).normalized;
 
 			// Look at the Target, but add the CameraRotation's custom Pitch setting from the Inspector.
 			// (-) Pitches towards global up. (+) Pitches towards global down.
 			Camera.LookAt(TargetPos());
-			Camera.localEulerAngles -= new Vector3(CameraRotation.x, 0, 0);
+			Camera.localEulerAngles -= new Vector3(DefaultCameraRotation.x, 0, 0);
 		}
 
 		// If the Spring Arm will collider with something:
@@ -162,6 +171,32 @@ public class SpringArm : MonoBehaviour
 	void ReceiveSettings(Settings InSettings)
 	{
 		bInheritRotation = InSettings.bInheritRotation;
+	}
+
+	void UpdateRotationOnMouse()
+	{
+		if (!bInheritRotation)
+		{
+			Vector3 MousePosition = Input.mousePosition;
+
+			if (Input.GetMouseButton(1))
+			{
+				float DeltaX = MousePosition.x - PreviousMouseDragPosition.x;
+				float DeltaY = MousePosition.y - PreviousMouseDragPosition.y;
+
+				GimbalRotation.x += DeltaX;
+				CameraRotation.y += DeltaX;
+
+				if (GimbalRotation.y - DeltaY < 70 && GimbalRotation.y - DeltaY >= 0)
+				{
+					GimbalRotation.y -= DeltaY;
+					CameraRotation.x -= DeltaY;
+				}
+
+			}
+
+			PreviousMouseDragPosition = MousePosition;
+		}
 	}
 
 #if UNITY_EDITOR

@@ -111,7 +111,7 @@ public class MInput : MonoBehaviour
 	Vector3 MouseToWorldCoords()
 	{
 		Ray Ray = MainCamera.ScreenPointToRay(Input.mousePosition);
-		Physics.Raycast(Ray, out RaycastHit Hit, 5000);
+		Physics.Raycast(Ray, out RaycastHit Hit, 5000, 384); // Enemy and Ground Layers. (1 << 7 | 1 << 8)
 
 		return Hit.point;
 	}
