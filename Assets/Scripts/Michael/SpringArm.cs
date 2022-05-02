@@ -38,8 +38,15 @@ public class SpringArm : MonoBehaviour
 
 	void Start()
 	{
-		Settings.OnSettingsChanged += ReceiveSettings;
-		Settings.OnReceiveInspectorDefaults?.Invoke(new Settings(bInheritRotation));
+		if (Settings)
+		{
+			Settings.OnSettingsChanged += ReceiveSettings;
+			Settings.OnReceiveInspectorDefaults?.Invoke(new Settings(bInheritRotation));
+		}
+		else
+		{
+			Debug.LogWarning("No Settings Object. Not needed if there is no Pause Menu. ");
+		}
 	}
 
 	void Update()

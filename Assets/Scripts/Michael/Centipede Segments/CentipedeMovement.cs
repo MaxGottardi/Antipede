@@ -1,5 +1,6 @@
-using System.Linq;
+using System.Collections;
 using UnityEngine;
+using System;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -28,6 +29,9 @@ public class CentipedeMovement : MonoBehaviour
 	float GroundHeightDistance = 2f;
 	[SerializeField, Tooltip("How far downwards should the Centipede check for Ground?"), Min(.1f)]
 	float GroundDistanceCheck = 5f;
+	[SerializeField, Tooltip("How far ahead should the Centipede check for Boundaries?")]
+	float BoundaryCheckDistance = 3f;
+	bool bIsCourseCorrecting;
 
 	[Header("Interpolation Settings.")]
 	[SerializeField] bool bInterpolateHillClimb;
@@ -47,10 +51,6 @@ public class CentipedeMovement : MonoBehaviour
 	// Surface Normals.
 	Vector3 PreviousNormal;
 	Vector3 SurfaceNormal;
-
-	// Ray Evaluations
-	//Vector3 PreviousEvaluation;
-	//Vector3 CurrentEvaluation;
 
 	void Start()
 	{
@@ -92,6 +92,9 @@ public class CentipedeMovement : MonoBehaviour
 		if (Horizontal == 0 && Vertical == 0)
 			return;
 
+		if (BoundariesCheckCollisions())
+			return;
+
 		PreviousNormal = SurfaceNormal;
 		SurfaceNormal = GetSurfaceNormal(out bool bGroundWasHit, out RaycastHit Surface);
 
@@ -120,14 +123,7 @@ public class CentipedeMovement : MonoBehaviour
 			InDirection = NormalForward * Vertical + NormalRight * Horizontal;
 			InDirection += transform.position;
 
-			//CurrentEvaluation = -Evaluate(SurfaceNormal);
-
-			//if (PreviousEvaluation != CurrentEvaluation)
-			//	transform.rotation = Quaternion.FromToRotation(transform.up, SurfaceNormal) * transform.rotation;
-
 			transform.position = Surface.point - (transform.forward * Lead) + HeightOffGround * -Evaluate(SurfaceNormal);
-
-			//PreviousEvaluation = CurrentEvaluation;
 
 			if (PreviousNormal != SurfaceNormal)
 			{
@@ -223,6 +219,9 @@ public class CentipedeMovement : MonoBehaviour
 		return bHasHitSomething ? Hit.normal : Vector3.zero;
 	}
 
+	/// <summary>Based on the Centipede's Up, get a direction that goes 'Down', relative to the Centipede.</summary>
+	/// <param name="U">Normalised Up or Normal.</param>
+	/// <returns>E.g. When 'Up' faces -Z, Vector3.forward.</returns>
 	Vector3 Evaluate(Vector3 U)
 	{
 		if (U == Vector3.zero)
@@ -254,9 +253,49 @@ public class CentipedeMovement : MonoBehaviour
 		return Evaluate(T.up);
 	}
 
+	bool BoundariesCheckCollisions()
+	{
+		if (bIsCourseCorrecting)
+			return true;
+
+		Vector3 NormalisedInDirection = transform.forward;
+		Ray R = new Ray(transform.position, NormalisedInDirection);
+		bool bWillCollideWithABoundary = Physics.Raycast(R, out RaycastHit BoundariesCheck, BoundaryCheckDistance, 2048);
+
+		Vector3 BoundaryNormal = BoundariesCheck.normal;
+		Vector3 AutoCorrect = Vector3.Reflect(NormalisedInDirection, BoundaryNormal);
+
+		InDirection = transform.position + AutoCorrect;
+
+#if UNITY_EDITOR
+		if (bShowGizmos && bWillCollideWithABoundary)
+		{
+			Vector3 BoundaryPoint = BoundariesCheck.point;
+
+			Debug.DrawLine(transform.position, BoundaryPoint, Color.white, 2);
+			Debug.DrawLine(BoundaryPoint, BoundaryPoint + AutoCorrect, Color.red, 2);
+			Debug.DrawLine(transform.position, InDirection, Color.magenta, 2);
+		}
+#endif
+
+		StartCoroutine(CorrectCourse(AutoCorrect));
+
+		return bWillCollideWithABoundary;
+	}
+
+	IEnumerator CorrectCourse(Vector3 Reflected)
+	{
+		bIsCourseCorrecting = true;
+
+		// The Centipede will continue correcting its course until it faces the corrected direction.
+		while (Vector3.Dot(transform.forward, Reflected) < .95f)
+			yield return null;
+
+		bIsCourseCorrecting = false;
+	}
+
 #if UNITY_EDITOR
 
-	//[SerializeField] Transform UpObject;
 	void OnDrawGizmos()
 	{
 		if (bShowGizmos)
@@ -269,15 +308,6 @@ public class CentipedeMovement : MonoBehaviour
 			Gizmos.DrawSphere(InDirection, .1f);
 
 			const string kFloatAccuracy = "F2";
-
-			//Gizmos.color = Color.red;
-			//Gizmos.DrawRay(UpObject.position, UpObject.up);
-			//Vector3 res = Evaluate(UpObject);
-			//Gizmos.color = Color.blue;
-			//Gizmos.DrawRay(UpObject.position, res);
-
-			//Handles.Label(UpObject.position + UpObject.up, UpObject.up.ToString(kFloatAccuracy));
-			//Handles.Label(UpObject.position + res, res.ToString(kFloatAccuracy));
 
 			Gizmos.color = Color.yellow;
 			Gizmos.DrawRay(transform.position, transform.up);
