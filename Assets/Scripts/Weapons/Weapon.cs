@@ -3,6 +3,8 @@ using UnityEngine;
 /// <summary>The base class for a weapon.</summary>
 public abstract class Weapon : MonoBehaviour
 {
+	[HideInInspector] public MCentipedeWeapons Owner;
+
 	[SerializeField, Tooltip("Where should projectiles shoot from?")] protected Transform BarrelEndSocket;
 	[SerializeField, Tooltip("The " + nameof(Projectile) + " to Fire.")] protected Projectile ProjectileObject;
 	public GameObject weaponPickup;
@@ -18,6 +20,9 @@ public abstract class Weapon : MonoBehaviour
 	/// <param name="Direction">The direction to look at.</param>
 	public virtual void LookAt(Vector3 Direction)
 	{
+		if (Direction == Vector3.zero)
+			return;
+
 		transform.LookAt(Direction);
 	}
 

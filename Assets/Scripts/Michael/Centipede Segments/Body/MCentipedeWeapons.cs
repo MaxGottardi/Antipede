@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 [RequireComponent(typeof(MCentipedeBody))]
 public class MCentipedeWeapons : MonoBehaviour
@@ -12,9 +13,16 @@ public class MCentipedeWeapons : MonoBehaviour
 	[SerializeField] bool bUsePropagationDelay;
 	[SerializeField] float PropagationDelay;
 
-	[HideInInspector] public List<MSegment> SegmentsWithWeapons;
+	[Header("Weapons HUD")]
+	[SerializeField] TextMeshProUGUI HUD;
 
+	[HideInInspector] public List<MSegment> SegmentsWithWeapons;
+	bool bHasWeapons;
+
+	/// <summary>The World Position under the Mouse</summary>
+	/// <remarks>Vector3.zero when nothing is under the mouse.</remarks>
 	Vector3 MouseToWorld;
+	bool bHasLineOfSight;
 
 	void Start()
 	{
@@ -24,33 +32,58 @@ public class MCentipedeWeapons : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetMouseButtonDown(0))
+		bHasWeapons = SegmentsWithWeapons.Count > 0;
+
+		if (bHasWeapons)
 		{
-			if (!bUsePropagationDelay)
+			bHasLineOfSight = HasLineOfSight();
+
+			if (bHasLineOfSight && Input.GetMouseButtonDown(0))
 			{
-				foreach (Weapon W in SegmentsWithWeapons)
-					W.Fire(MouseToWorld);
-			}
-			else
-			{
-				StartCoroutine(IE_Fire());
+				if (!bUsePropagationDelay)
+				{
+					foreach (Weapon W in SegmentsWithWeapons)
+						W.Fire(MouseToWorld);
+				}
+				else
+				{
+					StartCoroutine(IE_Fire());
+				}
 			}
 		}
+
+		if (HUD)
+			UpdateWeaponHUD();
 	}
+
+	static Vector3 ZeroVector = Vector3.zero;
 
 	public void ReceiveMouseCoords(Vector3 MouseToWorld)
 	{
 		this.MouseToWorld = MouseToWorld;
 		Debug.DrawLine(MouseToWorld + Vector3.up * 2, MouseToWorld, Color.cyan);
 
-		if (SegmentsWithWeapons.Count > 0)
+		if (SegmentsWithWeapons.Count > 0 && MouseToWorld != Vector3.zero && bHasLineOfSight)
 			UpdateWeaponOrientations(ref MouseToWorld);
+		else
+			UpdateWeaponOrientations(ref ZeroVector);
 	}
 
 	void UpdateWeaponOrientations(ref Vector3 MouseToWorld)
 	{
 		foreach (Weapon W in SegmentsWithWeapons)
 			W.LookAt(MouseToWorld);
+	}
+
+	bool HasLineOfSight()
+	{
+		// Cast a ray between the Centipede's position and the position under the mouse.
+		// Checking if there's anything in between these two positions sometimes returns true
+		// because it treats the position under the mouse as an intercept sometimes.
+		//
+		// This Offset should prevent that by adding an Up off the ground.
+
+		return !Physics.Linecast(transform.position + Vector3.up * .5f, MouseToWorld + transform.up, 256);
 	}
 
 	IEnumerator IE_Fire()
@@ -65,11 +98,41 @@ public class MCentipedeWeapons : MonoBehaviour
 		//
 		// Apparently you can't use a try-catch block on an IEnumerator.
 		// It sounds bad, but just ignore it; it cancels the firing anyway.
+		//
+		// It *should* be fixed. See MSegment.OnDestroy() and its call to MCentipedeWeapons.StopAllCoroutines().
 
 		foreach (Weapon W in SegmentsWithWeapons)
 		{
 			W.Fire(MouseToWorld);
 			yield return new WaitForSeconds(PropagationDelay);
+		}
+	}
+
+	void UpdateWeaponHUD()
+	{
+		if (!bHasWeapons || MouseToWorld == Vector3.zero)
+		{
+			HUD.text = "";
+			return;
+		}
+
+		Vector3 MouseScreenPosition = Input.mousePosition;
+
+		if (MouseScreenPosition.x >= Screen.width * .9f)
+			HUD.rectTransform.pivot = new Vector2(.5f, 0);
+		else if (MouseScreenPosition.x < Screen.width * .1f)
+			HUD.rectTransform.pivot = Vector2.zero;
+
+		HUD.rectTransform.position = MouseScreenPosition;
+		if (bHasLineOfSight)
+		{
+			HUD.text = "Distance: " + Vector3.Distance(transform.position, MouseToWorld).ToString("F0") + "m";
+			HUD.color = Color.white;
+		}
+		else
+		{
+			HUD.text = "NO LINE OF SIGHT";
+			HUD.color = Color.red;
 		}
 	}
 }

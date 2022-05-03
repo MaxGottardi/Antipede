@@ -106,6 +106,8 @@ public class MSegment : MonoBehaviour
 
 		Weapon AttachedWeapon = Instantiate(Weapon, WeaponSocket.position, Quaternion.identity);
 		this.Weapon = AttachedWeapon;
+		this.Weapon.Owner = GetOwner();
+
 		AttachedWeapon.transform.SetParent(WeaponSocket);
 
 		Owner.SegmentsWithWeapons.Add(this);
@@ -115,6 +117,11 @@ public class MSegment : MonoBehaviour
 	{
 		Socket = WeaponSocket;
 		return Socket;
+	}
+
+	public MCentipedeWeapons GetOwner()
+	{
+		return Owner;
 	}
 
 	void OnDestroy()
