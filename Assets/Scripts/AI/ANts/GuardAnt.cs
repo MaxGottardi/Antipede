@@ -8,5 +8,6 @@ public class GuardAnt : GenericAnt
     {
         base.Start();
         stateMachine.Attack = new GuardAttack(this);
+        stateMachine.Investigate = new GuardInvestigate(this);
     }
 }

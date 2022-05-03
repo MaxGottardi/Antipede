@@ -5831,7 +5831,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8856138776421195210, guid: d7784141bda4f62498b4168dbab60047, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7784141bda4f62498b4168dbab60047, type: 3}
@@ -6469,7 +6469,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 349612675}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -35.02, y: 6.64, z: -5.26}
+  m_LocalPosition: {x: -35.02, y: 5.1, z: -3.41}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 909356010}
@@ -8610,7 +8610,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 505790722}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -35.02, y: 6.64, z: 5.43}
+  m_LocalPosition: {x: -35.02, y: 5.1, z: 4.52}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 909356010}
@@ -13240,6 +13240,7 @@ MonoBehaviour:
   GroundDistanceCheck: 5
   bInterpolateHillClimb: 0
   InterpTime: 0.2
+  UpObject: {fileID: 0}
 --- !u!1001 &785983973
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14470,7 +14471,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8856138776421195210, guid: d7784141bda4f62498b4168dbab60047, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7784141bda4f62498b4168dbab60047, type: 3}
@@ -17474,6 +17475,7 @@ MonoBehaviour:
   GroundDistanceCheck: 1
   bInterpolateHillClimb: 1
   InterpTime: 0.2
+  UpObject: {fileID: 0}
 --- !u!114 &1046383391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27587,6 +27589,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1853081508, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1853081508, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: largeViewAnlge
       value: 60
       objectReference: {fileID: 0}
@@ -27632,7 +27638,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -20
+      value: -19.535
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalRotation.w
@@ -30139,6 +30145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13befcf86535b694094d415b33a4cdca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bDrawRotationalLines: 0
   Camera: {fileID: 1805762208}
   Target: {fileID: 1046383396}
   TargetOffset: {x: 0, y: 0.5, z: 0}
@@ -30146,9 +30153,11 @@ MonoBehaviour:
   GimbalRotation: {x: 0, y: 45, z: -0}
   CameraRotation: {x: 35.9, y: 0, z: 0}
   bInheritRotation: 0
-  IgnoreFromCollisions:
+  bEnableScrollToDistance: 0
+  ScrollSensitivity: 0
+  OnlyCollideWith:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   bUseLag: 1
   PositionalLagStrength: 0.2
   RotationalLagStrength: 0.2
@@ -30257,7 +30266,7 @@ MonoBehaviour:
   width: 36
   height: 8
   depth: 30
-  tileSize: 2
+  tileSize: 4
   offset: {x: -39.2, y: 0.5, z: -28.2}
   groundLayer:
     serializedVersion: 2
@@ -30448,7 +30457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8856138776421195210, guid: d7784141bda4f62498b4168dbab60047, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7784141bda4f62498b4168dbab60047, type: 3}

@@ -139,7 +139,7 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	public void RemoveSegment(float healthReduction)//MSegment deadSegment)
 	{
-		Debug.Log("Killing Player");
+//		Debug.Log("Killing Player");
 
 		MSegment lastSegment = GetLast();
 		//MSegment lastSegment = this[Segments.Count - 1];

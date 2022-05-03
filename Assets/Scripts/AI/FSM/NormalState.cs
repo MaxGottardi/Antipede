@@ -89,7 +89,7 @@ public class InvestigateState : State
     GenericAnt owner;
     float lostPlayerTime = 3.0f;
 
-    Node topNode;
+    protected Node topNode;
     public InvestigateState(GenericAnt owner) //also initilize any behaviour tree used on the state as well
     {
         this.owner = owner;
@@ -134,7 +134,7 @@ public class InvestigateState : State
             //    owner.nextPosTransform.gameObject.GetComponent<MSegment>().beingAttacked = false;
             owner.stateMachine.changeState(owner.stateMachine.Movement);
         }
-        else if (owner.nextPosTransform && Vector3.Distance(owner.transform.position, owner.nextPosTransform.position) < owner.attachDist && !owner.callingBackup) //within attack range of chosen player segment
+        else if (owner.NearSegment() && !owner.callingBackup) //within attack range of chosen player segment
         {
             owner.stateMachine.changeState(owner.stateMachine.Attack);
         }
@@ -355,5 +355,25 @@ public class GuardAttack : AttackState
     {
         base.exit();
         attackTime = 2.5f;
+    }
+}
+
+public class GuardInvestigate : InvestigateState
+{
+    float attackTime = 2.5f;
+    GenericAnt owner;
+    public GuardInvestigate(GenericAnt owner) : base(owner) //also initilize any behaviour tree used on the state as well
+    {
+        this.owner = owner;
+
+        DetermineAttackSeg determineAttackSeg = new DetermineAttackSeg(owner);
+
+        PathToSegment pathToSegment = new PathToSegment(owner);
+        MoveTowards moveTowards = new MoveTowards(owner, false);
+
+        Sequence moveSequence = new Sequence(new List<Node> { pathToSegment, moveTowards });
+        RepeatUntilFail repeatUntilFail = new RepeatUntilFail(moveSequence);
+
+        topNode = new Sequence(new List<Node> { determineAttackSeg, repeatUntilFail });
     }
 }

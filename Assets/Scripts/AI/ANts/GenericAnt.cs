@@ -20,9 +20,6 @@ public class GenericAnt : MonoBehaviour
 
 
 
-    public float health = 100;
-    float maxHealth;
-    public GameObject leftAntenna, rightAntenna;
     [HideInInspector] public float callBackupWait = 0; //the time remaining which cannot call a backup
     [HideInInspector] public StateMachine stateMachine;
     [HideInInspector] public bool canInvestigate = false, callingBackup = false;
@@ -44,6 +41,8 @@ public class GenericAnt : MonoBehaviour
     public float largeViewAnlge, shortViewAngle;
 
     [Header("Backup Calling")]
+    [Range(0, 1)]
+    public float chanceCallBackup; //the percentage liklyhood that the ant even calls backup
     public float maxBackupDist;
     public float backupCallDist = 7.5f;
 
@@ -51,6 +50,13 @@ public class GenericAnt : MonoBehaviour
     public float attachDist = 0.5f;
     public float attackAnimLength;
     public Transform headTransform;
+
+    [Header("Damage Settings")]
+    [Range(0, 1)]
+    [SerializeField]float damageStateChance = 0.5f;
+    public float health = 100;
+    float maxHealth;
+    public GameObject leftAntenna, rightAntenna;
 
     public virtual void Start()
     {
@@ -129,8 +135,8 @@ public class GenericAnt : MonoBehaviour
             ///curr hea
             float healthRatio = health / maxHealth;
             //new_value = ( (old_value - old_min) / (old_max - old_min) ) * (new_max - new_min) + new_min
-            float currRote = health > 0 ? 150 - healthRatio * (150 - 30) + 30 : 150;
-            float currChildRote = health > 0 ? 70 - healthRatio * (70 - 0) + 0 : 70;
+            float currRote = health > 0 ? healthRatio * (30 - 150) + 150 : 150;
+            float currChildRote = health > 0 ? healthRatio * (0 - 70) + 70 : 70;
 
             leftAntenna.transform.localRotation = Quaternion.Euler(currRote, leftAntenna.transform.localRotation.y, leftAntenna.transform.localRotation.z);
             rightAntenna.transform.localRotation = Quaternion.Euler(currRote, rightAntenna.transform.localRotation.y, rightAntenna.transform.localRotation.z);
@@ -140,7 +146,7 @@ public class GenericAnt : MonoBehaviour
 
             if (health <= 0)
                 stateMachine.changeState(stateMachine.Dead);
-            else
+            else if(Random.value < damageStateChance)
             {
                 stateMachine.changeState(stateMachine.Damage);
             }
