@@ -12,6 +12,7 @@ public class MInput : MonoBehaviour
 	bool doneAttack = false, attackRequested = false;
 	Camera MainCamera;
 
+
 	void Start()
 	{
 		body = GetComponent<MCentipedeBody>();
@@ -55,6 +56,7 @@ public class MInput : MonoBehaviour
 			body.DecreaseSpeed(100.0f);
 		}
 
+
 		float Horizontal = Input.GetAxisRaw("Horizontal");
 		float Vertical = Input.GetAxisRaw("Vertical");
 
@@ -70,6 +72,7 @@ public class MInput : MonoBehaviour
 	{
 		movement.HandleMovement(ref body);
 	}
+
 
 	/// <summary>
 	/// for all enemies within a radius of the pincers, they get damaged
