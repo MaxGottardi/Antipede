@@ -1330,7 +1330,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &40239000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20985,6 +20985,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 752854069}
   sfxManager: {fileID: 34023562}
+  cardManager: {fileID: 1608985890}
 --- !u!95 &752854073
 Animator:
   serializedVersion: 3
@@ -45020,7 +45021,7 @@ GameObject:
   - component: {fileID: 1608985891}
   - component: {fileID: 1608985890}
   m_Layer: 0
-  m_Name: CardOverlayy
+  m_Name: Cardmanager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48624,6 +48625,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 740873898}
   sfxManager: {fileID: 34023562}
+  cardManager: {fileID: 0}
 --- !u!54 &1695563933
 Rigidbody:
   m_ObjectHideFlags: 0
