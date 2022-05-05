@@ -86,7 +86,7 @@ public class ShockState : State
 /// </summary>
 public class InvestigateState : State
 {
-    GenericAnt owner;
+    protected GenericAnt owner;
     float lostPlayerTime = 3.0f;
 
     protected Node topNode;
@@ -110,7 +110,7 @@ public class InvestigateState : State
         topNode = new Sequence(new List<Node> { determineAttackSeg, repeatUntilFail });
     }
 
-    public void enter()
+    public virtual void enter()
     {   
         lostPlayerTime = 3.0f;
 
@@ -142,7 +142,7 @@ public class InvestigateState : State
             topNode.execute();
     }
 
-    public void exit()
+    public virtual void exit()
     {
         topNode.interupt();
 
@@ -375,5 +375,36 @@ public class GuardInvestigate : InvestigateState
         RepeatUntilFail repeatUntilFail = new RepeatUntilFail(moveSequence);
 
         topNode = new Sequence(new List<Node> { determineAttackSeg, repeatUntilFail });
+    }
+}
+
+public class DasherInvestigate : InvestigateState
+{
+    DasherAnt dashOwner;
+    public DasherInvestigate(DasherAnt owner) : base(owner)
+    {
+        this.owner = owner;
+        dashOwner = owner.gameObject.GetComponent<DasherAnt>();
+    }
+
+    public override void enter()
+    {
+        dashOwner.tempSpeed = owner.Speed;
+        dashOwner.tempRoteSpeed = owner.rotSpeed;
+        dashOwner.tempAnimSpeed = owner.animMultiplier;
+
+
+        owner.Speed = dashOwner.dashSpeed;
+        owner.rotSpeed = dashOwner.dashRoteSpeed;
+        owner.animMultiplier = dashOwner.dashAnimSpeed;
+        base.enter();
+    }
+
+    public override void exit()
+    {
+        owner.Speed = dashOwner.tempSpeed;
+        owner.rotSpeed = dashOwner.tempRoteSpeed;
+        owner.animMultiplier = dashOwner.tempAnimSpeed;
+        base.exit();
     }
 }
