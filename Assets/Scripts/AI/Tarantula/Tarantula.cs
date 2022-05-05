@@ -13,15 +13,18 @@ public class Tarantula: MonoBehaviour
     public float moveSpeed = 4f;
     //public float damage = 2;
     private float health;
-    private float maxHealth = 10;
+    public float maxHealth = 10;
 
     private Slider healthSlider;
+    private bool dying;
+    private float deathTimer;
 
     private float distToNest;
     private float distToPlayer;
 
-    private GameObject middleSeg;
-    private int middleSegInt;
+    private GameObject targetSeg;
+    float newTargetSegDist;
+    float oldTargetSegDist;
 
     private Animation animator;
     private bool tarantulaMoving;
@@ -30,6 +33,8 @@ public class Tarantula: MonoBehaviour
     private float attackDelay = 0.9f;
     private float attackTimer;
     private MCentipedeBody player;
+
+    private float newTargetTimer;
     //private bool attack;
     // Start is called before the first frame update
     void Awake()
@@ -45,6 +50,7 @@ public class Tarantula: MonoBehaviour
 
         animator = GetComponent<Animation>();
 
+        dying = false;
         attackingPlayer = false;
         player = GameObject.Find("Centipede").GetComponent<MCentipedeBody>();
     }
@@ -54,112 +60,121 @@ public class Tarantula: MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            //Debug.Log(tarantulaMoving);
-            DecreaseHealth();
+            Debug.Log(health);
+            //DecreaseHealth();
         }
 
-        if (middleSeg != null)
+        if (!dying)
         {
-            distToNest = Vector3.Distance(nest.transform.position, rotationPoint.transform.position);
-            distToPlayer = Vector3.Distance(rotationPoint.transform.position, middleSeg.transform.position);
-
-
-            if (distToPlayer < huntingRadius && !attackingPlayer)
+            foreach (MSegment segment in player.Segments)
             {
-                if (distToNest < nestArea)
+                if (oldTargetSegDist > newTargetSegDist)
                 {
-                    ChasePlayer();
+                    targetSeg = segment.gameObject;
                 }
-                else if (nestArea > Vector3.Distance(middleSeg.transform.position, nest.transform.position))
+
+                oldTargetSegDist = newTargetSegDist;
+                newTargetSegDist = Vector3.Distance(rotationPoint.transform.position, segment.gameObject.transform.position);
+            }
+            
+            
+            if (targetSeg != null)
+            {
+                distToNest = Vector3.Distance(nest.transform.position, rotationPoint.transform.position);
+                distToPlayer = Vector3.Distance(rotationPoint.transform.position, targetSeg.transform.position);
+
+
+                if (distToPlayer < huntingRadius && !attackingPlayer)
                 {
-                    ChasePlayer();
+                    if (distToNest < nestArea)
+                    {
+                        ChasePlayer();
+                    }
+                    else if (nestArea > Vector3.Distance(targetSeg.transform.position, nest.transform.position))
+                    {
+                        ChasePlayer();
+                    }
+                    else
+                    {
+                        tarantulaMoving = false;
+                    }
                 }
-                else
+
+                if (distToPlayer >= huntingRadius)
                 {
-                    tarantulaMoving = false;
+                    if (distToNest >= 1)
+                    {
+                        ReturnToNest();
+                    }
+                    else
+                    {
+                        tarantulaMoving = false;
+                    }
                 }
             }
-
-            if (distToPlayer >= huntingRadius)
+            else
             {
-                if (distToNest >= 1)
+                tarantulaMoving = false;
+            }
+
+            if (tarantulaMoving && !attackingPlayer)
+            {
+                animator.Play("Walk");
+            }
+
+            if (!tarantulaMoving && !attackingPlayer)
+            {
+                animator.Play("Idle");
+            }
+
+            if (!animator.IsPlaying("Attack"))
+            {
+                attackingPlayer = false;
+            }
+
+            if (attackingPlayer)
+            {
+                attackTimer += Time.deltaTime;
+                if (attackTimer >= attackDelay)
                 {
-                    ReturnToNest();
-                }
-                else
-                {
-                    tarantulaMoving = false;
+
+                    player.RemoveSegment(100);
+                    attackTimer = 0;
                 }
             }
         }
-        else
-        {
-            tarantulaMoving = false;
-        }
 
-        if (tarantulaMoving && !attackingPlayer)
+        if (health <= 0)
         {
-            animator.Play("Walk");
-        }
-
-        if (!tarantulaMoving && !attackingPlayer)
-        {
-            animator.Play("Idle");
-        }
-
-        if (!animator.IsPlaying("Attack"))
-        {
-            attackingPlayer = false;
-        }
-
-        if (attackingPlayer)
-        {
-            attackTimer += Time.deltaTime;
-            if (attackTimer >= attackDelay)
+            dying = true;
+            deathTimer += Time.deltaTime;
+            animator.Play("Death");
+            if (deathTimer >= 2)
             {
-                
-                player.RemoveSegment(100);
-                //Debug.Log(player.GetComponent<MCentipedeBody>().Segments.Count)
-
-                attackTimer = 0;
+                Destroy(gameObject);
             }
         }
     }
 
-    public void UpdateMiddleSeg(MSegment Middle)
-    {
-        middleSeg = Middle.gameObject;
-        //middleSegInt = (player.GetComponent<MCentipedeBody>().Segments.Count / 2);
-        //middleSeg = player.GetComponent<MCentipedeBody>().Segments[middleSegInt].gameObject;
-    }
     public void ChasePlayer()
     {
         tarantulaMoving = true;
-        Vector3 dir = middleSeg.transform.position - rotationPoint.transform.position;
+        Vector3 dir = targetSeg.transform.position - rotationPoint.transform.position;
         float angle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
-        rotationPoint.transform.rotation = Quaternion.AngleAxis(angle, Vector3.down);
+        rotationPoint.transform.rotation = Quaternion.RotateTowards(rotationPoint.transform.rotation, Quaternion.AngleAxis(angle, Vector3.down), 90*Time.deltaTime);
 
-        //float moveDist = distToNest - 1f;
-        //Debug.Log(moveDist);
-        float x = Mathf.Cos(angle * Mathf.Deg2Rad) * moveSpeed * Time.deltaTime;
-        float z = Mathf.Sin(angle * Mathf.Deg2Rad) * moveSpeed * Time.deltaTime;
-
-        Vector3 newPos = new Vector3(x, 0f, z) + rotationPoint.transform.position;
-        rotationPoint.transform.position = newPos;   
+        Vector3 newPos = rotationPoint.transform.right * moveSpeed * Time.deltaTime;
+        rotationPoint.transform.position += newPos;   
     }
     public void ReturnToNest()
     {
         tarantulaMoving = true;
         Vector3 dir = nest.transform.position - rotationPoint.transform.position;
         float angle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
-        rotationPoint.transform.rotation = Quaternion.AngleAxis(angle, Vector3.down);
+        rotationPoint.transform.rotation = Quaternion.RotateTowards(rotationPoint.transform.rotation, Quaternion.AngleAxis(angle, Vector3.down), 90 * Time.deltaTime);
 
-        //float moveDist = distToNest - 1f;
-        float x = Mathf.Cos(angle * Mathf.Deg2Rad) * moveSpeed * Time.deltaTime;
-        float z = Mathf.Sin(angle * Mathf.Deg2Rad) * moveSpeed * Time.deltaTime;
-
-        Vector3 newPos = new Vector3(x, 0f, z) + rotationPoint.transform.position;
-        rotationPoint.transform.position = newPos;    
+        Vector3 newPos = rotationPoint.transform.right * moveSpeed * Time.deltaTime;
+        rotationPoint.transform.position += newPos;    
     }
 
     public void DecreaseHealth()
@@ -167,10 +182,6 @@ public class Tarantula: MonoBehaviour
         health--;
         //updates the health slider
         healthSlider.value = CalculateHealth();
-        if (health <= 0)
-        {
-            Destroy(nest);
-        }
     }
     float CalculateHealth()
     {

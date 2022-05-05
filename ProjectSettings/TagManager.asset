@@ -19,6 +19,7 @@ TagManager:
   - CaveTrigger
   - Larvae
   - Card
+  - TarantulaTail
   layers:
   - Default
   - TransparentFX

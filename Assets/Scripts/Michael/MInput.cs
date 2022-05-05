@@ -83,11 +83,19 @@ public class MInput : MonoBehaviour
 		float currDist = -1;
         foreach (Collider antCollider in colliders)
         {
+			if (antCollider.gameObject.CompareTag("TarantulaTail"))
+            {
+				antCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth();
+				antCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth();
+				return;
+			}
+			
 			if(antCollider.gameObject.CompareTag("Tarantula"))
             {
 				antCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth();
 				return;
             }
+			
 			float newDist = Vector3.Distance(transform.position, antCollider.gameObject.transform.position);
 			if (currDist < 0 || newDist < currDist)
 				closestAnt = antCollider.gameObject.transform.parent.GetComponent<GenericAnt>();

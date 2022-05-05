@@ -6,7 +6,6 @@ public partial class MCentipedeBody : MonoBehaviour
 {
 	[Header("Construction References.")]
 
-	public GameObject[] tarantulas;
 	public Transform Head;
 	public Transform Tail;
 	public GameObject DamageParticles;
@@ -53,7 +52,6 @@ public partial class MCentipedeBody : MonoBehaviour
 		}
 
 		Construct();
-		UpdateTarantulaTarget();
 	}
 
 	private void Update()
@@ -99,7 +97,6 @@ public partial class MCentipedeBody : MonoBehaviour
 		if (AddedSegment)
 			return AddedSegment;
 
-		UpdateTarantulaTarget();
 		Debug.LogError("No Segment was added!");
 		return null;
 	}
@@ -153,7 +150,6 @@ public partial class MCentipedeBody : MonoBehaviour
 		if (lastSegment.ReduceHealth(healthReduction))
 		{
 			Destroy(lastSegment.gameObject);
-			UpdateTarantulaTarget();
 			DecreaseSpeed(10);
 
 			//int nextIndex = 1;
@@ -261,16 +257,4 @@ public partial class MCentipedeBody : MonoBehaviour
 		}
 	}
 
-	public void UpdateTarantulaTarget()
-    {
-		if (SegmentsInfo.End == 0)
-			return;
-
-		tarantulas = GameObject.FindGameObjectsWithTag("Tarantula");
-		MSegment Middle = this[Segments.Count / 2];
-		foreach (GameObject Tarantula in tarantulas)
-		{
-			Tarantula.GetComponent<Tarantula>().UpdateMiddleSeg(Middle);
-		}
-	}
 }
