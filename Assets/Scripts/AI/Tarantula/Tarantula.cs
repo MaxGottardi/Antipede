@@ -9,9 +9,9 @@ public class Tarantula: MonoBehaviour
     private GameObject rotationPoint;
     public int nestArea = 50;
     public int huntingRadius = 25;
-    public float moveSpeed = 4f;
+    public float moveSpeed = 5f;
     private float health;
-    public float maxHealth = 10;
+    public float maxHealth = 25;
 
     private Slider healthSlider;
     private bool dying;
@@ -34,7 +34,9 @@ public class Tarantula: MonoBehaviour
 
     private Rigidbody webPrefab;
     private float shootTimer;
-    //private bool attack;
+    private float shootAnimTimer;
+    private float shootDelay = 0.7f;
+    private bool shooting;
     // Start is called before the first frame update
     void Awake()
     {
@@ -51,6 +53,7 @@ public class Tarantula: MonoBehaviour
 
         dying = false;
         attackingPlayer = false;
+        shooting = false;
         player = GameObject.Find("Centipede").GetComponent<MCentipedeBody>();
 
         webPrefab = gameObject.transform.Find("Web").gameObject.GetComponent<Rigidbody>();
@@ -61,12 +64,8 @@ public class Tarantula: MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            SpawnWeb();
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Debug.Log(player.MovementSpeed);
+            ShootWeb();
+            //animator.Play("Attack_Left");
         }
 
         if (!dying)
@@ -88,23 +87,21 @@ public class Tarantula: MonoBehaviour
                 distToNest = Vector3.Distance(nest.transform.position, rotationPoint.transform.position);
                 distToPlayer = Vector3.Distance(rotationPoint.transform.position, targetSeg.transform.position);
 
-
-                if (distToPlayer < huntingRadius && !attackingPlayer)
-                {
+                //Checks if the player is withing hunting range of tarantula or if the player is in the nest area
+                if (distToPlayer < huntingRadius ||
+                    Vector3.Distance(targetSeg.transform.position, nest.transform.position) < nestArea)
+                {   //if the tarantula is close enough to the nest it will follow the player
                     if (distToNest < nestArea)
                     {
                         //ChasePlayer();
-                    }
-                    else if (nestArea > Vector3.Distance(targetSeg.transform.position, nest.transform.position))
-                    {
-                        //ChasePlayer();
-                    }
+                        ShootWeb();
+                    }   
                     else
                     {
                         tarantulaMoving = false;
                     }
                 }
-
+                //checks if the player is out of hunting range
                 if (distToPlayer >= huntingRadius)
                 {
                     if (distToNest >= 1)
@@ -122,12 +119,12 @@ public class Tarantula: MonoBehaviour
                 tarantulaMoving = false;
             }
 
-            if (tarantulaMoving && !attackingPlayer)
+            if (tarantulaMoving && !attackingPlayer && !shooting)
             {
                 animator.Play("Walk");
             }
 
-            if (!tarantulaMoving && !attackingPlayer)
+            if (!tarantulaMoving && !attackingPlayer && !shooting)
             {
                 animator.Play("Idle");
             }
@@ -137,16 +134,23 @@ public class Tarantula: MonoBehaviour
                 attackingPlayer = false;
             }
 
+            if (!animator.IsPlaying("Attack_Left"))
+            {
+                shooting = false;
+            }
+
             if (attackingPlayer)
             {
                 attackTimer += Time.deltaTime;
                 if (attackTimer >= attackDelay)
                 {
-
                     player.RemoveSegment(100);
                     attackTimer = 0;
                 }
             }
+
+
+            
         }
 
         if (health <= 0)
@@ -163,13 +167,17 @@ public class Tarantula: MonoBehaviour
 
     public void ChasePlayer()
     {
-        tarantulaMoving = true;
-        Vector3 dir = targetSeg.transform.position - rotationPoint.transform.position;
-        float angle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
-        rotationPoint.transform.rotation = Quaternion.RotateTowards(rotationPoint.transform.rotation, Quaternion.AngleAxis(angle, Vector3.down), 90*Time.deltaTime);
+        if (!attackingPlayer && !shooting)
+        {
+            tarantulaMoving = true;
+            Vector3 dir = targetSeg.transform.position - rotationPoint.transform.position;
+            float angle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
+            rotationPoint.transform.rotation = Quaternion.RotateTowards(rotationPoint.transform.rotation, Quaternion.AngleAxis(angle, Vector3.down), 90 * Time.deltaTime);
 
-        Vector3 newPos = rotationPoint.transform.right * moveSpeed * Time.deltaTime;
-        rotationPoint.transform.position += newPos;   
+            Vector3 newPos = rotationPoint.transform.right * moveSpeed * Time.deltaTime;
+            rotationPoint.transform.position += newPos;
+            
+        }
     }
     public void ReturnToNest()
     {
@@ -185,7 +193,6 @@ public class Tarantula: MonoBehaviour
     public void DecreaseHealth()
     {
         health--;
-        //updates the health slider
         healthSlider.value = CalculateHealth();
     }
     float CalculateHealth()
@@ -195,17 +202,44 @@ public class Tarantula: MonoBehaviour
 
     public void AttackPlayer()
     {
-        animator.Play("Attack");
-        attackingPlayer = true;
-        attackTimer = 0;
+        if (!shooting)
+        {
+            animator.Play("Attack");
+            attackingPlayer = true;
+            attackTimer = 0;
+        }
     }
 
+    private void ShootWeb()
+    {
+        if (!attackingPlayer)
+        {
+            shootTimer += Time.deltaTime;
+            if (shootTimer >= 5)
+            {
+                shooting = true;
+                animator.Play("Attack_Left");
+                shootAnimTimer += Time.deltaTime;
+                if (shootAnimTimer >= shootDelay)
+                {
+                    SpawnWeb();
+                    shootAnimTimer = 0;
+                    shootTimer = 0;
+                }
+            }
+        }
+    }
     private void SpawnWeb()
     {
-        Rigidbody webShot;
-        webShot = Instantiate(webPrefab, new Vector3(transform.position.x + 3, 1, transform.position.z), Quaternion.identity);
-        Vector3 target = player.transform.position - webShot.transform.position;
-        webShot.velocity = new Vector3(target.x, target.y - 0.25f, target.z);
-        webShot.GetComponent<Web>().isShot = true;
+        if (!attackingPlayer)
+        {
+            shooting = true;
+            Rigidbody webShot;
+            webShot = Instantiate(webPrefab, transform.position + transform.forward * 6.5f, Quaternion.identity);
+            webShot.transform.position = new Vector3(webShot.transform.position.x, 1, webShot.transform.position.z);
+            Vector3 target = player.transform.position - webShot.transform.position;
+            webShot.velocity = new Vector3(target.x, target.y - 0.25f, target.z) * 3;
+            webShot.GetComponent<Web>().isShot = true;
+        }
     }
 }

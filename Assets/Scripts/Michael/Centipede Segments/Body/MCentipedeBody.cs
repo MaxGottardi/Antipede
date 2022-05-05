@@ -65,7 +65,7 @@ public partial class MCentipedeBody : MonoBehaviour
 		if (slowed == true)
 		{
 			slowTimer += Time.deltaTime;
-			if (slowTimer >= 5000000)
+			if (slowTimer >= 5)
             {
 				MovementSpeed = preSlowedSpeed;
 				SetSpeed(MovementSpeed);

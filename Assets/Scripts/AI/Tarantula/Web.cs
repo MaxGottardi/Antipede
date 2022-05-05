@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Web : MonoBehaviour
 {
-    public bool isShot = true;
+    public bool isShot = false;
     private float despawnTimer;
     private GameObject player;
 
@@ -26,7 +26,7 @@ public class Web : MonoBehaviour
                 despawnTimer += Time.deltaTime;
                 if (despawnTimer >= 10)
                 {
-                    //Destroy(gameObject);
+                    Destroy(gameObject);
                 }
             }
         }

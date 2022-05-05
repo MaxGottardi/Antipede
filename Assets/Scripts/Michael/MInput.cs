@@ -86,12 +86,14 @@ public class MInput : MonoBehaviour
 			if (antCollider.gameObject.CompareTag("TarantulaTail"))
             {
 				antCollider.gameObject.transform.parent.GetComponent<Tarantula>().DecreaseHealth();
+				antCollider.gameObject.transform.parent.GetComponent<Tarantula>().DecreaseHealth();
 				return;
 			}
 			
 			if(antCollider.gameObject.CompareTag("Tarantula"))
             {
 				antCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth();
+				return;
             }
 
 			float newDist = Vector3.Distance(transform.position, antCollider.gameObject.transform.position);
