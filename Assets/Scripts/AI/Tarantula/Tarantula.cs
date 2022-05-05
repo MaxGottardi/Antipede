@@ -5,13 +5,11 @@ using UnityEngine.UI;
 
 public class Tarantula: MonoBehaviour
 {
-
     private GameObject nest;
     private GameObject rotationPoint;
-    public int nestArea = 40;
-    public int huntingRadius = 15;
+    public int nestArea = 50;
+    public int huntingRadius = 25;
     public float moveSpeed = 4f;
-    //public float damage = 2;
     private float health;
     public float maxHealth = 10;
 
@@ -34,7 +32,8 @@ public class Tarantula: MonoBehaviour
     private float attackTimer;
     private MCentipedeBody player;
 
-    private float newTargetTimer;
+    private Rigidbody webPrefab;
+    private float shootTimer;
     //private bool attack;
     // Start is called before the first frame update
     void Awake()
@@ -53,6 +52,8 @@ public class Tarantula: MonoBehaviour
         dying = false;
         attackingPlayer = false;
         player = GameObject.Find("Centipede").GetComponent<MCentipedeBody>();
+
+        webPrefab = gameObject.transform.Find("Web").gameObject.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -60,8 +61,12 @@ public class Tarantula: MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            Debug.Log(health);
-            //DecreaseHealth();
+            SpawnWeb();
+        }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            Debug.Log(player.MovementSpeed);
         }
 
         if (!dying)
@@ -88,11 +93,11 @@ public class Tarantula: MonoBehaviour
                 {
                     if (distToNest < nestArea)
                     {
-                        ChasePlayer();
+                        //ChasePlayer();
                     }
                     else if (nestArea > Vector3.Distance(targetSeg.transform.position, nest.transform.position))
                     {
-                        ChasePlayer();
+                        //ChasePlayer();
                     }
                     else
                     {
@@ -193,5 +198,14 @@ public class Tarantula: MonoBehaviour
         animator.Play("Attack");
         attackingPlayer = true;
         attackTimer = 0;
+    }
+
+    private void SpawnWeb()
+    {
+        Rigidbody webShot;
+        webShot = Instantiate(webPrefab, new Vector3(transform.position.x + 3, 1, transform.position.z), Quaternion.identity);
+        Vector3 target = player.transform.position - webShot.transform.position;
+        webShot.velocity = new Vector3(target.x, target.y - 0.25f, target.z);
+        webShot.GetComponent<Web>().isShot = true;
     }
 }
