@@ -3,7 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(CentipedeMovement))]
 public class MInput : MonoBehaviour
 {
-
 	MCentipedeBody body;
 	CentipedeMovement movement;
 	public LayerMask EnemyLayer;
@@ -81,26 +80,27 @@ public class MInput : MonoBehaviour
 		Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * 1.1f, dist, EnemyLayer);
 		GenericAnt closestAnt = null;
 		float currDist = -1;
+		
         foreach (Collider antCollider in colliders)
         {
 			if (antCollider.gameObject.CompareTag("TarantulaTail"))
             {
-				antCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth();
-				antCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth();
+				antCollider.gameObject.transform.parent.GetComponent<Tarantula>().DecreaseHealth();
 				return;
 			}
 			
 			if(antCollider.gameObject.CompareTag("Tarantula"))
             {
 				antCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth();
-				return;
             }
-			
+
 			float newDist = Vector3.Distance(transform.position, antCollider.gameObject.transform.position);
 			if (currDist < 0 || newDist < currDist)
 				closestAnt = antCollider.gameObject.transform.parent.GetComponent<GenericAnt>();
 		}
-		if(closestAnt != null) //only reduce health on the closest ant hit
+
+
+		if (closestAnt != null) //only reduce health on the closest ant hit
         {
 			closestAnt.ReduceHealth(100);
 			RaycastHit hit;
@@ -123,4 +123,5 @@ public class MInput : MonoBehaviour
 
 		return Hit.point;
 	}
+
 }
