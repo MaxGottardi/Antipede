@@ -10,6 +10,7 @@ public class Launcher : Weapon
 	static LineRenderer ArcRenderer;
 
 	Vector3 LaunchVelocity;
+	bool bDetached = false;
 
 	public override Projectile Fire(Vector3 Position)
 	{
@@ -30,8 +31,7 @@ public class Launcher : Weapon
 	{
 		if (Direction == Vector3.zero)
 		{
-			if (ArcRenderer)
-				ArcRenderer.positionCount = 0;
+			ClearArc();
 			return;
 		}
 
@@ -68,6 +68,20 @@ public class Launcher : Weapon
 
 	void OnDestroy()
 	{
+		if (!bDetached)
+			ArcRenderer = null;
+	}
+
+	void ClearArc()
+	{
+		if (ArcRenderer)
+			ArcRenderer.positionCount = 0;
+	}
+
+	public override void Deregister()
+	{
+		ClearArc();
+		bDetached = true;
 		ArcRenderer = null;
 	}
 }

@@ -1819,9 +1819,9 @@ MonoBehaviour:
   Lead: 0.4
   GroundHeightDistance: 0.7
   GroundDistanceCheck: 1
+  BoundaryCheckDistance: 3
   bInterpolateHillClimb: 1
   InterpTime: 0.2
-  UpObject: {fileID: 0}
 --- !u!114 &330524207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1864,6 +1864,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bUsePropagationDelay: 1
   PropagationDelay: 0.1
+  HUD: {fileID: 0}
   SegmentsWithWeapons: []
 --- !u!114 &330524210
 MonoBehaviour:
@@ -2977,8 +2978,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 523351798}
-  m_LocalRotation: {x: 0.20364176, y: 0, z: 0, w: 0.97904545}
-  m_LocalPosition: {x: 11.42, y: 4.011895, z: -0.034029484}
+  m_LocalRotation: {x: 0.1305262, y: 0, z: 0, w: 0.9914449}
+  m_LocalPosition: {x: 11.42, y: 5.87138, z: -3.6834269}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2997,19 +2998,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bDrawRotationalLines: 0
+  Settings: {fileID: 0}
   Camera: {fileID: 523351801}
   Target: {fileID: 671602002}
   TargetOffset: {x: 0, y: 1, z: 0}
-  Distance: 7.92
-  GimbalRotation: {x: 0, y: 22.32, z: 0}
-  CameraRotation: {x: 23.5, y: 0, z: 0}
+  Distance: 12
+  GimbalRotation: {x: 0, y: 25, z: 0}
+  CameraRotation: {x: 15, y: 0, z: 0}
   bInheritRotation: 0
   bEnableScrollToDistance: 1
   ScrollSensitivity: 1
+  DefaultGimbalRotation: {x: 0, y: 0, z: 0}
+  DefaultCameraRotation: {x: 0, y: 0, z: 0}
   OnlyCollideWith:
     serializedVersion: 2
     m_Bits: 256
-  bUseLag: 1
   PositionalLagStrength: 0.2
   RotationalLagStrength: 0.2
 --- !u!1 &557497647

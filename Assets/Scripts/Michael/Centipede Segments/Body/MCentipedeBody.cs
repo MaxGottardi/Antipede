@@ -152,7 +152,7 @@ public partial class MCentipedeBody : MonoBehaviour
 		//Segments.Remove(Segments[Segments.Count - 1]);
 		if (lastSegment.ReduceHealth(healthReduction))
 		{
-			Destroy(lastSegment.gameObject);
+			lastSegment.Detach();
 			UpdateTarantulaTarget();
 			DecreaseSpeed(10);
 
