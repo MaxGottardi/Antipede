@@ -68,6 +68,10 @@ public class CardManager : MonoBehaviour
         //Instantiate(card, new Vector3(0, 0, 0), Quaternion.identity);
         //cardCenter.gameObject.SetActive(true);
 
-        //Choose a card 
+        //Choose a card
+        
+        //Set card gameobject
+
+        //Set image in canvas
     }
 }
