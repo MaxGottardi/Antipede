@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3310326565930448759}
   - component: {fileID: 8294676374083403660}
   - component: {fileID: 4353646149146194926}
+  - component: {fileID: -6248341195116477734}
   m_Layer: 0
   m_Name: Card
   m_TagString: Card
@@ -109,3 +110,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2060f00ff9f55df42bcafe2e5712c67d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-6248341195116477734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5818908878170688582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c362a5ee5f66064b98cc9abd0ce1c58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardIndex: 0
+  rarity: 
+  cardSprite1: {fileID: 2100000, guid: 2b08e1b4a4453dd42974688915926cb3, type: 2}
+  cardSprite2: {fileID: 2100000, guid: f25645981263e874191c6bf6aff99337, type: 2}
+  cardSprite3: {fileID: 2100000, guid: 195cb9c850b50df4abdb3f7551d52406, type: 2}
+  cardSprite4: {fileID: 2100000, guid: ae02756698c894e4297524e42e67e149, type: 2}
+  cardSprite5: {fileID: 2100000, guid: 288e80c549abf2443bde612d347cf753, type: 2}
+  cardSprite6: {fileID: 2100000, guid: 79a7c511c0a442042ad293382c892c00, type: 2}
+  cardSprite7: {fileID: 2100000, guid: 9a907b82d649cfa44a544bddc1591503, type: 2}
+  cardSprite8: {fileID: 2100000, guid: 2ea74ef386ecfe943a2e6f6b2f0795c2, type: 2}

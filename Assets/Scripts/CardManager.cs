@@ -24,6 +24,15 @@ public class CardManager : MonoBehaviour
     Vector3 card5Pos;
     Vector3 card6Pos;
 
+    
+
+    bool slot1_active = false;
+    bool slot2_active = false;
+    bool slot3_active = false;
+    bool slot4_active = false;
+    bool slot5_active = false;
+    bool slot6_active = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -63,8 +72,11 @@ public class CardManager : MonoBehaviour
         canvas.gameObject.SetActive(false);
     }
 
-    public void CollectCard(int quality)
+    public void CollectCard(int cardIndex)
     {
+        Debug.Log(cardIndex);
+
+        SetSlot(cardIndex);
         //Instantiate(card, new Vector3(0, 0, 0), Quaternion.identity);
         //cardCenter.gameObject.SetActive(true);
 
@@ -73,5 +85,15 @@ public class CardManager : MonoBehaviour
         //Set card gameobject
 
         //Set image in canvas
+    }
+
+    public void SetSlot(int cardIndex)
+    {
+        if (!slot1_active)
+        {
+            //set active
+            //change slot1 image
+
+        }
     }
 }

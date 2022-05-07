@@ -54,7 +54,12 @@ public class CollisionManager : MonoBehaviour
         else if (other.CompareTag("Card"))
         {
             sfxManager.CollectSpecial();
-            cardManager.CollectCard(1);
+
+            Card card = other.gameObject.GetComponent<Card>();
+            int cardIndex = card.GetCardIndex();
+
+            cardManager.CollectCard(cardIndex);
+           
             Destroy(other.gameObject);
         }
         else if (other.CompareTag("Weapon Pickup"))

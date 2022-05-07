@@ -10,14 +10,14 @@ public class Card : MonoBehaviour
     public string rarity;
 
 
-    Material cardSprite1;
-    Material cardSprite2;
-    Material cardSprite3;
-    Material cardSprite4;
-    Material cardSprite5;
-    Material cardSprite6;
-    Material cardSprite7;
-    Material cardSprite8;
+    [SerializeField]Material cardSprite1;
+    [SerializeField] Material cardSprite2;
+    [SerializeField] Material cardSprite3;
+    [SerializeField] Material cardSprite4;
+    [SerializeField] Material cardSprite5;
+    [SerializeField] Material cardSprite6;
+    [SerializeField] Material cardSprite7;
+    [SerializeField] Material cardSprite8;
 
     MeshRenderer meshRenderer;
     bool gun = false;
