@@ -422,7 +422,6 @@ public class BombAttack : AttackState
         timeTilExplode = 4;
         //attach to the players segment
 
-        owner.anim.SetTrigger("Idle");
         Vector3 oldLocalPos = owner.transform.localPosition;
         Quaternion oldLocalRot = owner.transform.localRotation;
         Vector3 oldLocalScale = owner.transform.localScale;
@@ -433,6 +432,8 @@ public class BombAttack : AttackState
         //owner.transform.localScale = oldLocalScale;
 
         owner.transform.GetChild(0).GetComponent<Collider>().enabled = false;
+
+        owner.anim.SetTrigger("Core"); //play the explode animation
     }
 
     public override void execute()

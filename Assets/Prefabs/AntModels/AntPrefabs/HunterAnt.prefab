@@ -387,6 +387,7 @@ MonoBehaviour:
   attackAnimLength: 2
   headTransform: {fileID: 6402207106255891079}
   damageStateChance: 0.25
+  damageStageChance: 01010000000000000000
   health: 600
   leftAntenna: {fileID: 7488454750242973145}
   rightAntenna: {fileID: 4122662952654073600}
