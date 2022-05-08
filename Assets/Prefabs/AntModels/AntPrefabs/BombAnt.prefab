@@ -505,7 +505,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3404608361950666522}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 2.769, y: 0.923, z: -0.075}
+  m_LocalPosition: {x: 3.572, y: 1.412, z: -0.075}
   m_LocalScale: {x: 0.8526136, y: 0.8526136, z: 0.8526136}
   m_Children: []
   m_Father: {fileID: 1485714676306968498}
@@ -539,7 +539,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cc5602f93cd7fbc40903cf7d4a2618ce, type: 2}
+  - {fileID: 2100000, guid: 3d7a05904df002b48b7b2b09be97d7bd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1205,8 +1205,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.13466157, g: 0.6037736, b: 0.013670328, a: 1}
-      maxColor: {r: 0, g: 1, b: 0.36861324, a: 1}
+      minColor: {r: 1, g: 0.5663458, b: 0, a: 1}
+      maxColor: {r: 1, g: 0.9982651, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
