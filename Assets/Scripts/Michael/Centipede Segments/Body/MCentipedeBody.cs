@@ -216,6 +216,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	{
 		if (value > maxSpeed)
 		{
+			MovementSpeed = maxSpeed;
 			FollowSpeed = maxSpeed;
 
 			foreach (MSegment segment in Segments)
@@ -229,6 +230,7 @@ public partial class MCentipedeBody : MonoBehaviour
 		}
 		else
 		{
+			MovementSpeed = value;
 			FollowSpeed = value;
 			foreach (MSegment segment in Segments)
 				segment.FollowSpeed = value;

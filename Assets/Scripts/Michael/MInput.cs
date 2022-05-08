@@ -12,6 +12,8 @@ public class MInput : MonoBehaviour
 	bool doneAttack = false, attackRequested = false;
 	Camera MainCamera;
 
+	float PreSlowShift;
+
 	void Start()
 	{
 		body = GetComponent<MCentipedeBody>();
@@ -53,6 +55,16 @@ public class MInput : MonoBehaviour
 		else if (Input.GetKeyDown(KeyCode.L))
 		{
 			body.DecreaseSpeed(100.0f);
+		}
+
+		if (Input.GetKeyDown(KeyCode.LeftShift))
+		{
+			PreSlowShift = body.MovementSpeed;
+			body.SetSpeed(PreSlowShift * .5f);
+		}
+		else if (Input.GetKeyUp(KeyCode.LeftShift))
+		{
+			body.SetSpeed(PreSlowShift);
 		}
 
 		float Horizontal = Input.GetAxisRaw("Horizontal");
