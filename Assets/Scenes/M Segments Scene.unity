@@ -297,7 +297,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -696,6 +696,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DasherAnt (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1768346567234793843, guid: f2979dff33818664381e12b6ce518823, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3587004889938142218, guid: f2979dff33818664381e12b6ce518823, type: 3}
       propertyPath: m_RootOrder
       value: 41
@@ -1012,7 +1016,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -1380,7 +1384,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -2119,7 +2123,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -4363,6 +4367,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DasherAnt (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1768346567234793843, guid: f2979dff33818664381e12b6ce518823, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3587004889938142218, guid: f2979dff33818664381e12b6ce518823, type: 3}
       propertyPath: m_RootOrder
       value: 42
@@ -5945,7 +5953,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8856138776421195210, guid: d7784141bda4f62498b4168dbab60047, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7784141bda4f62498b4168dbab60047, type: 3}
@@ -8819,7 +8827,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -12097,6 +12105,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BombAnt (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1933701853150098644, guid: 140d3819dabc74b45b9dd6ba3e8c4206, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3717747550918484397, guid: 140d3819dabc74b45b9dd6ba3e8c4206, type: 3}
       propertyPath: m_RootOrder
       value: 46
@@ -12647,7 +12659,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -13502,7 +13514,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -14268,7 +14280,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -14361,7 +14373,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -14558,7 +14570,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -14643,7 +14655,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8856138776421195210, guid: d7784141bda4f62498b4168dbab60047, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7784141bda4f62498b4168dbab60047, type: 3}
@@ -14928,7 +14940,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -15535,6 +15547,10 @@ PrefabInstance:
     - target: {fileID: 1768346567234793843, guid: f2979dff33818664381e12b6ce518823, type: 3}
       propertyPath: m_Name
       value: DasherAnt (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768346567234793843, guid: f2979dff33818664381e12b6ce518823, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3587004889938142218, guid: f2979dff33818664381e12b6ce518823, type: 3}
       propertyPath: m_RootOrder
@@ -19004,6 +19020,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DasherAnt (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 1768346567234793843, guid: f2979dff33818664381e12b6ce518823, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3587004889938142218, guid: f2979dff33818664381e12b6ce518823, type: 3}
       propertyPath: m_RootOrder
       value: 44
@@ -21420,7 +21440,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -21722,6 +21742,10 @@ PrefabInstance:
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_Name
       value: FarmerAnt (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -23286,6 +23310,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BombAnt (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1933701853150098644, guid: 140d3819dabc74b45b9dd6ba3e8c4206, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3717747550918484397, guid: 140d3819dabc74b45b9dd6ba3e8c4206, type: 3}
       propertyPath: m_RootOrder
       value: 47
@@ -23453,7 +23481,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -23873,6 +23901,10 @@ PrefabInstance:
     - target: {fileID: 1933701853150098644, guid: 140d3819dabc74b45b9dd6ba3e8c4206, type: 3}
       propertyPath: m_Name
       value: BombAnt (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1933701853150098644, guid: 140d3819dabc74b45b9dd6ba3e8c4206, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3717747550918484397, guid: 140d3819dabc74b45b9dd6ba3e8c4206, type: 3}
       propertyPath: m_RootOrder
@@ -28080,7 +28112,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
@@ -29977,6 +30009,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DasherAnt (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1768346567234793843, guid: f2979dff33818664381e12b6ce518823, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3587004889938142218, guid: f2979dff33818664381e12b6ce518823, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -30922,7 +30958,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8856138776421195210, guid: d7784141bda4f62498b4168dbab60047, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7784141bda4f62498b4168dbab60047, type: 3}
@@ -31874,6 +31910,10 @@ PrefabInstance:
     - target: {fileID: 1768346567234793843, guid: f2979dff33818664381e12b6ce518823, type: 3}
       propertyPath: m_Name
       value: DasherAnt (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768346567234793843, guid: f2979dff33818664381e12b6ce518823, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3587004889938142218, guid: f2979dff33818664381e12b6ce518823, type: 3}
       propertyPath: m_RootOrder
@@ -34973,7 +35013,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1768346567234793843, guid: f2979dff33818664381e12b6ce518823, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3587004889938142218, guid: f2979dff33818664381e12b6ce518823, type: 3}
       propertyPath: m_RootOrder
@@ -35088,6 +35128,10 @@ PrefabInstance:
     - target: {fileID: 1933701853150098644, guid: 140d3819dabc74b45b9dd6ba3e8c4206, type: 3}
       propertyPath: m_Name
       value: BombAnt
+      objectReference: {fileID: 0}
+    - target: {fileID: 1933701853150098644, guid: 140d3819dabc74b45b9dd6ba3e8c4206, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3717747550918484397, guid: 140d3819dabc74b45b9dd6ba3e8c4206, type: 3}
       propertyPath: m_RootOrder

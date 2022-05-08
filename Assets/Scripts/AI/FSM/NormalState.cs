@@ -134,12 +134,17 @@ public class InvestigateState : State
             //    owner.nextPosTransform.gameObject.GetComponent<MSegment>().beingAttacked = false;
             owner.stateMachine.changeState(owner.stateMachine.Movement);
         }
-        else if (owner.NearSegment() && !owner.callingBackup) //within attack range of chosen player segment
+        else if (checkAttack()) //within attack range of chosen player segment
         {
             owner.stateMachine.changeState(owner.stateMachine.Attack);
         }
         else //as no change of state occured, can run this one
             topNode.execute();
+    }
+
+    public virtual bool checkAttack()
+    {
+        return owner.NearSegment() && !owner.callingBackup;
     }
 
     public virtual void exit()
@@ -288,7 +293,7 @@ public class HunterAttack : AttackState
     public override void execute()
     {
         shootDelay -= Time.deltaTime;
-        if (owner.nextPosTransform == null || Vector3.Distance(owner.transform.position, owner.nextPosTransform.position) > 18)
+        if (owner.nextPosTransform == null || Vector3.Distance(owner.transform.position, GameManager1.mCentipedeBody.Head.position) < 7|| Vector3.Distance(owner.transform.position, owner.nextPosTransform.position) > 18)
             owner.stateMachine.changeState(owner.stateMachine.Investigate);
         else if (shootDelay <= 0)
         {
@@ -297,7 +302,6 @@ public class HunterAttack : AttackState
             owner.weaponClass.LookAt(owner.nextPosTransform.position);
             owner.weaponClass.Fire(owner.nextPosTransform.position); //fire at the players segment
         }
-        //also if lose sight of the player as well
     }
 
     public override void exit()
@@ -306,6 +310,47 @@ public class HunterAttack : AttackState
     }
 }
 
+public class HunterInvestigate : InvestigateState
+{
+    new HunterAnt owner;
+    public HunterInvestigate(GenericAnt owner):base(owner) //also initilize any behaviour tree used on the state as well
+    {
+        this.owner = owner.gameObject.GetComponent<HunterAnt>();
+
+        DetermineAttackSeg determineAttackSeg = new DetermineAttackSeg(owner);
+
+        PathToSegment pathToSegment = new PathToSegment(owner);
+        MoveTowards moveTowards = new MoveTowards(owner, false);
+
+        CanCallBackup canCallBackup = new CanCallBackup(owner);
+        CallBackup callBackup = new CallBackup(owner);
+        Sequence callBackupSeq = new Sequence(new List<Node> { canCallBackup, callBackup });
+        Succeeder backupSucceeder = new Succeeder(callBackupSeq);
+
+        Sequence headToPlayer = new Sequence(new List<Node> { pathToSegment, moveTowards });
+
+        MoveBackwards moveBackwards = new MoveBackwards(owner);
+        PlayerTooClose playerTooClose = new PlayerTooClose(owner);
+        Sequence headAwayFromPlayer = new Sequence(new List<Node> { playerTooClose, moveBackwards }); //if player too close move backwards for X seconds
+
+        Selector chooseMovement = new Selector(new List<Node> {headAwayFromPlayer , headToPlayer}); //do you head towards or move away from the player
+
+        Sequence moveSequence = new Sequence(new List<Node> { chooseMovement, backupSucceeder });
+        RepeatUntilFail repeatUntilFail = new RepeatUntilFail(moveSequence);
+
+        topNode = new Sequence(new List<Node> { determineAttackSeg, repeatUntilFail });
+    }
+
+    public override bool checkAttack()
+    {
+        return base.checkAttack() && !owner.isFleeing;
+    }
+
+}
+
+/// <summary>
+/// the dead state of the huner, should drop its weapon here
+/// </summary>
 public class HunterDead : DeadState
 {
     float deadTime = 3;
@@ -321,6 +366,9 @@ public class HunterDead : DeadState
     }
 }
 
+/// <summary>
+/// guards attack state, basically just remove more health, and at a different speed
+/// </summary>
 public class GuardAttack : AttackState
 {
     float attackTime = 1.25f;
@@ -358,6 +406,9 @@ public class GuardAttack : AttackState
     }
 }
 
+/// <summary>
+/// guard investigate, same as normal but with no call for backup
+/// </summary>
 public class GuardInvestigate : InvestigateState
 {
     float attackTime = 2.5f;
@@ -378,6 +429,9 @@ public class GuardInvestigate : InvestigateState
     }
 }
 
+/// <summary>
+/// when see player run fast towards them
+/// </summary>
 public class DasherInvestigate : InvestigateState
 {
     DasherAnt dashOwner;
@@ -409,6 +463,9 @@ public class DasherInvestigate : InvestigateState
     }
 }
 
+/// <summary>
+/// for the bomb and wait few seconds and then explode
+/// </summary>
 public class BombAttack : AttackState
 {
     float timeTilExplode = 4f;
