@@ -9,7 +9,7 @@ public class HunterAnt : GenericAnt
     public Vector3 weaponPos;
     public Transform weaponParent;
 
-    public static ShuffleBag weaponsBag;
+    public static ShuffleBag<GameObject> weaponsBag;
     public GameObject[] weapons;
 
     public Weapon weaponClass;
@@ -21,7 +21,7 @@ public class HunterAnt : GenericAnt
         stateMachine.Dead = new HunterDead(this);
         if (weaponsBag == null)
         {
-            weaponsBag = new ShuffleBag();
+            weaponsBag = new ShuffleBag<GameObject>();
             weaponsBag.shuffleList = weapons;
         }
         PickWeapon();

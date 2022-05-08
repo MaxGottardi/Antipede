@@ -54,12 +54,17 @@ public class GenericAnt : MonoBehaviour
     [Header("Damage Settings")]
     [Range(0, 1)]
     [SerializeField]float damageStateChance = 0.5f;
+    [SerializeField] bool[] damageStageChance; //out of 10 bites it recives how many of them will go into the damage stage
     public float health = 100;
     float maxHealth;
     public GameObject leftAntenna, rightAntenna;
+    ShuffleBag<bool> healthBag;
 
     public virtual void Start()
     {
+        healthBag = new ShuffleBag<bool>();
+        healthBag.shuffleList = damageStageChance;
+
         maxHealth = health;
         pathToNextPos = new List<Vector3>();
         anim = transform.GetChild(0).gameObject.GetComponent<Animator>();
@@ -191,7 +196,10 @@ public class GenericAnt : MonoBehaviour
         {
             float dist = Vector3.Distance(transform.position, segment.gameObject.transform.position);
             if (dist < attachDist) //if close enough can apply the attack damage
+            {
+                nextPosTransform = segment.gameObject.transform;
                 return true;
+            }
         }
 
         return false;

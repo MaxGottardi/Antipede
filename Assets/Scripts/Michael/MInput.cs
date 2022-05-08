@@ -93,25 +93,22 @@ public class MInput : MonoBehaviour
 		Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * 1.1f, dist, EnemyLayer);
 		GenericAnt closestAnt = null;
 		float currDist = -1;
-        foreach (Collider antCollider in colliders)
+        foreach (Collider enemyCollider in colliders)
         {
-			if(antCollider.gameObject.CompareTag("Tarantula"))
+			if(enemyCollider.gameObject.CompareTag("Tarantula"))
             {
-				antCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth();
+				enemyCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth();
+				Instantiate(hitParticles, enemyCollider.gameObject.transform.position, Quaternion.identity);
 				return;
             }
-			float newDist = Vector3.Distance(transform.position, antCollider.gameObject.transform.position);
+			float newDist = Vector3.Distance(transform.position, enemyCollider.gameObject.transform.position);
 			if (currDist < 0 || newDist < currDist)
-				closestAnt = antCollider.gameObject.transform.parent.GetComponent<GenericAnt>();
+				closestAnt = enemyCollider.gameObject.transform.parent.GetComponent<GenericAnt>();
 		}
 		if(closestAnt != null) //only reduce health on the closest ant hit
         {
 			closestAnt.ReduceHealth(100);
-			RaycastHit hit;
-			if (Physics.Raycast(transform.position, closestAnt.gameObject.transform.position - transform.position, out hit, EnemyLayer))
-				Instantiate(hitParticles, hit.point + transform.up * 0.5f, Quaternion.identity);
-			else
-				Instantiate(hitParticles, transform.position, Quaternion.identity);
+			Instantiate(hitParticles, closestAnt.transform.position, Quaternion.identity);
 		}
 
 	}

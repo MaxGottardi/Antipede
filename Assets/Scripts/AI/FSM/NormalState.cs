@@ -323,7 +323,7 @@ public class HunterDead : DeadState
 
 public class GuardAttack : AttackState
 {
-    float attackTime = 2.5f;
+    float attackTime = 1.25f;
     GenericAnt owner;
     public GuardAttack(GenericAnt owner) : base(owner) //also initilize any behaviour tree used on the state as well
     {
@@ -405,6 +405,54 @@ public class DasherInvestigate : InvestigateState
         owner.Speed = dashOwner.tempSpeed;
         owner.rotSpeed = dashOwner.tempRoteSpeed;
         owner.animMultiplier = dashOwner.tempAnimSpeed;
+        base.exit();
+    }
+}
+
+public class BombAttack : AttackState
+{
+    float timeTilExplode = 4f;
+    GenericAnt owner;
+    public BombAttack(GenericAnt owner) : base(owner) //also initilize any behaviour tree used on the state as well
+    {
+        this.owner = owner;
+    }
+    public override void enter()
+    {
+        timeTilExplode = 4;
+        //attach to the players segment
+
+        owner.anim.SetTrigger("Idle");
+        Vector3 oldLocalPos = owner.transform.localPosition;
+        Quaternion oldLocalRot = owner.transform.localRotation;
+        Vector3 oldLocalScale = owner.transform.localScale;
+        owner.transform.parent = owner.nextPosTransform.GetChild(0);//, true);
+
+        owner.transform.rotation = oldLocalRot;
+        owner.transform.position = oldLocalPos;
+        //owner.transform.localScale = oldLocalScale;
+
+        owner.transform.GetChild(0).GetComponent<Collider>().enabled = false;
+    }
+
+    public override void execute()
+    {
+        timeTilExplode -= Time.deltaTime;
+        //owner.transform.localScale += new Vector3(4-timeTilExplode, 4-timeTilExplode, 4-timeTilExplode);
+        if (timeTilExplode <= 0)//when finished explode
+        {
+            GameManager1.mCentipedeBody.RemoveSegment(100);
+            GameManager1.mCentipedeBody.RemoveSegment(100);
+            GameManager1.mCentipedeBody.RemoveSegment(100);
+            GameManager1.mCentipedeBody.RemoveSegment(100);
+
+            owner.transform.parent = null;
+            owner.stateMachine.changeState(owner.stateMachine.Dead);
+        }
+    }
+
+    public override void exit()
+    {
         base.exit();
     }
 }

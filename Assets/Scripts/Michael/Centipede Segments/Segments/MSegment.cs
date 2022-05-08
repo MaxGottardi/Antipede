@@ -6,6 +6,7 @@ public class MSegment : MonoBehaviour
 	Rigidbody rb;
 	public float FollowSpeed, MaxTurnDegreesPerFrame;
 	float Distance;
+	public LayerMask segmentLayer;
 	//public bool beingAttacked = false;
 
 	public bool bIgnoreFromWeapons;
