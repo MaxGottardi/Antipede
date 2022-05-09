@@ -39,6 +39,7 @@ public class Tarantula: MonoBehaviour
     private bool shooting;
 
     public GameObject antPrefab;
+    private float spawnAntTimer;
     // Start is called before the first frame update
     void Awake()
     {
@@ -150,7 +151,12 @@ public class Tarantula: MonoBehaviour
                 }
             }
 
-
+            spawnAntTimer += Time.deltaTime;
+            if (spawnAntTimer >= 30)
+            {
+                SpawnAnts();
+                spawnAntTimer = 0;
+            }
             
         }
 
@@ -246,8 +252,10 @@ public class Tarantula: MonoBehaviour
 
     private void SpawnAnts()
     {
-        GameObject ant;
-        Vector3 antSpawnPoint = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
-        ant = Instantiate(antPrefab, antSpawnPoint, Quaternion.identity);
+        for (float i = -5; i < 5; i++)
+        {
+            GameObject ant;
+            ant = Instantiate(antPrefab, transform.position + new Vector3(Mathf.Sin(i)*10,0,Mathf.Cos(i)*10), Quaternion.identity);
+        }
     }
 }

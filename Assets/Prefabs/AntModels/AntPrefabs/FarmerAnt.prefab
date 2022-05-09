@@ -900,7 +900,6 @@ MonoBehaviour:
   attachDist: 0.75
   attackAnimLength: 3
   headTransform: {fileID: 41686449857338056}
-  damageStateChance: 0.9
   damageStageChance: 01010101010101010100
   health: 300
   leftAntenna: {fileID: 4585078940065666454}

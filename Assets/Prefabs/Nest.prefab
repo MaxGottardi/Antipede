@@ -774,7 +774,7 @@ MonoBehaviour:
   huntingRadius: 15
   moveSpeed: 4
   attackingPlayer: 0
-  antPrefab: {fileID: 3326833427437991793, guid: 6fc6a1dedbd0cc2459ce10194ae2db20, type: 3}
+  antPrefab: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
 --- !u!1 &6578139119968400845
 GameObject:
   m_ObjectHideFlags: 0

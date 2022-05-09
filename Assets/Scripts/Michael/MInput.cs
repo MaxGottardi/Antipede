@@ -105,14 +105,14 @@ public class MInput : MonoBehaviour
 			
 			if(antCollider.gameObject.CompareTag("Tarantula"))
             {
-				enemyCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth();
-				Instantiate(hitParticles, enemyCollider.gameObject.transform.position, Quaternion.identity);
+				antCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth();
+				Instantiate(hitParticles, antCollider.gameObject.transform.position, Quaternion.identity);
 				return;
             }
 
 			float newDist = Vector3.Distance(transform.position, antCollider.gameObject.transform.position);
 			if (currDist < 0 || newDist < currDist)
-				closestAnt = enemyCollider.gameObject.transform.parent.GetComponent<GenericAnt>();
+				closestAnt = antCollider.gameObject.transform.parent.GetComponent<GenericAnt>();
 		}
 
 
