@@ -7,11 +7,11 @@ public class Tarantula: MonoBehaviour
 {
     private GameObject nest;
     private GameObject rotationPoint;
-    public int nestArea = 50;
-    public int huntingRadius = 25;
-    public float moveSpeed = 5f;
+    private int nestArea = 50;
+    private int huntingRadius = 25;
+    private float moveSpeed = 5f;
     private float health;
-    private float maxHealth = 25;
+    private float maxHealth = 100;
 
     private Slider healthSlider;
     private bool dying;
@@ -95,8 +95,9 @@ public class Tarantula: MonoBehaviour
                 {   //if the tarantula is close enough to the nest it will follow the player
                     if (distToNest < nestArea)
                     {
-                        //ChasePlayer();
-                        //ShootWeb();
+                        ChasePlayer();
+                        ShootWeb();
+                        SpawnAnts();
                     }   
                     else
                     {
@@ -252,10 +253,17 @@ public class Tarantula: MonoBehaviour
 
     private void SpawnAnts()
     {
-        for (float i = -5; i < 5; i++)
+        spawnAntTimer += Time.deltaTime;
+        if (spawnAntTimer >= 30)
         {
-            GameObject ant;
-            ant = Instantiate(antPrefab, transform.position + new Vector3(Mathf.Sin(i)*10,0,Mathf.Cos(i)*10), Quaternion.identity);
+            for (float i = -2; i < 2; i++)
+            {
+                GameObject ant;
+                ant = Instantiate(antPrefab, transform.position + new Vector3(Mathf.Sin(i) * 10, 0, Mathf.Cos(i) * 10), Quaternion.identity);
+                ant.GetComponent<GenericAnt>().maxSightDist = 100;
+                ant.GetComponent<GenericAnt>().largeViewAnlge = 360;
+            }
+            spawnAntTimer = 0;
         }
     }
 }
