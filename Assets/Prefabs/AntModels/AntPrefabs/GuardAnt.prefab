@@ -1049,7 +1049,7 @@ MonoBehaviour:
   canInvestigate: 0
   callingBackup: 0
   Speed: 2
-  animMultiplier: 0.25
+  animMultiplier: 0.5
   rotSpeed: 200
   FollowingNodes: GuardNode
   groundOffset: 0.17
@@ -1062,9 +1062,10 @@ MonoBehaviour:
   maxBackupDist: 7.5
   backupCallDist: 10
   attachDist: 1
-  attackAnimLength: 2.25
+  attackAnimLength: 1.25
   headTransform: {fileID: 870654170815709244}
   damageStateChance: 0.1
+  damageStageChance: 01000000000000000000
   health: 600
   leftAntenna: {fileID: 3684032184993337186}
   rightAntenna: {fileID: 7924855639672096187}

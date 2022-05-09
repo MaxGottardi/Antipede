@@ -11,6 +11,8 @@ public class MInput : MonoBehaviour
 	bool doneAttack = false, attackRequested = false;
 	Camera MainCamera;
 
+	float PreSlowShift;
+
 	void Start()
 	{
 		body = GetComponent<MCentipedeBody>();
@@ -54,6 +56,16 @@ public class MInput : MonoBehaviour
 			body.DecreaseSpeed(100.0f);
 		}
 
+		if (Input.GetKeyDown(KeyCode.LeftShift))
+		{
+			PreSlowShift = body.MovementSpeed;
+			body.SetSpeed(PreSlowShift * .5f);
+		}
+		else if (Input.GetKeyUp(KeyCode.LeftShift))
+		{
+			body.SetSpeed(PreSlowShift);
+		}
+
 		float Horizontal = Input.GetAxisRaw("Horizontal");
 		float Vertical = Input.GetAxisRaw("Vertical");
 
@@ -93,24 +105,21 @@ public class MInput : MonoBehaviour
 			
 			if(antCollider.gameObject.CompareTag("Tarantula"))
             {
-				antCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth();
+				enemyCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth();
+				Instantiate(hitParticles, enemyCollider.gameObject.transform.position, Quaternion.identity);
 				return;
             }
 
 			float newDist = Vector3.Distance(transform.position, antCollider.gameObject.transform.position);
 			if (currDist < 0 || newDist < currDist)
-				closestAnt = antCollider.gameObject.transform.parent.GetComponent<GenericAnt>();
+				closestAnt = enemyCollider.gameObject.transform.parent.GetComponent<GenericAnt>();
 		}
 
 
 		if (closestAnt != null) //only reduce health on the closest ant hit
         {
 			closestAnt.ReduceHealth(100);
-			RaycastHit hit;
-			if (Physics.Raycast(transform.position, closestAnt.gameObject.transform.position - transform.position, out hit, EnemyLayer))
-				Instantiate(hitParticles, hit.point + transform.up * 0.5f, Quaternion.identity);
-			else
-				Instantiate(hitParticles, transform.position, Quaternion.identity);
+			Instantiate(hitParticles, closestAnt.transform.position, Quaternion.identity);
 		}
 
 	}

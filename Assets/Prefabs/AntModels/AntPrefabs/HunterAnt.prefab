@@ -372,7 +372,7 @@ MonoBehaviour:
   callingBackup: 0
   Speed: 5
   animMultiplier: 1.25
-  rotSpeed: 500
+  rotSpeed: 300
   FollowingNodes: HunterNode
   groundOffset: 0.13
   backGroundCheckOffset: 2.2
@@ -383,10 +383,10 @@ MonoBehaviour:
   chanceCallBackup: 0
   maxBackupDist: 7.5
   backupCallDist: 10
-  attachDist: 7
+  attachDist: 12
   attackAnimLength: 2
   headTransform: {fileID: 6402207106255891079}
-  damageStateChance: 0.25
+  damageStageChance: 01010000000000000000
   health: 600
   leftAntenna: {fileID: 7488454750242973145}
   rightAntenna: {fileID: 4122662952654073600}

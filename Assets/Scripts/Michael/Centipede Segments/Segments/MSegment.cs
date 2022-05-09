@@ -6,6 +6,7 @@ public class MSegment : MonoBehaviour
 	Rigidbody rb;
 	public float FollowSpeed, MaxTurnDegreesPerFrame;
 	float Distance;
+	public LayerMask segmentLayer;
 	//public bool beingAttacked = false;
 
 	public bool bIgnoreFromWeapons;
@@ -14,6 +15,8 @@ public class MSegment : MonoBehaviour
 
 	MCentipedeWeapons Owner;
 	public float health = 100;
+
+	bool bDetached = false;
 
 	/// <summary>Initialises this Segment to follow ForwardNeighbour at FollowSpeed and turning at MaxTurnDegreesPerFrame.</summary>
 	/// <remarks>MaxTurnDegreesPerFrame will be multiplied to try and prevent disconnection. Increase as needed.</remarks>
@@ -38,6 +41,12 @@ public class MSegment : MonoBehaviour
 
 	void FixedUpdate()
 	{
+		if (bDetached)
+		{
+			DetachGameFunctions();
+			return;
+		}
+
 		if (!MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance, out float SquareDistance))
 		{
 			if (ForwardNeighbour)
@@ -124,19 +133,73 @@ public class MSegment : MonoBehaviour
 		return Owner;
 	}
 
-	void OnDestroy()
+	public bool ReduceHealth(float amount)
+	{
+		health -= amount;
+		return health <= 0;
+	}
+
+	void DetachGameFunctions()
+	{
+		// If this Rigidbody is no longer required to simulate physics,
+		// destroy the Rigidbody and destroy the MSegment component.
+		if (rb.IsSleeping())
+		{
+			// Mark this (the actual Segment that *was* attached) for destruction.
+			Destroy(gameObject);
+
+			// Duplicate this Game Object.
+			Transform T = transform;
+			Transform Replacement = Instantiate(T, T.position, T.rotation);
+			Replacement.name = name + " (Detached)";
+
+			// Remove core components from this duplicated Segment.
+			Destroy(Replacement.GetComponent<Rigidbody>());
+			Destroy(Replacement.GetComponent<MSegment>());
+		}
+	}
+
+	public void Detach()
+	{
+		Deregister();
+		bDetached = true;
+
+		// Random force parameters.
+		float RandomUAxis = Random.Range(0f, 1f);
+		float RandomRAxis = Random.Range(-1f, 1f);
+
+		// Calculate a random upwards force.
+		Vector3 Force = transform.up * RandomUAxis + transform.right * RandomRAxis;
+		Force.Normalize();
+		Force *= 5f;
+
+		// Ignore inertial forces from pre-detachment.
+		rb.velocity = Vector3.zero;
+		rb.useGravity = true;
+
+		// Apply upwards force and random rotation.
+		rb.AddForce(Force, ForceMode.VelocityChange);
+		transform.rotation = MMathStatics.V2Q(Random.onUnitSphere);
+
+		// Enable physics collisions.
+		GetComponent<Collider>().isTrigger = false;
+
+		// Disable FABRIK.
+		Destroy(GetComponent<FABRIK>());
+
+		// Deregister and ignore Weapon commands (if any).
+		if (Weapon)
+			Weapon.Deregister();
+	}
+
+	/// <summary>Make this Segment ignore Weapon commands.</summary>
+	void Deregister()
 	{
 		if (Owner)
 			// If this doesn't fix the InvalidOperationException problem, then idk.
 			Owner.StopAllCoroutines();
 
 		Owner.SegmentsWithWeapons.Remove(this);
-	}
-
-	public bool ReduceHealth(float amount)
-	{
-		health -= amount;
-		return health <= 0;
 	}
 
 	public static implicit operator Transform(MSegment s) => s.transform;

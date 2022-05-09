@@ -18447,7 +18447,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 693484662}
         m_TargetAssemblyTypeName: UIButtons, Assembly-CSharp
         m_MethodName: ChangeScene
         m_Mode: 5

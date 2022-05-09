@@ -99,7 +99,7 @@ public class MCentipedeWeapons : MonoBehaviour
 		// Apparently you can't use a try-catch block on an IEnumerator.
 		// It sounds bad, but just ignore it; it cancels the firing anyway.
 		//
-		// It *should* be fixed. See MSegment.OnDestroy() and its call to MCentipedeWeapons.StopAllCoroutines().
+		// It *should* be fixed. See MSegment.Deregister() and its call to MCentipedeWeapons.StopAllCoroutines().
 
 		foreach (Weapon W in SegmentsWithWeapons)
 		{
@@ -107,6 +107,9 @@ public class MCentipedeWeapons : MonoBehaviour
 			yield return new WaitForSeconds(PropagationDelay);
 		}
 	}
+
+	static readonly Color DistanceColour = new Color(1, 1, 1, .5f);
+	static readonly Color NoSightColour = new Color(1, 0, 0, .5f);
 
 	void UpdateWeaponHUD()
 	{
@@ -118,21 +121,21 @@ public class MCentipedeWeapons : MonoBehaviour
 
 		Vector3 MouseScreenPosition = Input.mousePosition;
 
-		if (MouseScreenPosition.x >= Screen.width * .9f)
+		if (MouseScreenPosition.x >= Screen.width * .8f)
 			HUD.rectTransform.pivot = new Vector2(.5f, 0);
-		else if (MouseScreenPosition.x < Screen.width * .1f)
+		else if (MouseScreenPosition.x < Screen.width * .2f)
 			HUD.rectTransform.pivot = Vector2.zero;
 
 		HUD.rectTransform.position = MouseScreenPosition;
 		if (bHasLineOfSight)
 		{
 			HUD.text = "Distance: " + Vector3.Distance(transform.position, MouseToWorld).ToString("F0") + "m";
-			HUD.color = Color.white;
+			HUD.color = DistanceColour;
 		}
 		else
 		{
 			HUD.text = "NO LINE OF SIGHT";
-			HUD.color = Color.red;
+			HUD.color = NoSightColour;
 		}
 	}
 }

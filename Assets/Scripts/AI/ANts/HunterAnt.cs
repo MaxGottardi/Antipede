@@ -9,19 +9,22 @@ public class HunterAnt : GenericAnt
     public Vector3 weaponPos;
     public Transform weaponParent;
 
-    public static ShuffleBag weaponsBag;
+    public static ShuffleBag<GameObject> weaponsBag;
     public GameObject[] weapons;
 
     public Weapon weaponClass;
+
+    public bool isFleeing = false; //is this ant currently moving away from the player or not
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
         stateMachine.Attack = new HunterAttack(this);
         stateMachine.Dead = new HunterDead(this);
+        stateMachine.Investigate = new HunterInvestigate(this);
         if (weaponsBag == null)
         {
-            weaponsBag = new ShuffleBag();
+            weaponsBag = new ShuffleBag<GameObject>();
             weaponsBag.shuffleList = weapons;
         }
         PickWeapon();
