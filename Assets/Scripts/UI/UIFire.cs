@@ -1,0 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class UIFire : MonoBehaviour
+{
+    public Weapon[] weapons;
+    // Update is called once per frame
+    void Update()
+    {
+        foreach (Weapon W in weapons)
+        {
+            Vector3 mousePos = MouseToWorldCoords();
+            if (Input.GetMouseButtonDown(0))
+                W.Fire(mousePos);
+
+            W.LookAt(mousePos);
+        }
+    }
+
+    Vector3 MouseToWorldCoords()
+    {
+        Ray Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Physics.Raycast(Ray, out RaycastHit Hit, 5000, 384); // Enemy and Ground Layers. (1 << 7 | 1 << 8)
+
+        return Hit.point;
+    }
+}

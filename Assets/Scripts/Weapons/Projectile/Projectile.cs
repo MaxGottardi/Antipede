@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>The base class for a launched projectile from a <see cref="Weapon"/>.</summary>
 /// <remarks>Default behaviour is a generic straight-line bullet.</remarks>
@@ -26,20 +27,25 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-		if(!isEnemyProjectile && collision.gameObject.CompareTag("Enemy"))
+		//Destroy(this);
+		if (collision.gameObject.CompareTag("Play"))
+		{
+			SceneManager.LoadScene("Environment Test");
+		}
+		else if (!isEnemyProjectile && collision.gameObject.CompareTag("Enemy"))
         {
 			collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(30);
 			Instantiate(hitParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 			Destroy(gameObject);
 		}
-		if (!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula"))
+		else if (!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula"))
         {
 			collision.gameObject.GetComponent<Tarantula>().DecreaseHealth();
 			Instantiate(hitParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 			Destroy(gameObject);
 		}
-
-
+		//else
+			//Destroy(this);
 	}
 
     private void OnTriggerEnter(Collider other)
