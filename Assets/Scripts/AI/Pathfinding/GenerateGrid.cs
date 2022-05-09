@@ -75,25 +75,31 @@ public class GenerateGrid : MonoBehaviour
 
         if(grid[gridX, gridY, gridZ] == null)
         {
-            for (int i = -1; i <= 1; i++) //for every possible neighbour see if it would be valid instead
-            {
-                for (int j = -1; j <= 1; j++)
+            int currNeighbourOut = 1; 
+            while (currNeighbourOut <= 1) //check within a 10 tile range of the current cell inside of
+            {//not below is quite inefficent as need to check all cells of the ones before it already checked
+                for (int i = -currNeighbourOut; i <= currNeighbourOut; i++) //for every possible neighbour see if it would be valid instead
                 {
-                    for (int k = -1; k <= 1; k++)
+                    for (int j = -currNeighbourOut; j <= currNeighbourOut; j++)
                     {
-                        NavigationNode neighbour;
-                        if (gridX + i >= 0 && gridX + i < width && gridY + j >= 0 && gridY + j < height
-                            && gridZ + k >= 0 && gridZ + k < depth)
+                        for (int k = -currNeighbourOut; k <= currNeighbourOut; k++)
                         {
-                            neighbour = grid[gridX + i, gridY + j, gridZ + k];
-                            if (neighbour != null) //as long as this is a valid node, return it
+                            NavigationNode neighbour;
+                            if (gridX + i >= 0 && gridX + i < width && gridY + j >= 0 && gridY + j < height
+                                && gridZ + k >= 0 && gridZ + k < depth)
                             {
-                                return (gridX + i, gridY + j, gridZ + k);
+                                neighbour = grid[gridX + i, gridY + j, gridZ + k];
+                                if (neighbour != null) //as long as this is a valid node, return it
+                                {
+                                    return (gridX + i, gridY + j, gridZ + k);
+                                }
                             }
                         }
                     }
                 }
+                currNeighbourOut++;
             }
+
         }
 
         return (gridX, gridY, gridZ);

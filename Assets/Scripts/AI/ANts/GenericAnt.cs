@@ -54,9 +54,13 @@ public class GenericAnt : MonoBehaviour
     [Header("Damage Settings")]
     [SerializeField] bool[] damageStageChance; //out of 10 bites it recives how many of them will go into the damage stage
     public float health = 100;
-    float maxHealth;
+    [HideInInspector]public float maxHealth;
     public GameObject leftAntenna, rightAntenna;
     ShuffleBag<bool> healthBag;
+    [Range(0,1)]
+    public float minFleeChance;
+    //public float minFleeX = 10, maxFleeX = 15, minFleeZ = 10, maxFleeZ = 15;
+    //[HideInInspector] public Vector3 fleePoint;
 
     public virtual void Start()
     {
@@ -85,21 +89,23 @@ public class GenericAnt : MonoBehaviour
     /// <returns>Did it detect the player?</returns>
     public bool DetectPlayer() //here use the proper vision cone
     {
-
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, maxSightDist, playerLayer);
-
-        foreach (Collider playerSegment in hitColliders) //get all nearby ants to call for backup
+        if (Time.frameCount % 5 == 0 || Time.deltaTime > 0.25f)
         {
-            float distAway = Vector3.Distance(transform.position, playerSegment.gameObject.transform.position);
-            Vector3 dirToPoint = (playerSegment.gameObject.transform.position - transform.position).normalized;
-            if (ValidAngle(distAway, dirToPoint))
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, maxSightDist, playerLayer);
+
+            foreach (Collider playerSegment in hitColliders) //get all nearby ants to call for backup
             {
-                //if (!Physics.Raycast(transform.position, dirToPoint, distAway, ~playerLayer)) //if it hit anything which was not the player than, it means the view is actually obstructed
+                float distAway = Vector3.Distance(transform.position, playerSegment.gameObject.transform.position);
+                Vector3 dirToPoint = (playerSegment.gameObject.transform.position - transform.position).normalized;
+                if (ValidAngle(distAway, dirToPoint))
                 {
-                    return true; //as nothing hit no walls etc. were in the way so safe to say it saw the player
+                    //if (!Physics.Raycast(transform.position, dirToPoint, distAway, ~playerLayer)) //if it hit anything which was not the player than, it means the view is actually obstructed
+                    {
+                        return true; //as nothing hit no walls etc. were in the way so safe to say it saw the player
+                    }
+                    //else
+                    //  Debug.Log("Failed to ensure no obsticals in the way");
                 }
-                //else
-                //  Debug.Log("Failed to ensure no obsticals in the way");
             }
         }
         return false; //no player segment found
@@ -153,6 +159,10 @@ public class GenericAnt : MonoBehaviour
             {
                 stateMachine.changeState(stateMachine.Damage);
             }
+            else if(stateMachine.currState == stateMachine.Movement)
+            {
+                stateMachine.changeState(stateMachine.Investigate);
+            }
         }
     }
 #if UNITY_EDITOR
@@ -202,4 +212,9 @@ public class GenericAnt : MonoBehaviour
 
         return false;
     }
+
+//    private void OnDrawGizmos()
+//    {
+// Gizmos.DrawSphere(transform.position, backupCallDist);
+//    }
 }

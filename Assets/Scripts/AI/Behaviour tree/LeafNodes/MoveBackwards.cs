@@ -26,11 +26,14 @@ public class MoveBackwards : Node
     float backwardOffset;
     float backwardTime = 2; //num seconds it can move backwards for
 
+    int doGoBack = 1;
     HunterAnt realOwner;
-    public MoveBackwards(GenericAnt blackboard)
+    public MoveBackwards(GenericAnt blackboard, int doGoBack = 1)
     {
         this.blackboard = blackboard;
         realOwner = blackboard.gameObject.GetComponent<HunterAnt>();
+
+        this.doGoBack = doGoBack;
     }
 
     public override void init()
@@ -39,18 +42,20 @@ public class MoveBackwards : Node
 
         backwardOffset = Random.Range(-.5f, .5f);
         backwardTime = 2;
-        realOwner.isFleeing = true;
+        if (realOwner)
+            realOwner.isFleeing = true;
         
         if (blackboard.animMultiplier > 0)
             blackboard.animMultiplier *= -1;
     }
     public override NodeState evaluate()
     {
-        Debug.Log("Moving Backwards");
-        if (backwardTime <= 0)
+// Debug.Log("Moving Backwards");
+        if (Vector3.Distance(blackboard.transform.position, GameManager1.mCentipedeBody.Head.position) >= 11 || backwardTime <= 0)
         {
             backwardTime = 2f;
-            realOwner.isFleeing = false;
+            if (realOwner)
+                realOwner.isFleeing = false;
             return NodeState.Success;
         }
         else
@@ -62,7 +67,7 @@ public class MoveBackwards : Node
                 blackboard.anim.SetTrigger("Walk");
             }
 
-            blackboard.transform.position -= (blackboard.transform.forward) * Time.deltaTime * blackboard.Speed * 1.5f; //move backwards
+            blackboard.transform.position -= doGoBack * (blackboard.transform.forward) * Time.deltaTime * blackboard.Speed * 1.5f; //move backwards
             Vector3 lookDir = (GameManager1.mCentipedeBody.Head.position - blackboard.transform.position) + (blackboard.transform.right * backwardOffset);
             blackboard.transform.rotation = GenericMovement.SetRotation(blackboard, lookDir); //set appropriate orientation
 
@@ -75,7 +80,8 @@ public class MoveBackwards : Node
         if (blackboard.animMultiplier < 0) //ensure the animations cannot ever be inadvertidly reversed perminently
           blackboard.animMultiplier *= -1;
 
-        realOwner.isFleeing = false;
+        if (realOwner)
+            realOwner.isFleeing = false;
         base.end();
     }
 }

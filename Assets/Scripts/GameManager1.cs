@@ -13,6 +13,6 @@ public class GameManager1 : MonoBehaviour
         playerObj = GameObject.Find("Centipede");
         mCentipedeBody = playerObj.GetComponent<MCentipedeBody>();
         cameraController = Camera.main.gameObject.GetComponent<CameraController>();
-        generateGrid = Camera.main.gameObject.GetComponent<GenerateGrid>();
+        generateGrid = gameObject.GetComponent<GenerateGrid>();
     }
 }

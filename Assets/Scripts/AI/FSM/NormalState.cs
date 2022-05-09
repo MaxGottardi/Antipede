@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.AI;
 using UnityEngine;
 /// <summary>
 /// The normal movement around the map
@@ -191,6 +189,7 @@ public class AttackState : State
 
             if (attackTime <= 0)
                 owner.stateMachine.changeState(owner.stateMachine.Investigate);
+
         }
     }
 
@@ -208,9 +207,25 @@ public class DamageState : State
 {
     float damageTime = 1.7f;
     GenericAnt owner;
+
+    Node topNode;
     public DamageState(GenericAnt owner) //also initilize any behaviour tree used on the state as well
     {
         this.owner = owner;
+
+        CheckFleeValid checkFleeValid = new CheckFleeValid(owner);
+
+        GetNextNode getNextNode = new GetNextNode(owner, true); //here also need node for determining the path
+        MoveBackwards moveBackwards = new MoveBackwards(owner);//using the flee backwards code, actually move forwards
+        Sequence doMovement = new Sequence(new List<Node>{ getNextNode, moveBackwards});
+
+        Sequence doFlee = new Sequence(new List<Node> { checkFleeValid, doMovement }); //picks a point so far enough away from the player, and then moves towards it with some speed
+
+        ////Sequence doStay = new Sequence(); //stay still, play the damage animation and continue
+
+        Selector fleeOrStay = new Selector(new List<Node> { doFlee });
+
+        topNode = fleeOrStay;
     }
     public void enter()
     {
@@ -220,6 +235,7 @@ public class DamageState : State
 
     public void execute()
     {
+        topNode.execute();
         damageTime -= Time.deltaTime;
         if (damageTime <= 0)//when finished attacking add any damage to the appropriate segment
         {

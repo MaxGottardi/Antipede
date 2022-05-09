@@ -194,10 +194,11 @@ public class MoveTowards : Node
         else
             upSmooth = Vector3.up;
 
+#if UNITY_EDITOR
         Debug.DrawRay(blackboard.transform.position + blackboard.transform.forward * -0.5f , 5 * (blackboard.transform.forward- blackboard.transform.up * 0.1f), Color.green);
         Debug.DrawRay(blackboard.transform.position, 5 * (raycastHit.normal), Color.blue);
         Debug.DrawRay(blackboard.transform.position + blackboard.transform.forward * -blackboard.backGroundCheckOffset, 5 * (raycastHit1.normal), Color.blue);
-
+#endif
         return upSmooth;
     }
 
