@@ -45,7 +45,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	void Start()
 	{
 		shieldActive = false;
-		shieldDuration = 5.0f;
+		//shieldDuration = 5.0f;
 		Weapons = GetComponent<MCentipedeWeapons>();
 
 		TailSegment = Tail.GetComponent<MSegment>();
@@ -79,8 +79,7 @@ public partial class MCentipedeBody : MonoBehaviour
         }*/
 		if (Input.GetKeyDown(KeyCode.Y))
         {
-			sfxManager.ActivateShield();
-			shieldStartTime = Time.time;
+			ActivateShield(5.0f);
         }
 
 		if (shieldStartTime > 0)
@@ -89,12 +88,9 @@ public partial class MCentipedeBody : MonoBehaviour
 			{
 				shieldActive = true;
 			}
-
 			else
 			{
-				shieldStartTime = 0;
-				shieldActive = false;
-				sfxManager.DeactivateShield();
+				DeactivateShield();
 			}
 		}
 	}
@@ -312,5 +308,19 @@ public partial class MCentipedeBody : MonoBehaviour
 		{
 			Tarantula.GetComponent<Tarantula>().UpdateMiddleSeg(Middle);
 		}
+	}
+
+	public void ActivateShield(float duration)
+    {
+		shieldDuration = duration;
+		sfxManager.ActivateShield();
+		shieldStartTime = Time.time;
+	}
+
+	public void DeactivateShield()
+    {
+		shieldStartTime = 0;
+		shieldActive = false;
+		sfxManager.DeactivateShield();
 	}
 }
