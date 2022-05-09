@@ -773,8 +773,8 @@ MonoBehaviour:
   nestArea: 40
   huntingRadius: 15
   moveSpeed: 4
-  maxHealth: 10
   attackingPlayer: 0
+  antPrefab: {fileID: 3326833427437991793, guid: 6fc6a1dedbd0cc2459ce10194ae2db20, type: 3}
 --- !u!1 &6578139119968400845
 GameObject:
   m_ObjectHideFlags: 0

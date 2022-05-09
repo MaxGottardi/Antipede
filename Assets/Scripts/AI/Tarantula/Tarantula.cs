@@ -11,7 +11,7 @@ public class Tarantula: MonoBehaviour
     public int huntingRadius = 25;
     public float moveSpeed = 5f;
     private float health;
-    public float maxHealth = 25;
+    private float maxHealth = 25;
 
     private Slider healthSlider;
     private bool dying;
@@ -37,6 +37,8 @@ public class Tarantula: MonoBehaviour
     private float shootAnimTimer;
     private float shootDelay = 0.7f;
     private bool shooting;
+
+    public GameObject antPrefab;
     // Start is called before the first frame update
     void Awake()
     {
@@ -64,8 +66,7 @@ public class Tarantula: MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            ShootWeb();
-            //animator.Play("Attack_Left");
+            SpawnAnts();
         }
 
         if (!dying)
@@ -94,7 +95,7 @@ public class Tarantula: MonoBehaviour
                     if (distToNest < nestArea)
                     {
                         //ChasePlayer();
-                        ShootWeb();
+                        //ShootWeb();
                     }   
                     else
                     {
@@ -241,5 +242,12 @@ public class Tarantula: MonoBehaviour
             webShot.velocity = new Vector3(target.x, target.y - 0.25f, target.z) * 3;
             webShot.GetComponent<Web>().isShot = true;
         }
+    }
+
+    private void SpawnAnts()
+    {
+        GameObject ant;
+        Vector3 antSpawnPoint = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+        ant = Instantiate(antPrefab, antSpawnPoint, Quaternion.identity);
     }
 }

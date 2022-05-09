@@ -82,7 +82,8 @@ public class MInput : MonoBehaviour
 		float currDist = -1;
 		
         foreach (Collider antCollider in colliders)
-        {
+        {//im not really sure why this works for differentiating between the tail and the rest of the body
+			//but it does so im rolling with it (especially because it wasnt working before)
 			if (antCollider.gameObject.CompareTag("TarantulaTail"))
             {
 				antCollider.gameObject.transform.parent.GetComponent<Tarantula>().DecreaseHealth();
