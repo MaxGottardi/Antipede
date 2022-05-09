@@ -32,12 +32,16 @@ public class Projectile : MonoBehaviour
 			Instantiate(hitParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 			Destroy(gameObject);
 		}
-		if (!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula"))
+		if (!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula") 
+			&& collision.gameObject.GetComponent<Tarantula>().healthSlider.value >= 0.50)
         {
 			collision.gameObject.GetComponent<Tarantula>().DecreaseHealth();
 			Instantiate(hitParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
-			Destroy(gameObject);
 		}
+		if(!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula"))
+        {
+			Destroy(gameObject);
+        }
 
 
 	}

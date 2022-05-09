@@ -13,7 +13,7 @@ public class Tarantula: MonoBehaviour
     private float health;
     private float maxHealth = 100;
 
-    private Slider healthSlider;
+    public Slider healthSlider;
     private bool dying;
     private float deathTimer;
 
@@ -158,7 +158,6 @@ public class Tarantula: MonoBehaviour
                 SpawnAnts();
                 spawnAntTimer = 0;
             }
-            
         }
 
         if (health <= 0)
