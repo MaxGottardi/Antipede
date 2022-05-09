@@ -2397,6 +2397,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bUsePropagationDelay: 1
   PropagationDelay: 0.1
+  HUD: {fileID: 0}
   SegmentsWithWeapons: []
 --- !u!114 &8912492245561955170
 MonoBehaviour:
@@ -2425,7 +2426,7 @@ MonoBehaviour:
   EnemyLayer:
     serializedVersion: 2
     m_Bits: 128
-  hitParticles: {fileID: 1983914251257026005, guid: 9ed20eb1978768643b467b5f79d27218, type: 3}
+  hitParticles: {fileID: 3612848425264099771, guid: e16bd8ac4022a2447880058a8ae4a7cb, type: 3}
 --- !u!114 &8912492245561955168
 MonoBehaviour:
   m_ObjectHideFlags: 0

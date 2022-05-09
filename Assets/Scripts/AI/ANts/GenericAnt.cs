@@ -134,7 +134,7 @@ public class GenericAnt : MonoBehaviour
     /// called whenever this ant takes damage
     /// </summary>
     /// <param name="amount">the amount of health which gets lost</param>
-    public void ReduceHealth(int amount)
+    public virtual void ReduceHealth(int amount)
     {
         if (stateMachine.currState != stateMachine.Dead && health > 0)
         {

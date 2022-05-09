@@ -23,8 +23,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6857735041488720455}
   - component: {fileID: 8223699381440940297}
-  - component: {fileID: 1853081508}
   - component: {fileID: 6610698175583220594}
+  - component: {fileID: 7680783763861950113}
   m_Layer: 7
   m_Name: FarmerAnt
   m_TagString: Enemy
@@ -55,7 +55,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8531618194261706558}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1853081508
+--- !u!95 &6610698175583220594
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8531618194261706558}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7680783763861950113
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -64,32 +83,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8531618194261706558}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 460706a6f0acb9d418692c0dacefd74c, type: 3}
+  m_Script: {fileID: 11500000, guid: 91c5bb259a4d08540a2937307fb4abba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   nextPosTransform: {fileID: 0}
   pathToNextPos: []
   nextPosVector: {x: 0, y: 0, z: 0}
-  nodesList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  nodesList: []
   shockBar: {fileID: 1278137872713388946}
   anim: {fileID: 0}
   playerLayer:
@@ -126,25 +126,8 @@ MonoBehaviour:
   leftAntenna: {fileID: 4585078940065666454}
   rightAntenna: {fileID: 7024358640349306703}
   minFleeChance: 0.45
---- !u!95 &6610698175583220594
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8531618194261706558}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  Larvae: {fileID: 3658501623764678317, guid: 7b95122c35e34c64887020f05597a625, type: 3}
+  useLarvae: 01010000000000000000
 --- !u!1001 &6715257818362550354
 PrefabInstance:
   m_ObjectHideFlags: 0
