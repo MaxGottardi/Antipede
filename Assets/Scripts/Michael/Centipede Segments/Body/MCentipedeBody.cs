@@ -40,8 +40,15 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	public GameObject DeathScreen;
 
+	bool shieldActive;
+	[SerializeField]SFXManager sfxManager;
+	float shieldStartTime = 0;
+	float shieldDuration;
+
 	void Start()
 	{
+		shieldActive = false;
+		//shieldDuration = 5.0f;
 		Weapons = GetComponent<MCentipedeWeapons>();
 
 		TailSegment = Tail.GetComponent<MSegment>();
@@ -73,6 +80,34 @@ public partial class MCentipedeBody : MonoBehaviour
 				slowed = false;
             }
         }
+		Debug.Log(shieldActive);
+		//Debug.Log(Segments.Count);
+		//		Debug.Log(U2I(SegmentsInfo.End));
+		/*if (Input.GetKeyDown(KeyCode.Y)) {
+			sfxManager.ActivateShield();
+			shieldActive = true;
+        }
+		if (Input.GetKeyUp(KeyCode.Y))
+        {
+			sfxManager.DeactivateShield();
+			shieldActive = false;
+        }*/
+		if (Input.GetKeyDown(KeyCode.Y))
+        {
+			ActivateShield(5.0f);
+        }
+
+		if (shieldStartTime > 0)
+		{
+			if (Time.time <= shieldStartTime + shieldDuration)
+			{
+				shieldActive = true;
+			}
+			else
+			{
+				DeactivateShield();
+			}
+		}
 	}
 
 	public MSegment AddSegment()
@@ -159,64 +194,74 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	public void RemoveSegment(float healthReduction)//MSegment deadSegment)
 	{
-//		Debug.Log("Killing Player");
-
-		MSegment lastSegment = GetLast();
-		//MSegment lastSegment = this[Segments.Count - 1];
-		Instantiate(DamageParticles, lastSegment.transform.position, Quaternion.identity);
-		/*foreach (MSegment segment in Segments)
+		if (!shieldActive)
 		{
-			lastSegment = segment;
-		}*/
+			//		Debug.Log("Killing Player");
 
 		//Segments.Remove(Segments[Segments.Count - 1]);
-		if (lastSegment.ReduceHealth(healthReduction))
-		{
-			if (slowed == true)
-			{
-				DecreaseSpeed(5);
-			}
-			else if (slowed == false)
-			{
-				DecreaseSpeed(10);
-			}
 
-			Destroy(lastSegment.gameObject);
+
+
 			
+			MSegment lastSegment = GetLast();
+			//MSegment lastSegment = this[Segments.Count - 1];
 
-			//int nextIndex = 1;
-			//while (segmentIndex + nextIndex < Segments.Count - 1 && !Segments[segmentIndex + nextIndex]) //if multiple in a row get destroyed at same time, prevents it from bugging out
-			//	nextIndex++;
-			//if (segmentIndex + nextIndex < Segments.Count - 1)
-			//	Segments[segmentIndex + nextIndex].ForwardNeighbour = lastSegment.ForwardNeighbour;
+			/*foreach (MSegment segment in Segments)
+			{
+				lastSegment = segment;
+			}*/
 
-			Segments.RemoveAt(Segments.Count - 1);
-			--NumberOfSegments;
-			GameManager1.cameraController.gameObject.transform.position += GameManager1.cameraController.gameObject.transform.forward * 2;
+			//Segments.Remove(Segments[Segments.Count - 1]);
+			if (lastSegment.ReduceHealth(healthReduction))
+			{
 
-			int lastSegIndex = Segments.Count - 1;
-			TailSegment.SetForwardNeighbour(Segments[lastSegIndex]);
+				if (slowed == true)
+				{
+					DecreaseSpeed(5);
+				}
+				else if (slowed == false)
+				{
+					DecreaseSpeed(10);
+				}
+				
+				Instantiate(DamageParticles, lastSegment.transform.position, Quaternion.identity);
 
-			SegmentsInfo.RemoveSegment();
+				//Destroy(lastSegment.gameObject);
+				lastSegment.Detach();
 
-			// Ensure the Tail is properly 'attached' to the end Segment.
-			Transform newLast = GetLast();
-			Vector3 NewPos = newLast.position - newLast.forward * SegmentsInfo.SegmentScale.z;
-			Tail.position = NewPos;
+				//int nextIndex = 1;
+				//while (segmentIndex + nextIndex < Segments.Count - 1 && !Segments[segmentIndex + nextIndex]) //if multiple in a row get destroyed at same time, prevents it from bugging out
+				//	nextIndex++;
+				//if (segmentIndex + nextIndex < Segments.Count - 1)
+				//	Segments[segmentIndex + nextIndex].ForwardNeighbour = lastSegment.ForwardNeighbour;
 
-			for (byte i = 0; i < CustomSegments.Count; ++i)
-				CustomSegments[i].transform.position = NewPos - (i * FollowDistance * newLast.forward);
-			
-		}
+				Segments.RemoveAt(Segments.Count - 1);
+				--NumberOfSegments;
+				GameManager1.cameraController.gameObject.transform.position += GameManager1.cameraController.gameObject.transform.forward * 2;
 
-		// Make the check after removing a Segment.
-		if (NumberOfSegments <= 1)
-		{
-			Debug.Log("You Died");
-			if (DeathScreen != null)
-				DeathScreen.SetActive(true);
-			Time.timeScale = 0;
-		}
+				int lastSegIndex = Segments.Count - 1;
+				TailSegment.SetForwardNeighbour(Segments[lastSegIndex]);
+
+				SegmentsInfo.RemoveSegment();
+
+				// Ensure the Tail is properly 'attached' to the end Segment.
+				Transform newLast = GetLast();
+				Vector3 NewPos = newLast.position - newLast.forward * SegmentsInfo.SegmentScale.z;
+				Tail.position = NewPos;
+
+				for (byte i = 0; i < CustomSegments.Count; ++i)
+					CustomSegments[i].transform.position = NewPos - (i * FollowDistance * newLast.forward);
+
+			}
+
+			// Make the check after removing a Segment.
+			if (NumberOfSegments <= 1)
+			{
+				Debug.Log("You Died");
+				if (DeathScreen != null)
+					DeathScreen.SetActive(true);
+				Time.timeScale = 0;
+			}
 	}
 
 	public void IncreaseSpeed(float value)
@@ -299,6 +344,19 @@ public partial class MCentipedeBody : MonoBehaviour
 			DecreaseSpeed(MovementSpeed / 2);
 			slowed = true;
 		}
-    }
+	}
 
+	public void ActivateShield(float duration)
+    {
+		shieldDuration = duration;
+		sfxManager.ActivateShield();
+		shieldStartTime = Time.time;
+	}
+
+	public void DeactivateShield()
+    {
+		shieldStartTime = 0;
+		shieldActive = false;
+		sfxManager.DeactivateShield();
+	}
 }
