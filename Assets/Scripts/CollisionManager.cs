@@ -6,6 +6,7 @@ public class CollisionManager : MonoBehaviour
 {
     [SerializeField] MCentipedeBody player;
     [SerializeField] SFXManager sfxManager;
+    [SerializeField] CardManager cardManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -53,7 +54,12 @@ public class CollisionManager : MonoBehaviour
         else if (other.CompareTag("Card"))
         {
             sfxManager.CollectSpecial();
-            //DO SOMETHING WITH CARDS
+
+            Card card = other.gameObject.GetComponent<Card>();
+            int cardIndex = card.GetCardIndex();
+
+            cardManager.CollectCard(cardIndex);
+           
             Destroy(other.gameObject);
         }
     }

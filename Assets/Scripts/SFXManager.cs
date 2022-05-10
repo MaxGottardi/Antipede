@@ -9,6 +9,7 @@ public class SFXManager : MonoBehaviour
     [SerializeField] AudioSource sourcePlayer;
     [SerializeField] AudioSource sourceDamage;
     [SerializeField] AudioSource sourceWeapon;
+    [SerializeField] AudioSource sourceShield;
 
     [SerializeField] AudioClip menuMusic;
     [SerializeField] AudioClip loadingMusic;
@@ -88,6 +89,16 @@ public class SFXManager : MonoBehaviour
         sourceDamage.Play();
     }
 
+    public void ActivateShield()
+    {
+        sourceShield.clip = shieldSFX;
+        sourceShield.Play();
+    }
+
+    public void DeactivateShield()
+    {
+        sourceShield.Stop();
+    }
     public static void AudioFadeOut(AudioSource audioSource, float FadeTime)
     {
 

@@ -5,23 +5,24 @@ using UnityEngine.UI;
 
 public class Tarantula: MonoBehaviour
 {
-
     private GameObject nest;
     private GameObject rotationPoint;
-    public int nestArea = 40;
-    public int huntingRadius = 15;
-    public float moveSpeed = 4f;
-    //public float damage = 2;
+    private int nestArea = 50;
+    private int huntingRadius = 25;
+    private float moveSpeed = 5f;
     private float health;
-    private float maxHealth = 10;
+    private float maxHealth = 100;
 
-    private Slider healthSlider;
+    public Slider healthSlider;
+    private bool dying;
+    private float deathTimer;
 
     private float distToNest;
     private float distToPlayer;
 
-    private GameObject middleSeg;
-    private int middleSegInt;
+    private GameObject targetSeg;
+    float newTargetSegDist;
+    float oldTargetSegDist;
 
     private Animation animator;
     private bool tarantulaMoving;
@@ -30,7 +31,15 @@ public class Tarantula: MonoBehaviour
     private float attackDelay = 0.9f;
     private float attackTimer;
     private MCentipedeBody player;
-    //private bool attack;
+
+    private Rigidbody webPrefab;
+    private float shootTimer;
+    private float shootAnimTimer;
+    private float shootDelay = 0.7f;
+    private bool shooting;
+
+    public GameObject antPrefab;
+    private float spawnAntTimer;
     // Start is called before the first frame update
     void Awake()
     {
@@ -45,8 +54,12 @@ public class Tarantula: MonoBehaviour
 
         animator = GetComponent<Animation>();
 
+        dying = false;
         attackingPlayer = false;
+        shooting = false;
         player = GameObject.Find("Centipede").GetComponent<MCentipedeBody>();
+
+        webPrefab = gameObject.transform.Find("Web").gameObject.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -54,123 +67,140 @@ public class Tarantula: MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            //Debug.Log(tarantulaMoving);
-            DecreaseHealth();
+            SpawnAnts();
         }
 
-        if (middleSeg != null)
+        if (!dying)
         {
-            distToNest = Vector3.Distance(nest.transform.position, rotationPoint.transform.position);
-            distToPlayer = Vector3.Distance(rotationPoint.transform.position, middleSeg.transform.position);
-
-
-            if (distToPlayer < huntingRadius && !attackingPlayer)
+            foreach (MSegment segment in player.Segments)
             {
-                if (distToNest < nestArea)
+                if (oldTargetSegDist > newTargetSegDist)
                 {
-                    ChasePlayer();
+                    targetSeg = segment.gameObject;
                 }
-                else if (nestArea > Vector3.Distance(middleSeg.transform.position, nest.transform.position))
-                {
-                    ChasePlayer();
+
+                oldTargetSegDist = newTargetSegDist;
+                newTargetSegDist = Vector3.Distance(rotationPoint.transform.position, segment.gameObject.transform.position);
+            }
+            
+            
+            if (targetSeg != null)
+            {
+                distToNest = Vector3.Distance(nest.transform.position, rotationPoint.transform.position);
+                distToPlayer = Vector3.Distance(rotationPoint.transform.position, targetSeg.transform.position);
+
+                //Checks if the player is withing hunting range of tarantula or if the player is in the nest area
+                if (distToPlayer < huntingRadius ||
+                    Vector3.Distance(targetSeg.transform.position, nest.transform.position) < nestArea)
+                {   //if the tarantula is close enough to the nest it will follow the player
+                    if (distToNest < nestArea)
+                    {
+                        ChasePlayer();
+                        ShootWeb();
+                        SpawnAnts();
+                    }   
+                    else
+                    {
+                        tarantulaMoving = false;
+                    }
                 }
-                else
+                //checks if the player is out of hunting range
+                if (distToPlayer >= huntingRadius)
                 {
-                    tarantulaMoving = false;
+                    if (distToNest >= 1)
+                    {
+                        ReturnToNest();
+                    }
+                    else
+                    {
+                        tarantulaMoving = false;
+                    }
+                }
+            }
+            else
+            {
+                tarantulaMoving = false;
+            }
+
+            if (tarantulaMoving && !attackingPlayer && !shooting)
+            {
+                animator.Play("Walk");
+            }
+
+            if (!tarantulaMoving && !attackingPlayer && !shooting)
+            {
+                animator.Play("Idle");
+            }
+
+            if (!animator.IsPlaying("Attack"))
+            {
+                attackingPlayer = false;
+            }
+
+            if (!animator.IsPlaying("Attack_Left"))
+            {
+                shooting = false;
+            }
+
+            if (attackingPlayer)
+            {
+                attackTimer += Time.deltaTime;
+                if (attackTimer >= attackDelay)
+                {
+                    player.RemoveSegment(100);
+                    attackTimer = 0;
                 }
             }
 
-            if (distToPlayer >= huntingRadius)
+            spawnAntTimer += Time.deltaTime;
+            if (spawnAntTimer >= 30)
             {
-                if (distToNest >= 1)
-                {
-                    ReturnToNest();
-                }
-                else
-                {
-                    tarantulaMoving = false;
-                }
+                SpawnAnts();
+                spawnAntTimer = 0;
             }
         }
-        else
-        {
-            tarantulaMoving = false;
-        }
 
-        if (tarantulaMoving && !attackingPlayer)
+        if (health <= 0)
         {
-            animator.Play("Walk");
-        }
-
-        if (!tarantulaMoving && !attackingPlayer)
-        {
-            animator.Play("Idle");
-        }
-
-        if (!animator.IsPlaying("Attack"))
-        {
-            attackingPlayer = false;
-        }
-
-        if (attackingPlayer)
-        {
-            attackTimer += Time.deltaTime;
-            if (attackTimer >= attackDelay)
+            dying = true;
+            deathTimer += Time.deltaTime;
+            animator.Play("Death");
+            if (deathTimer >= 2)
             {
-                
-                player.RemoveSegment(100);
-                //Debug.Log(player.GetComponent<MCentipedeBody>().Segments.Count)
-
-                attackTimer = 0;
+                Destroy(gameObject);
             }
         }
     }
 
-    public void UpdateMiddleSeg(MSegment Middle)
-    {
-        middleSeg = Middle.gameObject;
-        //middleSegInt = (player.GetComponent<MCentipedeBody>().Segments.Count / 2);
-        //middleSeg = player.GetComponent<MCentipedeBody>().Segments[middleSegInt].gameObject;
-    }
     public void ChasePlayer()
     {
-        tarantulaMoving = true;
-        Vector3 dir = middleSeg.transform.position - rotationPoint.transform.position;
-        float angle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
-        rotationPoint.transform.rotation = Quaternion.AngleAxis(angle, Vector3.down);
+        if (!attackingPlayer && !shooting)
+        {
+            tarantulaMoving = true;
+            Vector3 dir = targetSeg.transform.position - rotationPoint.transform.position;
+            float angle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
+            rotationPoint.transform.rotation = Quaternion.RotateTowards(rotationPoint.transform.rotation, Quaternion.AngleAxis(angle, Vector3.down), 90 * Time.deltaTime);
 
-        //float moveDist = distToNest - 1f;
-        //Debug.Log(moveDist);
-        float x = Mathf.Cos(angle * Mathf.Deg2Rad) * moveSpeed * Time.deltaTime;
-        float z = Mathf.Sin(angle * Mathf.Deg2Rad) * moveSpeed * Time.deltaTime;
-
-        Vector3 newPos = new Vector3(x, 0f, z) + rotationPoint.transform.position;
-        rotationPoint.transform.position = newPos;   
+            Vector3 newPos = rotationPoint.transform.right * moveSpeed * Time.deltaTime;
+            rotationPoint.transform.position += newPos;
+            
+        }
     }
     public void ReturnToNest()
     {
         tarantulaMoving = true;
         Vector3 dir = nest.transform.position - rotationPoint.transform.position;
         float angle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
-        rotationPoint.transform.rotation = Quaternion.AngleAxis(angle, Vector3.down);
+        rotationPoint.transform.rotation = Quaternion.RotateTowards(rotationPoint.transform.rotation, Quaternion.AngleAxis(angle, Vector3.down), 90 * Time.deltaTime);
 
-        //float moveDist = distToNest - 1f;
-        float x = Mathf.Cos(angle * Mathf.Deg2Rad) * moveSpeed * Time.deltaTime;
-        float z = Mathf.Sin(angle * Mathf.Deg2Rad) * moveSpeed * Time.deltaTime;
-
-        Vector3 newPos = new Vector3(x, 0f, z) + rotationPoint.transform.position;
-        rotationPoint.transform.position = newPos;    
+        Vector3 newPos = rotationPoint.transform.right * moveSpeed * Time.deltaTime;
+        rotationPoint.transform.position += newPos;    
     }
 
     public void DecreaseHealth()
     {
         health--;
-        //updates the health slider
         healthSlider.value = CalculateHealth();
-        if (health <= 0)
-        {
-            Destroy(nest);
-        }
     }
     float CalculateHealth()
     {
@@ -179,8 +209,60 @@ public class Tarantula: MonoBehaviour
 
     public void AttackPlayer()
     {
-        animator.Play("Attack");
-        attackingPlayer = true;
-        attackTimer = 0;
+        if (!shooting)
+        {
+            animator.Play("Attack");
+            attackingPlayer = true;
+            attackTimer = 0;
+        }
+    }
+
+    private void ShootWeb()
+    {
+        if (!attackingPlayer)
+        {
+            shootTimer += Time.deltaTime;
+            if (shootTimer >= 5)
+            {
+                shooting = true;
+                animator.Play("Attack_Left");
+                shootAnimTimer += Time.deltaTime;
+                if (shootAnimTimer >= shootDelay)
+                {
+                    SpawnWeb();
+                    shootAnimTimer = 0;
+                    shootTimer = 0;
+                }
+            }
+        }
+    }
+    private void SpawnWeb()
+    {
+        if (!attackingPlayer)
+        {
+            shooting = true;
+            Rigidbody webShot;
+            webShot = Instantiate(webPrefab, transform.position + transform.forward * 6.5f, Quaternion.identity);
+            webShot.transform.position = new Vector3(webShot.transform.position.x, 1, webShot.transform.position.z);
+            Vector3 target = player.transform.position - webShot.transform.position;
+            webShot.velocity = new Vector3(target.x, target.y - 0.25f, target.z) * 3;
+            webShot.GetComponent<Web>().isShot = true;
+        }
+    }
+
+    private void SpawnAnts()
+    {
+        spawnAntTimer += Time.deltaTime;
+        if (spawnAntTimer >= 30)
+        {
+            for (float i = -2; i < 2; i++)
+            {
+                GameObject ant;
+                ant = Instantiate(antPrefab, transform.position + new Vector3(Mathf.Sin(i) * 10, 0, Mathf.Cos(i) * 10), Quaternion.identity);
+                ant.GetComponent<GenericAnt>().maxSightDist = 100;
+                ant.GetComponent<GenericAnt>().largeViewAnlge = 360;
+            }
+            spawnAntTimer = 0;
+        }
     }
 }

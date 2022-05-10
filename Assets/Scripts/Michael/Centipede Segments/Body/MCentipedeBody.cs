@@ -6,7 +6,6 @@ public partial class MCentipedeBody : MonoBehaviour
 {
 	[Header("Construction References.")]
 
-	public GameObject[] tarantulas;
 	public Transform Head;
 	public Transform Tail;
 	public GameObject DamageParticles;
@@ -19,6 +18,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	[Header("Centipede Movement Settings.")]
 	[Min(Vector3.kEpsilon)] public float MovementSpeed = 150f;
 	[Min(Vector3.kEpsilon)] public float TurnDegrees = 7f;
+	private float preSlowedSpeed;
 
 	[Header("Segment Settings.")]
 
@@ -33,12 +33,22 @@ public partial class MCentipedeBody : MonoBehaviour
 	public float maxSpeed = 750;
 	public float defaultSpeed = 150;
 
+	public float slowTimer;
+	public bool slowed;
+
 	[Space(10)]
 
 	public GameObject DeathScreen;
 
+	bool shieldActive;
+	[SerializeField] SFXManager sfxManager;
+	float shieldStartTime = 0;
+	float shieldDuration;
+
 	void Start()
 	{
+		shieldActive = false;
+		//shieldDuration = 5.0f;
 		Weapons = GetComponent<MCentipedeWeapons>();
 
 		TailSegment = Tail.GetComponent<MSegment>();
@@ -52,19 +62,65 @@ public partial class MCentipedeBody : MonoBehaviour
 			MS.transform.parent = null;
 		}
 
+		slowed = false;
 		Construct();
-		UpdateTarantulaTarget();
 	}
 
 	private void Update()
 	{
+
+		if (slowed == true)
+		{
+			slowTimer += Time.deltaTime;
+			if (slowTimer >= 5)
+			{
+				MovementSpeed = preSlowedSpeed;
+				SetSpeed(MovementSpeed);
+				slowTimer = 0;
+				slowed = false;
+			}
+		}
+		Debug.Log(shieldActive);
 		//Debug.Log(Segments.Count);
 		//		Debug.Log(U2I(SegmentsInfo.End));
+		/*if (Input.GetKeyDown(KeyCode.Y)) {
+			sfxManager.ActivateShield();
+			shieldActive = true;
+        }
+		if (Input.GetKeyUp(KeyCode.Y))
+        {
+			sfxManager.DeactivateShield();
+			shieldActive = false;
+        }*/
+		if (Input.GetKeyDown(KeyCode.Y))
+		{
+			ActivateShield(5.0f);
+		}
+
+		if (shieldStartTime > 0)
+		{
+			if (Time.time <= shieldStartTime + shieldDuration)
+			{
+				shieldActive = true;
+			}
+			else
+			{
+				DeactivateShield();
+			}
+		}
 	}
 
 	public MSegment AddSegment()
-	{		
-		IncreaseSpeed(10);
+	{
+		if (slowed == true)
+		{
+			IncreaseSpeed(5);
+		}
+		else if (slowed == false)
+		{
+			IncreaseSpeed(10);
+		}
+
 		float Z = NumberOfSegments * SegmentsInfo.SegmentScale.z + DeltaZ;
 
 		MSegment AddedSegment;
@@ -99,7 +155,6 @@ public partial class MCentipedeBody : MonoBehaviour
 		if (AddedSegment)
 			return AddedSegment;
 
-		UpdateTarantulaTarget();
 		Debug.LogError("No Segment was added!");
 		return null;
 	}
@@ -139,140 +194,170 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	public void RemoveSegment(float healthReduction)//MSegment deadSegment)
 	{
-//		Debug.Log("Killing Player");
-
-		MSegment lastSegment = GetLast();
-		//MSegment lastSegment = this[Segments.Count - 1];
-		Instantiate(DamageParticles, lastSegment.transform.position, Quaternion.identity);
-		/*foreach (MSegment segment in Segments)
+		if (!shieldActive)
 		{
-			lastSegment = segment;
-		}*/
+			//		Debug.Log("Killing Player");
 
-		//Segments.Remove(Segments[Segments.Count - 1]);
-		if (lastSegment.ReduceHealth(healthReduction))
+			//Segments.Remove(Segments[Segments.Count - 1]);
+
+
+
+
+			MSegment lastSegment = GetLast();
+			//MSegment lastSegment = this[Segments.Count - 1];
+
+			/*foreach (MSegment segment in Segments)
+			{
+				lastSegment = segment;
+			}*/
+
+			//Segments.Remove(Segments[Segments.Count - 1]);
+			if (lastSegment.ReduceHealth(healthReduction))
+			{
+
+				if (slowed == true)
+				{
+					DecreaseSpeed(5);
+				}
+				else if (slowed == false)
+				{
+					DecreaseSpeed(10);
+				}
+
+				Instantiate(DamageParticles, lastSegment.transform.position, Quaternion.identity);
+
+				//Destroy(lastSegment.gameObject);
+				lastSegment.Detach();
+
+				//int nextIndex = 1;
+				//while (segmentIndex + nextIndex < Segments.Count - 1 && !Segments[segmentIndex + nextIndex]) //if multiple in a row get destroyed at same time, prevents it from bugging out
+				//	nextIndex++;
+				//if (segmentIndex + nextIndex < Segments.Count - 1)
+				//	Segments[segmentIndex + nextIndex].ForwardNeighbour = lastSegment.ForwardNeighbour;
+
+				Segments.RemoveAt(Segments.Count - 1);
+				--NumberOfSegments;
+				GameManager1.cameraController.gameObject.transform.position += GameManager1.cameraController.gameObject.transform.forward * 2;
+
+				int lastSegIndex = Segments.Count - 1;
+				TailSegment.SetForwardNeighbour(Segments[lastSegIndex]);
+
+				SegmentsInfo.RemoveSegment();
+
+				// Ensure the Tail is properly 'attached' to the end Segment.
+				Transform newLast = GetLast();
+				Vector3 NewPos = newLast.position - newLast.forward * SegmentsInfo.SegmentScale.z;
+				Tail.position = NewPos;
+
+				for (byte i = 0; i < CustomSegments.Count; ++i)
+					CustomSegments[i].transform.position = NewPos - (i * FollowDistance * newLast.forward);
+
+			}
+
+			// Make the check after removing a Segment.
+			if (NumberOfSegments <= 1)
+			{
+				Debug.Log("You Died");
+				if (DeathScreen != null)
+					DeathScreen.SetActive(true);
+				Time.timeScale = 0;
+			}
+		}
+	}
+		public void IncreaseSpeed(float value)
 		{
-			lastSegment.Detach();
-			UpdateTarantulaTarget();
-			DecreaseSpeed(10);
+			if (FollowSpeed + value > maxSpeed)
+			{
+				SetSpeed(maxSpeed);
+			}
+			else
+			{
+				FollowSpeed += value;
+				MovementSpeed += value;
 
-			//int nextIndex = 1;
-			//while (segmentIndex + nextIndex < Segments.Count - 1 && !Segments[segmentIndex + nextIndex]) //if multiple in a row get destroyed at same time, prevents it from bugging out
-			//	nextIndex++;
-			//if (segmentIndex + nextIndex < Segments.Count - 1)
-			//	Segments[segmentIndex + nextIndex].ForwardNeighbour = lastSegment.ForwardNeighbour;
+				foreach (MSegment segment in Segments)
+					segment.FollowSpeed += value;
 
-			Segments.RemoveAt(Segments.Count - 1);
-			--NumberOfSegments;
-			GameManager1.cameraController.gameObject.transform.position += GameManager1.cameraController.gameObject.transform.forward * 2;
+				foreach (MSegment S in CustomSegments)
+					S.FollowSpeed += value;
 
-			int lastSegIndex = Segments.Count - 1;
-			TailSegment.SetForwardNeighbour(Segments[lastSegIndex]);
-
-			SegmentsInfo.RemoveSegment();
-
-			// Ensure the Tail is properly 'attached' to the end Segment.
-			Transform newLast = GetLast();
-			Vector3 NewPos = newLast.position - newLast.forward * SegmentsInfo.SegmentScale.z;
-			Tail.position = NewPos;
-
-			for (byte i = 0; i < CustomSegments.Count; ++i)
-				CustomSegments[i].transform.position = NewPos - (i * FollowDistance * newLast.forward);
-			
+				TailSegment.FollowSpeed += value;
+			}
 		}
 
-		// Make the check after removing a Segment.
-		if (NumberOfSegments <= 1)
+		public void SetSpeed(float value)
 		{
-			Debug.Log("You Died");
-			if (DeathScreen != null)
-				DeathScreen.SetActive(true);
-			Time.timeScale = 0;
+			if (value > maxSpeed)
+			{
+				MovementSpeed = maxSpeed;
+				FollowSpeed = maxSpeed;
+
+				foreach (MSegment segment in Segments)
+					segment.FollowSpeed = maxSpeed;
+
+				foreach (MSegment S in CustomSegments)
+					S.FollowSpeed = maxSpeed;
+
+				TailSegment.FollowSpeed = maxSpeed;
+				return;
+			}
+			else
+			{
+				MovementSpeed = value;
+				FollowSpeed = value;
+				foreach (MSegment segment in Segments)
+					segment.FollowSpeed = value;
+
+				foreach (MSegment S in CustomSegments)
+					S.FollowSpeed = value;
+
+				TailSegment.FollowSpeed = value;
+			}
+		}
+
+		public void DecreaseSpeed(float value)
+		{
+			if (FollowSpeed - value < 0)
+			{
+				SetSpeed(defaultSpeed);
+			}
+			else
+			{
+				FollowSpeed -= value;
+				MovementSpeed -= value;
+
+				foreach (MSegment segment in Segments)
+					segment.FollowSpeed -= value;
+
+				foreach (MSegment S in CustomSegments)
+					S.FollowSpeed -= value;
+
+				TailSegment.FollowSpeed -= value;
+			}
+		}
+
+		public void tempSlowSpeed()
+		{
+			if (!slowed)
+			{
+				preSlowedSpeed = MovementSpeed;
+				DecreaseSpeed(MovementSpeed / 2);
+				slowed = true;
+			}
+		}
+
+		public void ActivateShield(float duration)
+		{
+			shieldDuration = duration;
+			sfxManager.ActivateShield();
+			shieldStartTime = Time.time;
+		}
+
+		public void DeactivateShield()
+		{
+			shieldStartTime = 0;
+			shieldActive = false;
+			sfxManager.DeactivateShield();
 		}
 	}
 
-	public void IncreaseSpeed(float value)
-	{
-		if (FollowSpeed + value > maxSpeed)
-		{
-			SetSpeed(maxSpeed);
-		}
-		else
-		{
-			FollowSpeed += value;
-			MovementSpeed += value;
-
-			foreach (MSegment segment in Segments)
-				segment.FollowSpeed += value;
-
-			foreach (MSegment S in CustomSegments)
-				S.FollowSpeed += value;
-
-			TailSegment.FollowSpeed += value;
-		}
-	}
-
-	public void SetSpeed(float value)
-	{
-		if (value > maxSpeed)
-		{
-			MovementSpeed = maxSpeed;
-			FollowSpeed = maxSpeed;
-
-			foreach (MSegment segment in Segments)
-				segment.FollowSpeed = maxSpeed;
-
-			foreach (MSegment S in CustomSegments)
-				S.FollowSpeed = maxSpeed;
-
-			TailSegment.FollowSpeed = maxSpeed;
-			return;
-		}
-		else
-		{
-			MovementSpeed = value;
-			FollowSpeed = value;
-			foreach (MSegment segment in Segments)
-				segment.FollowSpeed = value;
-
-			foreach (MSegment S in CustomSegments)
-				S.FollowSpeed = value;
-
-			TailSegment.FollowSpeed = value;
-		}
-	}
-
-	public void DecreaseSpeed(float value)
-	{
-		if (FollowSpeed - value < 0)
-		{
-			SetSpeed(defaultSpeed);
-		}
-		else
-		{
-			FollowSpeed -= value;
-			MovementSpeed -= value;
-
-			foreach (MSegment segment in Segments)
-				segment.FollowSpeed -= value;
-
-			foreach (MSegment S in CustomSegments)
-				S.FollowSpeed -= value;
-
-			TailSegment.FollowSpeed -= value;
-		}
-	}
-
-	public void UpdateTarantulaTarget()
-    {
-		if (SegmentsInfo.End == 0)
-			return;
-
-		tarantulas = GameObject.FindGameObjectsWithTag("Tarantula");
-		MSegment Middle = this[Segments.Count / 2];
-		foreach (GameObject Tarantula in tarantulas)
-		{
-			Tarantula.GetComponent<Tarantula>().UpdateMiddleSeg(Middle);
-		}
-	}
-}
