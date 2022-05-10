@@ -28,11 +28,7 @@ public class Projectile : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
 		//Destroy(this);
-		if (collision.gameObject.CompareTag("Play"))
-		{
-			SceneManager.LoadScene("Environment Test");
-		}
-		else if (!isEnemyProjectile && collision.gameObject.CompareTag("Enemy"))
+		if (!isEnemyProjectile && collision.gameObject.CompareTag("Enemy"))
         {
 			collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(30);
 			Instantiate(hitParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
@@ -44,8 +40,16 @@ public class Projectile : MonoBehaviour
 			Instantiate(hitParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 			Destroy(gameObject);
 		}
-		//else
-			//Destroy(this);
+		else if (collision.gameObject.CompareTag("Play"))
+		{
+			SceneManager.LoadScene("Environment Test");
+		}
+		else if (collision.gameObject.CompareTag("Settings"))
+		{
+			SceneManager.LoadScene("SettingsScene");
+		}
+		else if(collision.gameObject.layer != LayerMask.NameToLayer("Projectile"))
+			Destroy(this);
 	}
 
     private void OnTriggerEnter(Collider other)

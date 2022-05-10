@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIFire : MonoBehaviour
 {
@@ -24,5 +25,10 @@ public class UIFire : MonoBehaviour
         Physics.Raycast(Ray, out RaycastHit Hit, 5000, 384); // Enemy and Ground Layers. (1 << 7 | 1 << 8)
 
         return Hit.point;
+    }
+
+    public void AdjustTxtValue(Slider slider, Text text)
+    {
+        text.text = slider.value.ToString();
     }
 }
