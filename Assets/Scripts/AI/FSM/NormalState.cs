@@ -142,7 +142,7 @@ public class InvestigateState : State
 
     public virtual bool checkAttack()
     {
-        return owner.NearSegment() && !owner.callingBackup;
+        return owner.NearSegment(owner.transform.position) && !owner.callingBackup;
     }
 
     public virtual void exit()
@@ -181,7 +181,7 @@ public class AttackState : State
         attackTime -= Time.deltaTime;
         if (attackTime <= owner.attackAnimLength)//when finished attacking add any damage to the appropriate segment
         {
-            if (owner.NearSegment() && !attackDone)
+            if (owner.NearSegment(owner.transform.position) && !attackDone)
             {
                 GameManager1.mCentipedeBody.RemoveSegment(100);
                 attackDone = true;
@@ -369,7 +369,6 @@ public class HunterInvestigate : InvestigateState
 /// </summary>
 public class HunterDead : DeadState
 {
-    float deadTime = 3;
     HunterAnt owner;
     public HunterDead(GenericAnt owner) : base(owner) //also initilize any behaviour tree used on the state as well
     {
@@ -404,7 +403,7 @@ public class GuardAttack : AttackState
         attackTime -= Time.deltaTime;
         if (attackTime <= owner.attackAnimLength)//when finished attacking add any damage to the appropriate segment
         {
-            if (owner.NearSegment() && !attackDone)
+            if (owner.NearSegment(owner.transform.position) && !attackDone)
             {
                 GameManager1.mCentipedeBody.RemoveSegment(100);
                 GameManager1.mCentipedeBody.RemoveSegment(100);
@@ -427,8 +426,6 @@ public class GuardAttack : AttackState
 /// </summary>
 public class GuardInvestigate : InvestigateState
 {
-    float attackTime = 2.5f;
-    GenericAnt owner;
     public GuardInvestigate(GenericAnt owner) : base(owner) //also initilize any behaviour tree used on the state as well
     {
         this.owner = owner;
@@ -528,5 +525,37 @@ public class BombAttack : AttackState
     public override void exit()
     {
         base.exit();
+    }
+}
+
+
+// <summary>
+/// Called when AI first sees player and it showcases warning above head
+/// </summary>
+public class SpawnInState : State
+{
+    float waitTime = 1;
+    GenericAnt owner;
+    public SpawnInState(GenericAnt owner)
+    {
+        this.owner = owner;
+    }
+    public void enter()
+    {
+        waitTime = 1;
+        owner.anim.SetTrigger("SpawnIn");
+    }
+
+    public void execute()
+    {
+        waitTime -= Time.deltaTime;
+        if (waitTime <= 0)
+            owner.stateMachine.changeState(owner.stateMachine.Investigate);
+
+    }
+
+    public void exit()
+    {
+        waitTime = 0.45f;
     }
 }
