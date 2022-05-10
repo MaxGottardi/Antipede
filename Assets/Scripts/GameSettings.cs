@@ -13,6 +13,8 @@ public class GameSettings : MonoBehaviour
 
 	public Settings CameraSettings;
 
+	bool bIsPaused;
+
 
 	void Awake()
 	{
@@ -29,14 +31,20 @@ public class GameSettings : MonoBehaviour
 		{
 			// True if escape was pressed DURING PLAY - to pause the game.
 			// False if escape was pressed DURING PAUSE - to resume the game.
-			bool bIsPaused;
+			bIsPaused = true;
 
 			bIsPaused = !MainPauseCanvas.activeSelf;
 			MainPauseCanvas.SetActive(bIsPaused);
 
 			if (!bIsPaused)
 				DefaultState();
+
+			Time.timeScale = 0;
 		}
+		if (!bIsPaused)
+        {
+			Time.timeScale = 1;
+        }
 	}
 
 	void DefaultState()
