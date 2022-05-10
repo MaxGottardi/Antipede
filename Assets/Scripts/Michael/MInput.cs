@@ -110,9 +110,12 @@ public class MInput : MonoBehaviour
 				return;
             }
 
-			float newDist = Vector3.Distance(transform.position, antCollider.gameObject.transform.position);
-			if (currDist < 0 || newDist < currDist)
-				closestAnt = antCollider.gameObject.transform.parent.GetComponent<GenericAnt>();
+			if (antCollider.gameObject.CompareTag("Enemy"))
+			{
+				float newDist = Vector3.Distance(transform.position, antCollider.gameObject.transform.position);
+				if (currDist < 0 || newDist < currDist)
+					closestAnt = antCollider.gameObject.transform.parent.GetComponent<GenericAnt>();
+			}
 		}
 
 
