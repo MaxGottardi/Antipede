@@ -41,7 +41,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	public GameObject DeathScreen;
 
 	bool shieldActive;
-	[SerializeField]SFXManager sfxManager;
+	[SerializeField] SFXManager sfxManager;
 	float shieldStartTime = 0;
 	float shieldDuration;
 
@@ -73,13 +73,13 @@ public partial class MCentipedeBody : MonoBehaviour
 		{
 			slowTimer += Time.deltaTime;
 			if (slowTimer >= 5)
-            {
+			{
 				MovementSpeed = preSlowedSpeed;
 				SetSpeed(MovementSpeed);
 				slowTimer = 0;
 				slowed = false;
-            }
-        }
+			}
+		}
 		Debug.Log(shieldActive);
 		//Debug.Log(Segments.Count);
 		//		Debug.Log(U2I(SegmentsInfo.End));
@@ -93,9 +93,9 @@ public partial class MCentipedeBody : MonoBehaviour
 			shieldActive = false;
         }*/
 		if (Input.GetKeyDown(KeyCode.Y))
-        {
+		{
 			ActivateShield(5.0f);
-        }
+		}
 
 		if (shieldStartTime > 0)
 		{
@@ -198,11 +198,11 @@ public partial class MCentipedeBody : MonoBehaviour
 		{
 			//		Debug.Log("Killing Player");
 
-		//Segments.Remove(Segments[Segments.Count - 1]);
+			//Segments.Remove(Segments[Segments.Count - 1]);
 
 
 
-			
+
 			MSegment lastSegment = GetLast();
 			//MSegment lastSegment = this[Segments.Count - 1];
 
@@ -223,7 +223,7 @@ public partial class MCentipedeBody : MonoBehaviour
 				{
 					DecreaseSpeed(10);
 				}
-				
+
 				Instantiate(DamageParticles, lastSegment.transform.position, Quaternion.identity);
 
 				//Destroy(lastSegment.gameObject);
@@ -262,101 +262,102 @@ public partial class MCentipedeBody : MonoBehaviour
 					DeathScreen.SetActive(true);
 				Time.timeScale = 0;
 			}
-	}
-
-	public void IncreaseSpeed(float value)
-	{
-		if (FollowSpeed + value > maxSpeed)
-		{
-			SetSpeed(maxSpeed);
-		}
-		else
-		{
-			FollowSpeed += value;
-			MovementSpeed += value;
-
-			foreach (MSegment segment in Segments)
-				segment.FollowSpeed += value;
-
-			foreach (MSegment S in CustomSegments)
-				S.FollowSpeed += value;
-
-			TailSegment.FollowSpeed += value;
 		}
 	}
-
-	public void SetSpeed(float value)
-	{
-		if (value > maxSpeed)
+		public void IncreaseSpeed(float value)
 		{
-			MovementSpeed = maxSpeed;
-			FollowSpeed = maxSpeed;
+			if (FollowSpeed + value > maxSpeed)
+			{
+				SetSpeed(maxSpeed);
+			}
+			else
+			{
+				FollowSpeed += value;
+				MovementSpeed += value;
 
-			foreach (MSegment segment in Segments)
-				segment.FollowSpeed = maxSpeed;
+				foreach (MSegment segment in Segments)
+					segment.FollowSpeed += value;
 
-			foreach (MSegment S in CustomSegments)
-				S.FollowSpeed = maxSpeed;
+				foreach (MSegment S in CustomSegments)
+					S.FollowSpeed += value;
 
-			TailSegment.FollowSpeed = maxSpeed;
-			return;
+				TailSegment.FollowSpeed += value;
+			}
 		}
-		else
+
+		public void SetSpeed(float value)
 		{
-			MovementSpeed = value;
-			FollowSpeed = value;
-			foreach (MSegment segment in Segments)
-				segment.FollowSpeed = value;
+			if (value > maxSpeed)
+			{
+				MovementSpeed = maxSpeed;
+				FollowSpeed = maxSpeed;
 
-			foreach (MSegment S in CustomSegments)
-				S.FollowSpeed = value;
+				foreach (MSegment segment in Segments)
+					segment.FollowSpeed = maxSpeed;
 
-			TailSegment.FollowSpeed = value;
+				foreach (MSegment S in CustomSegments)
+					S.FollowSpeed = maxSpeed;
+
+				TailSegment.FollowSpeed = maxSpeed;
+				return;
+			}
+			else
+			{
+				MovementSpeed = value;
+				FollowSpeed = value;
+				foreach (MSegment segment in Segments)
+					segment.FollowSpeed = value;
+
+				foreach (MSegment S in CustomSegments)
+					S.FollowSpeed = value;
+
+				TailSegment.FollowSpeed = value;
+			}
+		}
+
+		public void DecreaseSpeed(float value)
+		{
+			if (FollowSpeed - value < 0)
+			{
+				SetSpeed(defaultSpeed);
+			}
+			else
+			{
+				FollowSpeed -= value;
+				MovementSpeed -= value;
+
+				foreach (MSegment segment in Segments)
+					segment.FollowSpeed -= value;
+
+				foreach (MSegment S in CustomSegments)
+					S.FollowSpeed -= value;
+
+				TailSegment.FollowSpeed -= value;
+			}
+		}
+
+		public void tempSlowSpeed()
+		{
+			if (!slowed)
+			{
+				preSlowedSpeed = MovementSpeed;
+				DecreaseSpeed(MovementSpeed / 2);
+				slowed = true;
+			}
+		}
+
+		public void ActivateShield(float duration)
+		{
+			shieldDuration = duration;
+			sfxManager.ActivateShield();
+			shieldStartTime = Time.time;
+		}
+
+		public void DeactivateShield()
+		{
+			shieldStartTime = 0;
+			shieldActive = false;
+			sfxManager.DeactivateShield();
 		}
 	}
 
-	public void DecreaseSpeed(float value)
-	{
-		if (FollowSpeed - value < 0)
-		{
-			SetSpeed(defaultSpeed);
-		}
-		else
-		{
-			FollowSpeed -= value;
-			MovementSpeed -= value;
-
-			foreach (MSegment segment in Segments)
-				segment.FollowSpeed -= value;
-
-			foreach (MSegment S in CustomSegments)
-				S.FollowSpeed -= value;
-
-			TailSegment.FollowSpeed -= value;
-		}
-	}
-
-	public void tempSlowSpeed()
-    {
-		if (!slowed)
-		{
-			preSlowedSpeed = MovementSpeed;
-			DecreaseSpeed(MovementSpeed / 2);
-			slowed = true;
-		}
-	}
-
-	public void ActivateShield(float duration)
-    {
-		shieldDuration = duration;
-		sfxManager.ActivateShield();
-		shieldStartTime = Time.time;
-	}
-
-	public void DeactivateShield()
-    {
-		shieldStartTime = 0;
-		shieldActive = false;
-		sfxManager.DeactivateShield();
-	}
-}
