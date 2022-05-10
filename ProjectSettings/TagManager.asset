@@ -23,6 +23,7 @@ TagManager:
   - Credits
   - Quit
   - Settings
+  - TarantulaTail
   layers:
   - Default
   - TransparentFX

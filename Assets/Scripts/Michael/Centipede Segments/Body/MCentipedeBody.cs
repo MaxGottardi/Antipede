@@ -6,7 +6,6 @@ public partial class MCentipedeBody : MonoBehaviour
 {
 	[Header("Construction References.")]
 
-	public GameObject[] tarantulas;
 	public Transform Head;
 	public Transform Tail;
 	public GameObject DamageParticles;
@@ -19,6 +18,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	[Header("Centipede Movement Settings.")]
 	[Min(Vector3.kEpsilon)] public float MovementSpeed = 150f;
 	[Min(Vector3.kEpsilon)] public float TurnDegrees = 7f;
+	private float preSlowedSpeed;
 
 	[Header("Segment Settings.")]
 
@@ -32,6 +32,9 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	public float maxSpeed = 750;
 	public float defaultSpeed = 150;
+
+	public float slowTimer;
+	public bool slowed;
 
 	[Space(10)]
 
@@ -52,19 +55,37 @@ public partial class MCentipedeBody : MonoBehaviour
 			MS.transform.parent = null;
 		}
 
+		slowed = false;
 		Construct();
-		UpdateTarantulaTarget();
 	}
 
 	private void Update()
 	{
-		//Debug.Log(Segments.Count);
-		//		Debug.Log(U2I(SegmentsInfo.End));
+
+		if (slowed == true)
+		{
+			slowTimer += Time.deltaTime;
+			if (slowTimer >= 5)
+            {
+				MovementSpeed = preSlowedSpeed;
+				SetSpeed(MovementSpeed);
+				slowTimer = 0;
+				slowed = false;
+            }
+        }
 	}
 
 	public MSegment AddSegment()
-	{		
-		IncreaseSpeed(10);
+	{
+		if (slowed == true)
+		{
+			IncreaseSpeed(5);
+		}
+		else if (slowed == false)
+		{
+			IncreaseSpeed(10);
+		}
+
 		float Z = NumberOfSegments * SegmentsInfo.SegmentScale.z + DeltaZ;
 
 		MSegment AddedSegment;
@@ -99,7 +120,6 @@ public partial class MCentipedeBody : MonoBehaviour
 		if (AddedSegment)
 			return AddedSegment;
 
-		UpdateTarantulaTarget();
 		Debug.LogError("No Segment was added!");
 		return null;
 	}
@@ -152,9 +172,17 @@ public partial class MCentipedeBody : MonoBehaviour
 		//Segments.Remove(Segments[Segments.Count - 1]);
 		if (lastSegment.ReduceHealth(healthReduction))
 		{
-			lastSegment.Detach();
-			UpdateTarantulaTarget();
-			DecreaseSpeed(10);
+			if (slowed == true)
+			{
+				DecreaseSpeed(5);
+			}
+			else if (slowed == false)
+			{
+				DecreaseSpeed(10);
+			}
+
+			Destroy(lastSegment.gameObject);
+			
 
 			//int nextIndex = 1;
 			//while (segmentIndex + nextIndex < Segments.Count - 1 && !Segments[segmentIndex + nextIndex]) //if multiple in a row get destroyed at same time, prevents it from bugging out
@@ -263,16 +291,14 @@ public partial class MCentipedeBody : MonoBehaviour
 		}
 	}
 
-	public void UpdateTarantulaTarget()
+	public void tempSlowSpeed()
     {
-		if (SegmentsInfo.End == 0)
-			return;
-
-		tarantulas = GameObject.FindGameObjectsWithTag("Tarantula");
-		MSegment Middle = this[Segments.Count / 2];
-		foreach (GameObject Tarantula in tarantulas)
+		if (!slowed)
 		{
-			Tarantula.GetComponent<Tarantula>().UpdateMiddleSeg(Middle);
+			preSlowedSpeed = MovementSpeed;
+			DecreaseSpeed(MovementSpeed / 2);
+			slowed = true;
 		}
-	}
+    }
+
 }
