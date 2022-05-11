@@ -5402,7 +5402,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4070592134389656536, guid: 3eac7928ca1b1f84383a1356da0b91bd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 159.2
+      value: 147
       objectReference: {fileID: 0}
     - target: {fileID: 4070592134389656536, guid: 3eac7928ca1b1f84383a1356da0b91bd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5410,7 +5410,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4070592134389656536, guid: 3eac7928ca1b1f84383a1356da0b91bd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 309
+      value: 315
       objectReference: {fileID: 0}
     - target: {fileID: 4070592134389656536, guid: 3eac7928ca1b1f84383a1356da0b91bd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -16952,8 +16952,8 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "Ants have captured you and taking you into their ant hill, and they are
-    not pleased you are inedible.\r\nBecome strong enough to take on the spider and
-    gain your freedom.\r"
+    not pleased you are inedible.\r\nExplore the vast ant hill and become strong
+    enough to take on the spider and gain your freedom.\r"
 --- !u!222 &595964234
 CanvasRenderer:
   m_ObjectHideFlags: 0
