@@ -39,11 +39,8 @@ public partial class MCentipedeBody : MonoBehaviour
 	[Space(10)]
 
 	public GameObject DeathScreen;
+	public bool shieldActive;
 
-	bool shieldActive;
-	[SerializeField] SFXManager sfxManager;
-	float shieldStartTime = 0;
-	float shieldDuration;
 
 	void Start()
 	{
@@ -92,22 +89,7 @@ public partial class MCentipedeBody : MonoBehaviour
 			sfxManager.DeactivateShield();
 			shieldActive = false;
         }*/
-		if (Input.GetKeyDown(KeyCode.Y))
-		{
-			ActivateShield(5.0f);
-		}
 
-		if (shieldStartTime > 0)
-		{
-			if (Time.time <= shieldStartTime + shieldDuration)
-			{
-				shieldActive = true;
-			}
-			else
-			{
-				DeactivateShield();
-			}
-		}
 	}
 
 	public MSegment AddSegment()
@@ -349,18 +331,5 @@ public partial class MCentipedeBody : MonoBehaviour
 		}
 	}
 
-	public void ActivateShield(float duration)
-	{
-		shieldDuration = duration;
-		sfxManager.ActivateShield();
-		shieldStartTime = Time.time;
-	}
-
-	public void DeactivateShield()
-	{
-		shieldStartTime = 0;
-		shieldActive = false;
-		sfxManager.DeactivateShield();
-	}
 }
 
