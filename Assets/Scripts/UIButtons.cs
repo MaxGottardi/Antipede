@@ -31,6 +31,7 @@ public class UIButtons : MonoBehaviour
         segAddInfo.gameObject.SetActive(true);
         segAddInfo.text = "Added Segment(x" + segmentIncrease + ")";
     }
+    //xd
 
     public void RemoveSegment()
     {
