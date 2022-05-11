@@ -329,18 +329,5 @@ public partial class MCentipedeBody : MonoBehaviour
 		}
 	}
 
-	public void ActivateShield(float duration)
-	{
-		shieldDuration = duration;
-		sfxManager.ActivateShield();
-		shieldStartTime = Time.time;
-	}
-
-	public void DeactivateShield()
-	{
-		shieldStartTime = 0;
-		shieldActive = false;
-		sfxManager.DeactivateShield();
-	}
 }
 
