@@ -24,7 +24,7 @@ public class MInput : MonoBehaviour
 	{
 		Vector3 rayPos = new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z);
 		Debug.DrawRay(rayPos, transform.forward * 2, Color.red);
-		if (Input.GetKeyDown(KeyCode.Space) || attackRequested)
+		if (Time.timeScale > 0.1f && (Input.GetKeyDown(KeyCode.Space) || attackRequested))
 		{
 			if (!doneAttack)
 			{
