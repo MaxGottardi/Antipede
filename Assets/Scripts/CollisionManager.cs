@@ -27,12 +27,15 @@ public class CollisionManager : MonoBehaviour
             Destroy(other.gameObject);
             sfxManager.CollectPowerup();
             GameManager1.uiButtons.SpeedUI();
+            GameManager1.uiButtons.AddSpeed();
         }
         else if (other.CompareTag("Health"))
         {
             HealthComponent health = player.GetComponent<HealthComponent>();
             //health.IncreaseHealth(10);
             player.AddSegment();
+            player.AddSegment();
+            //GameManager1.uiButtons.AddSegment();
             Destroy(other.gameObject);
             sfxManager.CollectPowerup();
         }

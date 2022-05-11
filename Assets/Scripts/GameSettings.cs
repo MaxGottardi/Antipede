@@ -37,14 +37,15 @@ public class GameSettings : MonoBehaviour
 			MainPauseCanvas.SetActive(bIsPaused);
 
 			if (!bIsPaused)
+			{
+				Time.timeScale = 1;
 				DefaultState();
+			}
+			else
+				Time.timeScale = 0;
 
 			Time.timeScale = 0;
 		}
-		if (!bIsPaused)
-        {
-			Time.timeScale = 1;
-        }
 	}
 
 	void DefaultState()

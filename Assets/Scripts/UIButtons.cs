@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIButtons : MonoBehaviour
 {
@@ -10,11 +11,50 @@ public class UIButtons : MonoBehaviour
     public GameObject moveUI, CamUI, pauseUI, attackUI, shootUI, addWeaponUI, speedUI;
 
     bool seenSpeed = false, seenAttack = false, seenShoot = false;
+
+    public static int speedIncrease = 0, segmentIncrease = 0, segmentDegrease = 0;
+    public Text speedInfo, segAddInfo, segDecreaseInfo;
+
     // Start is called before the first frame update
+    public void AddSegment()
+    {
+        if (segAddInfo.color.a <= 0.1)
+            segmentIncrease = 0;
+        segmentIncrease++;
+        segAddInfo.gameObject.SetActive(false);
+        segAddInfo.gameObject.SetActive(true);
+        segAddInfo.text = "Added Segment(x" + segmentIncrease + ")";
+    }
+
+    public void RemoveSegment()
+    {
+        if (segDecreaseInfo.color.a <= 0.1)
+            segmentDegrease = 0;
+        segmentDegrease++;
+        segDecreaseInfo.gameObject.SetActive(false);
+        segDecreaseInfo.gameObject.SetActive(true);
+        segDecreaseInfo.text = "Removed Segment(x" + segmentDegrease + ")";
+    }
+
+    public void AddSpeed()
+    {
+        if (speedInfo.color.a <= 0.1)
+            speedIncrease = 0;
+        speedIncrease++;
+        speedInfo.gameObject.SetActive(false);
+        speedInfo.gameObject.SetActive(true);
+        speedInfo.text = "Increased Speed(x" + speedIncrease + ")";
+    }
+
     public void ChangeScene(string scene)
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(scene);
+    }
+
+    public void StoryFinished(GameObject View)
+    {
+        View.SetActive(false);
     }
 
     public void Continue()

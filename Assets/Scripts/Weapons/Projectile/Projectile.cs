@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour
 	protected Rigidbody rb;
 	public bool isEnemyProjectile = false; //is this projectile shot by an enemy or not
 	public GameObject hitParticles;
+	public static bool hasSeenChanged = false;
 
 	/// <remarks>Use as Awake/Start method.</remarks>
 	public virtual void Initialise(bool isEnemyProjectile)
@@ -40,12 +41,14 @@ public class Projectile : MonoBehaviour
 			collision.gameObject.GetComponent<Tarantula>().DecreaseHealth();
 			Instantiate(hitParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 		}
-		else if (collision.gameObject.CompareTag("Play"))
+		else if (collision.gameObject.CompareTag("Play") && !hasSeenChanged)
 		{
+			hasSeenChanged = true;
 			SceneManager.LoadScene("Environment Test");
 		}
-		else if (collision.gameObject.CompareTag("Settings"))
+		else if (collision.gameObject.CompareTag("Settings") && !hasSeenChanged)
 		{
+			hasSeenChanged = true;
 			SceneManager.LoadScene("SettingsScene");
 		}
 		else if(collision.gameObject.layer != LayerMask.NameToLayer("Projectile"))

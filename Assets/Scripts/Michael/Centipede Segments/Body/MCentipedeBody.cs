@@ -120,7 +120,7 @@ public partial class MCentipedeBody : MonoBehaviour
 		{
 			IncreaseSpeed(10);
 		}
-
+		GameManager1.uiButtons.AddSegment();
 		float Z = NumberOfSegments * SegmentsInfo.SegmentScale.z + DeltaZ;
 
 		MSegment AddedSegment;
@@ -194,17 +194,19 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	public void RemoveSegment(float healthReduction)//MSegment deadSegment)
 	{
-		if (!shieldActive)
+		if (!shieldActive && Segments != null && Segments.Count > 0)
 		{
 			//		Debug.Log("Killing Player");
 
 			//Segments.Remove(Segments[Segments.Count - 1]);
 
-			if (Segments.Count < 0)
+			if (Segments.Count <= 0)
 				return;
 
 
 			MSegment lastSegment = GetLast();
+			if (lastSegment == null)
+				return;
 			//MSegment lastSegment = this[Segments.Count - 1];
 
 			/*foreach (MSegment segment in Segments)
@@ -215,7 +217,7 @@ public partial class MCentipedeBody : MonoBehaviour
 			//Segments.Remove(Segments[Segments.Count - 1]);
 			if (lastSegment.ReduceHealth(healthReduction))
 			{
-
+				GameManager1.uiButtons.RemoveSegment();
 				if (slowed == true)
 				{
 					DecreaseSpeed(5);

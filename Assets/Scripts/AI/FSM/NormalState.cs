@@ -506,8 +506,8 @@ public class BombAttack : AttackState
         Vector3 oldLocalScale = owner.transform.localScale;
         owner.transform.parent = owner.nextPosTransform.GetChild(0);//, true);
 
-        owner.transform.rotation = oldLocalRot;
-        owner.transform.position = oldLocalPos;
+        //owner.transform.rotation = oldLocalRot;
+        //owner.transform.position = oldLocalPos;
         //owner.transform.localScale = oldLocalScale;
 
         owner.transform.GetChild(0).GetComponent<Collider>().enabled = false;
