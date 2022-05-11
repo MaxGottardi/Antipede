@@ -270,6 +270,6 @@ public class Tarantula: MonoBehaviour
     public void Win()
     {
         //Show Canvas with you won
-
+        GameManager1.uiButtons.Win();
     }
 }

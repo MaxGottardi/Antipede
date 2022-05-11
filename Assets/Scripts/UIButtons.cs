@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UIButtons : MonoBehaviour
 {
-    public GameObject tutWindow;
+    public GameObject tutWindow, winWindow;
 
     public GameObject moveUI, CamUI, pauseUI, attackUI, shootUI, addWeaponUI, speedUI;
 
@@ -14,6 +14,12 @@ public class UIButtons : MonoBehaviour
 
     public static int speedIncrease = 0, segmentIncrease = 0, segmentDegrease = 0;
     public Text speedInfo, segAddInfo, segDecreaseInfo;
+
+    public void Win()
+    {
+        Time.timeScale = 0;
+        winWindow.SetActive(true);
+    }
 
     // Start is called before the first frame update
     public void AddSegment()
