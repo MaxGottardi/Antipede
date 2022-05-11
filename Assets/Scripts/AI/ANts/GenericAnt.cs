@@ -41,10 +41,13 @@ public class GenericAnt : MonoBehaviour
     public float largeViewAnlge, shortViewAngle;
 
     [Header("Backup Calling")]
-    [Range(0, 1)]
-    public float chanceCallBackup; //the percentage liklyhood that the ant even calls backup
+    public float chanceSpawnHelpers; //the percentage chance determining number of ants to spawn as backup
     public float maxBackupDist;
     public float backupCallDist = 7.5f;
+    public GameObject[] spawnedHelp;
+    [HideInInspector]public ShuffleBag<GameObject> spawnedHelpBag;
+    public bool isHelper = false;
+    public GameObject backupRing;
 
     [Header("Attack Settings")]
     public float attachDist = 0.5f;
@@ -64,8 +67,12 @@ public class GenericAnt : MonoBehaviour
 
     public virtual void Start()
     {
+        backupRing.SetActive(false);
         healthBag = new ShuffleBag<bool>();
         healthBag.shuffleList = damageStageChance;
+
+        spawnedHelpBag = new ShuffleBag<GameObject>();
+        spawnedHelpBag.shuffleList = spawnedHelp;
 
         maxHealth = health;
         pathToNextPos = new List<Vector3>();
@@ -74,7 +81,10 @@ public class GenericAnt : MonoBehaviour
         //anim.SetTrigger("Walk");
         nodesList = GameObject.FindGameObjectsWithTag(FollowingNodes);
         stateMachine = new StateMachine(this);
-        stateMachine.changeState(stateMachine.Movement);
+        if (isHelper)
+            stateMachine.changeState(stateMachine.SpawnIn);
+        else
+            stateMachine.changeState(stateMachine.Movement);
     }
 
     // Update is called once per frame
@@ -91,20 +101,25 @@ public class GenericAnt : MonoBehaviour
     {
         if (Time.frameCount % 5 == 0 || Time.deltaTime > 0.25f)
         {
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, maxSightDist, playerLayer);
+            //Collider[] hitColliders = Physics.OverlapSphere(transform.position, maxSightDist, playerLayer);
 
-            foreach (Collider playerSegment in hitColliders) //get all nearby ants to call for backup
+            foreach (MSegment playerSegment in GameManager1.mCentipedeBody.Segments) //get all nearby ants to call for backup
             {
                 float distAway = Vector3.Distance(transform.position, playerSegment.gameObject.transform.position);
                 Vector3 dirToPoint = (playerSegment.gameObject.transform.position - transform.position).normalized;
-                if (ValidAngle(distAway, dirToPoint))
+                if (distAway < maxSightDist)
                 {
-                    //if (!Physics.Raycast(transform.position, dirToPoint, distAway, ~playerLayer)) //if it hit anything which was not the player than, it means the view is actually obstructed
+                    if (GameManager1.uiButtons != null)
+                        GameManager1.uiButtons.AttackUI();
+                    if (ValidAngle(distAway, dirToPoint))
                     {
-                        return true; //as nothing hit no walls etc. were in the way so safe to say it saw the player
+                        //if (!Physics.Raycast(transform.position, dirToPoint, distAway, ~playerLayer)) //if it hit anything which was not the player than, it means the view is actually obstructed
+                        {
+                            return true; //as nothing hit no walls etc. were in the way so safe to say it saw the player
+                        }
+                        //else
+                        //  Debug.Log("Failed to ensure no obsticals in the way");
                     }
-                    //else
-                    //  Debug.Log("Failed to ensure no obsticals in the way");
                 }
             }
         }
@@ -195,17 +210,18 @@ public class GenericAnt : MonoBehaviour
             Mathf.Cos(anglesInDegrees * Mathf.Deg2Rad));
     }
 
-    public bool NearSegment()
+    public bool NearSegment(Vector3 currPos, bool justCheck = false)
     {        
-        if (Vector3.Distance(transform.position, GameManager1.mCentipedeBody.Head.position) < attachDist || Vector3.Distance(transform.position, GameManager1.mCentipedeBody.Tail.position) < attachDist)
+        if (Vector3.Distance(currPos, GameManager1.mCentipedeBody.Head.position) < attachDist || Vector3.Distance(currPos, GameManager1.mCentipedeBody.Tail.position) < attachDist)
             return true; //first, check if near the head or tail
                
         foreach (MSegment segment in GameManager1.mCentipedeBody.Segments) //find if close enough to any segment for the attack to work
         {
-            float dist = Vector3.Distance(transform.position, segment.gameObject.transform.position);
+            float dist = Vector3.Distance(currPos, segment.gameObject.transform.position);
             if (dist < attachDist) //if close enough can apply the attack damage
             {
-                nextPosTransform = segment.gameObject.transform;
+                if (!justCheck) //means also looking for player to attack
+                    nextPosTransform = segment.gameObject.transform;
                 return true;
             }
         }

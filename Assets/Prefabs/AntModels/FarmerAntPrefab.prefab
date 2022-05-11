@@ -2755,25 +2755,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: BackupRing
       objectReference: {fileID: 0}
-    - target: {fileID: 2850202724158472148, guid: 5b9fd155e63530741baf3d099ba622cb, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8428693334574619537, guid: 5b9fd155e63530741baf3d099ba622cb, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8428693334574619537, guid: 5b9fd155e63530741baf3d099ba622cb, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8428693334574619537, guid: 5b9fd155e63530741baf3d099ba622cb, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8428693334574619537, guid: 5b9fd155e63530741baf3d099ba622cb, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8428693334574619537, guid: 5b9fd155e63530741baf3d099ba622cb, type: 3}
       propertyPath: m_LocalPosition.x

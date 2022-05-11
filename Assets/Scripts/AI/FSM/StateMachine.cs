@@ -14,7 +14,7 @@ public class StateMachine
 {
     public State currState;
     //contain a list of all possible states
-    public State Movement, Shock, Investigate, Attack, Damage, Dead;
+    public State Movement, Shock, Investigate, Attack, Damage, Dead, SpawnIn;
     GenericAnt owner;
 
     public StateMachine(GenericAnt owner)
@@ -26,6 +26,7 @@ public class StateMachine
         Attack = new AttackState(owner);
         Damage = new DamageState(owner);
         Dead = new DeadState(owner);
+        SpawnIn = new SpawnInState(owner);
     }
     public void changeState(State newState)
     {

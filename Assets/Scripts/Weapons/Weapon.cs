@@ -33,4 +33,6 @@ public abstract class Weapon : MonoBehaviour
 	public virtual void Deregister() {  }
 
 	public override int GetHashCode() => name.GetHashCode();
+
+	public virtual void OnAttatch() { }
 }

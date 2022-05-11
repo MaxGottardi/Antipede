@@ -83,13 +83,13 @@ public class MInput : MonoBehaviour
 	}
 
 
-	/// <summary>
-	/// for all enemies within a radius of the pincers, they get damaged
-	/// </summary>
-	void DoAttack()
+    /// <summary>
+    /// for all enemies within a radius of the pincers, they get damaged
+    /// </summary>
+    void DoAttack()
 	{
 		transform.GetChild(0).GetComponent<Animator>().SetTrigger("Pincers");
-		float dist = 0.45f;
+		float dist = 1.25f;
 		Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * 1.1f, dist, EnemyLayer);
 		GenericAnt closestAnt = null;
 		float currDist = -1;

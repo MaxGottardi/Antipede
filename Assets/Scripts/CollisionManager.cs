@@ -26,6 +26,7 @@ public class CollisionManager : MonoBehaviour
             player.IncreaseSpeed(50);
             Destroy(other.gameObject);
             sfxManager.CollectPowerup();
+            GameManager1.uiButtons.SpeedUI();
         }
         else if (other.CompareTag("Health"))
         {
@@ -41,7 +42,8 @@ public class CollisionManager : MonoBehaviour
             //health.IncreaseHealth(10);
             player.AddSegment();
             Destroy(other.gameObject);
-            sfxManager.CollectLarvae();
+            if (sfxManager)
+                sfxManager.CollectLarvae();
         }
         else if (other.CompareTag("CaveTrigger"))
         {
@@ -50,6 +52,7 @@ public class CollisionManager : MonoBehaviour
         else if (other.CompareTag("BossTrigger"))
         {
             sfxManager.EnterBoss();
+            //
         }
         else if (other.CompareTag("Card"))
         {

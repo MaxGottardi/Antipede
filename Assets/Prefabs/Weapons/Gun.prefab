@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 5645349024952512261}
   - component: {fileID: -5726328306403970169}
   m_Layer: 0
-  m_Name: Gun
+  m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,9 +126,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bdae4191d613b34c9a674358c094e66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Owner: {fileID: 0}
   BarrelEndSocket: {fileID: 6927093786163578037}
   ProjectileObject: {fileID: -6691305767071978364, guid: 1c3134078b4a73246a1939f8175f203f, type: 3}
   weaponPickup: {fileID: 1514110319033228670, guid: c44599717f7f3ae4eaad352f1b1a4650, type: 3}
+  isAntGun: 0
   LaunchSpeed: 5000
 --- !u!1 &5645349026055870392
 GameObject:

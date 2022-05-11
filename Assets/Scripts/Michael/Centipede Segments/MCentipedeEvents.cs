@@ -14,6 +14,7 @@ public class MCentipedeEvents : MonoBehaviour
 		{
 			Debug.Log("Colledted Weapon");
 			WeaponPickup PickedUp = other.gameObject.GetComponent<WeaponPickup>();
+			GameManager1.uiButtons.ShootUI();
 
 			if (PickedUp != null)
 			{

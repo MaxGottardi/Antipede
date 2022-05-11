@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 /// <summary>
 /// The normal movement around the map
 /// </summary>
@@ -33,10 +34,13 @@ public class MovementState : State
 
     public void execute()
     {
+        Profiler.BeginSample("AI movement");
         if (owner.DetectPlayer() || owner.canInvestigate)
             owner.stateMachine.changeState(owner.stateMachine.Shock);
         else
             topNode.execute();
+
+        Profiler.EndSample();
     }
 
     public void exit()
@@ -137,12 +141,17 @@ public class InvestigateState : State
             owner.stateMachine.changeState(owner.stateMachine.Attack);
         }
         else //as no change of state occured, can run this one
+        {
+            Profiler.BeginSample("AI investigataion");
             topNode.execute();
+            Profiler.EndSample();
+        }
+        
     }
 
     public virtual bool checkAttack()
     {
-        return owner.NearSegment() && !owner.callingBackup;
+        return owner.NearSegment(owner.transform.position) && !owner.callingBackup;
     }
 
     public virtual void exit()
@@ -181,7 +190,7 @@ public class AttackState : State
         attackTime -= Time.deltaTime;
         if (attackTime <= owner.attackAnimLength)//when finished attacking add any damage to the appropriate segment
         {
-            if (owner.NearSegment() && !attackDone)
+            if (owner.NearSegment(owner.transform.position) && !attackDone)
             {
                 GameManager1.mCentipedeBody.RemoveSegment(100);
                 attackDone = true;
@@ -314,7 +323,7 @@ public class HunterAttack : AttackState
         else if (shootDelay <= 0)
         {
             shootDelay = 0.5f;
-            Debug.Log(owner.nextPosTransform.gameObject.name);
+//            Debug.Log(owner.nextPosTransform.gameObject.name);
             owner.weaponClass.LookAt(owner.nextPosTransform.position);
             owner.weaponClass.Fire(owner.nextPosTransform.position); //fire at the players segment
         }
@@ -369,7 +378,6 @@ public class HunterInvestigate : InvestigateState
 /// </summary>
 public class HunterDead : DeadState
 {
-    float deadTime = 3;
     HunterAnt owner;
     public HunterDead(GenericAnt owner) : base(owner) //also initilize any behaviour tree used on the state as well
     {
@@ -404,7 +412,7 @@ public class GuardAttack : AttackState
         attackTime -= Time.deltaTime;
         if (attackTime <= owner.attackAnimLength)//when finished attacking add any damage to the appropriate segment
         {
-            if (owner.NearSegment() && !attackDone)
+            if (owner.NearSegment(owner.transform.position) && !attackDone)
             {
                 GameManager1.mCentipedeBody.RemoveSegment(100);
                 GameManager1.mCentipedeBody.RemoveSegment(100);
@@ -427,8 +435,6 @@ public class GuardAttack : AttackState
 /// </summary>
 public class GuardInvestigate : InvestigateState
 {
-    float attackTime = 2.5f;
-    GenericAnt owner;
     public GuardInvestigate(GenericAnt owner) : base(owner) //also initilize any behaviour tree used on the state as well
     {
         this.owner = owner;
@@ -528,5 +534,39 @@ public class BombAttack : AttackState
     public override void exit()
     {
         base.exit();
+    }
+}
+
+
+// <summary>
+/// Called when AI first sees player and it showcases warning above head
+/// </summary>
+public class SpawnInState : State
+{
+    float waitTime = 1;
+    GenericAnt owner;
+    public SpawnInState(GenericAnt owner)
+    {
+        this.owner = owner;
+    }
+    public void enter()
+    {
+        waitTime = 1;
+        owner.anim.SetTrigger("SpawnIn");
+    }
+
+    public void execute()
+    {
+        //if (owner.backupRing.activeSelf)
+        owner.backupRing.SetActive(false);
+        waitTime -= Time.deltaTime;
+        if (waitTime <= 0)
+            owner.stateMachine.changeState(owner.stateMachine.Investigate);
+
+    }
+
+    public void exit()
+    {
+        waitTime = 0.45f;
     }
 }

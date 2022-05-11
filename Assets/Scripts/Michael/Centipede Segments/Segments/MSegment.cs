@@ -118,6 +118,7 @@ public class MSegment : MonoBehaviour
 		this.Weapon.Owner = GetOwner();
 
 		AttachedWeapon.transform.SetParent(WeaponSocket);
+		AttachedWeapon.OnAttatch();
 
 		Owner.SegmentsWithWeapons.Add(this);
 	}

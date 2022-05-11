@@ -133,7 +133,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 4}
-  m_SizeDelta: {x: 160, y: 20}
+  m_SizeDelta: {x: 800, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4070592133571250805
 MonoBehaviour:
@@ -770,9 +770,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 012ecea03e657f34a99fa51150298d7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nestArea: 40
-  huntingRadius: 15
-  moveSpeed: 4
+  healthSlider: {fileID: 0}
   attackingPlayer: 0
   antPrefab: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
 --- !u!1 &6578139119968400845

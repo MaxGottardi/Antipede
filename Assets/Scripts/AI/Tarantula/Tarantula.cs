@@ -167,6 +167,7 @@ public class Tarantula: MonoBehaviour
             animator.Play("Death");
             if (deathTimer >= 2)
             {
+                Win();
                 Destroy(gameObject);
             }
         }
@@ -264,5 +265,11 @@ public class Tarantula: MonoBehaviour
             }
             spawnAntTimer = 0;
         }
+    }
+
+    public void Win()
+    {
+        //Show Canvas with you won
+
     }
 }

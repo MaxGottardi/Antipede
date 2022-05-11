@@ -101,9 +101,20 @@ MonoBehaviour:
   shortSightDist: 1.7
   largeViewAnlge: 60
   shortViewAngle: 180
-  chanceCallBackup: 0.5
+  chanceSpawnHelpers: 2
   maxBackupDist: 7.5
   backupCallDist: 10
+  spawnedHelp:
+  - {fileID: 1933701853150098644}
+  - {fileID: 1933701853150098644}
+  - {fileID: 1933701853150098644}
+  - {fileID: 1933701853150098644}
+  - {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+  - {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+  - {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+  - {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+  isHelper: 0
+  backupRing: {fileID: 5545352925098372890}
   attachDist: 0.75
   attackAnimLength: 3
   headTransform: {fileID: 7793373080160413986}
@@ -5573,6 +5584,11 @@ GameObject:
 --- !u!4 &4543766964366750798 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1048307982316216310, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+  m_PrefabInstance: {fileID: 3567666144029846456}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5545352925098372890 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9040950338240070818, guid: d03430b02136fae41a430a78a3a68665, type: 3}
   m_PrefabInstance: {fileID: 3567666144029846456}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7793373080160413986 stripped

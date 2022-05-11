@@ -26,7 +26,7 @@ public class FarmerAnt : GenericAnt
 
     void SpawnLarvae()
     {
-        if (larvaeBag.getNext())
+        if (larvaeBag.getNext() && Larvae)
         {
             GameObject spawnedLarvae = Instantiate(Larvae, headTransform);
             spawnedLarvae.transform.localRotation = Quaternion.Euler(0.4f, -90, -170);

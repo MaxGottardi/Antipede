@@ -114,9 +114,22 @@ MonoBehaviour:
   shortSightDist: 1.7
   largeViewAnlge: 60
   shortViewAngle: 180
-  chanceCallBackup: 0
+  chanceSpawnHelpers: 5
   maxBackupDist: 7.5
   backupCallDist: 10
+  spawnedHelp:
+  - {fileID: 8531618194261706558}
+  - {fileID: 8531618194261706558}
+  - {fileID: 8531618194261706558}
+  - {fileID: 8531618194261706558}
+  - {fileID: 8531618194261706558}
+  - {fileID: 8531618194261706558}
+  - {fileID: 8531618194261706558}
+  - {fileID: 8531618194261706558}
+  - {fileID: 8856138776421195210, guid: d7784141bda4f62498b4168dbab60047, type: 3}
+  - {fileID: 8856138776421195210, guid: d7784141bda4f62498b4168dbab60047, type: 3}
+  isHelper: 0
+  backupRing: {fileID: 2325699116947299568}
   attachDist: 0.75
   attackAnimLength: 3
   headTransform: {fileID: 41686449857338056}
@@ -613,6 +626,11 @@ GameObject:
 --- !u!4 &6034038339374417828 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1048307982316216310, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+  m_PrefabInstance: {fileID: 6715257818362550354}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2325699116947299568 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9040950338240070818, guid: d03430b02136fae41a430a78a3a68665, type: 3}
   m_PrefabInstance: {fileID: 6715257818362550354}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &41686449857338056 stripped

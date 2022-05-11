@@ -128,7 +128,7 @@ public class GenerateGrid : MonoBehaviour
                 currentNode.isClosed = true;
                 currentNode.isOpen = false;
 
-                if (currentNode.x == targetGridX && currentNode.y == targetGridY && currentNode.z == targetGridZ || ClosedSet.Count > 50)
+                if (currentNode.x == targetGridX && currentNode.y == targetGridY && currentNode.z == targetGridZ || ClosedSet.Count >= 5)
                     return RecalculatePath(currentNode.x, currentNode.y, currentNode.z, gridX, gridY, gridZ); //break out as have reached the goal
 
                 List<NavigationNode> neighbourNodes = new List<NavigationNode>();//every valid neighbour of the current node
@@ -219,7 +219,7 @@ public class GenerateGrid : MonoBehaviour
             {
                 for (int k = 0; k < depth; k++)
                 {
-                    Gizmos.color = Color.red;
+                   // Gizmos.color = Color.red;
                     if (grid.Length > 0 && grid[i, j, k] != null)
                     {
                         grid[i, j, k].isClosed = false;
