@@ -18,6 +18,7 @@ public class CallBackup : Node
         runTime = 2;
         blackboard.anim.SetTrigger("Backup");
         blackboard.callingBackup = true;
+        blackboard.backupRing.SetActive(true);
         //start call for backup
     }
     public override NodeState evaluate()
@@ -34,7 +35,7 @@ public class CallBackup : Node
                 {
                     GenericAnt antObj = obj.gameObject.transform.parent.GetComponent<GenericAnt>();
 
-                    if (antObj && antObj.stateMachine.currState == antObj.stateMachine.Movement)
+                    if (antObj != null && antObj.stateMachine != null && antObj.stateMachine.currState == antObj.stateMachine.Movement)
                     {
                         antObj.canInvestigate = true;
                         numAnts++;
@@ -43,6 +44,7 @@ public class CallBackup : Node
             }
             runTime = 2;
             SpawnHelpers(numAnts);
+            blackboard.backupRing.SetActive(false);
             return NodeState.Success;
         }
         else
@@ -59,7 +61,8 @@ public class CallBackup : Node
 
         if (numAntsSpawn > 0)
         {
-            spawnPositions = PossionDiskSampling.CreatePoints(3, 30, blackboard.backupCallDist, blackboard.transform.position.x, blackboard.transform.position.z);
+            float radius = 4;
+            spawnPositions = PossionDiskSampling.CreatePoints(radius, 30, blackboard.backupCallDist, blackboard.transform.position.x - radius, blackboard.transform.position.z - radius);
 
             if (spawnPositions.Count > 0)
             {

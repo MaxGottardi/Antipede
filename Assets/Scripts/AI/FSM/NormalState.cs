@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 /// <summary>
 /// The normal movement around the map
 /// </summary>
@@ -33,10 +34,13 @@ public class MovementState : State
 
     public void execute()
     {
+        Profiler.BeginSample("AI movement");
         if (owner.DetectPlayer() || owner.canInvestigate)
             owner.stateMachine.changeState(owner.stateMachine.Shock);
         else
             topNode.execute();
+
+        Profiler.EndSample();
     }
 
     public void exit()
@@ -137,7 +141,12 @@ public class InvestigateState : State
             owner.stateMachine.changeState(owner.stateMachine.Attack);
         }
         else //as no change of state occured, can run this one
+        {
+            Profiler.BeginSample("AI investigataion");
             topNode.execute();
+            Profiler.EndSample();
+        }
+        
     }
 
     public virtual bool checkAttack()
@@ -314,7 +323,7 @@ public class HunterAttack : AttackState
         else if (shootDelay <= 0)
         {
             shootDelay = 0.5f;
-            Debug.Log(owner.nextPosTransform.gameObject.name);
+//            Debug.Log(owner.nextPosTransform.gameObject.name);
             owner.weaponClass.LookAt(owner.nextPosTransform.position);
             owner.weaponClass.Fire(owner.nextPosTransform.position); //fire at the players segment
         }
@@ -548,6 +557,8 @@ public class SpawnInState : State
 
     public void execute()
     {
+        //if (owner.backupRing.activeSelf)
+        owner.backupRing.SetActive(false);
         waitTime -= Time.deltaTime;
         if (waitTime <= 0)
             owner.stateMachine.changeState(owner.stateMachine.Investigate);

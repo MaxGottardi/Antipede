@@ -101,20 +101,25 @@ public class GenericAnt : MonoBehaviour
     {
         if (Time.frameCount % 5 == 0 || Time.deltaTime > 0.25f)
         {
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, maxSightDist, playerLayer);
+            //Collider[] hitColliders = Physics.OverlapSphere(transform.position, maxSightDist, playerLayer);
 
-            foreach (Collider playerSegment in hitColliders) //get all nearby ants to call for backup
+            foreach (MSegment playerSegment in GameManager1.mCentipedeBody.Segments) //get all nearby ants to call for backup
             {
                 float distAway = Vector3.Distance(transform.position, playerSegment.gameObject.transform.position);
                 Vector3 dirToPoint = (playerSegment.gameObject.transform.position - transform.position).normalized;
-                if (ValidAngle(distAway, dirToPoint))
+                if (distAway < maxSightDist)
                 {
-                    //if (!Physics.Raycast(transform.position, dirToPoint, distAway, ~playerLayer)) //if it hit anything which was not the player than, it means the view is actually obstructed
+                    if (GameManager1.uiButtons != null)
+                        GameManager1.uiButtons.AttackUI();
+                    if (ValidAngle(distAway, dirToPoint))
                     {
-                        return true; //as nothing hit no walls etc. were in the way so safe to say it saw the player
+                        //if (!Physics.Raycast(transform.position, dirToPoint, distAway, ~playerLayer)) //if it hit anything which was not the player than, it means the view is actually obstructed
+                        {
+                            return true; //as nothing hit no walls etc. were in the way so safe to say it saw the player
+                        }
+                        //else
+                        //  Debug.Log("Failed to ensure no obsticals in the way");
                     }
-                    //else
-                    //  Debug.Log("Failed to ensure no obsticals in the way");
                 }
             }
         }
