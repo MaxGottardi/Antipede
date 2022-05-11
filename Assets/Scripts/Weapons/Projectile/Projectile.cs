@@ -41,17 +41,19 @@ public class Projectile : MonoBehaviour
 			collision.gameObject.GetComponent<Tarantula>().DecreaseHealth();
 			Instantiate(hitParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 		}
-		else if (collision.gameObject.CompareTag("Play") && !hasSeenChanged)
+		else if (collision.gameObject.CompareTag("Play"))
 		{
-			hasSeenChanged = true;
 			SceneManager.LoadScene("Environment Test");
 		}
-		else if (collision.gameObject.CompareTag("Settings") && !hasSeenChanged)
+		else if (collision.gameObject.CompareTag("Settings"))
 		{
-			hasSeenChanged = true;
-			SceneManager.LoadScene("SettingsScene");
+			if (collision.collider != null)
+			{
+				Destroy(collision.collider);
+				SceneManager.LoadScene("SettingsScene");
+			}
 		}
-		else if(collision.gameObject.layer != LayerMask.NameToLayer("Projectile"))
+		else if(collision.gameObject.layer != LayerMask.NameToLayer("Projectile") && SceneManager.GetActiveScene().name =="MainMenu")
 			Destroy(this);
 		if(!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula"))
         {

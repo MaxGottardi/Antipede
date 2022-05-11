@@ -9,9 +9,14 @@ public class Gun : Weapon
 	{
 		Projectile StraightProjectile = InstantiateProjectile();
 		StraightProjectile.Initialise(isAntGun);
-		
+
 		// Ignore the Direction param. For a Gun, we don't need it.
-		StraightProjectile.Launch(transform.forward * LaunchSpeed);
+		if (isAntGun)
+			StraightProjectile.Launch(transform.forward * LaunchSpeed/4.5f);
+		else
+		{
+			StraightProjectile.Launch(transform.forward * LaunchSpeed);
+		}
 
 		return StraightProjectile;
 	}

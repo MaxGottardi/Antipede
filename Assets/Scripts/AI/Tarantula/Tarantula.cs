@@ -95,6 +95,7 @@ public class Tarantula: MonoBehaviour
                 {   //if the tarantula is close enough to the nest it will follow the player
                     if (distToNest < nestArea)
                     {
+                        GameManager1.uiButtons.SpiderInfo();
                         ChasePlayer();
                         ShootWeb();
                         SpawnAnts();

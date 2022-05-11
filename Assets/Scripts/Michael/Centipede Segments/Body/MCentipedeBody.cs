@@ -102,7 +102,8 @@ public partial class MCentipedeBody : MonoBehaviour
 		{
 			IncreaseSpeed(10);
 		}
-		GameManager1.uiButtons.AddSegment();
+		if (GameManager1.uiButtons)
+			GameManager1.uiButtons.AddSegment();
 		float Z = NumberOfSegments * SegmentsInfo.SegmentScale.z + DeltaZ;
 
 		MSegment AddedSegment;

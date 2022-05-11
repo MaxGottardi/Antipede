@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class UIButtons : MonoBehaviour
 {
-    public GameObject tutWindow, winWindow;
+    public GameObject tutWindow, winWindow, spiderWindow;
 
     public GameObject moveUI, CamUI, pauseUI, attackUI, shootUI, addWeaponUI, speedUI;
 
-    bool seenSpeed = false, seenAttack = false, seenShoot = false;
+    bool seenSpeed = false, seenAttack = false, seenShoot = false, seenSpider = false;
 
     public static int speedIncrease = 0, segmentIncrease = 0, segmentDegrease = 0;
     public Text speedInfo, segAddInfo, segDecreaseInfo;
@@ -67,6 +67,7 @@ public class UIButtons : MonoBehaviour
     {
         Time.timeScale = 1;
         tutWindow.SetActive(false);
+        spiderWindow.SetActive(false);
     }
 
     //below are the functions for enabling and disabling the other UI elements
@@ -93,6 +94,16 @@ public class UIButtons : MonoBehaviour
             shootUI.SetActive(false);
             addWeaponUI.SetActive(false);
             speedUI.SetActive(false);
+        }
+    }
+
+    public void SpiderInfo()
+    {
+        if (!seenSpider)
+        {
+            Time.timeScale = 0;
+            spiderWindow.SetActive(true);
+            seenSpider = true;
         }
     }
 
