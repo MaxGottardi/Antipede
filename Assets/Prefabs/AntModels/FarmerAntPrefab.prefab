@@ -103,8 +103,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 0.43137255}
-      key1: {r: 1, g: 1, b: 1, a: 0}
+      key0: {r: 1, g: 0.9137255, b: 0, a: 0.43137255}
+      key1: {r: 1, g: 0.9137255, b: 0, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -149,7 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7963412439693374201}
   - component: {fileID: 2476927163846497165}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Antena.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -384,7 +384,7 @@ GameObject:
   m_Component:
   - component: {fileID: 79653155793328701}
   - component: {fileID: 6325945868362033504}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Antena
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1223,8 +1223,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 0.43137255}
-      key1: {r: 1, g: 1, b: 1, a: 0}
+      key0: {r: 1, g: 0.9137255, b: 0, a: 0.43137255}
+      key1: {r: 1, g: 0.9137255, b: 0, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}

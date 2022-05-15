@@ -200,7 +200,8 @@ public partial class MCentipedeBody : MonoBehaviour
 			//Segments.Remove(Segments[Segments.Count - 1]);
 			if (lastSegment.ReduceHealth(healthReduction))
 			{
-				GameManager1.uiButtons.RemoveSegment();
+				if (GameManager1.uiButtons != null)
+					GameManager1.uiButtons.RemoveSegment();
 				if (slowed == true)
 				{
 					DecreaseSpeed(5);

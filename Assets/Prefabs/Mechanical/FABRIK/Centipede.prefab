@@ -2467,7 +2467,7 @@ MonoBehaviour:
   slowTimer: 0
   slowed: 0
   DeathScreen: {fileID: 0}
-  sfxManager: {fileID: 0}
+  shieldActive: 0
 --- !u!114 &8912492245561955171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9747,7 +9747,7 @@ MeshRenderer:
   - {fileID: -7161351915816769751, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
   - {fileID: -1709277514330460371, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
   - {fileID: -7301279310005317288, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
-  - {fileID: -7684862730248065037, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
+  - {fileID: 2100000, guid: a9ee4cfe69445e14db813cb96f815a09, type: 2}
   - {fileID: 6326233545876464289, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
   - {fileID: 1371657099361149180, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
   m_StaticBatchInfo:
