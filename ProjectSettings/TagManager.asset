@@ -24,6 +24,10 @@ TagManager:
   - Quit
   - Settings
   - TarantulaTail
+  - Back
+  - Sound
+  - Controls
+  - Other
   layers:
   - Default
   - TransparentFX

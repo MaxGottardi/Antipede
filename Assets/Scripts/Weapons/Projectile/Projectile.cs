@@ -45,15 +45,33 @@ public class Projectile : MonoBehaviour
 		{
 			SceneManager.LoadScene("Environment Test");
 		}
+		else if (collision.gameObject.CompareTag("Back"))
+		{
+			SceneManager.LoadScene("MainMenu");
+		}
+		else if (collision.gameObject.CompareTag("Sound"))
+		{
+			UIManager.soundPanel.SetActive(true);
+			UIManager.otherPanel.SetActive(false);
+			UIManager.controlsPanel.SetActive(false);
+		}
+		else if (collision.gameObject.CompareTag("Other"))
+		{
+			UIManager.soundPanel.SetActive(false);
+			UIManager.otherPanel.SetActive(true);
+			UIManager.controlsPanel.SetActive(false);
+		}
+		else if (collision.gameObject.CompareTag("Controls"))
+		{
+			UIManager.soundPanel.SetActive(false);
+			UIManager.otherPanel.SetActive(false);
+			UIManager.controlsPanel.SetActive(true);
+		}
 		else if (collision.gameObject.CompareTag("Settings"))
 		{
-			if (collision.collider != null)
-			{
-				Destroy(collision.collider);
-				SceneManager.LoadScene("SettingsScene");
-			}
+			SceneManager.LoadScene("SettingsScene");
 		}
-		else if(collision.gameObject.layer != LayerMask.NameToLayer("Projectile") && SceneManager.GetActiveScene().name =="MainMenu")
+		else if(collision.gameObject.layer != LayerMask.NameToLayer("Projectile") && (SceneManager.GetActiveScene().name =="MainMenu" || SceneManager.GetActiveScene().name == "SettingsScene"))
 			Destroy(this);
 		if(!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula"))
         {
