@@ -5,6 +5,11 @@ using UnityEngine;
 public class SFXManager : MonoBehaviour
 {
 
+    //http://freesoundeffect.net/sound/evil-androids-sound-effect
+    //http://freesoundeffect.net/sound/insect-voice-chirp-bu01-385-sound-effect
+    //http://freesoundeffect.net/sound/insect-voice-chirp-bu01-386-sound-effect
+    //http://freesoundeffect.net/sound/millipedde-walk-bu01-538-sound-effect
+
     [SerializeField] AudioSource sourceMusic;
     [SerializeField] AudioSource sourcePlayer;
     [SerializeField] AudioSource sourceDamage;
@@ -22,6 +27,7 @@ public class SFXManager : MonoBehaviour
     [SerializeField] AudioClip specialSFX;
     [SerializeField] AudioClip shieldSFX;
     [SerializeField] AudioClip damageSFX;
+    [SerializeField] AudioClip walkSFX;
 
     // Start is called before the first frame update
     void Start()
@@ -87,6 +93,23 @@ public class SFXManager : MonoBehaviour
     {
         sourceDamage.clip = damageSFX;
         sourceDamage.Play();
+    }
+    public void Walk()
+    {
+        if (sourcePlayer.clip != walkSFX && sourcePlayer.isPlaying == false)
+        {
+            sourcePlayer.clip = walkSFX;
+        }
+        if (sourcePlayer.isPlaying == false)
+        {
+            sourcePlayer.time = 0.09f;
+            sourcePlayer.Play();
+        }
+        if (sourcePlayer.clip == walkSFX && sourcePlayer.time > 0.35f)
+        {
+            sourcePlayer.Stop();
+        }
+
     }
 
     public void ActivateShield()

@@ -37,11 +37,13 @@ public class GenericMovement
     public static Vector3 SetGround(GenericAnt blackboard)
     {
         RaycastHit raycastHit, raycastHit1;//, raycastForward, raycastMiddle;
-        bool didHit = Physics.Raycast(blackboard.transform.position, -blackboard.transform.up, out raycastHit, 15, blackboard.groundLayer);
-        bool didHit1 = Physics.Raycast(blackboard.transform.position + blackboard.transform.forward * -blackboard.backGroundCheckOffset, -blackboard.transform.up, out raycastHit1, 15, blackboard.groundLayer);
+        //when raycasting, cast from high up downwards, so that can always ensure hitting terrain and not being under it
+        bool didHit = Physics.Raycast(blackboard.transform.position + blackboard.transform.up * 15, -blackboard.transform.up, out raycastHit, 25, blackboard.groundLayer);
+        //cast a ray for the back of the body as well, enabling smooth rotations while changing surface orientations
+        bool didHit1 = Physics.Raycast(blackboard.transform.position + blackboard.transform.forward * -blackboard.backGroundCheckOffset
+            + blackboard.transform.up * 15, -blackboard.transform.up, out raycastHit1, 25, blackboard.groundLayer);
 
-
-        //////////below is an attampt to get the ants to walk over each other, as can see it did not work well
+          //////////below is an attampt to get the ants to walk over each other, as can see it did not work well
 
         //    bool didHitMiddle = Physics.Raycast(blackboard.transform.position + blackboard.transform.forward * -blackboard.backGroundCheckOffset/4, -blackboard.transform.up, out raycastMiddle, 2, blackboard.EnemyLayer);
         //    bool didHitForward = Physics.Raycast(blackboard.transform.position, blackboard.transform.forward, out raycastForward, 0.5f, blackboard.EnemyLayer);
@@ -121,20 +123,25 @@ public class GenericMovement
             Vector3 groundPoint = blackboard.transform.localPosition;
             groundPoint.y = raycastHit.point.y + blackboard.groundOffset;
             blackboard.transform.localPosition = groundPoint;
+
+            ////blackboard.transform.up = raycastHit.normal; //ensure always orient to the grounds locations
         }
 
 
         Vector3 upSmooth;
         if (didHit1 && didHit)//when on the edge between two different triangles, get a vector which will point up ensuring a smooth rotation between the two
+        {
             upSmooth = Vector3.Cross(blackboard.transform.right, -(raycastHit.point - raycastHit1.point).normalized);
+        }
         //above used this link https://answers.unity.com/questions/1420677/best-way-to-rotate-player-object-to-match-the-grou.html
         else
             upSmooth = Vector3.up;
 
+#if UNITY_EDITOR
         Debug.DrawRay(blackboard.transform.position + blackboard.transform.forward * -0.5f, 5 * (blackboard.transform.forward - blackboard.transform.up * 0.1f), Color.green);
         Debug.DrawRay(blackboard.transform.position, 5 * (raycastHit.normal), Color.blue);
         Debug.DrawRay(blackboard.transform.position + blackboard.transform.forward * -blackboard.backGroundCheckOffset, 5 * (raycastHit1.normal), Color.blue);
-
+#endif
         return upSmooth;
     }
 

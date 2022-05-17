@@ -5,6 +5,7 @@ using UnityEngine;
 public class CallBackup : Node
 {
     float runTime = 2;
+    bool playedAudio = false;
 
     public CallBackup(GenericAnt blackboard)
     {
@@ -19,11 +20,18 @@ public class CallBackup : Node
         blackboard.anim.SetTrigger("Backup");
         blackboard.callingBackup = true;
         blackboard.backupRing.SetActive(true);
+
+        playedAudio = false;
         //start call for backup
     }
     public override NodeState evaluate()
     {
         //within a certain range of the AI cast out and see who responds
+        if (runTime <= 1 && !playedAudio)
+        {
+            blackboard.audioSource.Play();
+            playedAudio = true;
+        }
         if (runTime <= 0)
         {
             int numAnts = 0;

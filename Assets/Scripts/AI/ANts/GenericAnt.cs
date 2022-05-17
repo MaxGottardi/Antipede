@@ -65,6 +65,9 @@ public class GenericAnt : MonoBehaviour
     //public float minFleeX = 10, maxFleeX = 15, minFleeZ = 10, maxFleeZ = 15;
     //[HideInInspector] public Vector3 fleePoint;
 
+    [Header("Audio Settings")]
+    public AudioSource audioSource;
+
     public virtual void Start()
     {
         backupRing.SetActive(false);
@@ -77,6 +80,7 @@ public class GenericAnt : MonoBehaviour
         maxHealth = health;
         pathToNextPos = new List<Vector3>();
         anim = transform.GetChild(0).gameObject.GetComponent<Animator>();
+        audioSource = transform.GetChild(0).gameObject.GetComponent<AudioSource>();
         anim.SetFloat("SpeedMultiplier", animMultiplier);
         //anim.SetTrigger("Walk");
         nodesList = GameObject.FindGameObjectsWithTag(FollowingNodes);

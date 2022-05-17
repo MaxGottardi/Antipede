@@ -50306,7 +50306,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.833
+      value: -1.46
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalPosition.z
@@ -64868,6 +64868,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 606088553577666546, guid: 55c425bd7c94d4549bde573aaca6803f, type: 3}
+      propertyPath: walkSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: c97335e25385ba043a01a7b4efc46d43, type: 3}
     - target: {fileID: 606088553577666546, guid: 55c425bd7c94d4549bde573aaca6803f, type: 3}
       propertyPath: sourceMusic
       value: 

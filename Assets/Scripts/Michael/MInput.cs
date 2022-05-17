@@ -12,12 +12,15 @@ public class MInput : MonoBehaviour
 	Camera MainCamera;
 
 	float PreSlowShift;
+	SFXManager sfxManager;
 
 	void Start()
 	{
 		body = GetComponent<MCentipedeBody>();
 		movement = GetComponent<CentipedeMovement>();
 		MainCamera = Camera.main;
+
+		sfxManager = GameObject.Find("SFXMAnager").GetComponent<SFXManager>();
 	}
 
 	void Update()
@@ -70,6 +73,8 @@ public class MInput : MonoBehaviour
 		float Vertical = Input.GetAxisRaw("Vertical");
 
 		movement.Set(ref Horizontal, ref Vertical);
+		if (Horizontal != 0 || Vertical != 0)
+			sfxManager.Walk();
 	}
 
 	void LateUpdate()
@@ -88,6 +93,7 @@ public class MInput : MonoBehaviour
     /// </summary>
     void DoAttack()
 	{
+		sfxManager.CollectLarvae();
 		transform.GetChild(0).GetComponent<Animator>().SetTrigger("Pincers");
 		float dist = 1.25f;
 		Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * 1.1f, dist, EnemyLayer);

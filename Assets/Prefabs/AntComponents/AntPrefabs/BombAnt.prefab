@@ -87,7 +87,7 @@ MonoBehaviour:
     m_Bits: 128
   groundLayer:
     serializedVersion: 2
-    m_Bits: 384
+    m_Bits: 256
   callBackupWait: 0
   canInvestigate: 0
   callingBackup: 0

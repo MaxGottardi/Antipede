@@ -47,6 +47,7 @@ MonoBehaviour:
   sourcePlayer: {fileID: 0}
   sourceDamage: {fileID: 0}
   sourceWeapon: {fileID: 0}
+  sourceShield: {fileID: 0}
   menuMusic: {fileID: 0}
   loadingMusic: {fileID: 8300000, guid: 3b036dd4fb02bbf4b91d129186a8f3a6, type: 3}
   mainMusic: {fileID: 8300000, guid: 3b4e371cec09b1c4bb16b565c67ffcc9, type: 3}
@@ -57,3 +58,4 @@ MonoBehaviour:
   specialSFX: {fileID: 8300000, guid: dc2220ceb89c9da4a961a81311c5882b, type: 3}
   shieldSFX: {fileID: 8300000, guid: 85c9404b6ec3c8743a23636541f54356, type: 3}
   damageSFX: {fileID: 8300000, guid: b1b886ebb0cdebe4ea65bdc89e12b164, type: 3}
+  walkSFX: {fileID: 8300000, guid: 288dd0da2db808d4cbec78871683cf7d, type: 3}
