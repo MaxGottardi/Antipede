@@ -11,7 +11,7 @@ public class DetermineAttackSeg : Node
 
     public override NodeState evaluate()
     {
-       // Profiler.BeginSample("AI Determine Seg Attack");
+        Profiler.BeginSample("AI Determine Seg Attack");
         MSegment currSegment = null;
         float distToSegmnet = -1;
         foreach (MSegment segment in GameManager1.playerObj.GetComponent<MCentipedeBody>().Segments) //find the closest player segment
@@ -38,7 +38,7 @@ public class DetermineAttackSeg : Node
                 return NodeState.Success; //assigned segment
             }
         }
-        //Profiler.EndSample();
+        Profiler.EndSample();
         ////blackboard.stateMachine.changeState(blackboard.stateMachine.Movement);
         return NodeState.Failure; //no segments found
         //////This for some reason causes an error to appear

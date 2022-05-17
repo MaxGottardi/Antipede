@@ -92,6 +92,9 @@ public class GenericAnt : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, GameManager1.playerObj.transform.position) <= 200)
             stateMachine.Update();
+        else
+            anim.SetTrigger("Idle");
+        //issue is when not moving, still likly playing the movement animation
     }
     /// <summary>
     /// Check to see if any segment of the player is within sight
