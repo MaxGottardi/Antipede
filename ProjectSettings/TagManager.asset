@@ -28,6 +28,7 @@ TagManager:
   - Sound
   - Controls
   - Other
+  - CheckPoint
   layers:
   - Default
   - TransparentFX

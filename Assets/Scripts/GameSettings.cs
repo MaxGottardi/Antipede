@@ -15,13 +15,19 @@ public class GameSettings : MonoBehaviour
 
 	bool bIsPaused;
 
+	private GameObject[] checkPoints;
+
 
 	void Awake()
 	{
 		CameraSettings = new Settings();
 
 		OnReceiveInspectorDefaults += ReceiveDefaults;
-
+		checkPoints = GameObject.FindGameObjectsWithTag("CheckPoint");
+		foreach (GameObject checkpoint in checkPoints)
+        {
+			checkpoint.SetActive(false);
+        }
 		DefaultState();
 	}
 
