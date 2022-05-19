@@ -12,10 +12,9 @@ public class UIFire : MonoBehaviour
         foreach (Weapon W in weapons)
         {
             Vector3 mousePos = MouseToWorldCoords();
+            W.LookAt(mousePos);
             if (Input.GetMouseButtonDown(0))
                 W.Fire(mousePos);
-
-            W.LookAt(mousePos);
         }
     }
 

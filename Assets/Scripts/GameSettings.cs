@@ -15,7 +15,6 @@ public class GameSettings : MonoBehaviour
 
 	bool bIsPaused;
 
-
 	void Awake()
 	{
 		CameraSettings = new Settings();
@@ -43,8 +42,6 @@ public class GameSettings : MonoBehaviour
 			}
 			else
 				Time.timeScale = 0;
-
-			Time.timeScale = 0;
 		}
 	}
 

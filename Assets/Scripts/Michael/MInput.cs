@@ -20,7 +20,8 @@ public class MInput : MonoBehaviour
 		movement = GetComponent<CentipedeMovement>();
 		MainCamera = Camera.main;
 
-		sfxManager = GameObject.Find("SFXMAnager").GetComponent<SFXManager>();
+		if (GameObject.Find("SFXMAnager"))
+			sfxManager = GameObject.Find("SFXMAnager").GetComponent<SFXManager>();
 	}
 
 	void Update()
@@ -59,12 +60,12 @@ public class MInput : MonoBehaviour
 			body.DecreaseSpeed(100.0f);
 		}
 
-		if (Input.GetKeyDown(KeyCode.LeftShift))
+		if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
 		{
 			PreSlowShift = body.MovementSpeed;
 			body.SetSpeed(PreSlowShift * .5f);
 		}
-		else if (Input.GetKeyUp(KeyCode.LeftShift))
+		else if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
 		{
 			body.SetSpeed(PreSlowShift);
 		}
@@ -74,7 +75,8 @@ public class MInput : MonoBehaviour
 
 		movement.Set(ref Horizontal, ref Vertical);
 		if (Horizontal != 0 || Vertical != 0)
-			sfxManager.Walk();
+			if (sfxManager != null && Time.timeScale > 0)
+				sfxManager.Walk();
 	}
 
 	void LateUpdate()

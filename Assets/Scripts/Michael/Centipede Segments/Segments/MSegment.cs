@@ -52,7 +52,7 @@ public class MSegment : MonoBehaviour
 			if (ForwardNeighbour)
 			{
 				MMathStatics.HomeTowards(rb, ForwardNeighbour, FollowSpeed, MaxTurnDegreesPerFrame);
-				bHasRayAligned = false;
+				bHasRayAligned = false;					
 			}
 		}
 		else

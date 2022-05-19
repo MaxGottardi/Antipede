@@ -43,7 +43,7 @@ public class GenericMovement
         bool didHit1 = Physics.Raycast(blackboard.transform.position + blackboard.transform.forward * -blackboard.backGroundCheckOffset
             + blackboard.transform.up * 15, -blackboard.transform.up, out raycastHit1, 25, blackboard.groundLayer);
 
-          //////////below is an attampt to get the ants to walk over each other, as can see it did not work well
+        //////////below is an attampt to get the ants to walk over each other, as can see it did not work well
 
         //    bool didHitMiddle = Physics.Raycast(blackboard.transform.position + blackboard.transform.forward * -blackboard.backGroundCheckOffset/4, -blackboard.transform.up, out raycastMiddle, 2, blackboard.EnemyLayer);
         //    bool didHitForward = Physics.Raycast(blackboard.transform.position, blackboard.transform.forward, out raycastForward, 0.5f, blackboard.EnemyLayer);
@@ -131,7 +131,12 @@ public class GenericMovement
         Vector3 upSmooth;
         if (didHit1 && didHit)//when on the edge between two different triangles, get a vector which will point up ensuring a smooth rotation between the two
         {
-            upSmooth = Vector3.Cross(blackboard.transform.right, -(raycastHit.point - raycastHit1.point).normalized);
+            //upSmooth = Vector3.Cross(blackboard.transform.right, -(raycastHit.point - raycastHit1.point).normalized);
+            //Debug.Log(Vector3.Dot(blackboard.transform.up, raycastHit.normal));
+            if (Vector3.Dot(blackboard.transform.up, raycastHit.normal) < 0.5f)
+                upSmooth = Vector3.Cross(blackboard.transform.right, raycastHit.normal);
+            else
+                upSmooth = Vector3.Cross(blackboard.transform.right, -(raycastHit.point - raycastHit1.point).normalized);
         }
         //above used this link https://answers.unity.com/questions/1420677/best-way-to-rotate-player-object-to-match-the-grou.html
         else
