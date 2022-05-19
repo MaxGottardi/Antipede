@@ -121,6 +121,7 @@ MonoBehaviour:
   leftAntenna: {fileID: 5858463339730445275}
   rightAntenna: {fileID: 1123508097990682882}
   minFleeChance: 0.95
+  audioSource: {fileID: 0}
   dashSpeed: 12
   dashRoteSpeed: 900
   dashAnimSpeed: 3

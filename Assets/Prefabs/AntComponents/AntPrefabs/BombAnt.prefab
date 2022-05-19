@@ -124,6 +124,7 @@ MonoBehaviour:
   leftAntenna: {fileID: 5986127352046888572}
   rightAntenna: {fileID: 993060124380327077}
   minFleeChance: 0
+  audioSource: {fileID: 0}
 --- !u!1 &3404608361950666522
 GameObject:
   m_ObjectHideFlags: 0

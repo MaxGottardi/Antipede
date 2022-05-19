@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
 {
 	protected Rigidbody rb;
 	public bool isEnemyProjectile = false; //is this projectile shot by an enemy or not
-	public GameObject hitParticles;
+	public GameObject hitParticles, bloodParticles;
 	public static bool hasSeenChanged = false;
 
 	/// <remarks>Use as Awake/Start method.</remarks>
@@ -32,14 +32,14 @@ public class Projectile : MonoBehaviour
 		if (!isEnemyProjectile && collision.gameObject.CompareTag("Enemy"))
         {
 			collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(30);
-			Instantiate(hitParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
+			Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 			Destroy(gameObject);
 		}
 		if (!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula") 
 			&& collision.gameObject.GetComponent<Tarantula>().healthSlider.value >= 0.50)
         {
 			collision.gameObject.GetComponent<Tarantula>().DecreaseHealth();
-			Instantiate(hitParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
+			Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 		}
 		else if (collision.gameObject.CompareTag("Play"))
 		{

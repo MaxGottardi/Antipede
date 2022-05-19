@@ -74,8 +74,6 @@ public class CardManager : MonoBehaviour
 
     public void CollectCard(int cardIndex)
     {
-        Debug.Log(cardIndex);
-
         SetSlot(cardIndex);
 
         //Instantiate(card, new Vector3(0, 0, 0), Quaternion.identity);

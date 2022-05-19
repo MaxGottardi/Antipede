@@ -139,6 +139,7 @@ MonoBehaviour:
   leftAntenna: {fileID: 4585078940065666454}
   rightAntenna: {fileID: 7024358640349306703}
   minFleeChance: 0.45
+  audioSource: {fileID: 0}
   Larvae: {fileID: 3658501623764678317, guid: 7b95122c35e34c64887020f05597a625, type: 3}
   useLarvae: 01010000000000000000
 --- !u!1001 &6715257818362550354
