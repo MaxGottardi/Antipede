@@ -4,25 +4,35 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    private GameObject backupPlayer;
+    public GameObject backupPlayer;
+    private GameObject player;
 
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.Find("Centipede");
         
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            Debug.Log(backupPlayer);
+        }
         
     }
-
-    private void OnCollisionEnter(Collision collision)
+    
+    private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.name == "Centipede" && backupPlayer != null)
+        Debug.Log(backupPlayer);
+        if (collision.gameObject.CompareTag("PlayerSegment") && backupPlayer == null)
         {
-            backupPlayer = Instantiate(collision.gameObject, new Vector3(transform.position.x, transform.position.y-5, transform.position.z), collision.gameObject.transform.rotation);
+            //Debug.Log("bruh");
+            backupPlayer = Instantiate(player, new Vector3(transform.position.x, transform.position.y-5, transform.position.z), player.transform.rotation);
+            backupPlayer.name = "BackupPlayer";
+            backupPlayer.SetActive(false);
         }
     }
 }

@@ -41,6 +41,8 @@ public partial class MCentipedeBody : MonoBehaviour
 	public GameObject DeathScreen;
 	public bool shieldActive;
 
+	private GameObject[] checkPoints;
+	private bool backupPlayer = false;
 
 	void Start()
 	{
@@ -58,6 +60,8 @@ public partial class MCentipedeBody : MonoBehaviour
 			MS.transform.localEulerAngles = Vector3.zero;
 			MS.transform.parent = null;
 		}
+
+		checkPoints = GameObject.FindGameObjectsWithTag("CheckPoint");
 
 		slowed = false;
 		Construct();
@@ -244,10 +248,22 @@ public partial class MCentipedeBody : MonoBehaviour
 			// Make the check after removing a Segment.
 			if (NumberOfSegments <= 1)
 			{
-				Debug.Log("You Died");
-				if (DeathScreen != null)
-					DeathScreen.SetActive(true);
-				Time.timeScale = 0;
+				foreach (GameObject checkpoint in checkPoints)
+                {
+					if (checkpoint.GetComponent<Checkpoint>().backupPlayer != null)
+                    {
+						checkpoint.SetActive(true);
+						backupPlayer = true;
+                    }
+                }
+
+				if (backupPlayer == false)
+				{
+					Debug.Log("You Died");
+					if (DeathScreen != null)
+						DeathScreen.SetActive(true);
+					Time.timeScale = 0;
+				}
 			}
 		}
 	}

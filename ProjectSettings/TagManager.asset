@@ -29,6 +29,7 @@ TagManager:
   - Controls
   - Other
   - CheckPoint
+  - backup
   layers:
   - Default
   - TransparentFX

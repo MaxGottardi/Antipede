@@ -22784,7 +22784,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8912492245561955198, guid: 3106871317d074b41befb8ebd4bf7be1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 128.43
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8912492245561955198, guid: 3106871317d074b41befb8ebd4bf7be1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -22792,7 +22792,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8912492245561955198, guid: 3106871317d074b41befb8ebd4bf7be1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 120.99
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8912492245561955198, guid: 3106871317d074b41befb8ebd4bf7be1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -27343,7 +27343,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 883153335}
   m_LocalRotation: {x: 0.1305262, y: 0, z: 0, w: 0.9914449}
-  m_LocalPosition: {x: 128.43, y: 5.37138, z: 109.93657}
+  m_LocalPosition: {x: 100, y: 5.37138, z: 88.94657}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -36672,6 +36672,7 @@ GameObject:
   - component: {fileID: 1187057459}
   - component: {fileID: 1187057458}
   - component: {fileID: 1187057457}
+  - component: {fileID: 1187057460}
   m_Layer: 8
   m_Name: Terrain
   m_TagString: Untagged
@@ -36738,6 +36739,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 253
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1187057460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1187057456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71bd95fe522fee743ba973acb65f203c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backupPlayer: {fileID: 0}
 --- !u!1001 &1194372525
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -63377,7 +63391,8 @@ GameObject:
   - component: {fileID: 2094137207}
   - component: {fileID: 2094137206}
   - component: {fileID: 2094137205}
-  m_Layer: 0
+  - component: {fileID: 2094137209}
+  m_Layer: 6
   m_Name: Checkpoint
   m_TagString: CheckPoint
   m_Icon: {fileID: 0}
@@ -63392,7 +63407,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2094137204}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -63455,12 +63470,25 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2094137204}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 110, y: 0, z: 90}
+  m_LocalScale: {x: 5, y: 1, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 401
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2094137209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2094137204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71bd95fe522fee743ba973acb65f203c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backupPlayer: {fileID: 0}
 --- !u!1 &2098159224
 GameObject:
   m_ObjectHideFlags: 0
