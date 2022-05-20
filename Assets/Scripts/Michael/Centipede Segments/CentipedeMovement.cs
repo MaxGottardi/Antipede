@@ -46,6 +46,7 @@ public class CentipedeMovement : MonoBehaviour
 	// Movement.
 	float Horizontal;
 	float Vertical;
+	/// <summary>The world coordinates of where the Head of the Centipede is going towards.</summary>
 	Vector3 InDirection;
 
 	// Surface Normals.
@@ -66,7 +67,8 @@ public class CentipedeMovement : MonoBehaviour
 		if (!bInterpolateHillClimb || bGlobalMovement)
 			return;
 
-		if (t <= 1f)
+		// Do NOT interpolate when course correcting.
+		if (t <= 1f && !bIsCourseCorrecting)
 		{
 			t += Time.deltaTime * YMatchSpeed;
 
@@ -84,16 +86,16 @@ public class CentipedeMovement : MonoBehaviour
 	/// <summary>Send instructions for Horizontal (+X) and Vertical (+Z) Movement.</summary>
 	/// <param name="H">Horizontal. -X &lt; 0 &gt; +X.</param>
 	/// <param name="V">Vertical. -Z &lt; 0 &gt; +Z.</param>
-	public void Set(ref float H, ref float V)
+	public void Set(ref float H, ref float V, ref MCentipedeBody Body)
 	{
+		// Player Inputs.
 		Horizontal = H;
 		Vertical = V;
 
 		if (Horizontal == 0 && Vertical == 0)
 			return;
 
-		if (BoundariesCheckCollisions())
-			return;
+		BoundariesCheckCollisions(ref Body);
 
 		PreviousNormal = SurfaceNormal;
 		SurfaceNormal = GetSurfaceNormal(out bool bGroundWasHit, out RaycastHit Surface);
@@ -109,6 +111,8 @@ public class CentipedeMovement : MonoBehaviour
 			Vector3 NormalForward;
 			Vector3 NormalRight;
 
+			// Get Normal vectors to get where the Centipede should face, and define which directions
+			// are Forward and Right for Movement Input.
 			if (bGlobalMovement)
 			{
 				NormalForward = Vector3.Cross(Vector3.right, SurfaceNormal);
@@ -120,11 +124,19 @@ public class CentipedeMovement : MonoBehaviour
 				NormalRight = Vector3.Cross(SurfaceNormal, transform.forward);
 			}
 
-			InDirection = NormalForward * Vertical + NormalRight * Horizontal;
-			InDirection += transform.position;
+			// If we ARE course correcting, we don't want to get any movement input from the
+			// player.
+			if (!bIsCourseCorrecting)
+			{
+				// Player Input for Movement instructions are set here:
+				InDirection = NormalForward * Vertical + NormalRight * Horizontal;
+				InDirection += transform.position;
+			}
 
+			// Align the Centipede to correctly place itself above the Ground.
 			transform.position = Surface.point - (transform.forward * Lead) + HeightOffGround * -Evaluate(SurfaceNormal);
 
+			// Update interpolation.
 			if (PreviousNormal != SurfaceNormal)
 			{
 				TargetY = NormalForward.y;
@@ -253,44 +265,64 @@ public class CentipedeMovement : MonoBehaviour
 		return Evaluate(T.up);
 	}
 
-	bool BoundariesCheckCollisions()
+	bool BoundariesCheckCollisions(ref MCentipedeBody Body)
 	{
 		if (bIsCourseCorrecting)
 			return true;
 
+		// Fire a Ray forwards to check for Boundary collisions.
 		Vector3 NormalisedInDirection = transform.forward;
 		Ray R = new Ray(transform.position, NormalisedInDirection);
-		bool bWillCollideWithABoundary = Physics.Raycast(R, out RaycastHit BoundariesCheck, BoundaryCheckDistance, 2048);
-
-		Vector3 BoundaryNormal = BoundariesCheck.normal;
-		Vector3 AutoCorrect = Vector3.Reflect(NormalisedInDirection, BoundaryNormal);
-
-		InDirection = transform.position + AutoCorrect;
-
 #if UNITY_EDITOR
-		if (bShowGizmos && bWillCollideWithABoundary)
-		{
-			Vector3 BoundaryPoint = BoundariesCheck.point;
-
-			Debug.DrawLine(transform.position, BoundaryPoint, Color.white, 2);
-			Debug.DrawLine(BoundaryPoint, BoundaryPoint + AutoCorrect, Color.red, 2);
-			Debug.DrawLine(transform.position, InDirection, Color.magenta, 2);
-		}
+		bool bWillCollideWithABoundary = Physics.Raycast(R, out RaycastHit BoundariesCheck, BoundaryCheckDistance, 2048);
+#else
+		// In an actual build of Antipede, we don't care about RaycastHit.
+		bool bWillCollideWithABoundary = Physics.Raycast(R, BoundaryCheckDistance, 2048);
 #endif
 
-		StartCoroutine(CorrectCourse(AutoCorrect));
+		if (bWillCollideWithABoundary)
+		{
+			// If a Boundary was hit, set go back to either the Tail, Absolute Tail (the very-very last Segment)
+			// or the Last Segment.
+			Vector3 AutoCorrect = Body.GetAbsoluteLast().transform.position;
+
+			InDirection = AutoCorrect;
+
+#if UNITY_EDITOR
+			Debug.Log("Centipede collided with Boundary: " + BoundariesCheck.collider.name);
+
+			if (bShowGizmos)
+			{
+				Vector3 BoundaryPoint = BoundariesCheck.point;
+
+				// Boundary Collision point.
+				Debug.DrawLine(transform.position, BoundaryPoint, Color.white, 2);
+
+				// Boundary to Auto Correct point.
+				Debug.DrawLine(BoundaryPoint, AutoCorrect, Color.red, 2);
+
+				// New InDirection; where the Centipede is auto correcting towards.
+				Debug.DrawLine(transform.position, AutoCorrect, Color.magenta, 2);
+			}
+#endif
+
+			// Tell this Movement Component that we are correcting our course.
+			StartCoroutine(CorrectCourse());
+		}
 
 		return bWillCollideWithABoundary;
 	}
 
-	IEnumerator CorrectCourse(Vector3 Reflected)
+	IEnumerator CorrectCourse()
 	{
+		// Tell everything else that we are correcting our course.
 		bIsCourseCorrecting = true;
 
 		// The Centipede will continue correcting its course until it faces the corrected direction.
-		while (Vector3.Dot(transform.forward, Reflected) < .95f)
+		while (Vector3.Dot(transform.forward, (InDirection - transform.position).normalized) < .95f)
 			yield return null;
 
+		// Once we are facing our corrected direction, we are no longer correcting our course.
 		bIsCourseCorrecting = false;
 	}
 

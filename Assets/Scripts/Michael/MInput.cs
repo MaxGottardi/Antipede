@@ -73,7 +73,7 @@ public class MInput : MonoBehaviour
 		float Horizontal = Input.GetAxisRaw("Horizontal");
 		float Vertical = Input.GetAxisRaw("Vertical");
 
-		movement.Set(ref Horizontal, ref Vertical);
+		movement.Set(ref Horizontal, ref Vertical, ref body);
 		if (Horizontal != 0 || Vertical != 0)
 			if (sfxManager != null && Time.timeScale > 0)
 				sfxManager.Walk();
