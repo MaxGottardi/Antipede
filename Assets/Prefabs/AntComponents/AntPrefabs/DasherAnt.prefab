@@ -141,6 +141,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.025214, y: 1.2, z: 2.4796002}
   m_Center: {x: 0.06748994, y: 0.023820572, z: -0.00000017029897}
+--- !u!114 &4219784204372805110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3898689098113968979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 358ebd783dd3c9f48879d89fb953e05a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3737261148704026143
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -163,10 +175,6 @@ PrefabInstance:
     - target: {fileID: 416448974893499724, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 416448974893499724, guid: d03430b02136fae41a430a78a3a68665, type: 3}
-      propertyPath: m_TagString
-      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 807876709678018379, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_Materials.Array.data[0]

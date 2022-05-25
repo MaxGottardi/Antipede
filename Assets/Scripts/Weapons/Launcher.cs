@@ -45,7 +45,9 @@ public class Launcher : Weapon
 			ArcRenderer.positionCount = kArcResolution + 1;
 
 		LaunchVelocity = MMathStatics.ComputeLaunchVelocity(BarrelEndSocket.position, Direction, LaunchHeight, out float Time, true);
-		transform.LookAt(transform.position + LaunchVelocity);
+
+		Vector3 lookPos = transform.position;
+		transform.GetChild(0).GetChild(0).LookAt(lookPos + LaunchVelocity);
 
 		if (Owner && ArcRenderer && ArcRenderer.gameObject == gameObject)
 		{

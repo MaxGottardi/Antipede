@@ -6,6 +6,10 @@ using UnityEditor;
 /// <summary>The base class for an ant.</summary>
 public class GenericAnt : MonoBehaviour
 {
+    [HideInInspector] public Vector3 avoidanceDir;
+    [HideInInspector]public float avoidanceUpdateFreqCurr = -1, waitTimeAvoidance = 0.1f;
+
+
     [HideInInspector] public Transform nextPosTransform;
     [HideInInspector] public List<Vector3> pathToNextPos;
     [HideInInspector] public Vector3 nextPosVector;
@@ -70,6 +74,8 @@ public class GenericAnt : MonoBehaviour
 
     public virtual void Start()
     {
+        avoidanceDir = transform.forward;
+
         backupRing.SetActive(false);
         healthBag = new ShuffleBag<bool>();
         healthBag.shuffleList = damageStageChance;
@@ -236,8 +242,8 @@ public class GenericAnt : MonoBehaviour
         return false;
     }
 
-//    private void OnDrawGizmos()
-//    {
-// Gizmos.DrawSphere(transform.position, backupCallDist);
-//    }
+    ////private void OnDrawGizmos()
+    ////{
+    ////    Gizmos.DrawSphere(transform.position, 5);
+    ////}
 }

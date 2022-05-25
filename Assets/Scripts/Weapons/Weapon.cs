@@ -23,6 +23,7 @@ public abstract class Weapon : MonoBehaviour
 		if (Direction == Vector3.zero)
 			return;
 
+		Debug.Log(transform.gameObject.name);
 		transform.LookAt(Direction);
 	}
 

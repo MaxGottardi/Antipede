@@ -11,34 +11,43 @@ public class DetermineAttackSeg : Node
 
     public override NodeState evaluate()
     {
+#if UNITY_EDITOR
         Profiler.BeginSample("AI Determine Seg Attack");
-        MSegment currSegment = null;
-        float distToSegmnet = -1;
-        foreach (MSegment segment in GameManager1.playerObj.GetComponent<MCentipedeBody>().Segments) //find the closest player segment
+#endif
+        if (GameManager1.mCentipedeBody.Segments.Count > 0)
         {
-            float dist = Vector3.Distance(blackboard.transform.position, segment.gameObject.transform.position);
-            if (currSegment == null || dist < distToSegmnet) //also if segment does not have an ant currently attacking it
+            int randIndex = Random.Range(0, GameManager1.mCentipedeBody.Segments.Count); //pick a random segment to attack
+            MSegment randSegment = GameManager1.mCentipedeBody.Segments[randIndex];
+            
+            ////float distToSegmnet = -1;
+            ////foreach (MSegment segment in GameManager1.playerObj.GetComponent<MCentipedeBody>().Segments) //find the closest player segment
+            ////{
+            ////    float dist = Vector3.Distance(blackboard.transform.position, segment.gameObject.transform.position);
+            ////    if (currSegment == null || dist < distToSegmnet) //also if segment does not have an ant currently attacking it
+            ////    {
+            ////        currSegment = segment;
+            ////        distToSegmnet = dist;
+            ////    }
+            ////}
+            if (randSegment != null)
             {
-                currSegment = segment;
-                distToSegmnet = dist;
-            }
-        }
-        if (currSegment != null)
-        {
-            blackboard.nextPosTransform = currSegment.gameObject.transform;
-            blackboard.pathToNextPos = GameManager1.generateGrid.APathfinding(blackboard.transform.position, blackboard.nextPosTransform.position);//generate the new path
+                blackboard.nextPosTransform = randSegment.gameObject.transform;
+                blackboard.pathToNextPos = GameManager1.generateGrid.APathfinding(blackboard.transform.position, blackboard.nextPosTransform.position);//generate the new path
 
-            if (blackboard.pathToNextPos.Count > 0)
-            {
-                blackboard.nextPosVector = blackboard.pathToNextPos[blackboard.pathToNextPos.Count - 1];
-                blackboard.pathToNextPos.RemoveAt(blackboard.pathToNextPos.Count - 1);
-                if (blackboard.pathToNextPos.Count <= 0) //as no new tiles to move towards can safely say move towards the final goal
-                    blackboard.nextPosVector = blackboard.nextPosTransform.position;
-                //currSegment.beingAttacked = true;
-                return NodeState.Success; //assigned segment
+                if (blackboard.pathToNextPos.Count > 0)
+                {
+                    blackboard.nextPosVector = blackboard.pathToNextPos[blackboard.pathToNextPos.Count - 1];
+                    blackboard.pathToNextPos.RemoveAt(blackboard.pathToNextPos.Count - 1);
+                    if (blackboard.pathToNextPos.Count <= 0) //as no new tiles to move towards can safely say move towards the final goal
+                        blackboard.nextPosVector = blackboard.nextPosTransform.position;
+                    //currSegment.beingAttacked = true;
+                    return NodeState.Success; //assigned segment
+                }
             }
         }
+#if UNITY_EDITOR
         Profiler.EndSample();
+#endif
         ////blackboard.stateMachine.changeState(blackboard.stateMachine.Movement);
         return NodeState.Failure; //no segments found
         //////This for some reason causes an error to appear
