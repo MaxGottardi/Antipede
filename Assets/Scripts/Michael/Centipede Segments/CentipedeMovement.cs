@@ -22,6 +22,10 @@ public class CentipedeMovement : MonoBehaviour
 	float HeightOffGround;
 	Vector3 HeightAsVector;
 
+	[Header("Acceleration")]
+	public AnimationCurve AccelerationCurve;
+	[HideInInspector] public float AccelerationTime = 0f;
+
 	[Header("Terrain Checker Settings.")]
 	[SerializeField, Tooltip("How far ahead of the Centipede should Terrain Ground be checked?"), Min(0f)]
 	float Lead;
@@ -186,9 +190,13 @@ public class CentipedeMovement : MonoBehaviour
 		bool bHasInput = Horizontal != 0 || Vertical != 0;
 		bool bInputIsRelative = !bGlobalMovement && (Horizontal != 0 || Vertical > /* != */ 0);
 
-		if (bHasInput && (bGlobalMovement && bHasInput || bInputIsRelative))
+		if (bHasInput && (bGlobalMovement || bInputIsRelative))
 		{
-			MMathStatics.HomeTowards(rb, InDirection, Body.MovementSpeed, Body.TurnDegrees);
+			AccelerationTime += Time.deltaTime;
+
+			MMathStatics.HomeTowards(rb, InDirection, EvaluateAcceleration(Body.MovementSpeed), Body.TurnDegrees);
+
+			AccelerationTime = Mathf.Min(AccelerationTime, 1f);
 		}
 		else
 		{
@@ -196,7 +204,16 @@ public class CentipedeMovement : MonoBehaviour
 
 			transform.rotation = Quaternion.Slerp(transform.rotation,
 				Quaternion.FromToRotation(transform.up, SurfaceNormal) * transform.rotation, .3f);
+
+			AccelerationTime = 0f;
 		}
+	}
+
+	float EvaluateAcceleration(float Scalar)
+	{
+		float AccelRate = AccelerationCurve.Evaluate(AccelerationTime);
+
+		return AccelRate * Scalar;
 	}
 
 	/// <summary>Grabs the Normal of the terrain the Centipede is on.</summary>

@@ -1,6 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The central class that handles Centipede logic.
+/// <br></br>
+/// <br>Any other Centipede Component can be accessed from here.</br>
+/// <br><br>Includes:</br></br>
+/// <br><see cref="CentipedeMovement"/></br>
+/// <br><see cref="MCentipedeWeapons"/></br>
+/// <br><see cref="MCentipedeEvents"/></br>
+/// <br>Handles <see cref="MInput"/></br>
+/// <br>Centipede <see cref="Construct"/></br>
+/// <br>References to any attached <see cref="MSegment"/></br>
+/// </summary>
+/// <remarks>
+/// <b>This class is split into 3 different files:</b>
+/// <br>This MCentipedeBody.cs file. (Contains the bulk logic of the Centipede)</br>
+/// <br>MCentipedeConstructor.cs. (Contains the <see cref="Awake"/> method and first initialises this Centipede with <see cref="NumberOfSegments"/> starting Segments.</br>
+/// <br>MCentipedeUtils.cs. (Contains the utility implementation for accessing Segments easier.</br>
+/// </remarks>
 [RequireComponent(typeof(MCentipedeEvents))]
 public partial class MCentipedeBody : MonoBehaviour
 {
@@ -16,22 +34,23 @@ public partial class MCentipedeBody : MonoBehaviour
 	[SerializeField, Tooltip("The number of Segments now (during runtime), and to begin with.")] uint NumberOfSegments;
 
 	[Header("Centipede Movement Settings.")]
-	[Min(Vector3.kEpsilon)] public float MovementSpeed = 150f;
+	[Min(Vector3.kEpsilon), Tooltip("The speed of the Centipede's Head.")] public float MovementSpeed = 150f;
 	[Min(Vector3.kEpsilon)] public float TurnDegrees = 7f;
 	private float preSlowedSpeed;
+	CentipedeMovement MovementComponent;
+	AnimationCurve AccelerationCurve;
 
 	[Header("Segment Settings.")]
-
-	[Min(Vector3.kEpsilon)] public float FollowSpeed = 150f;
+	[Min(Vector3.kEpsilon), Tooltip("How fast should the Segments/Tails follow their ForwardNeighbour?")] public float FollowSpeed = 150f;
 	[SerializeField, Min(Vector3.kEpsilon)] float FollowDistance = .2f;
 	[Min(Vector3.kEpsilon)] public float MaxTurnDegreesPerFrame = 7f;
-	[SerializeField, Tooltip("Any additional Segments that are not spawned in Constuct.")] List<MSegment> CustomSegments;
+	[SerializeField, Tooltip("Any additional Segments that are not spawned in Construct.")] List<MSegment> CustomSegments;
 
 	public List<MSegment> Segments;
 	SegmentsInformation SegmentsInfo;
 
-	public float maxSpeed = 750;
-	public float defaultSpeed = 150;
+	const float kMaxSpeed = 750;
+	const float kDefaultSpeed = 150;
 
 	public float slowTimer;
 	public bool slowed;
@@ -49,14 +68,17 @@ public partial class MCentipedeBody : MonoBehaviour
 		shieldActive = false;
 		//shieldDuration = 5.0f;
 		Weapons = GetComponent<MCentipedeWeapons>();
+		MovementComponent = GetComponent<CentipedeMovement>();
+
+		AccelerationCurve = MovementComponent.AccelerationCurve;
 
 		TailSegment = Tail.GetComponent<MSegment>();
-		TailSegment.Initialise(Weapons, Head, FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
+		TailSegment.Initialise(Weapons, MovementComponent, Head, FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance, AccelerationCurve);
 		TailSegment.transform.parent = null;
 
 		foreach (MSegment MS in CustomSegments)
 		{
-			MS.Initialise(Weapons, null, FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
+			MS.Initialise(Weapons, MovementComponent, null, FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance, AccelerationCurve);
 			MS.transform.localEulerAngles = Vector3.zero;
 			MS.transform.parent = null;
 		}
@@ -76,7 +98,7 @@ public partial class MCentipedeBody : MonoBehaviour
 			if (slowTimer >= 5)
 			{
 				MovementSpeed = preSlowedSpeed;
-				SetSpeed(MovementSpeed);
+				ChangeSpeedDirectly(MovementSpeed);
 				slowTimer = 0;
 				slowed = false;
 			}
@@ -140,7 +162,10 @@ public partial class MCentipedeBody : MonoBehaviour
 		++NumberOfSegments;
 
 		if (AddedSegment)
+		{
+			AddedSegment.InjectAccelerationTime(1f);
 			return AddedSegment;
+		}
 
 		Debug.LogError("No Segment was added!");
 		return null;
@@ -150,7 +175,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	{
 		// Inherit Centipede's rotation.
 		MSegment Seg = Instantiate(Segment, Vector3.zero, Rot);
-		Seg.Initialise(Weapons, Segments.Count == 0 ? Head : GetLast(), FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
+		Seg.Initialise(Weapons, MovementComponent, Segments.Count == 0 ? Head : GetLast(), FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance, AccelerationCurve);
 		Seg.name = "Segment: " + Segments.Count;
 
 		Segments.Add(Seg);
@@ -174,7 +199,7 @@ public partial class MCentipedeBody : MonoBehaviour
 			T.LookAt(End);
 		}
 
-		TailSegment.Initialise(Weapons, GetLast(), FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance);
+		TailSegment.Initialise(Weapons, MovementComponent, GetLast(), FollowSpeed, MaxTurnDegreesPerFrame, FollowDistance, AccelerationCurve);
 
 		return Seg;
 	}
@@ -192,16 +217,10 @@ public partial class MCentipedeBody : MonoBehaviour
 
 
 			MSegment lastSegment = GetLast();
-			if (lastSegment == null)
+
+			if (!lastSegment)
 				return;
-			//MSegment lastSegment = this[Segments.Count - 1];
 
-			/*foreach (MSegment segment in Segments)
-			{
-				lastSegment = segment;
-			}*/
-
-			//Segments.Remove(Segments[Segments.Count - 1]);
 			if (lastSegment.ReduceHealth(healthReduction))
 			{
 				if (GameManager1.uiButtons != null)
@@ -249,13 +268,13 @@ public partial class MCentipedeBody : MonoBehaviour
 			if (NumberOfSegments <= 1)
 			{
 				foreach (GameObject checkpoint in checkPoints)
-                {
+				{
 					if (checkpoint.GetComponent<Checkpoint>().backupPlayer != null)
-                    {
+					{
 						checkpoint.SetActive(true);
 						backupPlayer = true;
-                    }
-                }
+					}
+				}
 
 				if (backupPlayer == false)
 				{
@@ -267,76 +286,78 @@ public partial class MCentipedeBody : MonoBehaviour
 			}
 		}
 	}
+
+	/// <summary>Increases the MovementSpeed of this Centipede by value, or limits to <see cref="kMaxSpeed"/>.</summary>
+	/// <param name="value">The movement speed to add.</param>
 	public void IncreaseSpeed(float value)
 	{
-		if (FollowSpeed + value > maxSpeed)
-		{
-			SetSpeed(maxSpeed);
-		}
-		else
-		{
-			FollowSpeed += value;
-			MovementSpeed += value;
-
-			foreach (MSegment segment in Segments)
-				segment.FollowSpeed += value;
-
-			foreach (MSegment S in CustomSegments)
-				S.FollowSpeed += value;
-
-			TailSegment.FollowSpeed += value;
-		}
+		DetermineSpeed(value);
 	}
 
+#if UNITY_EDITOR
+	[System.Obsolete("Do not call SetSpeed(). See ChangeSpeedDirectly(), or make a new function.")]
 	public void SetSpeed(float value)
 	{
-		if (value > maxSpeed)
+		throw new System.NotImplementedException("Do not call SetSpeed(). See ChangeSpeedDirectly(), or make a new function.");
+	}
+#endif
+
+	void DetermineSpeed(float Speed)
+	{
+		// Maximum Speed Limit.
+		if (MovementSpeed + Speed >= kMaxSpeed)
 		{
-			MovementSpeed = maxSpeed;
-			FollowSpeed = maxSpeed;
-
-			foreach (MSegment segment in Segments)
-				segment.FollowSpeed = maxSpeed;
-
-			foreach (MSegment S in CustomSegments)
-				S.FollowSpeed = maxSpeed;
-
-			TailSegment.FollowSpeed = maxSpeed;
-			return;
+			ChangeSpeedDirectly(kMaxSpeed);
 		}
+		// Minimum Speed Limit.
+		else if (MovementSpeed + Speed <= kDefaultSpeed)
+		{
+			ChangeSpeedDirectly(kDefaultSpeed);
+		}
+		// Otherwise, set NewSpeed.
 		else
 		{
-			MovementSpeed = value;
-			FollowSpeed = value;
+			// Speed will either be positive or negative, depending
+			// on increasing or decreasing speed.
+
+			MovementSpeed += Speed;
+			FollowSpeed += Speed;
+
+			// Every Segment needs a speed update.
 			foreach (MSegment segment in Segments)
-				segment.FollowSpeed = value;
+				segment.FollowSpeed += Speed;
 
+			// If there are any Custom Segments, update them as well.
 			foreach (MSegment S in CustomSegments)
-				S.FollowSpeed = value;
+				S.FollowSpeed += Speed;
 
-			TailSegment.FollowSpeed = value;
+			// The Tail is a standalone Segment. Update it as well.
+			TailSegment.FollowSpeed += Speed;
 		}
 	}
 
+	/// <summary>Immediately change the speed of the Centipede and its Segments.</summary>
+	/// <remarks>Ignores speed limit checks.</remarks>
+	/// <param name="NewSpeed">The new movement speed this Centipede and its Segments will travel at.</param>
+	public void ChangeSpeedDirectly(float NewSpeed)
+	{
+		MovementSpeed = NewSpeed;
+		FollowSpeed = NewSpeed;
+		
+		foreach (MSegment segment in Segments)
+			segment.FollowSpeed = NewSpeed;
+
+		foreach (MSegment S in CustomSegments)
+			S.FollowSpeed = NewSpeed;
+
+		TailSegment.FollowSpeed = NewSpeed;
+	}
+
+	/// <summary>Decreases the MovementSpeed of this Centipede by value, or limits to <see cref="kDefaultSpeed"/>.</summary>
+	/// <param name="value">The movement speed to decrease.</param>
 	public void DecreaseSpeed(float value)
 	{
-		if (FollowSpeed - value < 0)
-		{
-			SetSpeed(defaultSpeed);
-		}
-		else
-		{
-			FollowSpeed -= value;
-			MovementSpeed -= value;
-
-			foreach (MSegment segment in Segments)
-				segment.FollowSpeed -= value;
-
-			foreach (MSegment S in CustomSegments)
-				S.FollowSpeed -= value;
-
-			TailSegment.FollowSpeed -= value;
-		}
+		DetermineSpeed(-value);
 	}
 
 	public void tempSlowSpeed()
@@ -344,10 +365,9 @@ public partial class MCentipedeBody : MonoBehaviour
 		if (!slowed)
 		{
 			preSlowedSpeed = MovementSpeed;
-			DecreaseSpeed(MovementSpeed / 2);
+			ChangeSpeedDirectly(MovementSpeed * .5f);
 			slowed = true;
 		}
 	}
-
 }
 
