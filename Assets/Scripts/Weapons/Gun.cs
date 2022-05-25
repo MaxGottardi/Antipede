@@ -8,7 +8,7 @@ public class Gun : Weapon
 
 	public override Projectile Fire(Vector3 Direction)
 	{
-		sfxManager.ShootGun();
+		//sfxManager.ShootGun();
 		Projectile StraightProjectile = InstantiateProjectile();
 		StraightProjectile.Initialise(isAntGun);
 

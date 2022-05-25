@@ -15,7 +15,7 @@ public class Launcher : Weapon
 
 	public override Projectile Fire(Vector3 Position)
 	{
-		sfxManager.ShootLauncher();
+		//sfxManager.ShootLauncher();
 		Vector3 Velocity = LaunchVelocity;
 		if (!MMathStatics.DiagnosticCheckNaN(LaunchVelocity))
 		{
