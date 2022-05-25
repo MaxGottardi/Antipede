@@ -15,6 +15,8 @@ public class SFXManager : MonoBehaviour
     [SerializeField] AudioSource sourceDamage;
     [SerializeField] AudioSource sourceWeapon;
     [SerializeField] AudioSource sourceShield;
+    [SerializeField] AudioSource sourceLazer;
+    [SerializeField] AudioSource sourceAnt;
 
     [SerializeField] AudioClip menuMusic;
     [SerializeField] AudioClip loadingMusic;
@@ -28,6 +30,12 @@ public class SFXManager : MonoBehaviour
     [SerializeField] AudioClip shieldSFX;
     [SerializeField] AudioClip damageSFX;
     [SerializeField] AudioClip walkSFX;
+
+    [SerializeField] AudioClip gunShootSFX;
+    [SerializeField] AudioClip launcherShootSFX;
+    [SerializeField] AudioClip lazerSFX;
+    [SerializeField] AudioClip antAttackSFX;
+    [SerializeField] AudioClip spiderAttackSFX;
 
     // Start is called before the first frame update
     void Start()
@@ -122,6 +130,62 @@ public class SFXManager : MonoBehaviour
     {
         sourceShield.Stop();
     }
+
+    public void ShootGun()
+    {
+        sourceWeapon.clip = gunShootSFX;
+        sourceWeapon.Play();
+    }
+
+    public void ShootLauncher()
+    {
+        sourceWeapon.clip = launcherShootSFX;
+        sourceWeapon.Play();
+    }
+
+    public void ActivateLazer()
+    {
+        sourceLazer.clip = lazerSFX;
+        sourceLazer.Play();
+    }
+
+    public void DeactivateLaser()
+    {
+        sourceLazer.Stop();
+    }
+
+    public void AntAttack()
+    {
+        sourceAnt.clip = antAttackSFX;
+        sourceAnt.Play();
+    }
+
+    public void SpiderAttack()
+    {
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static void AudioFadeOut(AudioSource audioSource, float FadeTime)
     {
 

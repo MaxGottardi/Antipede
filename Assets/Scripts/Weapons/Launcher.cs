@@ -11,9 +11,11 @@ public class Launcher : Weapon
 
 	Vector3 LaunchVelocity;
 	bool bDetached = false;
+	[SerializeField] SFXManager sfxManager;
 
 	public override Projectile Fire(Vector3 Position)
 	{
+		sfxManager.ShootLauncher();
 		Vector3 Velocity = LaunchVelocity;
 		if (!MMathStatics.DiagnosticCheckNaN(LaunchVelocity))
 		{
