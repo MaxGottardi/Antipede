@@ -6,6 +6,11 @@ public class MSegment : MonoBehaviour
 	Rigidbody rb;
 	public float FollowSpeed, MaxTurnDegreesPerFrame;
 	float Distance;
+	CentipedeMovement Reference;
+	static AnimationCurve AccelerationCurve;
+	float AccelerationTime = 0f;
+	bool bImmediateSlowDown = false;
+
 	public LayerMask segmentLayer;
 	//public bool beingAttacked = false;
 
@@ -20,11 +25,14 @@ public class MSegment : MonoBehaviour
 
 	/// <summary>Initialises this Segment to follow ForwardNeighbour at FollowSpeed and turning at MaxTurnDegreesPerFrame.</summary>
 	/// <remarks>MaxTurnDegreesPerFrame will be multiplied to try and prevent disconnection. Increase as needed.</remarks>
+	/// <param name="Owner">The Weapons Component this Segment belongs to. The Centipede.</param>
+	/// <param name="Reference">The Centipede's Movement Component to judge the rate of acceleration and deceleration.</param>
 	/// <param name="ForwardNeighbour">The Transform to follow when the body moves.</param>
 	/// <param name="FollowSpeed">The speed to follow ForwardNeighbour.</param>
 	/// <param name="MaxTurnDegreesPerFrame">How many DEGREES can this Segment turn towards ForwardNeighbour?</param>
 	/// <param name="Distance">How close should this Segment go until it stops following ForwardNeighbour?</param>
-	public void Initialise(MCentipedeWeapons Owner, Transform ForwardNeighbour, float FollowSpeed, float MaxTurnDegreesPerFrame, float Distance)
+	/// <param name="AccelerationCurve">The curve that defines the rate of acceleration towards <see cref="FollowSpeed"/>.</param>
+	public void Initialise(MCentipedeWeapons Owner, CentipedeMovement Reference, Transform ForwardNeighbour, float FollowSpeed, float MaxTurnDegreesPerFrame, float Distance, AnimationCurve AccelerationCurve)
 	{
 		this.Owner = Owner;
 		SetForwardNeighbour(ForwardNeighbour);
@@ -32,6 +40,11 @@ public class MSegment : MonoBehaviour
 		this.FollowSpeed = FollowSpeed;
 		this.MaxTurnDegreesPerFrame = MaxTurnDegreesPerFrame * 20;
 		this.Distance = Distance;
+
+		this.Reference = Reference;
+
+		if (global::MSegment.AccelerationCurve == null)
+			global::MSegment.AccelerationCurve = AccelerationCurve;
 
 		WeaponSocket = transform.Find("Weapon Attachment Socket");
 	}
@@ -43,16 +56,36 @@ public class MSegment : MonoBehaviour
 	{
 		if (bDetached)
 		{
+			rb.AddTorque(transform.up * 50f);
 			DetachGameFunctions();
+
 			return;
 		}
 
-		if (!MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance, out float SquareDistance))
+		if (!MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance * 1.25f, out float SquareDistance))
 		{
 			if (ForwardNeighbour)
 			{
-				MMathStatics.HomeTowards(rb, ForwardNeighbour, FollowSpeed, MaxTurnDegreesPerFrame);
-				bHasRayAligned = false;					
+				if (Reference.AccelerationTime > 0f)
+				{
+					AccelerationTime += Time.deltaTime;
+				}
+				else
+				{
+					//AccelerationTime = .2f;
+					if (!bImmediateSlowDown)
+					{
+						AccelerationTime *= .75f;
+						bImmediateSlowDown = true;
+					}
+
+					AccelerationTime -= Time.deltaTime;
+				}
+
+				MMathStatics.HomeTowards(rb, ForwardNeighbour, EvaluateAcceleration(FollowSpeed), MaxTurnDegreesPerFrame);
+				bHasRayAligned = false;
+
+				AccelerationTime = Mathf.Clamp(AccelerationTime, Distance * .5f, 1f);
 			}
 		}
 		else
@@ -65,6 +98,7 @@ public class MSegment : MonoBehaviour
 				{
 					if (Physics.Raycast(transform.position, -transform.up, out RaycastHit Hit, 1, 256))
 					{
+						transform.position = Hit.point + transform.up * Distance;
 						SurfaceNormal = Hit.normal;
 					}
 					else
@@ -91,7 +125,22 @@ public class MSegment : MonoBehaviour
 					transform.rotation = Quaternion.Slerp(transform.rotation, To, .3f);
 				}
 			}
+
+			AccelerationTime = 0f;
+			bImmediateSlowDown = false;
 		}
+	}
+
+	float EvaluateAcceleration(float Scalar)
+	{
+		float AccelRate = AccelerationCurve.Evaluate(AccelerationTime);
+
+		return AccelRate * Scalar;
+	}
+
+	public void InjectAccelerationTime(float Time)
+	{
+		AccelerationTime = Time;
 	}
 
 	public void SetForwardNeighbour(Transform NewForwardNeighbour)
@@ -157,6 +206,7 @@ public class MSegment : MonoBehaviour
 			// Remove core components from this duplicated Segment.
 			Destroy(Replacement.GetComponent<Rigidbody>());
 			Destroy(Replacement.GetComponent<MSegment>());
+			Destroy(Replacement.GetComponent<Collider>());
 		}
 	}
 

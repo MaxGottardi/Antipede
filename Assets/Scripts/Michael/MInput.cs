@@ -63,17 +63,17 @@ public class MInput : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
 		{
 			PreSlowShift = body.MovementSpeed;
-			body.SetSpeed(PreSlowShift * .5f);
+			body.ChangeSpeedDirectly(PreSlowShift * .5f);
 		}
 		else if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
 		{
-			body.SetSpeed(PreSlowShift);
+			body.ChangeSpeedDirectly(PreSlowShift);
 		}
 
 		float Horizontal = Input.GetAxisRaw("Horizontal");
 		float Vertical = Input.GetAxisRaw("Vertical");
 
-		movement.Set(ref Horizontal, ref Vertical);
+		movement.Set(ref Horizontal, ref Vertical, ref body);
 		if (Horizontal != 0 || Vertical != 0)
 			if (sfxManager != null && Time.timeScale > 0)
 				sfxManager.Walk();

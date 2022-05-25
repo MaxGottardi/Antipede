@@ -2462,8 +2462,6 @@ MonoBehaviour:
   - {fileID: 1345376963183836618}
   - {fileID: 6185310083578253234}
   Segments: []
-  maxSpeed: 450
-  defaultSpeed: 250
   slowTimer: 0
   slowed: 0
   DeathScreen: {fileID: 0}
@@ -2528,6 +2526,40 @@ MonoBehaviour:
   bPrintDebugLogs: 0
   bGlobalMovement: 0
   HeightOffGround: 0.2
+  AccelerationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2.5416582
+      outSlope: 2.5416582
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.09807828
+      value: 0.69449437
+      inSlope: 0.28502476
+      outSlope: 0.28502476
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.64958817
+      outWeight: 0.091996185
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.8757197
+      outSlope: 0.8757197
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.055550534
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  AccelerationTime: 0
   Lead: 0.45
   GroundHeightDistance: 0.7
   GroundDistanceCheck: 1

@@ -26,7 +26,7 @@ public class GameSettings : MonoBehaviour
 		checkPoints = GameObject.FindGameObjectsWithTag("CheckPoint");
 		foreach (GameObject checkpoint in checkPoints)
         {
-			checkpoint.SetActive(false);
+			//checkpoint.SetActive(false);
         }
 		DefaultState();
 	}
