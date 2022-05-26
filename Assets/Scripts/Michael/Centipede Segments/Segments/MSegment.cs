@@ -172,6 +172,8 @@ public class MSegment : MonoBehaviour
 		AttachedWeapon.OnAttatch();
 
 		Owner.SegmentsWithWeapons.Add(this);
+
+		Owner.StopAllCoroutines();
 	}
 
 	public bool TryGetWeaponSocket(out Transform Socket)

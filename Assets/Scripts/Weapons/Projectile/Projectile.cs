@@ -26,18 +26,18 @@ public class Projectile : MonoBehaviour
 		rb.AddForce(LaunchVelocity);
 	}
 
-    private void OnCollisionEnter(Collision collision)
-    {
+	private void OnCollisionEnter(Collision collision)
+	{
 		//Destroy(this);
 		if (!isEnemyProjectile && collision.gameObject.CompareTag("Enemy"))
-        {
+		{
 			collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(30);
 			Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 			Destroy(gameObject);
 		}
-		if (!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula") 
+		if (!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula")
 			&& collision.gameObject.GetComponent<Tarantula>().healthSlider.value >= 0.50)
-        {
+		{
 			collision.gameObject.GetComponent<Tarantula>().DecreaseHealth();
 			Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 		}
@@ -71,12 +71,12 @@ public class Projectile : MonoBehaviour
 		{
 			SceneManager.LoadScene("SettingsScene");
 		}
-		else if(collision.gameObject.layer != LayerMask.NameToLayer("Projectile") && (SceneManager.GetActiveScene().name =="MainMenu" || SceneManager.GetActiveScene().name == "SettingsScene"))
+		else if (collision.gameObject.layer != LayerMask.NameToLayer("Projectile") && (SceneManager.GetActiveScene().name == "MainMenu" || SceneManager.GetActiveScene().name == "SettingsScene"))
 			Destroy(this);
-		if(!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula"))
-        {
+		if (!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula"))
+		{
 			Destroy(gameObject);
-        }
+		}
 
 
 	}
@@ -87,6 +87,6 @@ public class Projectile : MonoBehaviour
         {
 			GameManager1.mCentipedeBody.RemoveSegment(30, transform.position + Vector3.up * 0.5f);
 			Destroy(gameObject);
-        }
-    }
+		}
+	}
 }

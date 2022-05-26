@@ -22791,7 +22791,7 @@ PrefabInstance:
       objectReference: {fileID: 1659492444}
     - target: {fileID: 8912492245561955196, guid: 3106871317d074b41befb8ebd4bf7be1, type: 3}
       propertyPath: NumberOfSegments
-      value: 300
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8912492245561955198, guid: 3106871317d074b41befb8ebd4bf7be1, type: 3}
       propertyPath: m_RootOrder
@@ -37583,6 +37583,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TemplateCard: {fileID: 8785330127099431164, guid: 5e642c782cb4e394bb92f7ef663d3d01, type: 3}
   PaddingBetweenCards: 10
+  WeaponCheats:
+  - {fileID: 692776519300176814, guid: c8bac3e7493054f44b5db96606925168, type: 3}
+  - {fileID: 1475715996781863676, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+  - {fileID: 4066411363957430125, guid: 300e834a871c8ca4e9b72b89cdde0b59, type: 3}
+  - {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!1 &1213232892
 GameObject:
   m_ObjectHideFlags: 0

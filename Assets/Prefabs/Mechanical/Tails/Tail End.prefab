@@ -476,8 +476,8 @@ MeshRenderer:
   - {fileID: -7301279310005317288, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
   - {fileID: 6326233545876464289, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
   - {fileID: -8507402823019552167, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
-  - {fileID: 1708684242180143079, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
-  - {fileID: 1161000646516102174, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
+  - {fileID: 2100000, guid: 8ffb0f632e8d0bb48aa6ff43eb7600ab, type: 2}
+  - {fileID: 2100000, guid: e3a73044f21f21141936683ca70c7efe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1071,8 +1071,8 @@ MeshRenderer:
   - {fileID: -7301279310005317288, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
   - {fileID: 6326233545876464289, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
   - {fileID: -8507402823019552167, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
-  - {fileID: 1708684242180143079, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
-  - {fileID: 1161000646516102174, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
+  - {fileID: 2100000, guid: 8ffb0f632e8d0bb48aa6ff43eb7600ab, type: 2}
+  - {fileID: 2100000, guid: e3a73044f21f21141936683ca70c7efe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1255,7 +1255,11 @@ MonoBehaviour:
   ForwardNeighbour: {fileID: 9067860839968405729, guid: 00a747c1b94695d439c2c171da56fdc6, type: 3}
   FollowSpeed: 0
   MaxTurnDegreesPerFrame: 0
+  segmentLayer:
+    serializedVersion: 2
+    m_Bits: 0
   bIgnoreFromWeapons: 1
+  health: 100
 --- !u!114 &4438886602354123869
 MonoBehaviour:
   m_ObjectHideFlags: 0

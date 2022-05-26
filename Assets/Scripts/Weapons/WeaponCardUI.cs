@@ -11,6 +11,8 @@ public class WeaponCardUI : MonoBehaviour
 	[SerializeField] float PaddingBetweenCards;
 	float Alpha;
 
+	[SerializeField] Weapon[] WeaponCheats;
+
 	static Dictionary<Weapon, AttachmentUIInfo> WeaponsInventory;
 
 	void Awake()
@@ -31,6 +33,17 @@ public class WeaponCardUI : MonoBehaviour
 	{
 		WeaponsInventory = new Dictionary<Weapon, AttachmentUIInfo>();
 		Alpha = TemplateCard.GetComponent<RawImage>().color.a;
+	}
+
+	void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Slash) && Input.GetKey(KeyCode.RightShift))
+		{
+			foreach (Weapon W in WeaponCheats)
+			{
+				Add(W);
+			}
+		}
 	}
 
 	/// <summary>Add Weapon to the Inventory.</summary>

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2037037131742102108}
   - component: {fileID: 5916970687496498516}
   - component: {fileID: 2037037131742102111}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Launcher Pickup
   m_TagString: Weapon Pickup
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+  Weapon: {fileID: 1475715996781863676, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!1 &2037037132778371809
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 2037037132778371808}
   - component: {fileID: 2037037132778371813}
   - component: {fileID: 2037037132778371814}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,7 +203,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3619968746559908332}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarrelEndSocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
