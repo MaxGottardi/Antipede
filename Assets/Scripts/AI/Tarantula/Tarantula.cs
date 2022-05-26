@@ -148,7 +148,7 @@ public class Tarantula: MonoBehaviour
                 attackTimer += Time.deltaTime;
                 if (attackTimer >= attackDelay)
                 {
-                    player.RemoveSegment(100);
+                    player.RemoveSegment(100, targetSeg.transform.position);
                     attackTimer = 0;
                 }
             }

@@ -16,22 +16,34 @@ public class DetermineAttackSeg : Node
 #endif
         if (GameManager1.mCentipedeBody.Segments.Count > 0)
         {
-            int randIndex = Random.Range(0, GameManager1.mCentipedeBody.Segments.Count); //pick a random segment to attack
-            MSegment randSegment = GameManager1.mCentipedeBody.Segments[randIndex];
+            MSegment randSegment = null;
+            float distToSegmnet = -1;
+            int numAttackingSegment = int.MaxValue;
+
+            foreach (MSegment segment in GameManager1.playerObj.GetComponent<MCentipedeBody>().Segments) //find the closest player segment
+            {
+                float dist = Vector3.Distance(blackboard.transform.position, segment.gameObject.transform.position);
+                if ((randSegment == null || dist < distToSegmnet) && segment.numAttacking <= numAttackingSegment) //also if segment does not have an ant currently attacking it
+                {
+                    randSegment = segment;
+                    distToSegmnet = dist;
+                    numAttackingSegment = segment.numAttacking;
+                }
+            }
+
+            if (randSegment == null)
+            {
+                //as no segment found without an ant attacking it, just pick a random one
+                int randIndex = Random.Range(0, GameManager1.mCentipedeBody.Segments.Count); //pick a random segment to attack
+                randSegment = GameManager1.mCentipedeBody.Segments[randIndex];
+            }
             
             ////float distToSegmnet = -1;
-            ////foreach (MSegment segment in GameManager1.playerObj.GetComponent<MCentipedeBody>().Segments) //find the closest player segment
-            ////{
-            ////    float dist = Vector3.Distance(blackboard.transform.position, segment.gameObject.transform.position);
-            ////    if (currSegment == null || dist < distToSegmnet) //also if segment does not have an ant currently attacking it
-            ////    {
-            ////        currSegment = segment;
-            ////        distToSegmnet = dist;
-            ////    }
-            ////}
+
             if (randSegment != null)
             {
                 blackboard.nextPosTransform = randSegment.gameObject.transform;
+                randSegment.numAttacking++;
                 blackboard.pathToNextPos = GameManager1.generateGrid.APathfinding(blackboard.transform.position, blackboard.nextPosTransform.position);//generate the new path
 
                 if (blackboard.pathToNextPos.Count > 0)

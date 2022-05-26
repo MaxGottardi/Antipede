@@ -21,6 +21,8 @@ public class MSegment : MonoBehaviour
 	MCentipedeWeapons Owner;
 	public float health = 100;
 
+	public int numAttacking = 0; //does this segment has a player locked on for attacking
+
 	bool bDetached = false;
 
 	/// <summary>Initialises this Segment to follow ForwardNeighbour at FollowSpeed and turning at MaxTurnDegreesPerFrame.</summary>

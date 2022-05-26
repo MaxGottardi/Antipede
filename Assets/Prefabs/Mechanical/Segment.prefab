@@ -1185,7 +1185,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.6, y: 0.44, z: 1}
+  m_Size: {x: 0.6, y: 0.44, z: 3}
   m_Center: {x: 0, y: 0, z: 0.42}
 --- !u!54 &1257723735167566948
 Rigidbody:
@@ -1223,6 +1223,7 @@ MonoBehaviour:
     m_Bits: 0
   bIgnoreFromWeapons: 0
   health: 100
+  numAttacking: 0
 --- !u!114 &4972491650448456737
 MonoBehaviour:
   m_ObjectHideFlags: 0

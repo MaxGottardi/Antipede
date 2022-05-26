@@ -134,6 +134,7 @@ public class InvestigateState : State
         {
             //if (owner.nextPosTransform && owner.nextPosTransform.gameObject.GetComponent<MSegment>())
             //    owner.nextPosTransform.gameObject.GetComponent<MSegment>().beingAttacked = false;
+            owner.loseAttackInterest();
             owner.stateMachine.changeState(owner.stateMachine.Movement);
         }
         else if (checkAttack()) //within attack range of chosen player segment
@@ -151,13 +152,13 @@ public class InvestigateState : State
 
     public virtual bool checkAttack()
     {
-        return owner.NearSegment(owner.transform.position) && !owner.callingBackup;
+        float dot = Vector3.Dot(owner.transform.forward, owner.nextPosTransform.forward);
+        return owner.NearSegment(owner.transform.position) && !owner.callingBackup && dot > -0.5f && dot < 0.5f;
     }
 
     public virtual void exit()
     {
         topNode.interupt();
-
         owner.shockBar.SetActive(false);
         lostPlayerTime = 0;
     }
@@ -179,8 +180,8 @@ public class AttackState : State
     public virtual void enter()
     {
         attackTime = 2;
-        headNormRote = owner.headTransform.rotation;
-        owner.headTransform.LookAt(owner.nextPosTransform);
+        //headNormRote = owner.headTransform.rotation;
+////        owner.headTransform.LookAt(GameManager1.playerObj.transform);
         owner.anim.SetTrigger("Attack");
         attackDone = false;
     }
@@ -192,7 +193,8 @@ public class AttackState : State
         {
             if (owner.NearSegment(owner.transform.position) && !attackDone)
             {
-                GameManager1.mCentipedeBody.RemoveSegment(100);
+                GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
+
                 attackDone = true;
             }
 
@@ -205,7 +207,7 @@ public class AttackState : State
     public virtual void exit()
     {
         attackTime = 2;
-        owner.headTransform.rotation = headNormRote;
+        //owner.headTransform.rotation = headNormRote;
     }
 }
 
@@ -414,8 +416,8 @@ public class GuardAttack : AttackState
         {
             if (owner.NearSegment(owner.transform.position) && !attackDone)
             {
-                GameManager1.mCentipedeBody.RemoveSegment(100);
-                GameManager1.mCentipedeBody.RemoveSegment(100);
+                GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
+                GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
                 attackDone = true;
             }
             if (attackTime <= 0)
@@ -465,11 +467,6 @@ public class DasherInvestigate : InvestigateState
 
     public override void enter()
     {
-        dashOwner.tempSpeed = owner.Speed;
-        dashOwner.tempRoteSpeed = owner.rotSpeed;
-        dashOwner.tempAnimSpeed = owner.animMultiplier;
-
-
         owner.Speed = dashOwner.dashSpeed;
         owner.rotSpeed = dashOwner.dashRoteSpeed;
         owner.animMultiplier = dashOwner.dashAnimSpeed;
@@ -519,12 +516,12 @@ public class BombAttack : AttackState
     {
         timeTilExplode -= Time.deltaTime;
         //owner.transform.localScale += new Vector3(4-timeTilExplode, 4-timeTilExplode, 4-timeTilExplode);
-        if (timeTilExplode <= 0)//when finished explode
+        if (timeTilExplode <= 0)//when finished explode, need to add a check to ensure its near the player
         {
-            GameManager1.mCentipedeBody.RemoveSegment(100);
-            GameManager1.mCentipedeBody.RemoveSegment(100);
-            GameManager1.mCentipedeBody.RemoveSegment(100);
-            GameManager1.mCentipedeBody.RemoveSegment(100);
+            GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
+            GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
+            GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
+            GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
 
             owner.transform.parent = null;
             owner.stateMachine.changeState(owner.stateMachine.Dead);

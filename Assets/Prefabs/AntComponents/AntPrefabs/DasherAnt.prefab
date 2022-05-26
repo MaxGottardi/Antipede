@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3587004889938142218}
   - component: {fileID: 2075169158371622724}
-  - component: {fileID: 3842101176342463807}
   - component: {fileID: 4425862525372914277}
   m_Layer: 7
   m_Name: DasherAnt
@@ -42,25 +41,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1768346567234793843}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!95 &3842101176342463807
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1768346567234793843}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &4425862525372914277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,6 +53,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c291c6207d9e6b347b1137ef685ef53f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  avoidanceDir: {x: 0, y: 0, z: 0}
+  avoidanceUpdateFreqCurr: -1
+  waitTimeAvoidance: 0.1
   nextPosTransform: {fileID: 0}
   pathToNextPos: []
   nextPosVector: {x: 0, y: 0, z: 0}
@@ -87,7 +70,7 @@ MonoBehaviour:
     m_Bits: 128
   groundLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 320
   callBackupWait: 0
   canInvestigate: 0
   callingBackup: 0

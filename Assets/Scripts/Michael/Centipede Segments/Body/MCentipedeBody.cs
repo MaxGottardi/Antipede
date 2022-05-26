@@ -204,7 +204,7 @@ public partial class MCentipedeBody : MonoBehaviour
 		return Seg;
 	}
 
-	public void RemoveSegment(float healthReduction)//MSegment deadSegment)
+	public void RemoveSegment(float healthReduction, Vector3 particalPos)//MSegment deadSegment)
 	{
 		if (!shieldActive && Segments != null && Segments.Count > 0)
 		{
@@ -234,7 +234,7 @@ public partial class MCentipedeBody : MonoBehaviour
 					DecreaseSpeed(10);
 				}
 
-				Instantiate(DamageParticles, lastSegment.transform.position, Quaternion.identity);
+				Instantiate(DamageParticles, particalPos, Quaternion.identity);
 
 				//Destroy(lastSegment.gameObject);
 				lastSegment.Detach();

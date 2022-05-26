@@ -14,6 +14,10 @@ public class DasherAnt : GenericAnt
     public override void Start()
     {
         base.Start();
+        tempSpeed = Speed;
+        tempRoteSpeed = rotSpeed;
+        tempAnimSpeed = animMultiplier;
+
         stateMachine.Investigate = new DasherInvestigate(this);
     }
 }
