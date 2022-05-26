@@ -7,6 +7,9 @@ public class Gun : Weapon
 
 	public override Projectile Fire(Vector3 Direction)
 	{
+		if (!bIsRegistered)
+			return null;
+
 		Projectile StraightProjectile = InstantiateProjectile();
 		StraightProjectile.Initialise(isAntGun);
 

@@ -24,9 +24,12 @@ public class Laser : Weapon
 
 		*/
 
-		Projectile Laser = InstantiateProjectile();
-		Laser.Initialise(isAntGun);
-		Laser.Launch(Position);
+		if (bIsRegistered)
+		{
+			Projectile Laser = InstantiateProjectile();
+			Laser.Initialise(isAntGun);
+			Laser.Launch(Position);
+		}
 
 		return null;
 	}

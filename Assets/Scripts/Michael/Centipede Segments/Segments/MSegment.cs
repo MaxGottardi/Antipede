@@ -174,6 +174,47 @@ public class MSegment : MonoBehaviour
 		Owner.StopAllCoroutines();
 	}
 
+	public void ReplaceWeapon(Weapon NewWeapon)
+	{
+		Weapon WeaponNow = Weapon;
+
+		// Deregister this Segment from Weapons.
+		Deregister();
+
+		Debug.Assert(WeaponNow != null, "Trying to replace a Segment's Weapon, but no Weapon is attached!");
+
+		WeaponNow.transform.parent = null;
+
+		Rigidbody WNRB = WeaponNow.gameObject.AddComponent<Rigidbody>();
+
+		// Random force parameters.
+		float RandomUAxis = Random.Range(0f, 1f);
+		float RandomRAxis = Random.Range(-1f, 1f);
+
+		// Calculate a random upwards force.
+		Vector3 Force = transform.up * RandomUAxis + transform.right * RandomRAxis;
+		Force.Normalize();
+		Force *= 5f;
+
+		// Ignore inertial forces from pre-detachment.
+		WNRB.velocity = Vector3.zero;
+		WNRB.useGravity = true;
+
+		// Apply upwards force and random rotation.
+		WNRB.AddForce(Force, ForceMode.VelocityChange);
+		WNRB.transform.rotation = MMathStatics.V2Q(Random.onUnitSphere);
+		WNRB.AddTorque(Force * 5000);
+
+		// Enable physics collisions.
+		WNRB.gameObject.AddComponent<BoxCollider>();
+
+		WeaponNow.Deregister();
+		Destroy(Weapon.gameObject, 5f);
+
+		// Reregister this Segment into Weapons.
+		SetWeapon(NewWeapon);
+	}
+
 	public bool TryGetWeaponSocket(out Transform Socket)
 	{
 		Socket = WeaponSocket;

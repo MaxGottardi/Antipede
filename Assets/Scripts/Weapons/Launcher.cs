@@ -14,14 +14,17 @@ public class Launcher : Weapon
 
 	public override Projectile Fire(Vector3 Position)
 	{
-		Vector3 Velocity = LaunchVelocity;
-		if (!MMathStatics.DiagnosticCheckNaN(LaunchVelocity))
+		if (bIsRegistered)
 		{
-			Projectile LaunchedProjectile = InstantiateProjectile();
-			LaunchedProjectile.Initialise(isAntGun);
-			LaunchedProjectile.Launch(Velocity);
+			Vector3 Velocity = LaunchVelocity;
+			if (!MMathStatics.DiagnosticCheckNaN(LaunchVelocity))
+			{
+				Projectile LaunchedProjectile = InstantiateProjectile();
+				LaunchedProjectile.Initialise(isAntGun);
+				LaunchedProjectile.Launch(Velocity);
 
-			return LaunchedProjectile;
+				return LaunchedProjectile;
+			}
 		}
 
 		return null;
@@ -29,6 +32,9 @@ public class Launcher : Weapon
 
 	public override void LookAt(Vector3 Direction)
 	{
+		if (!bIsRegistered)
+			return;
+
 		if (Direction == Vector3.zero)
 		{
 			ClearArc();
@@ -82,6 +88,8 @@ public class Launcher : Weapon
 
 	public override void Deregister()
 	{
+		base.Deregister();
+
 		ClearArc();
 		bDetached = true;
 		ArcRenderer = null;

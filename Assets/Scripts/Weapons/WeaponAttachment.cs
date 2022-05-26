@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 /// <summary>Class that holds a reference to a pickup-able/droppable <see cref="Weapon"/> in the game.</summary>
 public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
@@ -23,6 +24,8 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 
 	[Tooltip("The Weapon that will be attached to the Centipede.")]
 	public Weapon Attachment;
+
+	public TextMeshProUGUI AttachUI;
 
 	/// <summary>The Weapon currently being dragged; if it exists.</summary>
 	Weapon DraggingAttachment;
@@ -68,10 +71,18 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 			&& Segment.TryGetWeaponSocket(out Transform Socket))    // If the Segment has a Weapon Socket.
 		{
 			DraggingAttachment.transform.position = Socket.position;
+			DraggingAttachment.transform.parent = Socket;
+
+			AttachUI.gameObject.SetActive(true);
+			AttachUI.text = (Weapon)Segment == null ? "Attach!" : "Replace";
+			AttachUI.rectTransform.position = Input.mousePosition + Vector3.up * 75f;
 		}
 		else
 		{
 			DraggingAttachment.transform.position = Hit.point;
+
+			DraggingAttachment.transform.parent = null;
+			AttachUI.gameObject.SetActive(false);
 		}
 	}
 
@@ -81,15 +92,24 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 
 		if (TryGetSegment(ref Hit, out MSegment Segment))
 		{
-			if ((Weapon)Segment == null && !Segment.bIgnoreFromWeapons)
+			if (!Segment.bIgnoreFromWeapons)
 			{
-				Segment.SetWeapon(Attachment);
+				if ((Weapon)Segment == null)
+				{
+					Segment.SetWeapon(Attachment);
+				}
+				else
+				{
+					Segment.ReplaceWeapon(Attachment);
+				}
+
 				WeaponCardUI.Sub(Attachment);
 			}
 		}
 
 		Destroy(DraggingAttachment.gameObject);
 		DraggingAttachment = null;
+		AttachUI.gameObject.SetActive(false);
 	}
 
 	static Vector3 CameraToWorld(out RaycastHit Hit)
@@ -107,4 +127,7 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 		Segment = null;
 		return false;
 	}
+
+	public static implicit operator Transform(WeaponAttachment WA) => WA.transform;
+	public static implicit operator RectTransform(WeaponAttachment WA) => (RectTransform)(Transform)WA;
 }
