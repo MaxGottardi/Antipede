@@ -61,13 +61,14 @@ public class SpringArm : MonoBehaviour
 			bInheritRotation = !bInheritRotation;
 
 		ScrollDistance();
-		PlaceCamera();
 	}
 
 	void FixedUpdate()
 	{
 		Camera.position = Vector3.Lerp(Camera.position, TargetPosition, PositionalLagStrength);
 		Camera.rotation = Quaternion.Slerp(Camera.rotation, TargetRotation, RotationalLagStrength);
+
+		PlaceCamera();
 	}
 
 	void PlaceCamera()
