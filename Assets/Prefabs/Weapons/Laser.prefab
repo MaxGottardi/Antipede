@@ -204,9 +204,8 @@ MonoBehaviour:
   Owner: {fileID: 0}
   BarrelEndSocket: {fileID: 3923869904005003856}
   ProjectileObject: {fileID: 11400000, guid: b87b996291e47ad40a4a4c074f772d6e, type: 3}
-  weaponPickup: {fileID: 0}
+  weaponPickup: {fileID: 4066411363957430124, guid: 28f8dce9adef5a6408117be8b9cb0716, type: 3}
   isAntGun: 0
-  laserLine: {fileID: 100000, guid: b87b996291e47ad40a4a4c074f772d6e, type: 3}
 --- !u!1 &4527637621751971544
 GameObject:
   m_ObjectHideFlags: 0
