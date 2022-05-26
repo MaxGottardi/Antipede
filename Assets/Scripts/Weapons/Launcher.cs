@@ -55,7 +55,8 @@ public class Launcher : Weapon
 		Vector3 lookPos = transform.position;
 		transform.GetChild(0).GetChild(0).LookAt(lookPos + LaunchVelocity);
 
-		if (Owner && ArcRenderer && ArcRenderer.gameObject == gameObject)
+		// Somebody disabled the Dotted-line arc. Do not compute the arc if it's disabled.
+		if (Owner && ArcRenderer && ArcRenderer.gameObject.activeSelf && ArcRenderer.gameObject == gameObject)
 		{
 			DrawArc(LaunchVelocity, Time);
 		}
