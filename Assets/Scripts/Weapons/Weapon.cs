@@ -10,6 +10,8 @@ public abstract class Weapon : MonoBehaviour
 	public GameObject weaponPickup;
 	public bool isAntGun = false;
 
+	//                                          | UI    | PLAYER  | W. PICKUP | BOUNDARY
+	public const int kIgnoreFromWeaponRaycasts = 1 << 5 | 1 << 6  | 1 << 9    | 1 << 11;
 
 	/// <summary>Fires Projectile towards Position.</summary>
 	/// <param name="Position">Intended target.</param>
@@ -23,7 +25,6 @@ public abstract class Weapon : MonoBehaviour
 		if (Direction == Vector3.zero)
 			return;
 
-		Debug.Log(transform.gameObject.name);
 		transform.LookAt(Direction);
 	}
 

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6931328090401900688}
   - component: {fileID: 5940564314146941862}
   - component: {fileID: -3169070296385412167}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Shield Pickup
   m_TagString: Weapon Pickup
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a3ebd290a06fc3942982d09debbc31c1, type: 2}
+  - {fileID: 2100000, guid: 9ea3e6437af53cd4aa79cb5a7e34648c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
