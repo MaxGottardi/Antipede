@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2245298934533831050}
   - component: {fileID: 11400000}
   m_Layer: 0
-  m_Name: Line
+  m_Name: Laser Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -290,7 +290,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &400006
 Transform:
   m_ObjectHideFlags: 0
@@ -9922,8 +9922,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.9811321, g: 0.106295586, b: 0.022214282, a: 1}
-  m_Intensity: 2
-  m_Range: 2.5384016
+  m_Intensity: 1
+  m_Range: 15
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10

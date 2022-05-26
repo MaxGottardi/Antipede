@@ -1943,6 +1943,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6462746174716657430, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+      propertyPath: ProjectileObject
+      value: 
+      objectReference: {fileID: 8236571481672462520, guid: 0a58556562a923443970699a891b5825, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!1 &33021281
@@ -10326,6 +10330,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6462746174716657430, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+      propertyPath: ProjectileObject
+      value: 
+      objectReference: {fileID: 8236571481672462520, guid: 0a58556562a923443970699a891b5825, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!1 &175391019
@@ -25426,6 +25434,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6462746174716657430, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+      propertyPath: ProjectileObject
+      value: 
+      objectReference: {fileID: 8236571481672462520, guid: 0a58556562a923443970699a891b5825, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!1 &425871416
@@ -27817,6 +27829,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6462746174716657430, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+      propertyPath: ProjectileObject
+      value: 
+      objectReference: {fileID: 8236571481672462520, guid: 0a58556562a923443970699a891b5825, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!1 &476460944
@@ -36651,6 +36667,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6462746174716657430, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+      propertyPath: ProjectileObject
+      value: 
+      objectReference: {fileID: 8236571481672462520, guid: 0a58556562a923443970699a891b5825, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!1 &616284828
@@ -37901,6 +37921,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6462746174716657430, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+      propertyPath: ProjectileObject
+      value: 
+      objectReference: {fileID: 8236571481672462520, guid: 0a58556562a923443970699a891b5825, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!1 &635994355
@@ -47384,8 +47408,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  maxSpeed: 1000
-  defaultSpeed: 250
   slowTimer: 0
   slowed: 0
   DeathScreen: {fileID: 0}
@@ -84369,6 +84391,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6462746174716657430, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+      propertyPath: ProjectileObject
+      value: 
+      objectReference: {fileID: 8236571481672462520, guid: 0a58556562a923443970699a891b5825, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!1 &1390447910
@@ -94504,6 +94530,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6462746174716657430, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+      propertyPath: ProjectileObject
+      value: 
+      objectReference: {fileID: 8236571481672462520, guid: 0a58556562a923443970699a891b5825, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!1 &1545864054
@@ -96976,6 +97006,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6462746174716657430, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+      propertyPath: ProjectileObject
+      value: 
+      objectReference: {fileID: 8236571481672462520, guid: 0a58556562a923443970699a891b5825, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!1 &1591523089
@@ -104451,6 +104485,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6462746174716657430, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+      propertyPath: ProjectileObject
+      value: 
+      objectReference: {fileID: 8236571481672462520, guid: 0a58556562a923443970699a891b5825, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!1 &1726782416
@@ -123187,6 +123225,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6462746174716657430, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+      propertyPath: ProjectileObject
+      value: 
+      objectReference: {fileID: 8236571481672462520, guid: 0a58556562a923443970699a891b5825, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!1 &2006499573
@@ -126551,6 +126593,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6462746174716657430, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+      propertyPath: ProjectileObject
+      value: 
+      objectReference: {fileID: 8236571481672462520, guid: 0a58556562a923443970699a891b5825, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!1 &2074931328

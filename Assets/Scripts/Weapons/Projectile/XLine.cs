@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class XLine : Projectile
 {
@@ -6,25 +7,17 @@ public class XLine : Projectile
 	public GameObject FXef;//激光击中物体的粒子效果
 			       // Particle effect of laser hitting object
 
-/* - Block commented out by MW.
- * - We don't need an Update function; we're only firing a laser ONCE.
- 
-	public void Update()
-	{
- */
+	/* - Block commented out by MW.
+	 * - We don't need an Update function; we're only firing a laser ONCE.
+
+		public void Update()
+		{
+	 */
 	public override void Launch(Vector3 Position)
 	{
 		// RaycastHit hit; // - Original.
 
-		Vector3 Sc;// 变换大小
-			   // Transform size.
-
-		Sc.x = 0.5f;
-		Sc.z = 0.5f;
-		Sc.y = Vector3.Distance(transform.position, Position);
-
-		FXef.transform.position = Position;
-		Line.transform.localScale = Sc;
+		StartCoroutine(FireLaser(Position));
 
 		/* - Block commented out by MW.
 		 * - We don't need to raycast every frame to determine the position of the laser;
@@ -55,5 +48,45 @@ public class XLine : Projectile
 		Line.transform.localScale = Sc;
 
 		*/
+	}
+
+	IEnumerator FireLaser(Vector3 Position)
+	{
+		Vector3 Sc;// 变换大小
+			   // Transform size.
+
+		Sc.x = 0.5f;
+		Sc.z = 0.5f;
+		Sc.y = Vector3.Distance(transform.position, Position);
+
+		float t = 0f;
+
+		while (t <= 1f)
+		{
+			Line.transform.localScale = Vector3.Lerp(Vector3.zero, Sc, t);
+
+			yield return null;
+			t += Time.deltaTime * 16f;
+		}
+
+		FXef.transform.position = Position;
+		Line.transform.position = Position;
+
+		Vector3 TargetInterp = new Vector3(Sc.x, -Sc.y, Sc.z);
+
+		t = 0f;
+
+		while (t <= 1f)
+		{
+			Vector3 Interp = Vector3.Lerp(Vector3.zero, TargetInterp, t);
+			Vector3 Mirror = TargetInterp - Interp;
+
+			Line.transform.localScale = Mirror;
+
+			yield return null;
+			t += Time.deltaTime * 16f;
+		}
+
+		Destroy(gameObject);
 	}
 }
