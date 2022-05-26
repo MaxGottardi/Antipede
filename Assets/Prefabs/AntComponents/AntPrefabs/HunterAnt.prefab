@@ -98,6 +98,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 658bff39c6ad0764d87c89355565fd87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  avoidanceDir: {x: 0, y: 0, z: 0}
+  avoidanceUpdateFreqCurr: -1
+  waitTimeAvoidance: 0.1
   nextPosTransform: {fileID: 0}
   pathToNextPos: []
   nextPosVector: {x: 0, y: 0, z: 0}
@@ -131,7 +134,7 @@ MonoBehaviour:
     m_Bits: 128
   groundLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 320
   callBackupWait: 0
   canInvestigate: 0
   callingBackup: 0

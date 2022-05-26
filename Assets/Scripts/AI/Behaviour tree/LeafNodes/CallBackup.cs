@@ -51,7 +51,8 @@ public class CallBackup : Node
                 }
             }
             runTime = 2;
-            SpawnHelpers(numAnts);
+            if (blackboard.health < 20 || GameManager1.playerObj.GetComponent<MCentipedeBody>().Segments.Count > 5) //still play the backup animation and attract neighbours, but do not spawn in any help
+                SpawnHelpers(numAnts);
             blackboard.backupRing.SetActive(false);
             return NodeState.Success;
         }
@@ -116,8 +117,7 @@ public class CanCallBackup : Node
     public override NodeState evaluate()
     {
         //within a certain range of the AI cast out and see who responds
-        if (!blackboard.isHelper && Vector3.Distance(blackboard.transform.position, blackboard.nextPosTransform.position) < blackboard.maxBackupDist && blackboard.callBackupWait <= 0 &&
-            (blackboard.health < 20 || GameManager1.playerObj.GetComponent<MCentipedeBody>().Segments.Count > 5))
+        if (!blackboard.isHelper && Vector3.Distance(blackboard.transform.position, blackboard.nextPosTransform.position) < blackboard.maxBackupDist && blackboard.callBackupWait <= 0)
         {
             blackboard.callBackupWait = 20;
             return NodeState.Success; //can call for backup

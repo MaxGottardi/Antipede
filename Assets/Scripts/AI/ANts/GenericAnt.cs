@@ -100,10 +100,14 @@ public class GenericAnt : MonoBehaviour
     // Update is called once per frame
     public virtual void Update()
     {
+        ////Debug.Log(headTransform.localPosition);
         if (Vector3.Distance(transform.position, GameManager1.playerObj.transform.position) <= 200)
             stateMachine.Update();
         else
             anim.SetTrigger("Idle");
+
+        //headTransform.localPosition = new Vector3(100, 100, 100);// = (blackboard.nextPosVector - blackboard.transform.position).normalized;
+        //Debug.Log(headTransform.localPosition);
         //issue is when not moving, still likly playing the movement animation
     }
     /// <summary>
@@ -182,12 +186,16 @@ public class GenericAnt : MonoBehaviour
             rightAntenna.transform.GetChild(0).localRotation = Quaternion.Euler(currChildRote, rightAntenna.transform.GetChild(0).localRotation.y, rightAntenna.transform.GetChild(0).localRotation.z);
 
             if (health <= 0)
-                stateMachine.changeState(stateMachine.Dead);
-            else if(healthBag.getNext()) //if it randomly chooses yes, only then give damage
             {
+                loseAttackInterest();
+                stateMachine.changeState(stateMachine.Dead);
+            }
+            else if (healthBag.getNext()) //if it randomly chooses yes, only then give damage
+            {
+                loseAttackInterest();
                 stateMachine.changeState(stateMachine.Damage);
             }
-            else if(stateMachine.currState == stateMachine.Movement)
+            else if (stateMachine.currState == stateMachine.Movement)
             {
                 stateMachine.changeState(stateMachine.Investigate);
             }
@@ -246,4 +254,13 @@ public class GenericAnt : MonoBehaviour
     ////{
     ////    Gizmos.DrawSphere(transform.position, 5);
     ////}
+    /// <summary>
+    /// update the segment as the ant is no longer attacking it
+    /// </summary>
+    public void loseAttackInterest()
+    {
+        MSegment segment = nextPosTransform.gameObject.GetComponent<MSegment>();
+        if (segment != null && segment.numAttacking > 0)
+            segment.numAttacking--;
+    }
 }

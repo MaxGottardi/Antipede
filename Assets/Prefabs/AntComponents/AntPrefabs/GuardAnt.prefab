@@ -36,7 +36,6 @@ GameObject:
   - component: {fileID: 6028815149487376563}
   - component: {fileID: 9124651029160023037}
   - component: {fileID: 6554889857882964721}
-  - component: {fileID: 6286141309605030278}
   m_Layer: 7
   m_Name: GuardAnt
   m_TagString: Enemy
@@ -79,6 +78,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e134888c7f459004c9f52a716e3504c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  avoidanceDir: {x: 0, y: 0, z: 0}
+  avoidanceUpdateFreqCurr: -1
+  waitTimeAvoidance: 0.1
   nextPosTransform: {fileID: 0}
   pathToNextPos: []
   nextPosVector: {x: 0, y: 0, z: 0}
@@ -112,7 +114,7 @@ MonoBehaviour:
     m_Bits: 128
   groundLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 320
   callBackupWait: 0
   canInvestigate: 0
   callingBackup: 0
@@ -133,7 +135,7 @@ MonoBehaviour:
   - {fileID: 1768346567234793843, guid: f2979dff33818664381e12b6ce518823, type: 3}
   isHelper: 0
   backupRing: {fileID: 3226756317578921476}
-  attachDist: 1
+  attachDist: 3
   attackAnimLength: 1.25
   headTransform: {fileID: 870654170815709244}
   damageStageChance: 01000000000000000000
@@ -143,25 +145,6 @@ MonoBehaviour:
   rightAntenna: {fileID: 7924855639672096187}
   minFleeChance: 0
   audioSource: {fileID: 0}
---- !u!95 &6286141309605030278
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8856138776421195210}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &5886298893699072678
 PrefabInstance:
   m_ObjectHideFlags: 0

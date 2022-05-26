@@ -48,7 +48,7 @@ public class MInput : MonoBehaviour
 		}
 		else if (Input.GetKeyDown(KeyCode.H))
 		{
-			body.RemoveSegment(100);
+			body.RemoveSegment(100, transform.position);
 		}
 
 		if (Input.GetKeyDown(KeyCode.K))
