@@ -64,10 +64,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isEnemyProjectile: 0
-  hitParticles: {fileID: 0}
-  bloodParticles: {fileID: 0}
+  hitParticles: {fileID: 1983914251257026005, guid: 9ed20eb1978768643b467b5f79d27218, type: 3}
+  bloodParticles: {fileID: 3612848425264099771, guid: e16bd8ac4022a2447880058a8ae4a7cb, type: 3}
   Line: {fileID: 100004}
   FXef: {fileID: 100014}
+  bFireNormallyAsYingfaInitiallyDesignedItToBe: 0
 --- !u!1 &100002
 GameObject:
   m_ObjectHideFlags: 0
@@ -9923,7 +9924,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 0.9811321, g: 0.106295586, b: 0.022214282, a: 1}
   m_Intensity: 1
-  m_Range: 15
+  m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -15644,7 +15645,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 70
+      scalar: 2
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -19544,7 +19545,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9d11dc16dcea6114b94eb2a1d8f0d1c8, type: 2}
+  - {fileID: 2100000, guid: 0a521de5935a2d84590b52edd1510a98, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
