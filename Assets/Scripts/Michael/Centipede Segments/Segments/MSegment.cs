@@ -164,7 +164,7 @@ public class MSegment : MonoBehaviour
 			return;
 		}
 
-		Weapon AttachedWeapon = Instantiate(Weapon, WeaponSocket.position, Quaternion.identity);
+		Weapon AttachedWeapon = Instantiate(Weapon, WeaponSocket.position, WeaponSocket.rotation);
 		this.Weapon = AttachedWeapon;
 		this.Weapon.Owner = GetOwner();
 
