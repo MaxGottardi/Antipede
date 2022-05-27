@@ -14,6 +14,7 @@ public class SFXManager : MonoBehaviour
     [SerializeField] AudioSource sourcePlayer;
     [SerializeField] AudioSource sourceDamage;
     [SerializeField] AudioSource sourceWeapon;
+    [SerializeField] AudioSource sourceWeapon2;
     [SerializeField] AudioSource sourceShield;
     [SerializeField] AudioSource sourceLazer;
     [SerializeField] AudioSource sourceAnt;
@@ -139,8 +140,8 @@ public class SFXManager : MonoBehaviour
 
     public void ShootLauncher()
     {
-        sourceWeapon.clip = launcherShootSFX;
-        sourceWeapon.Play();
+        sourceWeapon2.clip = launcherShootSFX;
+        sourceWeapon2.Play();
     }
 
     public void ActivateLazer()

@@ -6,9 +6,14 @@ public class Gun : Weapon
 	[SerializeField] float LaunchSpeed;
 	[SerializeField] SFXManager sfxManager;
 
-	public override Projectile Fire(Vector3 Direction)
+    public void Awake()
+    {
+		sfxManager = FindObjectOfType<SFXManager>();
+    }
+    public override Projectile Fire(Vector3 Direction)
 	{
 		//sfxManager.ShootGun();
+		sfxManager.ShootGun();
 		Projectile StraightProjectile = InstantiateProjectile();
 		StraightProjectile.Initialise(isAntGun);
 

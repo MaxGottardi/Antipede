@@ -13,9 +13,14 @@ public class Launcher : Weapon
 	bool bDetached = false;
 	[SerializeField] SFXManager sfxManager;
 
+	public void Awake()
+	{
+		sfxManager = FindObjectOfType<SFXManager>();
+	}
+
 	public override Projectile Fire(Vector3 Position)
 	{
-		//sfxManager.ShootLauncher();
+		sfxManager.ShootLauncher();
 		Vector3 Velocity = LaunchVelocity;
 		if (!MMathStatics.DiagnosticCheckNaN(LaunchVelocity))
 		{

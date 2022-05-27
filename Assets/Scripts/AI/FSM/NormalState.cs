@@ -178,6 +178,7 @@ public class AttackState : State
     }
     public virtual void enter()
     {
+        owner.sfxManager.AntAttack();
         attackTime = 2;
         headNormRote = owner.headTransform.rotation;
         owner.headTransform.LookAt(owner.nextPosTransform);

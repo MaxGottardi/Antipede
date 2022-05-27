@@ -30,6 +30,7 @@ TagManager:
   - Other
   - CheckPoint
   - backup
+  - SFXM
   layers:
   - Default
   - TransparentFX

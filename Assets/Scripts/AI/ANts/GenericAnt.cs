@@ -17,7 +17,7 @@ public class GenericAnt : MonoBehaviour
     [HideInInspector] public Animator anim;
     public LayerMask playerLayer, EnemyLayer, groundLayer;
 
-
+    [SerializeField] public SFXManager sfxManager;
 
 
     [HideInInspector] public float callBackupWait = 0; //the time remaining which cannot call a backup
@@ -70,6 +70,8 @@ public class GenericAnt : MonoBehaviour
 
     public virtual void Start()
     {
+        sfxManager = FindObjectOfType<SFXManager>();
+
         backupRing.SetActive(false);
         healthBag = new ShuffleBag<bool>();
         healthBag.shuffleList = damageStageChance;
