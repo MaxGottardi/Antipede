@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 5818908878170688582}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 125, y: 1.77, z: 125}
-  m_LocalScale: {x: 0.01, y: 1.5, z: 1}
+  m_LocalScale: {x: 0.01, y: 1.5, z: 0.85}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -124,10 +124,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardIndex: 0
   rarity: 
-  cardSprite1: {fileID: 2100000, guid: 2b08e1b4a4453dd42974688915926cb3, type: 2}
-  cardSprite2: {fileID: 2100000, guid: f25645981263e874191c6bf6aff99337, type: 2}
-  cardSprite3: {fileID: 2100000, guid: 195cb9c850b50df4abdb3f7551d52406, type: 2}
-  cardSprite4: {fileID: 2100000, guid: ae02756698c894e4297524e42e67e149, type: 2}
+  cardSprite1: {fileID: 2100000, guid: c015c295cc37f7a4c8a7ca2a3e90e05a, type: 2}
+  cardSprite2: {fileID: 2100000, guid: 9ec0d4aff6543a24ab41a2bf46c8e1d9, type: 2}
+  cardSprite3: {fileID: 2100000, guid: c58f2fb5ab553884082363eeb38eb263, type: 2}
+  cardSprite4: {fileID: 2100000, guid: ca7c4994f181da84a8ba38ab232f4a8e, type: 2}
   cardSprite5: {fileID: 2100000, guid: 288e80c549abf2443bde612d347cf753, type: 2}
   cardSprite6: {fileID: 2100000, guid: 79a7c511c0a442042ad293382c892c00, type: 2}
   cardSprite7: {fileID: 2100000, guid: 9a907b82d649cfa44a544bddc1591503, type: 2}
