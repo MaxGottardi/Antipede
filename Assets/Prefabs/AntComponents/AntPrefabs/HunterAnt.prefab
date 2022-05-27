@@ -120,6 +120,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
+  sfxManager: {fileID: 0}
   callBackupWait: 0
   canInvestigate: 0
   callingBackup: 0
@@ -162,12 +163,17 @@ MonoBehaviour:
   weaponPos: {x: 0.55, y: 0.7, z: 0}
   weaponParent: {fileID: 3852577907258305728}
   weapons:
-  - {fileID: 5645349024952512263, guid: 61d0affc515ed8648896a539880facb3, type: 3}
-  - {fileID: 5645349024952512263, guid: 61d0affc515ed8648896a539880facb3, type: 3}
-  - {fileID: 5645349024952512263, guid: 61d0affc515ed8648896a539880facb3, type: 3}
+  - {fileID: 692776519300176809, guid: c8bac3e7493054f44b5db96606925168, type: 3}
+  - {fileID: 692776519300176809, guid: c8bac3e7493054f44b5db96606925168, type: 3}
+  - {fileID: 692776519300176809, guid: c8bac3e7493054f44b5db96606925168, type: 3}
   - {fileID: 5645349024952512263, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
   - {fileID: 5645349024952512263, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+  - {fileID: 5645349024952512263, guid: 61d0affc515ed8648896a539880facb3, type: 3}
   weaponClass: {fileID: 0}
+  shieldCardPrefab: {fileID: 4263386421578837108, guid: 10a9f069bfcdf694d99b6198a7698aaf, type: 3}
+  launcherCardPrefab: {fileID: 1332047328893984492, guid: 6b7749803109491469fe9d0fdcbc1863, type: 3}
+  laserCardPrefab: {fileID: 24611930172040355, guid: 04b8f75dfd5eb4c499aed0e1c0bb3c3e, type: 3}
+  gunCardPrefab: {fileID: 1728774939834552395, guid: ba9d407944d4f284c97a36e9f38b7ef8, type: 3}
   isFleeing: 0
 --- !u!1 &8054730979662548921
 GameObject:

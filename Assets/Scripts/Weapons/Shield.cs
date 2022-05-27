@@ -41,7 +41,7 @@ public class Shield : Weapon
 
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            ActivateShield(5.0f);
+            ActivateShield(15.0f);
         }
 
         if (shieldStartTime > 0)

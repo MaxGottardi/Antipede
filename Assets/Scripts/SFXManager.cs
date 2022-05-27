@@ -18,6 +18,7 @@ public class SFXManager : MonoBehaviour
     [SerializeField] AudioSource sourceShield;
     [SerializeField] AudioSource sourceLazer;
     [SerializeField] AudioSource sourceAnt;
+    [SerializeField] AudioSource sourceSpider;
 
     [SerializeField] AudioClip menuMusic;
     [SerializeField] AudioClip loadingMusic;
@@ -37,6 +38,7 @@ public class SFXManager : MonoBehaviour
     [SerializeField] AudioClip lazerSFX;
     [SerializeField] AudioClip antAttackSFX;
     [SerializeField] AudioClip spiderAttackSFX;
+    [SerializeField] AudioClip shootWebSFX;
 
     // Start is called before the first frame update
     void Start()
@@ -163,7 +165,14 @@ public class SFXManager : MonoBehaviour
 
     public void SpiderAttack()
     {
+        sourceSpider.clip = spiderAttackSFX;
+        sourceSpider.Play();
+    }
 
+    public void SpiderWeb()
+    {
+        sourceSpider.clip = shootWebSFX;
+        sourceSpider.Play();
     }
 
 

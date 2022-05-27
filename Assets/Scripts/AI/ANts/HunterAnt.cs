@@ -14,6 +14,11 @@ public class HunterAnt : GenericAnt
 
     public Weapon weaponClass;
 
+    [SerializeField] public GameObject shieldCardPrefab;
+    [SerializeField] public GameObject launcherCardPrefab;
+    [SerializeField] public GameObject laserCardPrefab;
+    [SerializeField] public GameObject gunCardPrefab;
+
     public bool isFleeing = false; //is this ant currently moving away from the player or not
     // Start is called before the first frame update
     public override void Start()
@@ -38,8 +43,13 @@ public class HunterAnt : GenericAnt
 
     public void DropWeapon()
     {
-        //drop the weapon
-        Instantiate(weaponClass.weaponPickup, transform.position, Quaternion.identity);
+        //old code
+        //Instantiate(weaponClass.weaponPickup, transform.position, Quaternion.identity);
+
+        //Changed by David.D
+        Vector3 spawnPos = new Vector3(transform.position.x, 1.0f, transform.position.z);
+        Instantiate(shieldCardPrefab, spawnPos, Quaternion.identity);
+        Debug.Log(weaponClass.weaponPickup);
     }
 
     void PickWeapon()
