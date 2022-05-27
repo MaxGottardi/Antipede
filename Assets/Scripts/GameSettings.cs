@@ -11,7 +11,7 @@ public class GameSettings : MonoBehaviour
 	public Action<Settings> OnSettingsChanged;
 	public Action<Settings> OnReceiveInspectorDefaults;
 
-	public Settings CameraSettings;
+	public Settings Settings;
 
 	bool bIsPaused;
 
@@ -20,14 +20,14 @@ public class GameSettings : MonoBehaviour
 
 	void Awake()
 	{
-		CameraSettings = new Settings();
+		Settings = new Settings();
 
 		OnReceiveInspectorDefaults += ReceiveDefaults;
 		checkPoints = GameObject.FindGameObjectsWithTag("CheckPoint");
 		foreach (GameObject checkpoint in checkPoints)
-        {
+		{
 			//checkpoint.SetActive(false);
-        }
+		}
 		DefaultState();
 	}
 
@@ -68,19 +68,33 @@ public class GameSettings : MonoBehaviour
 
 	public void SetInheritRotation(bool bInheritRotation)
 	{
-		CameraSettings.bInheritRotation = bInheritRotation;
+		Settings.bInheritRotation = bInheritRotation;
+
+		BroadcastSettingsChanged();
+	}
+
+	public void SetCameraMouseSensitivity(float InSensitivity)
+	{
+		Settings.CameraMouseSensitivity = InSensitivity;
+
+		BroadcastSettingsChanged();
+	}
+
+	public void SetVolume(float InVolume)
+	{
+		Settings.Volume = InVolume;
 
 		BroadcastSettingsChanged();
 	}
 
 	void BroadcastSettingsChanged()
 	{
-		OnSettingsChanged?.Invoke(CameraSettings);
+		OnSettingsChanged?.Invoke(Settings);
 	}
 
 	void ReceiveDefaults(Settings InspectorSettings)
 	{
-		CameraSettings.bInheritRotation = InspectorSettings.bInheritRotation;
+		Settings.bInheritRotation = InspectorSettings.bInheritRotation;
 	}
 
 	void OnDestroy()
@@ -90,6 +104,7 @@ public class GameSettings : MonoBehaviour
 	}
 }
 
+/// <summary>Global Game Settings.</summary>
 public struct Settings
 {
 	// I know this holds one thing - there were more during testing, but they're not needed.
@@ -99,9 +114,20 @@ public struct Settings
 	// the one place.
 
 	public bool bInheritRotation;
+	public float CameraMouseSensitivity;
+	public float Volume;
 
-	public Settings(bool bInheritRotation)
+	public Settings(bool bInheritRotation, float CameraMouseSensitivity, float Volume)
 	{
 		this.bInheritRotation = bInheritRotation;
+		this.CameraMouseSensitivity = CameraMouseSensitivity;
+		this.Volume = Volume;
+	}
+
+
+	public Settings(bool bInheritRotation, float CameraMouseSensitivity) : this()
+	{
+		this.bInheritRotation = bInheritRotation;
+		this.CameraMouseSensitivity = CameraMouseSensitivity;
 	}
 }

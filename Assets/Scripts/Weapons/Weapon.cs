@@ -10,6 +10,8 @@ public abstract class Weapon : MonoBehaviour
 	public GameObject weaponPickup;
 	public bool isAntGun = false;
 
+	protected bool bIsRegistered = true;
+
 	//                                          | UI    | PLAYER  | W. PICKUP | BOUNDARY
 	public const int kIgnoreFromWeaponRaycasts = 1 << 5 | 1 << 6  | 1 << 9    | 1 << 11;
 
@@ -22,6 +24,9 @@ public abstract class Weapon : MonoBehaviour
 	/// <param name="Direction">The direction to look at.</param>
 	public virtual void LookAt(Vector3 Direction)
 	{
+		if (!bIsRegistered)
+			return;
+
 		if (Direction == Vector3.zero)
 			return;
 
@@ -32,7 +37,8 @@ public abstract class Weapon : MonoBehaviour
 	/// <returns>The newly spawned <see cref="Projectile"/> object for <see cref="Projectile.Launch(Vector3)"/>.</returns>
 	protected Projectile InstantiateProjectile() { return Instantiate(ProjectileObject, BarrelEndSocket.position, transform.rotation); }
 
-	public virtual void Deregister() {  }
+	/// <summary>Marks this Segment as 'Deregistered'. Ignores Firing / Look At calls.</summary>
+	public virtual void Deregister() { bIsRegistered = false; }
 
 	public override int GetHashCode() => name.GetHashCode();
 

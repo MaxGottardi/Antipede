@@ -26,6 +26,7 @@ public class SpringArm : MonoBehaviour
 	[SerializeField] float ScrollSensitivity;
 	[HideInInspector, SerializeField] Vector3 DefaultGimbalRotation;
 	[HideInInspector, SerializeField] Vector3 DefaultCameraRotation;
+	float OrbitSensitivity = 1f;
 	Vector2 PreviousMouseDragPosition;
 
 	[Header("Collisions")]
@@ -42,7 +43,7 @@ public class SpringArm : MonoBehaviour
 		if (Settings)
 		{
 			Settings.OnSettingsChanged += ReceiveSettings;
-			Settings.OnReceiveInspectorDefaults?.Invoke(new Settings(bInheritRotation));
+			Settings.OnReceiveInspectorDefaults?.Invoke(new Settings(bInheritRotation, 1f));
 		}
 		else
 		{
@@ -172,6 +173,7 @@ public class SpringArm : MonoBehaviour
 	void ReceiveSettings(Settings InSettings)
 	{
 		bInheritRotation = InSettings.bInheritRotation;
+		OrbitSensitivity = InSettings.CameraMouseSensitivity /* * 2f + Vector3.kEpsilon*/;
 	}
 
 	void UpdateRotationOnMouse()
@@ -182,8 +184,8 @@ public class SpringArm : MonoBehaviour
 
 			if (Input.GetMouseButton(1))
 			{
-				float DeltaX = MousePosition.x - PreviousMouseDragPosition.x;
-				float DeltaY = MousePosition.y - PreviousMouseDragPosition.y;
+				float DeltaX = (MousePosition.x - PreviousMouseDragPosition.x) * OrbitSensitivity;
+				float DeltaY = (MousePosition.y - PreviousMouseDragPosition.y) * OrbitSensitivity;
 
 				GimbalRotation.x += DeltaX;
 				CameraRotation.y += DeltaX;

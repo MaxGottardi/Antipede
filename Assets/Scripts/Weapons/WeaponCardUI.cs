@@ -7,9 +7,11 @@ public class WeaponCardUI : MonoBehaviour
 {
 	public static WeaponCardUI Instance;
 
-	[SerializeField] RectTransform TemplateCard;
+	[SerializeField] WeaponAttachment TemplateCard;
 	[SerializeField] float PaddingBetweenCards;
 	float Alpha;
+
+	[SerializeField] TextMeshProUGUI AttachUI;
 
 	[SerializeField] Weapon[] WeaponCheats;
 
@@ -123,8 +125,9 @@ public class WeaponCardUI : MonoBehaviour
 			GetPositionInfo(out int NoOfCards, out Vector2 SizeOfTemplate, out float AdjustedPadding);
 
 			// Spawn a new Card with the above info.
-			RectTransform NewCard = Instantiate(TemplateCard, GetPositionFromInfo(NoOfCards, SizeOfTemplate, AdjustedPadding), Quaternion.identity);
-			NewCard.SetParent(transform);
+			WeaponAttachment NewCard = Instantiate(TemplateCard, GetPositionFromInfo(NoOfCards, SizeOfTemplate, AdjustedPadding), Quaternion.identity);
+			NewCard.transform.SetParent(transform);
+			NewCard.AttachUI = AttachUI;
 
 			// Mark as having one Inventory and initialise the Card.
 			AttachmentUIInfo AUII = new AttachmentUIInfo(1, NewCard, PickedUp, NoOfCards);
@@ -142,7 +145,7 @@ public class WeaponCardUI : MonoBehaviour
 	void GetPositionInfo(out int NoOfCards, out Vector2 SizeOfTemplate, out float AdjustedPadding)
 	{
 		NoOfCards = WeaponsInventory.Count;
-		SizeOfTemplate = new Vector2(TemplateCard.rect.width, TemplateCard.rect.height) * .5f;
+		SizeOfTemplate = new Vector2(((RectTransform)TemplateCard).rect.width, ((RectTransform)TemplateCard).rect.height) * .5f;
 		AdjustedPadding = -SizeOfTemplate.x * 2 - PaddingBetweenCards;
 	}
 

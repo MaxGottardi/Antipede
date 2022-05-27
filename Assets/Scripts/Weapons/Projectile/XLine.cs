@@ -7,6 +7,14 @@ public class XLine : Projectile
 	public GameObject FXef;//激光击中物体的粒子效果
 			       // Particle effect of laser hitting object
 
+	[SerializeField] bool bFireNormallyAsYingfaInitiallyDesignedItToBe;
+
+	Vector3 Sc;// 变换大小
+		   // Transform size.
+
+	// If = 12, it means a 12th of a second.
+	const float kFractionOfASecond = 12f;
+
 	/* - Block commented out by MW.
 	 * - We don't need an Update function; we're only firing a laser ONCE.
 
@@ -17,7 +25,25 @@ public class XLine : Projectile
 	{
 		// RaycastHit hit; // - Original.
 
-		StartCoroutine(FireLaser(Position));
+		Sc.x = 0.5f;
+		Sc.z = 0.5f;
+
+		if (bFireNormallyAsYingfaInitiallyDesignedItToBe)
+		{
+			float Distance = Vector3.Distance(transform.position, Position);
+			Sc.y = Distance;
+
+			FXef.transform.position = Position;
+			Line.transform.localScale = Sc;
+
+			const float kActualFraction = 2 * (1 / kFractionOfASecond);
+			Destroy(Line, kActualFraction);
+			Destroy(FXef, kActualFraction);
+		}
+		else
+		{
+			StartCoroutine(FireLaser(Position));
+		}
 
 		/* - Block commented out by MW.
 		 * - We don't need to raycast every frame to determine the position of the laser;
@@ -52,30 +78,41 @@ public class XLine : Projectile
 
 	IEnumerator FireLaser(Vector3 Position)
 	{
-		Vector3 Sc;// 变换大小
-			   // Transform size.
 
-		Sc.x = 0.5f;
-		Sc.z = 0.5f;
 		Sc.y = Vector3.Distance(transform.position, Position);
 
 		float t = 0f;
 
+		// Stretch the laser from the Weapon to Position.
 		while (t <= 1f)
 		{
 			Line.transform.localScale = Vector3.Lerp(Vector3.zero, Sc, t);
 
 			yield return null;
-			t += Time.deltaTime * 16f;
+			t += Time.deltaTime * kFractionOfASecond;
 		}
 
+		// Apply damage.
+		if (Physics.Linecast(transform.position, Position, out RaycastHit Hit, 128))
+		{
+			Transform T = Hit.collider.transform.parent;
+			if (T && T.TryGetComponent(out GenericAnt GA))
+			{
+				GA.ReduceHealth(20);
+				Instantiate(bloodParticles, Hit.point + Vector3.up * 0.5f, Quaternion.identity);
+			}
+		}
+
+		// Inverse the positions, preparing for negating the Stretch from above.
 		FXef.transform.position = Position;
 		Line.transform.position = Position;
 
+		// Inverse Scale.
 		Vector3 TargetInterp = new Vector3(Sc.x, -Sc.y, Sc.z);
 
 		t = 0f;
 
+		// Un-stretch from the Weapon to Position.
 		while (t <= 1f)
 		{
 			Vector3 Interp = Vector3.Lerp(Vector3.zero, TargetInterp, t);
@@ -84,9 +121,10 @@ public class XLine : Projectile
 			Line.transform.localScale = Mirror;
 
 			yield return null;
-			t += Time.deltaTime * 16f;
+			t += Time.deltaTime * kFractionOfASecond;
 		}
 
+		// Destroy this laser after 2 * kFractions Of A Second.
 		Destroy(gameObject);
 	}
 }
