@@ -159,7 +159,7 @@ public class SpringArm : MonoBehaviour
 		}
 	}
 
-	Vector3 TargetPos() => Target.position + TargetOffset;
+	Vector3 TargetPos() => Target.position + TargetOffset * Target.up.y;
 
 	void ScrollDistance()
 	{
@@ -190,7 +190,7 @@ public class SpringArm : MonoBehaviour
 				GimbalRotation.x += DeltaX;
 				CameraRotation.y += DeltaX;
 
-				if (GimbalRotation.y - DeltaY < 70 && GimbalRotation.y - DeltaY >= 0)
+				if (GimbalRotation.y - DeltaY < 70 && GimbalRotation.y - DeltaY >= -20)
 				{
 					GimbalRotation.y -= DeltaY;
 					CameraRotation.x -= DeltaY;
