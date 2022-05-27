@@ -10,7 +10,11 @@ public class UIButtons : MonoBehaviour
 
     public GameObject moveUI, CamUI, pauseUI, attackUI, shootUI, addWeaponUI, speedUI;
 
-    bool seenSpeed = false, seenAttack = false, seenShoot = false, seenSpider = false;
+#if UNITY_EDITOR
+        public GameObject Dev_Story_Skip;
+#endif
+
+        bool seenSpeed = false, seenAttack = false, seenShoot = false, seenSpider = false;
 
     public static int speedIncrease = 0, segmentIncrease = 0, segmentDegrease = 0;
     public Text speedInfo, segAddInfo, segDecreaseInfo;

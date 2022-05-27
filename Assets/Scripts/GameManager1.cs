@@ -19,7 +19,18 @@ public class GameManager1 : MonoBehaviour
 
     }
 
-    private void Start()
+#if UNITY_EDITOR
+        void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.W))
+		{
+                        uiButtons.StoryFinished(uiButtons.Dev_Story_Skip);
+                        uiButtons.Continue();
+		}
+	}
+#endif
+
+        private void Start()
     {
         if (uiButtons != null)
             uiButtons.StartUI();
