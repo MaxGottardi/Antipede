@@ -42,6 +42,7 @@ public class FABRIK : MonoBehaviour
 	bool bHasStopped;
 
 	bool bFrameLimiterActive;
+	bool bUpdateOneLastTime;
 
 	void Start()
 	{
@@ -58,7 +59,7 @@ public class FABRIK : MonoBehaviour
 
 	void Update()
 	{
-		bFrameLimiterActive = MMathStatics.FPS() < 35;
+		bFrameLimiterActive = MMathStatics.FPS() < 30;
 	}
 
 	void FixedUpdate()
@@ -79,7 +80,15 @@ public class FABRIK : MonoBehaviour
 #endif
 
 		if (bFrameLimiterActive)
+		{
+			if (!bUpdateOneLastTime)
+			{
+				ExecuteFABRIKLogic(true);
+				bUpdateOneLastTime = true;
+			}
+
 			return;
+		}
 
 		// FABRIK will not execute if this Leg is too far from the Camera.
 		if (IsTooFarFromCamera())
@@ -92,6 +101,8 @@ public class FABRIK : MonoBehaviour
 
 		ThisFramePosition = transform.position;
 		ThisFrameEulers = transform.eulerAngles;
+
+		bUpdateOneLastTime = false;
 
 		if (HasMovedSinceLastFrame())
 		{
