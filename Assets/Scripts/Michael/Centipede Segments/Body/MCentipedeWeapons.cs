@@ -83,7 +83,8 @@ public class MCentipedeWeapons : MonoBehaviour
 		//
 		// This Offset should prevent that by adding an Up off the ground.
 
-		return !Physics.Linecast(transform.position + Vector3.up * .5f, MouseToWorld + transform.up, 256);
+		//                                                                               Trick to avoid Normalising a Vector
+		return !Physics.Linecast(transform.position + transform.up * .5f, MouseToWorld + (transform.position - MouseToWorld) * .1f, 256);
 	}
 
 	IEnumerator IE_Fire()
