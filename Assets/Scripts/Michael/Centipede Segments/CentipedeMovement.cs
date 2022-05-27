@@ -283,8 +283,6 @@ public class CentipedeMovement : MonoBehaviour
 					// Update rotations:
 					Vector3 NewHeadingDirection = transform.position + Vector3.Cross(transform.right, Hit.normal);
 
-					Debug.Log(Vector3.Cross(transform.right, Hit.normal));
-
 					//transform.LookAt(NewHeadingDirection); // Look at the new edge's 'forward'.
 									       // This is the 'normal' of that edge.
 

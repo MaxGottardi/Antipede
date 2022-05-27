@@ -680,7 +680,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: -8507402823019552167, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
-  - {fileID: 6326233545876464289, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
+  - {fileID: 2100000, guid: f49fc41df01ea704eb2889e4728b1e52, type: 2}
   - {fileID: -7301279310005317288, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -764,7 +764,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: -8507402823019552167, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
-  - {fileID: 6326233545876464289, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
+  - {fileID: 2100000, guid: f49fc41df01ea704eb2889e4728b1e52, type: 2}
   - {fileID: -7301279310005317288, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -1558,7 +1558,12 @@ MonoBehaviour:
   ForwardNeighbour: {fileID: 7346012424176105262, guid: db1841048a3ffda41a1dc4b6f22a8686, type: 3}
   FollowSpeed: 0
   MaxTurnDegreesPerFrame: 0
+  segmentLayer:
+    serializedVersion: 2
+    m_Bits: 0
   bIgnoreFromWeapons: 1
+  health: 100
+  numAttacking: 0
 --- !u!114 &2093183087109085559
 MonoBehaviour:
   m_ObjectHideFlags: 0

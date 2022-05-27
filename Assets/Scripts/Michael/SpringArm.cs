@@ -190,7 +190,7 @@ public class SpringArm : MonoBehaviour
 				GimbalRotation.x += DeltaX;
 				CameraRotation.y += DeltaX;
 
-				if (GimbalRotation.y - DeltaY < 70 && GimbalRotation.y - DeltaY >= -20)
+				if (GimbalRotation.y - DeltaY < 70 && GimbalRotation.y - DeltaY >= -70)
 				{
 					GimbalRotation.y -= DeltaY;
 					CameraRotation.x -= DeltaY;

@@ -2564,6 +2564,7 @@ MonoBehaviour:
   GroundHeightDistance: 0.7
   GroundDistanceCheck: 1
   BoundaryCheckDistance: 3
+  bEnable90DegreeInclines: 0
   bInterpolateHillClimb: 1
   InterpTime: 0.2
 --- !u!1 &8912492245564701803
@@ -10160,7 +10161,7 @@ MonoBehaviour:
   JointGizmosRadius: 0.02
   bShowBiasPoint: 0
   BiasGizmosRadius: 0.03
-  bShowRays: 1
+  bShowRays: 0
   bAlwaysRunRegardless: 0
   MaximumPasses: 100
   Tolerance: 0.01
@@ -10168,7 +10169,7 @@ MonoBehaviour:
   MaxLegUpHeight: 0.7
   LegUpSpeed: 40
   Legs:
-  - TargetRayOrigin: {x: -0.2, y: 15, z: -0.4}
+  - TargetRayOrigin: {x: -0.2, y: 1, z: -0.4}
     Limbs:
     - {fileID: 8912492246139172703}
     - {fileID: 8912492246166119586}
@@ -10181,7 +10182,7 @@ MonoBehaviour:
     - {fileID: 8912492246878711166}
     Height: 0
     Bias: {x: 0, y: 0.5, z: 0}
-  - TargetRayOrigin: {x: 0.2, y: 15, z: -0.4}
+  - TargetRayOrigin: {x: 0.2, y: 1, z: -0.4}
     Limbs:
     - {fileID: 8912492245370869662}
     - {fileID: 8912492245477577925}
@@ -10194,7 +10195,7 @@ MonoBehaviour:
     - {fileID: 8912492246454329429}
     Height: 0
     Bias: {x: 0, y: 0.5, z: 0}
-  - TargetRayOrigin: {x: 0.7, y: 15, z: -0.6}
+  - TargetRayOrigin: {x: 0.7, y: 1, z: -0.6}
     Limbs:
     - {fileID: 8912492246477151579}
     - {fileID: 8912492245558595620}
@@ -10207,7 +10208,7 @@ MonoBehaviour:
     - {fileID: 8912492246893585682}
     Height: 0
     Bias: {x: 0, y: 0.5, z: 0}
-  - TargetRayOrigin: {x: -0.2, y: 15, z: 0.4}
+  - TargetRayOrigin: {x: -0.2, y: 1, z: 0.4}
     Limbs:
     - {fileID: 8912492246185913420}
     - {fileID: 8912492246849443028}
@@ -10220,7 +10221,7 @@ MonoBehaviour:
     - {fileID: 8912492245891557934}
     Height: 0
     Bias: {x: 0, y: 0.5, z: 0}
-  - TargetRayOrigin: {x: 0.2, y: 15, z: 0.4}
+  - TargetRayOrigin: {x: 0.2, y: 1, z: 0.4}
     Limbs:
     - {fileID: 8912492247287574601}
     - {fileID: 8912492245293690599}
@@ -10233,7 +10234,7 @@ MonoBehaviour:
     - {fileID: 8912492247104462025}
     Height: 0
     Bias: {x: 0, y: 0.5, z: 0}
-  - TargetRayOrigin: {x: 0.7, y: 15, z: 0.6}
+  - TargetRayOrigin: {x: 0.7, y: 1, z: 0.6}
     Limbs:
     - {fileID: 8912492245372122670}
     - {fileID: 8912492246519906110}
