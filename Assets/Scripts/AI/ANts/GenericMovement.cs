@@ -134,24 +134,40 @@ public class GenericMovement
             Vector3 moveDir = dir;
             Quaternion offsetAngle;
             //if (dotProduct > 0)
-            offsetAngle = Quaternion.AngleAxis(Random.Range(30, 45), blackboard.transform.up);
+            offsetAngle = Quaternion.AngleAxis(40, blackboard.transform.up);
             //else
             //   offsetAngle = Quaternion.AngleAxis(Random.Range(-45, -30), blackboard.transform.up);
             //
             moveDir.y = 0;
-            Vector3 newAngle = offsetAngle * moveDir;
+            Vector3 newAngle = offsetAngle * moveDir.normalized;
+
+            Debug.DrawRay(blackboard.transform.position, rayDist * (newAngle), Color.black);
+
             //(newAngle + lookDirOrign) / 2;
-            blackboard.transform.position -= newAngle.normalized * blackboard.Speed * Time.deltaTime;// / (hitColliders.Length) * Time.deltaTime;
+            blackboard.transform.position -= moveDir.normalized * blackboard.Speed/5 * Time.deltaTime;// / (hitColliders.Length) * Time.deltaTime;
 
 
-            Quaternion targetRotation = Quaternion.LookRotation(newAngle.normalized, blackboard.transform.up);
 
             ////////////////////////////////////Vector3 dir = (blackboard.transform.position - lookDir);
             ////////////////////////////////////dir.y = 0;
             ////////////////////////////////////blackboard.headTransform.localEulerAngles = dir.normalized;
             //smoothly rotate towards this point
-            Quaternion smoothRotation = Quaternion.RotateTowards(blackboard.transform.rotation, targetRotation, Time.deltaTime * blackboard.rotSpeed*2);
-           //// blackboard.transform.rotation = smoothRotation;
+            //// blackboard.transform.rotation = smoothRotation;
+            ///
+            float distToShift = Mathf.Clamp(avoidanceRadius - Vector3.Distance(closest.gameObject.transform.position, blackboard.transform.position), -avoidanceRadius, avoidanceRadius);
+            float dotProductNorm = Vector3.Dot(blackboard.transform.right, dir.normalized);
+
+            Vector3 newPoint = closest.gameObject.transform.position;
+            if (dotProductNorm < 0)
+                newPoint -= closest.gameObject.transform.right * distToShift;
+            //lookDir = Quaternion.AngleAxis(distToShift, blackboard.transform.up) * lookDir;
+            else
+                newPoint += closest.gameObject.transform.right * distToShift;
+
+            lookDir = blackboard.transform.position - newPoint;
+
+            lookDir = (lookDirOrign + lookDir) / 2;
+            return lookDir;
         }
         //{
         //    //Vector3 dir = closest.gameObject.transform.position - blackboard.transform.position;
@@ -343,7 +359,7 @@ public class GenericMovement
 
             Vector3 groundPoint = blackboard.transform.localPosition;
             groundPoint.y = raycastHit.point.y + blackboard.groundOffset;
-            blackboard.transform.localPosition = groundPoint;
+            blackboard.transform.position = Vector3.MoveTowards(blackboard.transform.position, groundPoint, Time.deltaTime * 100);
 
             ////blackboard.transform.up = raycastHit.normal; //ensure always orient to the grounds locations
         }

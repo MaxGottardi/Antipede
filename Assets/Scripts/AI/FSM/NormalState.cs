@@ -153,7 +153,7 @@ public class InvestigateState : State
     public virtual bool checkAttack()
     {
         float dot = Vector3.Dot(owner.transform.forward, owner.nextPosTransform.forward);
-        return owner.NearSegment(owner.transform.position) && !owner.callingBackup && dot > -0.5f && dot < 0.5f;
+        return owner.NearSegment(owner.transform.position) && !owner.callingBackup && dot > -0.75f && dot < 0.75f;
     }
 
     public virtual void exit()

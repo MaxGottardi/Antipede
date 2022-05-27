@@ -261,8 +261,13 @@ public class Tarantula: MonoBehaviour
             {
                 GameObject ant;
                 ant = Instantiate(antPrefab, transform.position + new Vector3(Mathf.Sin(i) * 10, 0, Mathf.Cos(i) * 10), Quaternion.identity);
-                ant.GetComponent<GenericAnt>().maxSightDist = 100;
-                ant.GetComponent<GenericAnt>().largeViewAnlge = 360;
+                GenericAnt genericAnt = ant.GetComponent<GenericAnt>();
+                genericAnt.maxSightDist = 100;
+                genericAnt.largeViewAnlge = 360;
+                genericAnt.isHelper = true;
+                if (genericAnt.stateMachine != null)
+                    genericAnt.stateMachine.changeState(genericAnt.stateMachine.SpawnIn);
+
             }
             spawnAntTimer = 0;
         }

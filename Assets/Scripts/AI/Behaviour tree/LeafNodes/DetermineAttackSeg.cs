@@ -31,7 +31,7 @@ public class DetermineAttackSeg : Node
                 }
             }
 
-            if (randSegment == null)
+            //if (randSegment == null)
             {
                 //as no segment found without an ant attacking it, just pick a random one
                 int randIndex = Random.Range(0, GameManager1.mCentipedeBody.Segments.Count); //pick a random segment to attack

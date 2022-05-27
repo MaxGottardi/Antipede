@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class MoveTowards : Node
 {
-    float previousDistToNode = 0, forwardOffset;
+    float previousDistToNode = 0;
+    Quaternion forwardOffset;
     bool doDistCheck;
 
     float groundY; //currrent ground position
@@ -22,9 +23,10 @@ public class MoveTowards : Node
             previousDistToNode = NodeDistance();
 
         if (doDistCheck)
-            forwardOffset = Random.Range(-.5f, .5f);
+            forwardOffset = Quaternion.AngleAxis(Random.Range(-45, 45), blackboard.transform.up); //the offset to apply to the direction of movement
+        //Random.Range(-.75f, .75f);
         else
-            forwardOffset = 0;
+            forwardOffset = Quaternion.AngleAxis(0, blackboard.transform.up); ;
     }
     public override NodeState evaluate()
     {
@@ -36,7 +38,8 @@ public class MoveTowards : Node
 
         blackboard.transform.position += (blackboard.transform.forward) * Time.deltaTime * blackboard.Speed;
 
-        Vector3 lookDir = (blackboard.nextPosVector - blackboard.transform.position) + (blackboard.transform.right * forwardOffset);
+        Vector3 lookDir = forwardOffset * (blackboard.nextPosVector - blackboard.transform.position).normalized;// + (forwardOffset * blackboard.transform.right);
+        Debug.DrawRay(blackboard.transform.position, lookDir, Color.cyan);
         blackboard.transform.rotation = GenericMovement.SetRotation(blackboard, lookDir);
 
         float currDist = 0; //current distance away from the segment
@@ -48,6 +51,7 @@ public class MoveTowards : Node
         if (!doDistCheck || currDist < 1 || currDist > previousDistToNode) //successful if close to the node or already passed it between the last frame and this one
         {
             //            Debug.Log("Successfully reached the next node");
+
             return NodeState.Success;
         }
         else
@@ -72,7 +76,7 @@ public class MoveTowards : Node
         //solved ant orientation using code from here https://forum.unity.com/threads/look-at-object-while-aligned-to-surface.515743/
         Vector3 up = SetGround();//the the up position of the normal of the ground
 
-        Vector3 lookDir = (blackboard.nextPosVector - blackboard.transform.position) + (blackboard.transform.right * forwardOffset);
+        Vector3 lookDir = forwardOffset*(blackboard.nextPosVector - blackboard.transform.position);// + (forwardOffset*blackboard.transform.right);
         lookDir.y = 0; //ignore all vertical height, so appears to be on flat ground
         lookDir.Normalize();
 

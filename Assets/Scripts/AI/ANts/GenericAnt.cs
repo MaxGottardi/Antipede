@@ -233,6 +233,12 @@ public class GenericAnt : MonoBehaviour
 
     public bool NearSegment(Vector3 currPos, bool justCheck = false)
     {        
+        if(stateMachine.currState == stateMachine.Investigate)
+        {
+            return Vector3.Distance(currPos, nextPosTransform.position) < attachDist;
+
+        }
+
         if (Vector3.Distance(currPos, GameManager1.mCentipedeBody.Head.position) < attachDist || Vector3.Distance(currPos, GameManager1.mCentipedeBody.Tail.position) < attachDist)
             return true; //first, check if near the head or tail
                
