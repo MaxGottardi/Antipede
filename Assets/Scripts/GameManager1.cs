@@ -22,7 +22,7 @@ public class GameManager1 : MonoBehaviour
 #if UNITY_EDITOR
         void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.W))
+		if (Input.GetKeyDown(KeyCode.W) && uiButtons.Dev_Story_Skip)
 		{
                         uiButtons.StoryFinished(uiButtons.Dev_Story_Skip);
                         uiButtons.Continue();
