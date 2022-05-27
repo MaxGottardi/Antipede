@@ -14,10 +14,11 @@ public class Card : MonoBehaviour
     [SerializeField] Material cardSprite2;
     [SerializeField] Material cardSprite3;
     [SerializeField] Material cardSprite4;
-    [SerializeField] Material cardSprite5;
-    [SerializeField] Material cardSprite6;
-    [SerializeField] Material cardSprite7;
-    [SerializeField] Material cardSprite8;
+
+    [SerializeField] GameObject card1Prefab;
+    [SerializeField] GameObject card2Prefab;
+    [SerializeField] GameObject card3Prefab;
+    [SerializeField] GameObject card4Prefab;
 
     MeshRenderer meshRenderer;
     bool gun = false;
@@ -34,7 +35,8 @@ public class Card : MonoBehaviour
     {
         meshRenderer = this.GetComponent<MeshRenderer>();
         cardIndex = calculateRarity();
-        SetSprite(cardIndex);
+        //SetSprite(cardIndex);
+        SetPrefab(cardIndex);
     }
 
     // Update is called once per frame
@@ -49,72 +51,34 @@ public class Card : MonoBehaviour
 
         int random = Random.Range(0, 100);
 
-        if (random < 20)
-        {
-            //Launcher
-            launcher = true;
-            rarity = "common";
-            return 1;
-        }
-        if (random >= 20 && random <40)
+        if (random < 40)
         {
             //Shield
             shield = true;
             rarity = "common";
+            return 1;
+        }
+        if (random >= 40 && random < 65)
+        {
+            //Launcher
+            launcher = true;
+            rarity = "uncommon";
             return 2;
         }
-        if (random >= 40 && random < 60)
+        if (random >= 65 && random < 90)
         {
             //Laser
             laser = true;
-            rarity = "common";
+            rarity = "uncommon";
             return 3;
         }
-
-        if (random >=60 && random < 77)
+        if (random >= 90)
         {
             //Gun
             gun = true;
-            rarity = "uncommon";
+            rarity = "rare";
             return 4;
         }
-        if (random >= 77 && random < 87)
-        {
-            //Launcher + 1 Speed
-            launcher = true;
-            speedIncrease = 1;
-            rarity = "uncommon";
-            return 5;
-        }
-
-        if (random >= 87 && random < 94)
-        {
-            //Laser + Shield
-            laser = true;
-            shield = true;
-            rarity = "rare";
-            return 6;
-        }
-        if (random >= 94 && random < 99)
-        {
-            //Laser + Launcher + 2 Speed
-            laser = true;
-            launcher = true;
-            speedIncrease = 2;
-            rarity = "rare";
-            return 7;
-        }
-
-        if (random >= 99)
-        {
-            //Gun + Shield + 3 Speed
-            gun = true;
-            shield = true;
-            speedIncrease = 3;
-            rarity = "ultrarare";
-            return 8;
-        }
-
 
         return 0;
     }
@@ -137,21 +101,31 @@ public class Card : MonoBehaviour
         {
             meshRenderer.material = cardSprite4;
         }
-        if (index == 5)
+    }
+
+    void SetPrefab(int cardIndex)
+    {
+        //instantiate CardPrefab
+        //Destroy this
+        if (cardIndex == 1)
         {
-            meshRenderer.material = cardSprite5;
+            Instantiate(card1Prefab, this.transform.position, Quaternion.identity);
+            Destroy(this.gameObject);
         }
-        if (index == 6)
+        if (cardIndex == 2)
         {
-            meshRenderer.material = cardSprite6;
+            Instantiate(card2Prefab, this.transform.position, Quaternion.identity);
+            Destroy(this.gameObject);
         }
-        if (index == 7)
+        if (cardIndex == 3)
         {
-            meshRenderer.material = cardSprite7;
+            Instantiate(card3Prefab, this.transform.position, Quaternion.identity);
+            Destroy(this.gameObject);
         }
-        if (index == 8)
+        if (cardIndex == 4)
         {
-            meshRenderer.material = cardSprite8;
+            Instantiate(card4Prefab, this.transform.position, Quaternion.identity);
+            Destroy(this.gameObject);
         }
     }
 

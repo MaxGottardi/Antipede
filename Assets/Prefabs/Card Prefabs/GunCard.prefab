@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5818908878170688582
+--- !u!1 &1728774939834552395
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,26 +8,27 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4014487683612949925}
-  - component: {fileID: 553682999524845134}
-  - component: {fileID: 3310326565930448759}
-  - component: {fileID: 8294676374083403660}
-  - component: {fileID: 4353646149146194926}
-  - component: {fileID: -6248341195116477734}
+  - component: {fileID: 8109696680111808936}
+  - component: {fileID: 4652832696967199299}
+  - component: {fileID: 7695975664490785658}
+  - component: {fileID: 3756460970424427393}
+  - component: {fileID: 8887431058024280035}
+  - component: {fileID: 7959078419460792023}
+  - component: {fileID: 4443376528788935986}
   m_Layer: 0
-  m_Name: Card
-  m_TagString: Card
+  m_Name: GunCard
+  m_TagString: Weapon Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4014487683612949925
+--- !u!4 &8109696680111808936
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5818908878170688582}
+  m_GameObject: {fileID: 1728774939834552395}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 125, y: 1.77, z: 125}
   m_LocalScale: {x: 0.01, y: 1.5, z: 0.85}
@@ -35,21 +36,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &553682999524845134
+--- !u!33 &4652832696967199299
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5818908878170688582}
+  m_GameObject: {fileID: 1728774939834552395}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &3310326565930448759
+--- !u!23 &7695975664490785658
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5818908878170688582}
+  m_GameObject: {fileID: 1728774939834552395}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 90ec6d421086cf94aa7ee0083ea9367f, type: 2}
+  - {fileID: 2100000, guid: ca7c4994f181da84a8ba38ab232f4a8e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,50 +86,63 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8294676374083403660
+--- !u!65 &3756460970424427393
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5818908878170688582}
+  m_GameObject: {fileID: 1728774939834552395}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.2, y: 1.2, z: 1.2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4353646149146194926
+--- !u!114 &8887431058024280035
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5818908878170688582}
+  m_GameObject: {fileID: 1728774939834552395}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2060f00ff9f55df42bcafe2e5712c67d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-6248341195116477734
+--- !u!114 &7959078419460792023
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5818908878170688582}
-  m_Enabled: 1
+  m_GameObject: {fileID: 1728774939834552395}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c362a5ee5f66064b98cc9abd0ce1c58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardIndex: 0
+  cardIndex: 4
   rarity: 
   cardSprite1: {fileID: 2100000, guid: c015c295cc37f7a4c8a7ca2a3e90e05a, type: 2}
   cardSprite2: {fileID: 2100000, guid: 9ec0d4aff6543a24ab41a2bf46c8e1d9, type: 2}
   cardSprite3: {fileID: 2100000, guid: c58f2fb5ab553884082363eeb38eb263, type: 2}
   cardSprite4: {fileID: 2100000, guid: ca7c4994f181da84a8ba38ab232f4a8e, type: 2}
-  card1Prefab: {fileID: 4263386421578837108, guid: 10a9f069bfcdf694d99b6198a7698aaf, type: 3}
-  card2Prefab: {fileID: 1332047328893984492, guid: 6b7749803109491469fe9d0fdcbc1863, type: 3}
-  card3Prefab: {fileID: 24611930172040355, guid: 04b8f75dfd5eb4c499aed0e1c0bb3c3e, type: 3}
-  card4Prefab: {fileID: 1728774939834552395, guid: ba9d407944d4f284c97a36e9f38b7ef8, type: 3}
+  card1Prefab: {fileID: 0}
+  card2Prefab: {fileID: 0}
+  card3Prefab: {fileID: 0}
+  card4Prefab: {fileID: 0}
+--- !u!114 &4443376528788935986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728774939834552395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}

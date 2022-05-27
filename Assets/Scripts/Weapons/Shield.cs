@@ -18,8 +18,17 @@ public class Shield : Weapon
     // Start is called before the first frame update
     void Start()
     {
+
+
+ 
+    }
+
+    private void Awake()
+    {
+        sfxManager = FindObjectOfType<SFXManager>();
+        mcb = FindObjectOfType<MCentipedeBody>();
+        //mcb = centipede.GetComponent<MCentipedeBody>();
         shieldActive = false;
-        mcb = centipede.GetComponent<MCentipedeBody>();
     }
 
     // Update is called once per frame
