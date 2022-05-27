@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8887431058024280035}
   - component: {fileID: 7959078419460792023}
   - component: {fileID: 4443376528788935986}
+  - component: {fileID: -5487808053207760513}
   m_Layer: 0
   m_Name: GunCard
   m_TagString: Weapon Pickup
@@ -146,3 +147,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
+--- !u!114 &-5487808053207760513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728774939834552395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sharedProfile: {fileID: 11400000, guid: 580e073a3563b1d4dba4a572e26839bc, type: 2}
+  isGlobal: 0
+  blendDistance: 0
+  weight: 1
+  priority: 0
