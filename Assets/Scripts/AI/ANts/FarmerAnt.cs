@@ -45,6 +45,9 @@ public class FarmerAnt : GenericAnt
         {
             larvaeCollider.enabled = true;
             Larvae.transform.parent = null;
+            Vector3 larvaePos = transform.position;
+            Larvae.transform.position = larvaePos;
+            Larvae.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
             Larvae = null;
         }
         base.ReduceHealth(amount);

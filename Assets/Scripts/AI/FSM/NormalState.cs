@@ -56,7 +56,7 @@ public class MovementState : State
 /// </summary>
 public class ShockState : State
 {
-    float shockTime = 0.45f;
+    float shockTime = 1.17f;
     GenericAnt owner;
     public ShockState(GenericAnt owner)
     {
@@ -64,7 +64,7 @@ public class ShockState : State
     }
     public void enter()
     {
-        shockTime = 0.45f;
+        shockTime = 1.17f;
         owner.callBackupWait = 0; //reset the ability to be able to call for backup
         owner.shockBar.SetActive(true);
     }
@@ -79,7 +79,7 @@ public class ShockState : State
 
     public void exit()
     {
-        shockTime = 0.45f;
+        shockTime = 1.17f;
         owner.shockBar.SetActive(false);
     }
 }
@@ -137,7 +137,7 @@ public class InvestigateState : State
             owner.loseAttackInterest();
             owner.stateMachine.changeState(owner.stateMachine.Movement);
         }
-        else if(owner.nextPosTransform == null)
+        else if(owner.nextPosTransform == null || !owner.nextPosTransform.gameObject.CompareTag("PlayerSegment"))
         {
             owner.stateMachine.changeState(owner.stateMachine.Investigate); //restart the investigation as segment already destroyed
         }
@@ -147,9 +147,13 @@ public class InvestigateState : State
         }
         else //as no change of state occured, can run this one
         {
+#if UNITY_EDITOR
             Profiler.BeginSample("AI investigataion");
+#endif
             topNode.execute();
+#if UNITY_EDITOR
             Profiler.EndSample();
+#endif
         }
         
     }
@@ -520,7 +524,7 @@ public class BombAttack : AttackState
     {
         timeTilExplode -= Time.deltaTime;
         //owner.transform.localScale += new Vector3(4-timeTilExplode, 4-timeTilExplode, 4-timeTilExplode);
-        if (timeTilExplode <= 0)//when finished explode, need to add a check to ensure its near the player
+        if (timeTilExplode <= 0 && owner.transform.parent.parent.CompareTag("PlayerSegment"))//when finished explode, need to add a check to ensure its near the player
         {
             GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
             GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);

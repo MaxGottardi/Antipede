@@ -19,7 +19,7 @@ public class UIButtons : MonoBehaviour
 
         bool seenSpeed = false, seenAttack = false, seenShoot = false, seenSpider = false;
 
-    public static int speedIncrease = 0, segmentIncrease = 0, segmentDegrease = 0;
+    public int speedIncrease = 0, segmentIncrease = 0, segmentDegrease = 0;
     public Text speedInfo, segAddInfo, segDecreaseInfo;
 
     public void Win()
@@ -32,7 +32,10 @@ public class UIButtons : MonoBehaviour
     public void AddSegment()
     {
         if (segAddInfo.color.a <= 0.1)
+        {
             segmentIncrease = 0;
+            segAddInfo.color = new Color(segAddInfo.color.r, segAddInfo.color.g, segAddInfo.color.b, 1);
+        }
         segmentIncrease++;
         segAddInfo.gameObject.SetActive(false);
         segAddInfo.gameObject.SetActive(true);
@@ -43,7 +46,10 @@ public class UIButtons : MonoBehaviour
     public void RemoveSegment()
     {
         if (segDecreaseInfo.color.a <= 0.1)
+        {
             segmentDegrease = 0;
+            segDecreaseInfo.color = new Color(segAddInfo.color.r, segAddInfo.color.g, segAddInfo.color.b, 1);
+        }
         segmentDegrease++;
         segDecreaseInfo.gameObject.SetActive(false);
         segDecreaseInfo.gameObject.SetActive(true);
@@ -53,7 +59,10 @@ public class UIButtons : MonoBehaviour
     public void AddSpeed()
     {
         if (speedInfo.color.a <= 0.1)
+        {
             speedIncrease = 0;
+            speedInfo.color = new Color(segAddInfo.color.r, segAddInfo.color.g, segAddInfo.color.b, 1);
+        }
         speedIncrease++;
         speedInfo.gameObject.SetActive(false);
         speedInfo.gameObject.SetActive(true);

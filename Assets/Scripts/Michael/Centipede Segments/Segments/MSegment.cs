@@ -284,7 +284,7 @@ public class MSegment : MonoBehaviour
 
 		// Disable FABRIK.
 		Destroy(GetComponent<FABRIK>());
-
+		gameObject.tag = "Untagged";
 		// Deregister and ignore Weapon commands (if any).
 		if (Weapon)
 			Weapon.Deregister();

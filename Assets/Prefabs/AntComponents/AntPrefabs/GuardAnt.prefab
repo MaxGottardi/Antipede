@@ -130,7 +130,7 @@ MonoBehaviour:
   shortViewAngle: 237
   chanceSpawnHelpers: 0
   maxBackupDist: 7.5
-  backupCallDist: 10
+  backupCallDist: 80
   spawnedHelp:
   - {fileID: 1768346567234793843, guid: f2979dff33818664381e12b6ce518823, type: 3}
   isHelper: 0

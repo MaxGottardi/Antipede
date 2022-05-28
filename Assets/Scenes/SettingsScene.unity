@@ -58859,7 +58859,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 127
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &975470900
 Transform:
@@ -83643,6 +83643,7 @@ MonoBehaviour:
   GroundHeightDistance: 0.7
   GroundDistanceCheck: 1
   BoundaryCheckDistance: 3
+  bEnable90DegreeInclines: 0
   bInterpolateHillClimb: 1
   InterpTime: 0.2
 --- !u!114 &1368409708

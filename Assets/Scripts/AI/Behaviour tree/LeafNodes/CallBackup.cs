@@ -65,7 +65,7 @@ public class CallBackup : Node
 
     void SpawnHelpers(int currAmount)
     {
-        int numAntsSpawn = Mathf.Clamp(Mathf.FloorToInt(blackboard.chanceSpawnHelpers * GameManager1.mCentipedeBody.Segments.Count - currAmount), 0, 5);
+        int numAntsSpawn = Mathf.Clamp(Mathf.CeilToInt(blackboard.chanceSpawnHelpers * GameManager1.mCentipedeBody.Segments.Count/100 - currAmount), 0, 5);
         List<Vector3> spawnPositions;
 
         if (numAntsSpawn > 0)
