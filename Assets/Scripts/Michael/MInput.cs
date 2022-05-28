@@ -9,7 +9,7 @@ public class MInput : MonoBehaviour
 	public GameObject hitParticles;
 
 	bool doneAttack = false, attackRequested = false;
-	Camera MainCamera;
+	public static Camera MainCamera;
 
 	float PreSlowShift;
 	SFXManager sfxManager;

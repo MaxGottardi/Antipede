@@ -38,6 +38,13 @@ public class SpringArm : MonoBehaviour
 	Vector3 TargetPosition;
 	Quaternion TargetRotation;
 
+	[Header("Projection Settings.")]
+	[SerializeField] bool bUseCustomProjection;
+	[SerializeField] Transform Plane;
+	[SerializeField] float NearClipDistance;
+	[SerializeField] float DistanceLimit;
+	Matrix4x4 DefaultProjection;
+
 	void Start()
 	{
 		if (Settings)
@@ -52,6 +59,8 @@ public class SpringArm : MonoBehaviour
 
 		DefaultGimbalRotation = GimbalRotation;
 		DefaultCameraRotation = CameraRotation;
+
+		DefaultProjection = MInput.MainCamera.projectionMatrix;
 	}
 
 	void Update()
@@ -70,6 +79,11 @@ public class SpringArm : MonoBehaviour
 		Camera.rotation = Quaternion.Slerp(Camera.rotation, TargetRotation, RotationalLagStrength);
 
 		PlaceCamera();
+	}
+
+	void OnPreCull()
+	{
+		ComputeProjection();
 	}
 
 	void PlaceCamera()
@@ -128,6 +142,9 @@ public class SpringArm : MonoBehaviour
 
 	bool RunCollisionsCheck(ref Vector3 Direction)
 	{
+		if (bUseCustomProjection)
+			return false;
+
 		Vector3 TP = TargetPos();
 		Ray FOV = new Ray(TP, -Direction);
 		bool bViewToTargetBlocked = Physics.Raycast(FOV, out RaycastHit Hit, Distance, OnlyCollideWith);
@@ -166,7 +183,7 @@ public class SpringArm : MonoBehaviour
 		if (bEnableScrollToDistance)
 		{
 			Distance += Input.mouseScrollDelta.y * -ScrollSensitivity;
-			Distance = Mathf.Clamp(Distance, 1, 50);
+			Distance = Mathf.Clamp(Distance, 1, 30);
 		}
 	}
 
@@ -199,6 +216,47 @@ public class SpringArm : MonoBehaviour
 			}
 
 			PreviousMouseDragPosition = MousePosition;
+		}
+	}
+
+	// Use custom projection matrix to align portal camera's near clip plane with the surface of the portal
+	// Note that this affects precision of the depth buffer, which can cause issues with effects like screenspace AO			// Learning resource:
+	void ComputeProjection()
+	{
+		if (bUseCustomProjection && Distance > 3)
+		{
+			if (Physics.Linecast(Target.position, Camera.position, out RaycastHit Intercept, 256))
+			{
+				NearClipDistance = Intercept.distance;
+			}
+			else
+			{
+				NearClipDistance = Distance * .5f;
+			}
+
+			Camera C = MInput.MainCamera;
+
+			int Dot = Math.Sign(Vector3.Dot(Plane.forward, Target.position - Camera.position));
+			Vector3 CameraWorldPosition = C.worldToCameraMatrix.MultiplyPoint(Target.position);
+			Vector3 CameraNormal = C.worldToCameraMatrix.MultiplyVector(Plane.forward) * Dot;
+
+			float CameraDistance = -Vector3.Dot(CameraWorldPosition, CameraNormal) + NearClipDistance;
+
+			// If the Camera is too close to the Target, don't use oblique projection.
+			if (Mathf.Abs(CameraDistance) > DistanceLimit)
+			{
+				Vector4 clipPlaneCameraSpace = new Vector4(CameraNormal.x, CameraNormal.y, CameraNormal.z, CameraDistance);
+
+				C.projectionMatrix = C.CalculateObliqueMatrix(clipPlaneCameraSpace);
+			}
+			else
+			{
+				C.projectionMatrix = DefaultProjection;
+			}
+		}
+		else
+		{
+			MInput.MainCamera.projectionMatrix = DefaultProjection;
 		}
 	}
 
