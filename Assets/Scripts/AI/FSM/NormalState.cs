@@ -137,6 +137,10 @@ public class InvestigateState : State
             owner.loseAttackInterest();
             owner.stateMachine.changeState(owner.stateMachine.Movement);
         }
+        else if(owner.nextPosTransform == null)
+        {
+            owner.stateMachine.changeState(owner.stateMachine.Investigate); //restart the investigation as segment already destroyed
+        }
         else if (checkAttack()) //within attack range of chosen player segment
         {
             owner.stateMachine.changeState(owner.stateMachine.Attack);

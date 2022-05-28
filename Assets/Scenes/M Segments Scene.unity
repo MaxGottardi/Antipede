@@ -4378,11 +4378,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6028815149487376563, guid: d7784141bda4f62498b4168dbab60047, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.22
+      value: 1.26
       objectReference: {fileID: 0}
     - target: {fileID: 6028815149487376563, guid: d7784141bda4f62498b4168dbab60047, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -28.51
+      value: -25.29
       objectReference: {fileID: 0}
     - target: {fileID: 6028815149487376563, guid: d7784141bda4f62498b4168dbab60047, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8645,6 +8645,7 @@ MonoBehaviour:
   shootUI: {fileID: 0}
   addWeaponUI: {fileID: 0}
   speedUI: {fileID: 0}
+  Dev_Story_Skip: {fileID: 0}
   speedInfo: {fileID: 0}
   segAddInfo: {fileID: 0}
   segDecreaseInfo: {fileID: 0}
@@ -9669,6 +9670,7 @@ MonoBehaviour:
   GroundHeightDistance: 2
   GroundDistanceCheck: 5
   BoundaryCheckDistance: 3
+  bEnable90DegreeInclines: 0
   bInterpolateHillClimb: 0
   InterpTime: 0.2
 --- !u!1001 &785983973
@@ -10661,7 +10663,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -22.1
+      value: -25.4
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10669,11 +10671,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.4
+      value: 4.83
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalRotation.x
@@ -10681,7 +10683,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalRotation.z
@@ -10693,7 +10695,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 6857735041488720455, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -12270,6 +12272,7 @@ MonoBehaviour:
     m_Bits: 0
   bIgnoreFromWeapons: 0
   health: 100
+  numAttacking: 0
 --- !u!54 &978763723
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -21637,6 +21640,10 @@ MonoBehaviour:
     m_Bits: 0
   PositionalLagStrength: 0.2
   RotationalLagStrength: 0.2
+  bUseCustomProjection: 0
+  Plane: {fileID: 0}
+  NearClipDistance: 0
+  DistanceLimit: 0
 --- !u!114 &1805762205
 MonoBehaviour:
   m_ObjectHideFlags: 0
