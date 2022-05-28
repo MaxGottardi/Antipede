@@ -115,6 +115,7 @@ MonoBehaviour:
   weaponPickup: {fileID: 2037037131742102110, guid: 64aa98e693a3b624487ff2c3ebebce86, type: 3}
   isAntGun: 0
   LaunchHeight: 2.5
+  sfxManager: {fileID: 0}
 --- !u!1 &3721212138355131904
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,7 +239,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5645349024952512263}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -346,6 +347,7 @@ MonoBehaviour:
   weaponPickup: {fileID: 2037037131742102110, guid: 64aa98e693a3b624487ff2c3ebebce86, type: 3}
   isAntGun: 0
   LaunchHeight: 2.5
+  sfxManager: {fileID: 0}
 --- !u!1 &5645349026055870392
 GameObject:
   m_ObjectHideFlags: 0

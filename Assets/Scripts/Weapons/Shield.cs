@@ -38,6 +38,10 @@ public class Shield : Weapon
         {
             mcb.shieldActive = true;
         }
+        else
+        {
+            mcb.shieldActive = false;
+        }
 
         if (Input.GetKeyDown(KeyCode.Y))
         {
@@ -71,6 +75,7 @@ public class Shield : Weapon
 
     public void DeactivateShield()
     {
+        Debug.Log("dsfsdfs");
         shieldStartTime = 0;
         shieldActive = false;
         sfxManager.DeactivateShield();
@@ -78,6 +83,7 @@ public class Shield : Weapon
 
     public override void OnAttatch()
     {
+        Debug.Log("Xdfdfdfdfdfdfdfdfdf");
         ActivateShield(5.0f);
     }
 }

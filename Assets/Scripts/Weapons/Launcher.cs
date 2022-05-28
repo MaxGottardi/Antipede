@@ -21,19 +21,18 @@ public class Launcher : Weapon
 	public override Projectile Fire(Vector3 Position)
 	{
 		if (bIsRegistered) {
-			sfxManager.ShootLauncher();
+			if (sfxManager)
+			{
+				sfxManager.ShootLauncher();
+			}
 			Vector3 Velocity = LaunchVelocity;
 			if (!MMathStatics.DiagnosticCheckNaN(LaunchVelocity))
 			{
-				Vector3 Velocity = LaunchVelocity;
-				if (!MMathStatics.DiagnosticCheckNaN(LaunchVelocity))
-				{
-					Projectile LaunchedProjectile = InstantiateProjectile();
-					LaunchedProjectile.Initialise(isAntGun);
-					LaunchedProjectile.Launch(Velocity);
+				Projectile LaunchedProjectile = InstantiateProjectile();
+				LaunchedProjectile.Initialise(isAntGun);
+				LaunchedProjectile.Launch(Velocity);
 
-					return LaunchedProjectile;
-				}
+				return LaunchedProjectile;
 			}
 		}
 
