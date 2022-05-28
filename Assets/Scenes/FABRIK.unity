@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1816,10 +1816,18 @@ MonoBehaviour:
   bPrintDebugLogs: 0
   bGlobalMovement: 0
   HeightOffGround: 0.15
+  AccelerationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  AccelerationTime: 0
   Lead: 0.4
   GroundHeightDistance: 0.7
   GroundDistanceCheck: 1
   BoundaryCheckDistance: 3
+  bEnable90DegreeInclines: 0
   bInterpolateHillClimb: 1
   InterpTime: 0.2
 --- !u!114 &330524207
@@ -1878,7 +1886,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af5b8c5bf06d1f4aab23ccfcf5f3ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tarantulas: []
   Head: {fileID: 1147615283}
   Tail: {fileID: 1462562886}
   DamageParticles: {fileID: 0}
@@ -1896,9 +1903,10 @@ MonoBehaviour:
   - {fileID: 821823200}
   - {fileID: 1456318620}
   Segments: []
-  maxSpeed: 450
-  defaultSpeed: 250
+  slowTimer: 0
+  slowed: 0
   DeathScreen: {fileID: 0}
+  shieldActive: 0
 --- !u!54 &330524211
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3015,6 +3023,10 @@ MonoBehaviour:
     m_Bits: 256
   PositionalLagStrength: 0.2
   RotationalLagStrength: 0.2
+  bUseCustomProjection: 1
+  Plane: {fileID: 523351801}
+  NearClipDistance: 0
+  DistanceLimit: 3
 --- !u!1 &557497647
 GameObject:
   m_ObjectHideFlags: 0

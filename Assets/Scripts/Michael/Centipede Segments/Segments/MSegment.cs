@@ -24,6 +24,7 @@ public class MSegment : MonoBehaviour
 	public int numAttacking = 0; //does this segment has a player locked on for attacking
 
 	bool bDetached = false;
+	float TimeDetached = 0f;
 
 	/// <summary>Initialises this Segment to follow ForwardNeighbour at FollowSpeed and turning at MaxTurnDegreesPerFrame.</summary>
 	/// <remarks>MaxTurnDegreesPerFrame will be multiplied to try and prevent disconnection. Increase as needed.</remarks>
@@ -64,7 +65,7 @@ public class MSegment : MonoBehaviour
 			return;
 		}
 
-		if (!MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance * 1.25f, out float SquareDistance))
+		if (!MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance, out float SquareDistance))
 		{
 			if (ForwardNeighbour)
 			{
@@ -164,7 +165,7 @@ public class MSegment : MonoBehaviour
 			return;
 		}
 
-		Weapon AttachedWeapon = Instantiate(Weapon, WeaponSocket.position, Quaternion.identity);
+		Weapon AttachedWeapon = Instantiate(Weapon, WeaponSocket.position, WeaponSocket.rotation);
 		this.Weapon = AttachedWeapon;
 		this.Weapon.Owner = GetOwner();
 
@@ -238,7 +239,7 @@ public class MSegment : MonoBehaviour
 	{
 		// If this Rigidbody is no longer required to simulate physics,
 		// destroy the Rigidbody and destroy the MSegment component.
-		if (rb.IsSleeping())
+		if (rb.IsSleeping() || Time.time - TimeDetached > 10f)
 		{
 			// Mark this (the actual Segment that *was* attached) for destruction.
 			Destroy(gameObject);
@@ -259,6 +260,7 @@ public class MSegment : MonoBehaviour
 	{
 		Deregister();
 		bDetached = true;
+		TimeDetached = Time.time;
 
 		// Random force parameters.
 		float RandomUAxis = Random.Range(0f, 1f);

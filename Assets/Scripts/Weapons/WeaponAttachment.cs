@@ -71,6 +71,7 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 			&& Segment.TryGetWeaponSocket(out Transform Socket))    // If the Segment has a Weapon Socket.
 		{
 			DraggingAttachment.transform.position = Socket.position;
+			DraggingAttachment.transform.rotation = Socket.rotation;
 			DraggingAttachment.transform.parent = Socket;
 
 			AttachUI.gameObject.SetActive(true);

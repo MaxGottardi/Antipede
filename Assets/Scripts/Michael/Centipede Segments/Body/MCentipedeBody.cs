@@ -49,6 +49,8 @@ public partial class MCentipedeBody : MonoBehaviour
 	public List<MSegment> Segments;
 	SegmentsInformation SegmentsInfo;
 
+	public const float kBufferZone = 1.5f;
+
 	const float kMaxSpeed = 750;
 	const float kDefaultSpeed = 150;
 
@@ -188,14 +190,14 @@ public partial class MCentipedeBody : MonoBehaviour
 		{
 			// Set parent to the Centipede's object and inherit local position.
 			T.SetParent(transform);
-			T.localPosition = Head.localPosition - new Vector3(0, 0, Z);
+			T.localPosition = Head.localPosition - new Vector3(0, 0, Z*kBufferZone);
 
 			T.parent = null;
 		}
 		else
 		{
 			Transform End = GetLast(1);
-			T.position = End.position - End.forward * FollowDistance;
+			T.position = End.position - End.forward * FollowDistance * kBufferZone;
 			T.LookAt(End);
 		}
 
@@ -256,11 +258,11 @@ public partial class MCentipedeBody : MonoBehaviour
 
 				// Ensure the Tail is properly 'attached' to the end Segment.
 				Transform newLast = GetLast();
-				Vector3 NewPos = newLast.position - newLast.forward * SegmentsInfo.SegmentScale.z;
+				Vector3 NewPos = newLast.position - newLast.forward * SegmentsInfo.SegmentScale.z * kBufferZone;
 				Tail.position = NewPos;
 
 				for (byte i = 0; i < CustomSegments.Count; ++i)
-					CustomSegments[i].transform.position = NewPos - (i * FollowDistance * newLast.forward);
+					CustomSegments[i].transform.position = NewPos - (i * FollowDistance * newLast.forward) * kBufferZone;
 
 			}
 

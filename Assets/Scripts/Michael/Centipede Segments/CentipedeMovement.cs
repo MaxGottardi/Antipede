@@ -36,6 +36,7 @@ public class CentipedeMovement : MonoBehaviour
 	[SerializeField, Tooltip("How far ahead should the Centipede check for Boundaries?")]
 	float BoundaryCheckDistance = 3f;
 	bool bIsCourseCorrecting;
+	[SerializeField] bool bEnable90DegreeInclines;
 
 	[Header("Interpolation Settings.")]
 	[SerializeField] bool bInterpolateHillClimb;
@@ -149,9 +150,53 @@ public class CentipedeMovement : MonoBehaviour
 		}
 		else
 		{
+			// -- Called when the Centipede ray found nothing underneath. -- \\
+
+			// Fire a ray to check if the Centipede is on an edge.
+			if (bEnable90DegreeInclines)
+			{
+				Ray Ray = new Ray(transform.position + (transform.forward * Lead) + (-transform.up * Lead), -transform.forward);
+				if (Physics.Raycast(Ray, out RaycastHit EdgeDetection, GroundDistanceCheck, 256))
+				{
+					// Wrap the Centipede around the edge and keep going.
+
+					// Update new position on the new edge.
+					transform.position = EdgeDetection.point + HeightAsVector;
+
+					// Update rotations:
+					Vector3 NewHeadingDirection = transform.position + Vector3.Cross(transform.right, EdgeDetection.normal);
+					transform.LookAt(NewHeadingDirection); // Look at the new edge's 'forward'.
+									       // This is the 'normal' of that edge.
+
+					// This updates the Roll (Z) of the Centipede. Keep these in this order.
+					transform.rotation = Quaternion.FromToRotation(transform.up, EdgeDetection.normal) * transform.rotation;
+
+					// Update the new moving direction.
+					InDirection = NewHeadingDirection;
+
+					// Update the normal for continuous checks.
+					// This makes this edge as the new Ground the Centipede is on
+					// and any further Ground checks will be relative to this new Edge.
+					SurfaceNormal = EdgeDetection.normal;
+
+					// Slow the Centipede.
+					AccelerationTime = 0f;
+
+#if UNITY_EDITOR
+					if (bShowGizmos)
+					{
+						// Where the Ray is going.
+						Debug.DrawRay(Ray.origin, Ray.direction, Color.magenta, 5f);
+
+						// Where the Centipede should face.
+						Debug.DrawLine(EdgeDetection.point, NewHeadingDirection, Color.yellow, 5f);
+					}
+#endif
+				}
+			}
 			// If nothing was hit, shoot a ray from above back down to the terrain and teleport to that position.
 			// This usually happens when the Centipede falls out of the world when going up steep terrain.
-			if (Physics.Raycast(transform.position + Vector3.up * GroundDistanceCheck, Vector3.down, out RaycastHit SkyRay, GroundDistanceCheck, 256))
+			else if (Physics.Raycast(transform.position + Vector3.up * GroundDistanceCheck, Vector3.down, out RaycastHit SkyRay, GroundDistanceCheck, 256))
 			{
 				transform.position = SkyRay.point + HeightAsVector;
 				transform.LookAt(transform.position + Vector3.Cross(transform.right, SkyRay.normal));
@@ -222,6 +267,36 @@ public class CentipedeMovement : MonoBehaviour
 	/// <returns>The Surface Normal, out bool true if something was hit, out RaycastHit information.</returns>
 	Vector3 GetSurfaceNormal(out bool bHasHitSomething, out RaycastHit Hit)
 	{
+		if (bEnable90DegreeInclines)
+		{
+			if (Physics.Raycast(transform.position, transform.forward, out Hit, Lead, 256))
+			{
+				if (Vector3.Dot(Hit.normal, transform.forward) < 0f)
+				{
+					bHasHitSomething = Hit.collider;
+
+					AccelerationTime = 0f;
+
+					// Update new position on the new edge.
+					transform.position = Hit.point + HeightAsVector;
+
+					// Update rotations:
+					Vector3 NewHeadingDirection = transform.position + Vector3.Cross(transform.right, Hit.normal);
+
+					//transform.LookAt(NewHeadingDirection); // Look at the new edge's 'forward'.
+									       // This is the 'normal' of that edge.
+
+					// This updates the Roll (Z) of the Centipede. Keep these in this order.
+					transform.rotation = Quaternion.FromToRotation(transform.up, Hit.normal) * transform.rotation;
+
+					Debug.DrawRay(Hit.point + Vector3.right * .5f, Vector3.up, Color.white, 5f);
+					Debug.DrawLine(Hit.point, NewHeadingDirection, Color.cyan, 5f);
+
+					return bHasHitSomething ? Hit.normal : Vector3.zero;
+				}
+			}
+		}
+
 		Vector3 Direction = Evaluate(SurfaceNormal);
 
 		bHasHitSomething = Physics.Raycast(transform.position + (transform.forward * Lead) + (-Direction * GroundHeightDistance),
