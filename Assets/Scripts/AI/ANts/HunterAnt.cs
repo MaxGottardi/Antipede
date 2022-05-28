@@ -48,7 +48,24 @@ public class HunterAnt : GenericAnt
 
         //Changed by David.D
         Vector3 spawnPos = new Vector3(transform.position.x, 1.0f, transform.position.z);
-        Instantiate(shieldCardPrefab, spawnPos, Quaternion.identity);
+
+        if (weaponClass.weaponPickup.name == "Shield Pickup")
+        {
+            Instantiate(shieldCardPrefab, spawnPos, Quaternion.identity);
+        }
+        if (weaponClass.weaponPickup.name == "Launcher Pickup")
+        {
+            Instantiate(launcherCardPrefab, spawnPos, Quaternion.identity);
+        }
+        if (weaponClass.weaponPickup.name == "Laser Pickup")
+        {
+            Instantiate(laserCardPrefab, spawnPos, Quaternion.identity);
+        }
+        if (weaponClass.weaponPickup.name == "Gun Pickup")
+        {
+            Instantiate(gunCardPrefab, spawnPos, Quaternion.identity);
+        }
+        //Instantiate(shieldCardPrefab, spawnPos, Quaternion.identity);
         Debug.Log(weaponClass.weaponPickup);
     }
 
