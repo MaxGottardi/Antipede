@@ -11,19 +11,29 @@ public class Launcher : Weapon
 
 	Vector3 LaunchVelocity;
 	bool bDetached = false;
+	[SerializeField] SFXManager sfxManager;
+
+	public void Awake()
+	{
+		sfxManager = FindObjectOfType<SFXManager>();
+	}
 
 	public override Projectile Fire(Vector3 Position)
 	{
-		if (bIsRegistered)
-		{
+		if (bIsRegistered) {
+			sfxManager.ShootLauncher();
 			Vector3 Velocity = LaunchVelocity;
 			if (!MMathStatics.DiagnosticCheckNaN(LaunchVelocity))
 			{
-				Projectile LaunchedProjectile = InstantiateProjectile();
-				LaunchedProjectile.Initialise(isAntGun);
-				LaunchedProjectile.Launch(Velocity);
+				Vector3 Velocity = LaunchVelocity;
+				if (!MMathStatics.DiagnosticCheckNaN(LaunchVelocity))
+				{
+					Projectile LaunchedProjectile = InstantiateProjectile();
+					LaunchedProjectile.Initialise(isAntGun);
+					LaunchedProjectile.Launch(Velocity);
 
-				return LaunchedProjectile;
+					return LaunchedProjectile;
+				}
 			}
 		}
 
