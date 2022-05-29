@@ -36,7 +36,7 @@ public class GameSettings : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Escape))
+		if (Input.GetKeyDown(SettingsVariables.keyDictionary["Pause"]))
 		{
 			// bIsPaused:
 			// True if escape was pressed DURING PLAY - to pause the game.

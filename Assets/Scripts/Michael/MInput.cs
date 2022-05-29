@@ -36,7 +36,7 @@ public class MInput : MonoBehaviour
 
 		Vector3 rayPos = new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z);
 		Debug.DrawRay(rayPos, transform.forward * 2, Color.red);
-		if (Time.timeScale > 0.1f && (Input.GetKeyDown(KeyCode.Space) || attackRequested))
+		if (Time.timeScale > 0.1f && (Input.GetKeyDown(SettingsVariables.keyDictionary["Fire"]) || attackRequested))
 		{
 			if (!doneAttack)
 			{
@@ -68,12 +68,12 @@ public class MInput : MonoBehaviour
 			body.DecreaseSpeed(100.0f);
 		}
 
-		if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+		if (Input.GetKeyDown(SettingsVariables.keyDictionary["HalveSpeed"]))
 		{
 			PreSlowShift = body.MovementSpeed;
 			body.ChangeSpeedDirectly(PreSlowShift * .5f);
 		}
-		else if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+		else if (Input.GetKeyUp(SettingsVariables.keyDictionary["HalveSpeed"]))
 		{
 			body.ChangeSpeedDirectly(PreSlowShift);
 		}
