@@ -7,6 +7,7 @@ public class WeaponCardUI : MonoBehaviour
 {
 	public static WeaponCardUI Instance;
 
+
 	[SerializeField] WeaponAttachment TemplateCard;
 	[SerializeField] float PaddingBetweenCards;
 	float Alpha;
@@ -50,9 +51,9 @@ public class WeaponCardUI : MonoBehaviour
 
 	/// <summary>Add Weapon to the Inventory.</summary>
 	/// <param name="Weapon">The Weapon that was picked up.</param>
-	public static void Add(Weapon Weapon)
+	public static WeaponAttachment Add(Weapon Weapon)
 	{
-		Instance.RegisterWeapon(Weapon);
+		return Instance.RegisterWeapon(Weapon);
 	}
 
 	/// <summary>Register Weapon as being 'Used'.</summary>
@@ -107,7 +108,7 @@ public class WeaponCardUI : MonoBehaviour
 		}
 	}
 
-	void RegisterWeapon(Weapon PickedUp)
+	WeaponAttachment RegisterWeapon(Weapon PickedUp)
 	{
 		if (WeaponsInventory.ContainsKey(PickedUp))
 		{
@@ -116,6 +117,8 @@ public class WeaponCardUI : MonoBehaviour
 			AUII.Remaining++;
 			UpdateText(ref AUII);
 			WeaponsInventory[PickedUp] = AUII;
+
+			return AUII.WeaponAttachment;
 		}
 		else
 		{
@@ -139,6 +142,8 @@ public class WeaponCardUI : MonoBehaviour
 			// Update the colour of the Card to match the Weapon GameObject.
 			Color WeaponColour = AUII.WeaponAttachment.Attachment.GetComponent<MeshRenderer>().sharedMaterial.color;
 			AUII.Background.color = new Color(WeaponColour.r, WeaponColour.g, WeaponColour.b, Alpha);
+
+			return NewCard;
 		}
 	}
 
