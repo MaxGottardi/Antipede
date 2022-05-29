@@ -191,6 +191,7 @@ public class SpringArm : MonoBehaviour
 	{
 		bInheritRotation = InSettings.bInheritRotation;
 		OrbitSensitivity = InSettings.CameraMouseSensitivity /* * 2f + Vector3.kEpsilon*/;
+		SettingsVariables.sliderDictionary["camRotSpeed"] = OrbitSensitivity;
 	}
 
 	void UpdateRotationOnMouse()
