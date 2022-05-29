@@ -67,7 +67,7 @@ public class SpringArm : MonoBehaviour
 	{
 		UpdateRotationOnMouse();
 
-		if (Input.GetKeyDown(KeyCode.T))
+		if (Input.GetKeyDown(SettingsVariables.keyDictionary["ChangeCam"]))
 			bInheritRotation = !bInheritRotation;
 
 		ScrollDistance();
@@ -182,7 +182,7 @@ public class SpringArm : MonoBehaviour
 	{
 		if (bEnableScrollToDistance)
 		{
-			Distance += Input.mouseScrollDelta.y * -ScrollSensitivity;
+			Distance += Input.mouseScrollDelta.y * -SettingsVariables.sliderDictionary["zoomSpeed"];
 			Distance = Mathf.Clamp(Distance, 1, 30);
 		}
 	}
@@ -201,8 +201,8 @@ public class SpringArm : MonoBehaviour
 
 			if (Input.GetMouseButton(1))
 			{
-				float DeltaX = (MousePosition.x - PreviousMouseDragPosition.x) * OrbitSensitivity;
-				float DeltaY = (MousePosition.y - PreviousMouseDragPosition.y) * OrbitSensitivity;
+				float DeltaX = (MousePosition.x - PreviousMouseDragPosition.x) * SettingsVariables.sliderDictionary["camRotSpeed"];
+				float DeltaY = (MousePosition.y - PreviousMouseDragPosition.y) * SettingsVariables.sliderDictionary["camRotSpeed"];
 
 				GimbalRotation.x += DeltaX;
 				CameraRotation.y += DeltaX;

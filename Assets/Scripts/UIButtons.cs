@@ -78,6 +78,8 @@ public class UIButtons : MonoBehaviour
     public void StoryFinished(GameObject View)
     {
         View.SetActive(false);
+        if (!SettingsVariables.boolDictionary["bPlayTutorial"])
+            Time.timeScale = 1;
     }
 
     public void Continue()
@@ -90,16 +92,26 @@ public class UIButtons : MonoBehaviour
     //below are the functions for enabling and disabling the other UI elements
     public void StartUI()
     {
-        tutWindow.SetActive(true);
-        Time.timeScale = 0;
-        moveUI.SetActive(true);
-        pauseUI.SetActive(true);
-        CamUI.SetActive(true);
+        if (SettingsVariables.boolDictionary["bPlayTutorial"])
+        {
+            tutWindow.SetActive(true);
+            Time.timeScale = 0;
+            moveUI.SetActive(true);
+            pauseUI.SetActive(true);
+            CamUI.SetActive(true);
+        }
+        else
+        {
+            tutWindow.SetActive(false);
+            moveUI.SetActive(false);
+            pauseUI.SetActive(false);
+            CamUI.SetActive(false);
+        }
     }
 
     public void AttackUI()
     {
-        if (!seenAttack)
+        if (!seenAttack && SettingsVariables.boolDictionary["bPlayTutorial"])
         {
             seenAttack = true;
             tutWindow.SetActive(true);
@@ -126,7 +138,7 @@ public class UIButtons : MonoBehaviour
 
     public void ShootUI()
     {
-        if (!seenShoot)
+        if (!seenShoot && SettingsVariables.boolDictionary["bPlayTutorial"])
         {
             seenShoot = true;
             tutWindow.SetActive(true);
@@ -143,7 +155,7 @@ public class UIButtons : MonoBehaviour
 
     public void SpeedUI()
     {
-        if (!seenSpeed)
+        if (!seenSpeed && SettingsVariables.boolDictionary["bPlayTutorial"])
         {
             seenSpeed = true;
             tutWindow.SetActive(true);

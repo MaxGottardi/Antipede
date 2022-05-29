@@ -5,16 +5,25 @@ using UnityEngine.UI;
 
 public class UIFire : MonoBehaviour
 {
+    private void Start()
+    {
+        Projectile.hasSeenChanged = false;
+        Debug.Log(SettingsVariables.boolDictionary["bShootToActivate"] + "hsttd");
+    }
+
     public Weapon[] weapons;
     // Update is called once per frame
     void Update()
     {
-        foreach (Weapon W in weapons)
+        if (SettingsVariables.boolDictionary["bShootToActivate"])
         {
-            Vector3 mousePos = MouseToWorldCoords();
-            W.LookAt(mousePos);
-            if (Input.GetMouseButtonDown(0))
-                W.Fire(mousePos);
+            foreach (Weapon W in weapons)
+            {
+                Vector3 mousePos = MouseToWorldCoords();
+                W.LookAt(mousePos);
+                if (Input.GetMouseButtonDown(0))
+                    W.Fire(mousePos);
+            }
         }
     }
 
