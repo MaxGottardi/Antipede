@@ -16,8 +16,8 @@ using UnityEngine;
 /// <remarks>
 /// <b>This class is split into 3 different files:</b>
 /// <br>This MCentipedeBody.cs file. (Contains the bulk logic of the Centipede)</br>
-/// <br>MCentipedeConstructor.cs. (Contains the <see cref="Awake"/> method and first initialises this Centipede with <see cref="NumberOfSegments"/> starting Segments.</br>
-/// <br>MCentipedeUtils.cs. (Contains the utility implementation for accessing Segments easier.</br>
+/// <br>MCentipedeConstructor.cs. (Contains the <see cref="Awake"/> method and first initialises this Centipede with <see cref="NumberOfSegments"/> starting Segments)</br>
+/// <br>MCentipedeUtils.cs. (Contains the utility implementation for accessing Segments easier)</br>
 /// </remarks>
 [RequireComponent(typeof(MCentipedeEvents))]
 public partial class MCentipedeBody : MonoBehaviour
@@ -371,5 +371,13 @@ public partial class MCentipedeBody : MonoBehaviour
 			slowed = true;
 		}
 	}
+
+#if UNITY_EDITOR
+	void OnGUI()
+	{
+		GUI.Label(new Rect(10, 25, 250, 150), "Movement Speed: " + MovementSpeed);
+	}
+
+#endif
 }
 

@@ -12,7 +12,7 @@ public class MCentipedeEvents : MonoBehaviour
 
 		if (other.gameObject.CompareTag("Weapon Pickup"))
 		{
-			Debug.Log("Colledted Weapon");
+			//Debug.Log("Colledted Weapon");
 			WeaponPickup PickedUp = other.gameObject.GetComponent<WeaponPickup>();
 #if UNITY_EDITOR
 			if (GameManager1.uiButtons)
