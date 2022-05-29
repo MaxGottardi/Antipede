@@ -124,7 +124,7 @@ public class MSegment : MonoBehaviour
 	float EvaluateAcceleration(float Scalar)
 	{
 		if (Reference.AccelerationTime < Vector3.kEpsilon)
-			return 250;
+			return 250; // Known safe speed for Segments and Centipede.
 
 		float AccelRate = AccelerationCurve.Evaluate(AccelerationTime);
 
