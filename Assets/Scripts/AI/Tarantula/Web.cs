@@ -19,10 +19,10 @@ public class Web : MonoBehaviour
     {
         if (isShot == true)
         {
-            if (transform.position.y <= 0)
+            if (transform.position.y <= 0.01)
             {
                 gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
-                gameObject.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+                gameObject.transform.position = new Vector3(transform.position.x, 0.01f, transform.position.z);
                 despawnTimer += Time.deltaTime;
                 if (despawnTimer >= 10)
                 {
