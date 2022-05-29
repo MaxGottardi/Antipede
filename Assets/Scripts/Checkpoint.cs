@@ -38,9 +38,9 @@ public class Checkpoint : MonoBehaviour
             player = GameObject.Find("Centipede");
             updatedPlayer = true;
         }
-        
+
     }
-    
+
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.CompareTag("PlayerSegment") && (backupPlayerExists == false || updatedPlayer == true))
@@ -63,7 +63,6 @@ public class Checkpoint : MonoBehaviour
                 {
                     segment.Weapon.Owner = null;
                     segment.Weapon.isAntGun = false;
-                    segment.Weapon.weaponPickup = null;
                     weapons.Add(segment.Weapon);
                 }
             }
@@ -72,11 +71,10 @@ public class Checkpoint : MonoBehaviour
             {
                 weaponAttachment.Attachment.Owner = null;
                 weaponAttachment.Attachment.isAntGun = false;
-                weaponAttachment.Attachment.weaponPickup = null;
                 weapons.Add(weaponAttachment.Attachment);
             }
 
-            GameObject backupPlayer = Instantiate(player, new Vector3(transform.position.x, transform.position.y-5, transform.position.z), player.transform.rotation);
+            GameObject backupPlayer = Instantiate(player, new Vector3(transform.position.x, transform.position.y - 5, transform.position.z), player.transform.rotation);
             backupPlayer.tag = "backup";
             backupPlayer.name = "backupPlayer";
             currentBackup = backupPlayer;
@@ -89,12 +87,16 @@ public class Checkpoint : MonoBehaviour
 
     public void SpawnBackupWeapons()
     {
+        foreach (WeaponAttachment weaponAttachment in GameObject.Find("Weapon Card System Interface").GetComponentsInChildren<WeaponAttachment>())
+        {
+            WeaponCardUI.Sub(weaponAttachment.Attachment);
+        }
+
         foreach (Weapon weapon in weapons)
         {
             weapon.Owner = null;
             weapon.isAntGun = false;
-            //weapon.weaponPickup = null;
-            WeaponCardUI.Add(weapon);   
+            WeaponCardUI.Add(weapon);
         }
     }
 }
