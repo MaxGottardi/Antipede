@@ -14,6 +14,8 @@ public class MInput : MonoBehaviour
 	float PreSlowShift;
 	SFXManager sfxManager;
 
+	bool bIsPaused = false;
+
 	void Start()
 	{
 		body = GetComponent<MCentipedeBody>();
@@ -22,10 +24,16 @@ public class MInput : MonoBehaviour
 
 		if (GameObject.Find("SFXMAnager"))
 			sfxManager = GameObject.Find("SFXMAnager").GetComponent<SFXManager>();
+
+		GameSettings.OnPause += OnPause;
+		GameSettings.OnResume += OnResume;
 	}
 
 	void Update()
 	{
+		if (bIsPaused)
+			return;
+
 		Vector3 rayPos = new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z);
 		Debug.DrawRay(rayPos, transform.forward * 2, Color.red);
 		if (Time.timeScale > 0.1f && (Input.GetKeyDown(KeyCode.Space) || attackRequested))
@@ -37,7 +45,7 @@ public class MInput : MonoBehaviour
 				attackRequested = false;
 				Invoke("wait", 0.5f);
 			}
-			else if(!attackRequested)
+			else if (!attackRequested)
 				attackRequested = true;
 
 		}
@@ -81,19 +89,34 @@ public class MInput : MonoBehaviour
 
 	void LateUpdate()
 	{
+		if (bIsPaused)
+			return;
+
 		body.Weapons.ReceiveMouseCoords(MouseToWorldCoords());
 	}
 
 	void FixedUpdate()
 	{
+		if (bIsPaused)
+			return;
+
 		movement.HandleMovement(ref body);
 	}
 
+	void OnPause()
+	{
+		bIsPaused = true;
+	}
 
-    /// <summary>
-    /// for all enemies within a radius of the pincers, they get damaged
-    /// </summary>
-    void DoAttack()
+	void OnResume()
+	{
+		bIsPaused = false;
+	}
+
+	/// <summary>
+	/// for all enemies within a radius of the pincers, they get damaged
+	/// </summary>
+	void DoAttack()
 	{
 		sfxManager.CollectLarvae();
 		transform.GetChild(0).GetComponent<Animator>().SetTrigger("Pincers");
@@ -101,23 +124,23 @@ public class MInput : MonoBehaviour
 		Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * 1.1f, dist, EnemyLayer);
 		GenericAnt closestAnt = null;
 		float currDist = -1;
-		
-        foreach (Collider antCollider in colliders)
-        {//im not really sure why this works for differentiating between the tail and the rest of the body
-			//but it does so im rolling with it (especially because it wasnt working before)
+
+		foreach (Collider antCollider in colliders)
+		{//im not really sure why this works for differentiating between the tail and the rest of the body
+		 //but it does so im rolling with it (especially because it wasnt working before)
 			if (antCollider.gameObject.CompareTag("TarantulaTail"))
-            {
+			{
 				antCollider.gameObject.transform.parent.GetComponent<Tarantula>().DecreaseHealth();
 				antCollider.gameObject.transform.parent.GetComponent<Tarantula>().DecreaseHealth();
 				return;
 			}
-			
-			if(antCollider.gameObject.CompareTag("Tarantula"))
-            {
+
+			if (antCollider.gameObject.CompareTag("Tarantula"))
+			{
 				antCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth();
 				Instantiate(hitParticles, antCollider.gameObject.transform.position, Quaternion.identity);
 				return;
-            }
+			}
 
 			if (antCollider.gameObject.CompareTag("Enemy"))
 			{
@@ -129,13 +152,13 @@ public class MInput : MonoBehaviour
 
 
 		if (closestAnt != null) //only reduce health on the closest ant hit
-        {
+		{
 			closestAnt.ReduceHealth(100);
 			Instantiate(hitParticles, closestAnt.transform.position, Quaternion.identity);
 		}
 
 	}
-    void wait()
+	void wait()
 	{
 		doneAttack = false;
 	}
