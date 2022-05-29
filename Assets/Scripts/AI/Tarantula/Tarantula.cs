@@ -40,11 +40,14 @@ public class Tarantula: MonoBehaviour
 
     public GameObject antPrefab;
     private float spawnAntTimer;
+
+    [SerializeField] SFXManager sfxManager;
     // Start is called before the first frame update
     void Awake()
     {
         rotationPoint = gameObject.transform.parent.gameObject;
         nest = rotationPoint.transform.parent.gameObject;
+        sfxManager = FindObjectOfType<SFXManager>();
     }
     void Start()
     {
@@ -65,9 +68,9 @@ public class Tarantula: MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (player == null)
         {
-            SpawnAnts();
+            player = GameObject.Find("Centipede").GetComponent<MCentipedeBody>();
         }
 
         if (!dying)
@@ -216,6 +219,7 @@ public class Tarantula: MonoBehaviour
             animator.Play("Attack");
             attackingPlayer = true;
             attackTimer = 0;
+            sfxManager.SpiderAttack();
         }
     }
 
@@ -234,6 +238,7 @@ public class Tarantula: MonoBehaviour
                     SpawnWeb();
                     shootAnimTimer = 0;
                     shootTimer = 0;
+                    sfxManager.SpiderWeb();
                 }
             }
         }

@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class GameSettings : MonoBehaviour
 {
+	public static Action OnPause;
+	public static Action OnResume;
+
 	[SerializeField] GameObject MainPauseCanvas;
 
 	[SerializeField] GameObject PauseElementsHolder;
@@ -35,29 +38,35 @@ public class GameSettings : MonoBehaviour
 	{
 		if (Input.GetKeyDown(SettingsVariables.keyDictionary["Pause"]))
 		{
+			// bIsPaused:
 			// True if escape was pressed DURING PLAY - to pause the game.
 			// False if escape was pressed DURING PAUSE - to resume the game.
-			bIsPaused = true;
 
 			bIsPaused = !MainPauseCanvas.activeSelf;
 			MainPauseCanvas.SetActive(bIsPaused);
 
 			if (!bIsPaused)
 			{
-				Time.timeScale = 1;
 				DefaultState();
 			}
 			else
+			{
 				Time.timeScale = 0;
+				OnPause?.Invoke();
+			}
 		}
 	}
 
-	void DefaultState()
+	public void DefaultState()
 	{
+		Time.timeScale = 1;
+
 		MainPauseCanvas.SetActive(false);
 		SettingsElementsHolder.SetActive(false);
 
 		PauseElementsHolder.SetActive(true);
+
+		OnResume?.Invoke();
 	}
 
 	public void ShowSettings(bool bShow)
@@ -99,6 +108,9 @@ public class GameSettings : MonoBehaviour
 
 	void OnDestroy()
 	{
+		OnPause = null;
+		OnResume = null;
+
 		OnSettingsChanged = null;
 		OnReceiveInspectorDefaults = null;
 	}

@@ -14,7 +14,11 @@ public class SFXManager : MonoBehaviour
     [SerializeField] AudioSource sourcePlayer;
     [SerializeField] AudioSource sourceDamage;
     [SerializeField] AudioSource sourceWeapon;
+    [SerializeField] AudioSource sourceWeapon2;
     [SerializeField] AudioSource sourceShield;
+    [SerializeField] AudioSource sourceLazer;
+    [SerializeField] AudioSource sourceAnt;
+    [SerializeField] AudioSource sourceSpider;
 
     [SerializeField] AudioClip menuMusic;
     [SerializeField] AudioClip loadingMusic;
@@ -28,6 +32,13 @@ public class SFXManager : MonoBehaviour
     [SerializeField] AudioClip shieldSFX;
     [SerializeField] AudioClip damageSFX;
     [SerializeField] AudioClip walkSFX;
+
+    [SerializeField] AudioClip gunShootSFX;
+    [SerializeField] AudioClip launcherShootSFX;
+    [SerializeField] AudioClip lazerSFX;
+    [SerializeField] AudioClip antAttackSFX;
+    [SerializeField] AudioClip spiderAttackSFX;
+    [SerializeField] AudioClip shootWebSFX;
 
     // Start is called before the first frame update
     void Start()
@@ -122,6 +133,69 @@ public class SFXManager : MonoBehaviour
     {
         sourceShield.Stop();
     }
+
+    public void ShootGun()
+    {
+        sourceWeapon.clip = gunShootSFX;
+        sourceWeapon.Play();
+    }
+
+    public void ShootLauncher()
+    {
+        sourceWeapon2.clip = launcherShootSFX;
+        sourceWeapon2.Play();
+    }
+
+    public void ActivateLazer()
+    {
+        sourceLazer.clip = lazerSFX;
+        sourceLazer.Play();
+    }
+
+    public void DeactivateLaser()
+    {
+        sourceLazer.Stop();
+    }
+
+    public void AntAttack()
+    {
+        sourceAnt.clip = antAttackSFX;
+        sourceAnt.Play();
+    }
+
+    public void SpiderAttack()
+    {
+        sourceSpider.clip = spiderAttackSFX;
+        sourceSpider.Play();
+    }
+
+    public void SpiderWeb()
+    {
+        sourceSpider.clip = shootWebSFX;
+        sourceSpider.Play();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static void AudioFadeOut(AudioSource audioSource, float FadeTime)
     {
 

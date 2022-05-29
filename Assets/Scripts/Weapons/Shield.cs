@@ -18,8 +18,17 @@ public class Shield : Weapon
     // Start is called before the first frame update
     void Start()
     {
+
+
+ 
+    }
+
+    private void Awake()
+    {
+        sfxManager = FindObjectOfType<SFXManager>();
+        mcb = FindObjectOfType<MCentipedeBody>();
+        //mcb = centipede.GetComponent<MCentipedeBody>();
         shieldActive = false;
-        mcb = centipede.GetComponent<MCentipedeBody>();
     }
 
     // Update is called once per frame
@@ -29,10 +38,14 @@ public class Shield : Weapon
         {
             mcb.shieldActive = true;
         }
+        else
+        {
+            mcb.shieldActive = false;
+        }
 
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            ActivateShield(5.0f);
+            ActivateShield(15.0f);
         }
 
         if (shieldStartTime > 0)
@@ -62,6 +75,7 @@ public class Shield : Weapon
 
     public void DeactivateShield()
     {
+        Debug.Log("dsfsdfs");
         shieldStartTime = 0;
         shieldActive = false;
         sfxManager.DeactivateShield();
@@ -69,6 +83,7 @@ public class Shield : Weapon
 
     public override void OnAttatch()
     {
+        Debug.Log("Xdfdfdfdfdfdfdfdfdf");
         ActivateShield(5.0f);
     }
 }

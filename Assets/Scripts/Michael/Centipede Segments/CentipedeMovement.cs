@@ -284,7 +284,7 @@ public class CentipedeMovement : MonoBehaviour
 					Vector3 NewHeadingDirection = transform.position + Vector3.Cross(transform.right, Hit.normal);
 
 					//transform.LookAt(NewHeadingDirection); // Look at the new edge's 'forward'.
-									       // This is the 'normal' of that edge.
+					// This is the 'normal' of that edge.
 
 					// This updates the Roll (Z) of the Centipede. Keep these in this order.
 					transform.rotation = Quaternion.FromToRotation(transform.up, Hit.normal) * transform.rotation;
@@ -357,26 +357,102 @@ public class CentipedeMovement : MonoBehaviour
 		return Evaluate(T.up);
 	}
 
+	[SerializeField] ECourseCorrectionMethod CourseCorrectionMethod = ECourseCorrectionMethod.Reflect;
+	IEnumerator CurrentCourseCorrection = null;
+
 	bool BoundariesCheckCollisions(ref MCentipedeBody Body)
 	{
 		if (bIsCourseCorrecting)
 			return true;
 
-		// Fire a Ray forwards to check for Boundary collisions.
-		Vector3 NormalisedInDirection = transform.forward;
-		Ray R = new Ray(transform.position, NormalisedInDirection);
-#if UNITY_EDITOR
-		bool bWillCollideWithABoundary = Physics.Raycast(R, out RaycastHit BoundariesCheck, BoundaryCheckDistance, 2048);
-#else
-		// In an actual build of Antipede, we don't care about RaycastHit.
-		bool bWillCollideWithABoundary = Physics.Raycast(R, BoundaryCheckDistance, 2048);
-#endif
+		Ray R = GetRay(out Vector3 NormalisedInDirection);
+
+		FireBoundariesCheckRay(R, out bool bWillCollideWithABoundary, out RaycastHit BoundariesCheck);
 
 		if (bWillCollideWithABoundary)
 		{
+			Vector3 AutoCorrect = CalculateCourseCorrection(Body, ref NormalisedInDirection, BoundariesCheck);
+
+			// Tell this Movement Component that we are correcting our course.
+			CurrentCourseCorrection = CorrectCourse(Body, AutoCorrect);
+			StartCoroutine(CurrentCourseCorrection);
+		}
+
+		return bWillCollideWithABoundary;
+	}
+
+	IEnumerator CorrectCourse(MCentipedeBody Body, Vector3 Auto)
+	{
+		// Tell everything else that we are correcting our course.
+		bIsCourseCorrecting = true;
+
+		AccelerationTime = 0f;
+
+		if (CourseCorrectionMethod == ECourseCorrectionMethod.ChaseTail)
+		{
+			// The Centipede will continue correcting its course until it faces the corrected direction.
+			while (Vector3.Dot(transform.forward, (InDirection - transform.position).normalized) < .95f)
+				yield return null;
+		}
+		else if (CourseCorrectionMethod == ECourseCorrectionMethod.Reflect)
+		{
+			Vector3 NewAuto = Auto;
+			NewAuto.y = 0;
+			NewAuto.Normalize();
+
+			while (true)
+			{
+				Vector3 NewForward = transform.forward;
+				NewForward.y = 0;
+				NewForward.Normalize();
+
+				if (!(Vector3.Dot(NewForward, NewAuto) < .95f))
+					break;
+
+				yield return null;
+			}
+		}
+
+		// Once we are facing our corrected direction, we are no longer correcting our course.
+		bIsCourseCorrecting = false;
+	}
+
+	/// <summary>The Ray that will be shot for checking Boundary collisions.</summary>
+	/// <param name="NormalisedInDirection">Outs <see cref="Transform.forward"/>.</param>
+	/// <returns>The Origin and Direction of the Ray for checking collisions.</returns>
+	Ray GetRay(out Vector3 NormalisedInDirection)
+	{
+		// Fire a Ray forwards to check for Boundary collisions.
+		NormalisedInDirection = transform.forward;
+		return new Ray(transform.position, NormalisedInDirection);
+	}
+
+	/// <summary>Fires a Raycast used for checking Boundary collisions.</summary>
+	/// <param name="R">Origin and Direction of this Ray.</param>
+	/// <param name="bWillCollideWithABoundary">Outs true if the Centipede will collide with a Boundary.</param>
+	/// <param name="BoundariesCheck">Raycast hit information.</param>
+	void FireBoundariesCheckRay(Ray R, out bool bWillCollideWithABoundary, out RaycastHit BoundariesCheck)
+	{
+		// Boundary Layer (1 << 11) (2 ^ 11).
+		bWillCollideWithABoundary = Physics.Raycast(R, out BoundariesCheck, BoundaryCheckDistance, 2048);
+	}
+
+	/// <summary>Calculates how the Centipede should correct its course.</summary>
+	/// <param name="Body">Only used when <see cref="ECourseCorrectionMethod.ChaseTail"/> for getting <see cref="MCentipedeBody.GetAbsoluteLast"/>.</param>
+	/// <param name="NormalisedInDirection">Only used in <see cref="ECourseCorrectionMethod.Reflect"/> and will be modified to represent the Upper Angle.</param>
+	/// <param name="BoundariesCheck">The Raycast hit information from <see cref="FireBoundariesCheckRay(Ray, out bool, out RaycastHit)"/>.</param>
+	/// <returns>
+	/// If <see cref="ECourseCorrectionMethod.ChaseTail"/>, the Position of <see cref="MCentipedeBody.GetAbsoluteLast"/>.
+	/// <br>Else <see cref="ECourseCorrectionMethod.Reflect"/>, the Direction of the reflected position.</br>
+	/// </returns>
+	Vector3 CalculateCourseCorrection(MCentipedeBody Body, ref Vector3 NormalisedInDirection, RaycastHit BoundariesCheck)
+	{
+		Vector3 AutoCorrect = Vector3.zero;
+		if (CourseCorrectionMethod == ECourseCorrectionMethod.ChaseTail)
+		{
 			// If a Boundary was hit, set go back to either the Tail, Absolute Tail (the very-very last Segment)
 			// or the Last Segment.
-			Vector3 AutoCorrect = Body.GetAbsoluteLast().transform.position;
+			AutoCorrect = Body.GetAbsoluteLast().transform.position;
 
 			InDirection = AutoCorrect;
 
@@ -398,24 +474,92 @@ public class CentipedeMovement : MonoBehaviour
 			}
 #endif
 
-			// Tell this Movement Component that we are correcting our course.
-			StartCoroutine(CorrectCourse());
+		}
+		else if (CourseCorrectionMethod == ECourseCorrectionMethod.Reflect)
+		{
+			#region Confusing 'Graphic'
+
+			/*
+
+			-- In case I forget --
+
+			| = Boundary.
+			* = Marker
+			< or v = Point
+			H, S, T = Head, Segment, Tail
+			H', S', T' = Pretend HST.
+			/ or \ = Direction or Banked Terrain.
+			_ = Flat Terrain.
+			[] = GraphicsSplit
+			
+			|                                 []       * PretendPosition
+			|   Side View                     []        \        Front View  
+			|   (Background is Landscape)     []         \       (Background is Boundary)  
+			|                                 []          \
+			|                                 []           \
+			|     /T'                         []            \
+			|    /S'                          []             \
+			|   /H' * PretendPosition         []              \
+			|  /                              []               \* Point
+			| /                               []                v
+			|/                                []               / \
+			|< * Point                        []              /   \
+			|\                                []             /     \
+			| \                               []            /       \
+			|  \                              []           /         \
+			|   \H                            []          /           \
+			|    \S                           []         /             \
+			|     \T                          []        /               \
+			|      \                          []       * Actual Pos.     * AutoCorrect
+			|       ____________              []      _____________________
+
+			*/
+
+			#endregion
+
+			Vector3 Point = BoundariesCheck.point;
+
+			// Pretend the Centipede is above the Point of the Boundary.
+			Vector3 PretendPosition = transform.position;
+
+			float DeltaY = Point.y - PretendPosition.y;
+			PretendPosition.y += DeltaY * 2; // Set the height to be higher than the Boundary so that
+							 // reflecting will cause it to go towards the terrain,
+							 // instead of in the air.
+
+			// Change the direction as we're pretending that the Centipede came from above.
+			NormalisedInDirection = (Point - PretendPosition).normalized;
+
+			AutoCorrect = Vector3.Reflect(NormalisedInDirection, BoundariesCheck.normal);
+			InDirection = transform.position + AutoCorrect;
+
+			// From the Boundary to the Reflected point.
+			Debug.DrawRay(BoundariesCheck.point, AutoCorrect, Color.blue, 5);
+
+			Debug.DrawLine(PretendPosition, Point, Color.red, 5);       // From the Pretended Position to the Boundary.
+			Debug.DrawLine(transform.position, Point, Color.white, 5);  // From the Centipede's actual position to the point.
+			Debug.DrawRay(Point, NormalisedInDirection, Color.cyan, 5); // From the Boundary to where the Centipede is going towards.
+
+#if UNITY_EDITOR
+			Debug.Log("Centipede collided with Boundary: " + BoundariesCheck.collider.name);
+
+			if (bShowGizmos)
+			{
+				Vector3 BoundaryPoint = BoundariesCheck.point;
+
+				// Boundary Collision point.
+				Debug.DrawLine(transform.position, BoundaryPoint, Color.white, 2);
+
+				// Boundary to Auto Correct point.
+				Debug.DrawLine(BoundaryPoint, BoundaryPoint + AutoCorrect, Color.red, 2);
+
+				// New InDirection; where the Centipede is auto correcting towards.
+				Debug.DrawLine(transform.position, InDirection, Color.magenta, 2);
+			}
+#endif
 		}
 
-		return bWillCollideWithABoundary;
-	}
-
-	IEnumerator CorrectCourse()
-	{
-		// Tell everything else that we are correcting our course.
-		bIsCourseCorrecting = true;
-
-		// The Centipede will continue correcting its course until it faces the corrected direction.
-		while (Vector3.Dot(transform.forward, (InDirection - transform.position).normalized) < .95f)
-			yield return null;
-
-		// Once we are facing our corrected direction, we are no longer correcting our course.
-		bIsCourseCorrecting = false;
+		return AutoCorrect;
 	}
 
 #if UNITY_EDITOR
@@ -458,6 +602,8 @@ public class CentipedeMovement : MonoBehaviour
 		}
 
 		GUI.Label(new Rect(10, 10, 150, 150), "FPS: " + FPS_NOW);
+
+		GUI.Label(new Rect(10, 40, 350, 150), "Acceleration Time: " + AccelerationTime);
 	}
 
 	void OnValidate()
@@ -466,4 +612,11 @@ public class CentipedeMovement : MonoBehaviour
 			Debug.LogWarning("Interpolation and Global Movement are incompatible with each other.");
 	}
 #endif
+
+	enum ECourseCorrectionMethod : int
+	{
+		[InspectorName("Chase Tail")]
+		ChaseTail = 0,
+		Reflect = 1
+	}
 }

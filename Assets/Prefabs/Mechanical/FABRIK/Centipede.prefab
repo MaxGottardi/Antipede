@@ -2567,6 +2567,7 @@ MonoBehaviour:
   bEnable90DegreeInclines: 0
   bInterpolateHillClimb: 1
   InterpTime: 0.2
+  CourseCorrectionMethod: 1
 --- !u!1 &8912492245564701803
 GameObject:
   m_ObjectHideFlags: 0

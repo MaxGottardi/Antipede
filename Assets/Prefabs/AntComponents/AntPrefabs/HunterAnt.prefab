@@ -13,18 +13,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.025214, y: 1.3652488, z: 2.4579718}
   m_Center: {x: 0.067489855, y: 0.023820568, z: 0.003899868}
---- !u!114 &6322516632160372770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52857515320077649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 358ebd783dd3c9f48879d89fb953e05a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3326833427437991793
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,9 +86,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 658bff39c6ad0764d87c89355565fd87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avoidanceDir: {x: 0, y: 0, z: 0}
-  avoidanceUpdateFreqCurr: -1
-  waitTimeAvoidance: 0.1
   nextPosTransform: {fileID: 0}
   pathToNextPos: []
   nextPosVector: {x: 0, y: 0, z: 0}
@@ -134,7 +119,8 @@ MonoBehaviour:
     m_Bits: 128
   groundLayer:
     serializedVersion: 2
-    m_Bits: 320
+    m_Bits: 256
+  sfxManager: {fileID: 0}
   callBackupWait: 0
   canInvestigate: 0
   callingBackup: 0
@@ -150,7 +136,7 @@ MonoBehaviour:
   shortViewAngle: 360
   chanceSpawnHelpers: 1
   maxBackupDist: 7.5
-  backupCallDist: 80
+  backupCallDist: 10
   spawnedHelp:
   - {fileID: 3326833427437991793}
   - {fileID: 1933701853150098644, guid: 140d3819dabc74b45b9dd6ba3e8c4206, type: 3}
@@ -177,12 +163,17 @@ MonoBehaviour:
   weaponPos: {x: 0.55, y: 0.7, z: 0}
   weaponParent: {fileID: 3852577907258305728}
   weapons:
-  - {fileID: 5645349024952512263, guid: 61d0affc515ed8648896a539880facb3, type: 3}
-  - {fileID: 5645349024952512263, guid: 61d0affc515ed8648896a539880facb3, type: 3}
-  - {fileID: 5645349024952512263, guid: 61d0affc515ed8648896a539880facb3, type: 3}
+  - {fileID: 692776519300176809, guid: c8bac3e7493054f44b5db96606925168, type: 3}
+  - {fileID: 692776519300176809, guid: c8bac3e7493054f44b5db96606925168, type: 3}
+  - {fileID: 692776519300176809, guid: c8bac3e7493054f44b5db96606925168, type: 3}
   - {fileID: 5645349024952512263, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
   - {fileID: 5645349024952512263, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+  - {fileID: 5645349024952512263, guid: 61d0affc515ed8648896a539880facb3, type: 3}
   weaponClass: {fileID: 0}
+  shieldCardPrefab: {fileID: 4263386421578837108, guid: 10a9f069bfcdf694d99b6198a7698aaf, type: 3}
+  launcherCardPrefab: {fileID: 1332047328893984492, guid: 6b7749803109491469fe9d0fdcbc1863, type: 3}
+  laserCardPrefab: {fileID: 24611930172040355, guid: 04b8f75dfd5eb4c499aed0e1c0bb3c3e, type: 3}
+  gunCardPrefab: {fileID: 1728774939834552395, guid: ba9d407944d4f284c97a36e9f38b7ef8, type: 3}
   isFleeing: 0
 --- !u!1 &8054730979662548921
 GameObject:
@@ -423,18 +414,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2898114516813716898, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3315396748602138855, guid: d03430b02136fae41a430a78a3a68665, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3315396748602138855, guid: d03430b02136fae41a430a78a3a68665, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3315396748602138855, guid: d03430b02136fae41a430a78a3a68665, type: 3}
-      propertyPath: m_LocalScale.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3437038205995143333, guid: d03430b02136fae41a430a78a3a68665, type: 3}
@@ -863,10 +842,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8395566384454598168, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9040950338240070818, guid: d03430b02136fae41a430a78a3a68665, type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

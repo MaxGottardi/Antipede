@@ -42,6 +42,8 @@ public class CardManager : MonoBehaviour
         card4Pos = new Vector3(41, 103, 0);
         card5Pos = new Vector3(167.2f, 103, 0);
         card6Pos = new Vector3(305.9f, 103, 0);
+
+        canvas = canvas.GetComponent<Canvas>();
     }
 
     // Update is called once per frame

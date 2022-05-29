@@ -753,7 +753,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6005279344328523663}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 5, y: 5, z: 4.5}
@@ -773,6 +773,7 @@ MonoBehaviour:
   healthSlider: {fileID: 0}
   attackingPlayer: 0
   antPrefab: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+  sfxManager: {fileID: 0}
 --- !u!1 &6578139119968400845
 GameObject:
   m_ObjectHideFlags: 0

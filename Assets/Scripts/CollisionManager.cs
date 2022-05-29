@@ -57,16 +57,41 @@ public class CollisionManager : MonoBehaviour
             sfxManager.EnterBoss();
             //
         }
-        else if (other.CompareTag("Card"))
+        else if (other.CompareTag("Weapon Pickup"))
         {
             sfxManager.CollectSpecial();
 
-            Card card = other.gameObject.GetComponent<Card>();
-            int cardIndex = card.GetCardIndex();
+            //Card card = other.gameObject.GetComponent<Card>();
+            //int cardIndex = card.GetCardIndex();
 
-            cardManager.CollectCard(cardIndex);
+            //cardManager.CollectCard(cardIndex);
            
+            if (other.gameObject.name == "ShieldCard")
+            {
+                player.IncreaseSpeed(50.0f);
+            }
+            if (other.gameObject.name == "LauncherCard")
+            {
+                player.AddSegment();
+                player.AddSegment();
+                player.IncreaseSpeed(50.0f);
+            }
+            if (other.gameObject.name == "LaserCard")
+            {
+                player.AddSegment();
+                player.IncreaseSpeed(100.0f);
+            }
+            if (other.gameObject.name == "GunCard")
+            {
+                player.AddSegment();
+                player.AddSegment();
+                player.AddSegment();
+                player.IncreaseSpeed(150.0f);
+            }
+
             Destroy(other.gameObject);
+
+
         }
     }
 }

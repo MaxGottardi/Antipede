@@ -16,8 +16,8 @@ using UnityEngine;
 /// <remarks>
 /// <b>This class is split into 3 different files:</b>
 /// <br>This MCentipedeBody.cs file. (Contains the bulk logic of the Centipede)</br>
-/// <br>MCentipedeConstructor.cs. (Contains the <see cref="Awake"/> method and first initialises this Centipede with <see cref="NumberOfSegments"/> starting Segments.</br>
-/// <br>MCentipedeUtils.cs. (Contains the utility implementation for accessing Segments easier.</br>
+/// <br>MCentipedeConstructor.cs. (Contains the <see cref="Awake"/> method and first initialises this Centipede with <see cref="NumberOfSegments"/> starting Segments)</br>
+/// <br>MCentipedeUtils.cs. (Contains the utility implementation for accessing Segments easier)</br>
 /// </remarks>
 [RequireComponent(typeof(MCentipedeEvents))]
 public partial class MCentipedeBody : MonoBehaviour
@@ -63,7 +63,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	public bool shieldActive;
 
 	private GameObject[] checkPoints;
-	private bool backupPlayer = false;
+	private bool backupPlayerExists = false;
 
 	void Start()
 	{
@@ -273,18 +273,27 @@ public partial class MCentipedeBody : MonoBehaviour
 				{
 					if (checkpoint.GetComponent<Checkpoint>().backupPlayer != null)
 					{
-						checkpoint.SetActive(true);
-						backupPlayer = true;
+						checkpoint.GetComponent<Checkpoint>().backupPlayer.transform.position = new Vector3(checkpoint.GetComponent<Checkpoint>().backupPlayer.transform.position.x, checkpoint.GetComponent<Checkpoint>().backupPlayer.transform.position.y + 5, checkpoint.GetComponent<Checkpoint>().backupPlayer.transform.position.z);
+						checkpoint.GetComponent<Checkpoint>().backupPlayer.SetActive(true);
+						backupPlayerExists = true;
+						Camera.main.gameObject.GetComponent<SpringArm>().Target = checkpoint.GetComponent<Checkpoint>().backupPlayer.transform;
+						checkpoint.GetComponent<Checkpoint>().backupPlayer.name = "Centipede";
+						Destroy(Segments[0].gameObject);
+						Destroy(gameObject);
 					}
 				}
 
-				if (backupPlayer == false)
+				if (backupPlayerExists != true)
 				{
 					Debug.Log("You Died");
 					if (DeathScreen != null)
 						DeathScreen.SetActive(true);
 					Time.timeScale = 0;
 				}
+                else
+                {
+					backupPlayerExists = false;
+                }
 			}
 		}
 	}
@@ -371,5 +380,13 @@ public partial class MCentipedeBody : MonoBehaviour
 			slowed = true;
 		}
 	}
+
+#if UNITY_EDITOR
+	void OnGUI()
+	{
+		GUI.Label(new Rect(10, 25, 250, 150), "Movement Speed: " + MovementSpeed);
+	}
+
+#endif
 }
 

@@ -9,7 +9,6 @@ public class MSegment : MonoBehaviour
 	CentipedeMovement Reference;
 	static AnimationCurve AccelerationCurve;
 	float AccelerationTime = 0f;
-	bool bImmediateSlowDown = false;
 
 	public LayerMask segmentLayer;
 	//public bool beingAttacked = false;
@@ -57,6 +56,7 @@ public class MSegment : MonoBehaviour
 
 	void FixedUpdate()
 	{
+		
 		if (bDetached)
 		{
 			rb.AddTorque(transform.up * 50f);
@@ -73,22 +73,11 @@ public class MSegment : MonoBehaviour
 				{
 					AccelerationTime += Time.deltaTime;
 				}
-				else
-				{
-					//AccelerationTime = .2f;
-					if (!bImmediateSlowDown)
-					{
-						AccelerationTime *= .75f;
-						bImmediateSlowDown = true;
-					}
-
-					AccelerationTime -= Time.deltaTime;
-				}
 
 				MMathStatics.HomeTowards(rb, ForwardNeighbour, EvaluateAcceleration(FollowSpeed), MaxTurnDegreesPerFrame);
 				bHasRayAligned = false;
 
-				AccelerationTime = Mathf.Clamp(AccelerationTime, Distance * .5f, 1f);
+				AccelerationTime = Mathf.Clamp(AccelerationTime, Distance, 1f);
 			}
 		}
 		else
@@ -130,12 +119,14 @@ public class MSegment : MonoBehaviour
 			}
 
 			AccelerationTime = 0f;
-			bImmediateSlowDown = false;
 		}
 	}
 
 	float EvaluateAcceleration(float Scalar)
 	{
+		if (Reference.AccelerationTime < Vector3.kEpsilon)
+			return 250; // Known safe speed for Segments and Centipede.
+
 		float AccelRate = AccelerationCurve.Evaluate(AccelerationTime);
 
 		return AccelRate * Scalar;

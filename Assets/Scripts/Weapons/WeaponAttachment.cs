@@ -74,16 +74,16 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 			DraggingAttachment.transform.rotation = Socket.rotation;
 			DraggingAttachment.transform.parent = Socket;
 
-			AttachUI.gameObject.SetActive(true);
-			AttachUI.text = (Weapon)Segment == null ? "Attach!" : "Replace";
-			AttachUI.rectTransform.position = Input.mousePosition + Vector3.up * 75f;
+			//AttachUI.gameObject.SetActive(true);
+			//AttachUI.text = (Weapon)Segment == null ? "Attach!" : "Replace";
+			//AttachUI.rectTransform.position = Input.mousePosition + Vector3.up * 75f;
 		}
 		else
 		{
 			DraggingAttachment.transform.position = Hit.point;
 
 			DraggingAttachment.transform.parent = null;
-			AttachUI.gameObject.SetActive(false);
+			//AttachUI.gameObject.SetActive(false);
 		}
 	}
 
@@ -110,7 +110,7 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 
 		Destroy(DraggingAttachment.gameObject);
 		DraggingAttachment = null;
-		AttachUI.gameObject.SetActive(false);
+		//AttachUI.gameObject.SetActive(false);
 	}
 
 	static Vector3 CameraToWorld(out RaycastHit Hit)
