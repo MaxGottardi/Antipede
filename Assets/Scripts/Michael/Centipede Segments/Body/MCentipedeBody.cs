@@ -64,6 +64,7 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	private GameObject[] checkPoints;
 	private bool backupPlayerExists = false;
+	public GameObject newPlayer;
 
 	void Start()
 	{
@@ -105,6 +106,7 @@ public partial class MCentipedeBody : MonoBehaviour
 				slowed = false;
 			}
 		}
+
 		//		Debug.Log(shieldActive);
 		//Debug.Log(Segments.Count);
 		//		Debug.Log(U2I(SegmentsInfo.End));
@@ -267,19 +269,20 @@ public partial class MCentipedeBody : MonoBehaviour
 			}
 
 			// Make the check after removing a Segment.
-			if (NumberOfSegments <= 1)
+			if (Segments.Count <= 1)
 			{
 				foreach (GameObject checkpoint in checkPoints)
 				{
-					if (checkpoint.GetComponent<Checkpoint>().backupPlayer != null)
+					if (checkpoint.GetComponent<Checkpoint>().backupPlayerExists == true)
 					{
-						checkpoint.GetComponent<Checkpoint>().backupPlayer.transform.position = new Vector3(checkpoint.GetComponent<Checkpoint>().backupPlayer.transform.position.x, checkpoint.GetComponent<Checkpoint>().backupPlayer.transform.position.y + 5, checkpoint.GetComponent<Checkpoint>().backupPlayer.transform.position.z);
-						checkpoint.GetComponent<Checkpoint>().backupPlayer.SetActive(true);
+						newPlayer.SetActive(true);
+						newPlayer.transform.position = new Vector3(newPlayer.transform.position.x, newPlayer.transform.position.y + 5, newPlayer.transform.position.z);
+						newPlayer.name = "Centipede";
 						backupPlayerExists = true;
-						Camera.main.gameObject.GetComponent<SpringArm>().Target = checkpoint.GetComponent<Checkpoint>().backupPlayer.transform;
-						checkpoint.GetComponent<Checkpoint>().backupPlayer.name = "Centipede";
+						Camera.main.gameObject.GetComponent<SpringArm>().Target = newPlayer.transform;		
 						Destroy(Segments[0].gameObject);
 						Destroy(gameObject);
+						checkpoint.GetComponent<Checkpoint>().backupPlayerExists = false;
 					}
 				}
 

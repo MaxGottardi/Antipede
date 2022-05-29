@@ -19,27 +19,25 @@ public class GameManager1 : MonoBehaviour
 
     }
 
-
-        void Update()
-	{
-#if UNITY_EDITOR
-		if (Input.GetKeyDown(KeyCode.BackQuote) && uiButtons.Dev_Story_Skip)
-		{
-                        uiButtons.StoryFinished(uiButtons.Dev_Story_Skip);
-                        uiButtons.Continue();
-		}
-#endif   
+    private void Start()
+    {
+        if (uiButtons != null)
+            uiButtons.StartUI();
+    }
+    
+    private void Update()
+    {
         if (playerObj == null)
         {
             playerObj = GameObject.Find("Centipede");
             mCentipedeBody = playerObj.GetComponent<MCentipedeBody>();
         }
-	}
-
-
-    private void Start()
-    {
-        if (uiButtons != null)
-            uiButtons.StartUI();
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.BackQuote) && uiButtons.Dev_Story_Skip)
+        {
+            uiButtons.StoryFinished(uiButtons.Dev_Story_Skip);
+            uiButtons.Continue();
+        }
+#endif
     }
 }
