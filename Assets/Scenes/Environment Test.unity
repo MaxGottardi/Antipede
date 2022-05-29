@@ -7091,6 +7091,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   bIgnoreFromWeapons: 0
+  Weapon: {fileID: 0}
   health: 100
   numAttacking: 0
 --- !u!135 &212559747
@@ -14657,6 +14658,7 @@ MonoBehaviour:
   slowed: 0
   DeathScreen: {fileID: 0}
   shieldActive: 0
+  newPlayer: {fileID: 0}
 --- !u!54 &454023612
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -22883,6 +22885,7 @@ MonoBehaviour:
   slowed: 0
   DeathScreen: {fileID: 0}
   shieldActive: 0
+  newPlayer: {fileID: 0}
 --- !u!54 &696952953
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -24331,6 +24334,7 @@ MonoBehaviour:
   slowed: 0
   DeathScreen: {fileID: 1659492444}
   shieldActive: 0
+  newPlayer: {fileID: 0}
 --- !u!54 &740873899
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -24565,6 +24569,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   bIgnoreFromWeapons: 0
+  Weapon: {fileID: 0}
   health: 100
   numAttacking: 0
 --- !u!135 &741667731
@@ -25222,7 +25227,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8912492245561955198, guid: 3106871317d074b41befb8ebd4bf7be1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 132.38
+      value: 104.77
       objectReference: {fileID: 0}
     - target: {fileID: 8912492245561955198, guid: 3106871317d074b41befb8ebd4bf7be1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -25230,7 +25235,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8912492245561955198, guid: 3106871317d074b41befb8ebd4bf7be1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 117.22
+      value: 93.39
       objectReference: {fileID: 0}
     - target: {fileID: 8912492245561955198, guid: 3106871317d074b41befb8ebd4bf7be1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -30092,7 +30097,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 883153335}
   m_LocalRotation: {x: 0.1305262, y: 0, z: 0, w: 0.9914449}
-  m_LocalPosition: {x: 132.38, y: 2.4845772, z: 112.99734}
+  m_LocalPosition: {x: 104.77, y: 5.37138, z: 82.33657}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -70065,7 +70070,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71bd95fe522fee743ba973acb65f203c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backupPlayer: {fileID: 0}
+  backupPlayerExists: 0
 --- !u!1 &2098159224
 GameObject:
   m_ObjectHideFlags: 0
