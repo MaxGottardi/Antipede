@@ -7,31 +7,34 @@ public class EnableCheckpoints : MonoBehaviour
 {
 
     private Toggle enableCheckpoint;
-    private GameObject[] checkPoints;
 
     // Start is called before the first frame update
     void Start()
     {
         enableCheckpoint = gameObject.GetComponent<Toggle>();
-
-        checkPoints = GameObject.FindGameObjectsWithTag("CheckPoint");
     }
 
     // Update is called once per frame
     void Update()
     {
         if (enableCheckpoint.isOn)
-        {
-            foreach (GameObject checkpoint in checkPoints)
+        { 
+            foreach (GameObject checkpoint in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
             {
-                checkpoint.SetActive(true);
+                if (checkpoint.name == "Checkpoint")
+                {
+                    checkpoint.SetActive(true);
+                }
             }
         }
         else
         {
-            foreach (GameObject checkpoint in checkPoints)
+            foreach (GameObject checkpoint in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
             {
-                checkpoint.SetActive(false);
+                if (checkpoint.name == "Checkpoint")
+                {
+                    checkpoint.SetActive(false);
+                }
             }
         }
     }

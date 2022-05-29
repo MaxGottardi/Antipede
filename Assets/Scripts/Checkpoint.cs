@@ -22,11 +22,6 @@ public class Checkpoint : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.X))
-		{
-			//Debug.Log(player.GetComponent<WeaponCardUI>().);
-		}
-
 		if (player == null)
 		{
 			player = GameObject.Find("Centipede");

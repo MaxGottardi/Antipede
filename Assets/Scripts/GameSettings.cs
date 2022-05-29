@@ -19,6 +19,7 @@ public class GameSettings : MonoBehaviour
 	bool bIsPaused;
 
 	private GameObject[] checkPoints;
+	private bool initialCheckpointDisable = false;
 
 
 	void Awake()
@@ -27,15 +28,22 @@ public class GameSettings : MonoBehaviour
 
 		OnReceiveInspectorDefaults += ReceiveDefaults;
 		checkPoints = GameObject.FindGameObjectsWithTag("CheckPoint");
-		foreach (GameObject checkpoint in checkPoints)
-		{
-			//checkpoint.SetActive(false);
-		}
+		
 		DefaultState();
 	}
 
 	void Update()
 	{
+
+		if (!initialCheckpointDisable)
+        {
+			foreach (GameObject checkpoint in checkPoints)
+			{
+				checkpoint.SetActive(false);
+			}
+			initialCheckpointDisable = true;
+		}
+
 		if (Input.GetKeyDown(SettingsVariables.keyDictionary["Pause"]))
 		{
 			// bIsPaused:
