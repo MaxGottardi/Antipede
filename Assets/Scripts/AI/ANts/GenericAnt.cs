@@ -101,8 +101,12 @@ public class GenericAnt : MonoBehaviour
     // Update is called once per frame
     public virtual void Update()
     {
+<<<<<<< Updated upstream
         ////Debug.Log(headTransform.localPosition);
         if (Vector3.Distance(transform.position, GameManager1.playerObj.transform.position) <= 200)
+=======
+        if (GameManager1.playerObj != null && Vector3.Distance(transform.position, GameManager1.playerObj.transform.position) <= 200)
+>>>>>>> Stashed changes
             stateMachine.Update();
         else
             anim.SetTrigger("Idle");

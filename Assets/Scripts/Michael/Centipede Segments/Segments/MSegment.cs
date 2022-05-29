@@ -56,6 +56,7 @@ public class MSegment : MonoBehaviour
 
 	void FixedUpdate()
 	{
+		
 		if (bDetached)
 		{
 			rb.AddTorque(transform.up * 50f);

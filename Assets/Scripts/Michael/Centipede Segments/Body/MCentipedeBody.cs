@@ -63,7 +63,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	public bool shieldActive;
 
 	private GameObject[] checkPoints;
-	private bool backupPlayer = false;
+	private bool backupPlayerExists = false;
 
 	void Start()
 	{
@@ -272,19 +272,36 @@ public partial class MCentipedeBody : MonoBehaviour
 				foreach (GameObject checkpoint in checkPoints)
 				{
 					if (checkpoint.GetComponent<Checkpoint>().backupPlayer != null)
+<<<<<<< Updated upstream
 					{
 						checkpoint.SetActive(true);
 						backupPlayer = true;
 					}
 				}
+=======
+                    {
+						checkpoint.GetComponent<Checkpoint>().backupPlayer.transform.position = new Vector3(checkpoint.GetComponent<Checkpoint>().backupPlayer.transform.position.x, checkpoint.GetComponent<Checkpoint>().backupPlayer.transform.position.y +5, checkpoint.GetComponent<Checkpoint>().backupPlayer.transform.position.z);
+						checkpoint.GetComponent<Checkpoint>().backupPlayer.SetActive(true);
+						backupPlayerExists = true;
+						Camera.main.gameObject.GetComponent<SpringArm>().Target = checkpoint.GetComponent<Checkpoint>().backupPlayer.transform;
+						checkpoint.GetComponent<Checkpoint>().backupPlayer.name = "Centipede";
+						Destroy(Segments[0].gameObject);
+						Destroy(gameObject);
+                    }
+                }
+>>>>>>> Stashed changes
 
-				if (backupPlayer == false)
+				if (backupPlayerExists != true)
 				{
 					Debug.Log("You Died");
 					if (DeathScreen != null)
 						DeathScreen.SetActive(true);
 					Time.timeScale = 0;
 				}
+                else
+                {
+					backupPlayerExists = false;
+                }
 			}
 		}
 	}

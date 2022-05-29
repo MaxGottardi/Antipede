@@ -35,4 +35,13 @@ public class GameManager1 : MonoBehaviour
         if (uiButtons != null)
             uiButtons.StartUI();
     }
+
+    private void Update()
+    {
+        if (playerObj == null)
+        {
+            playerObj = GameObject.Find("Centipede");
+            mCentipedeBody = playerObj.GetComponent<MCentipedeBody>();
+        }
+    }
 }

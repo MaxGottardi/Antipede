@@ -13,7 +13,7 @@ public class SpringArm : MonoBehaviour
 
 	[Header("Target Settings.")]
 	[SerializeField] Transform Camera;
-	[SerializeField] Transform Target;
+	public Transform Target;
 	[SerializeField] Vector3 TargetOffset;
 
 	[Header("Spring Arm Settings.")]

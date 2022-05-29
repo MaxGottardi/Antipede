@@ -68,9 +68,9 @@ public class Tarantula: MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (player == null)
         {
-            SpawnAnts();
+            player = GameObject.Find("Centipede").GetComponent<MCentipedeBody>();
         }
 
         if (!dying)
