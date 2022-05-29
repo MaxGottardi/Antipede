@@ -62,7 +62,7 @@ public class Launcher : Weapon
 		LaunchVelocity = MMathStatics.ComputeLaunchVelocity(BarrelEndSocket.position, Direction, LaunchHeight, out float Time, true);
 
 		Vector3 lookPos = transform.position;
-		transform.GetChild(0).GetChild(0).LookAt(lookPos + LaunchVelocity);
+		transform.GetChild(0).GetChild(0).GetChild(0).LookAt(lookPos + LaunchVelocity);
 
 		// Somebody disabled the Dotted-line arc. Do not compute the arc if it's disabled.
 		if (Owner && ArcRenderer && ArcRenderer.gameObject.activeSelf && ArcRenderer.gameObject == gameObject)

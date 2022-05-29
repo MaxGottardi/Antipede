@@ -29,8 +29,10 @@ public abstract class Weapon : MonoBehaviour
 
 		if (Direction == Vector3.zero)
 			return;
-
-		transform.LookAt(Direction);
+		if (transform.childCount > 0 && transform.GetChild(0).childCount > 0 && transform.GetChild(0).GetChild(0).childCount > 0)
+			transform.GetChild(0).GetChild(0).GetChild(0).LookAt(Direction);
+		else
+			transform.LookAt(Direction);
 	}
 
 	/// <summary>Spawn a <see cref="Projectile"/> to fire.</summary>

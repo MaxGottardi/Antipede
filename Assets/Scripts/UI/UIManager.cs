@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
 {
     public static GameObject soundPanel, otherPanel, controlsPanel;
     public static GameObject RebindKeyPanel;
+    public GameObject PauseElementsHolder;
 
     public static bool enableKeyChange = false;
     string changeKey;
@@ -25,8 +26,13 @@ public class UIManager : MonoBehaviour
         RebindKeyPanel.SetActive(false);
 
         otherPanel.SetActive(false);
+        soundPanel.SetActive(true);
         controlsPanel.SetActive(false);
 
+        AssignValues();
+    }
+    void AssignValues()
+    {
         forwardTxt.text = SettingsVariables.keyDictionary["Forward"].ToString();
         leftTxt.text = SettingsVariables.keyDictionary["Left"].ToString();
         rightTxt.text = SettingsVariables.keyDictionary["Right"].ToString();
@@ -38,6 +44,32 @@ public class UIManager : MonoBehaviour
         checkpointToogle.isOn = SettingsVariables.boolDictionary["bEnableCheckpoints"];
         tutorialToggle.isOn = SettingsVariables.boolDictionary["bPlayTutorial"];
         shootMenuToggle.isOn = SettingsVariables.boolDictionary["bShootToActivate"];
+    }
+    public void GameControls()
+    {
+        otherPanel.SetActive(false);
+        soundPanel.SetActive(false);
+        controlsPanel.SetActive(true);
+        AssignValues();
+    }
+    public void GameAudio()
+    {
+        otherPanel.SetActive(false);
+        soundPanel.SetActive(true);
+        controlsPanel.SetActive(false);
+        AssignValues();
+    }
+    public void GameOther()
+    {
+        otherPanel.SetActive(true);
+        soundPanel.SetActive(false);
+        controlsPanel.SetActive(false);
+        AssignValues();
+    }
+    public void GameBack(GameObject obj)
+    {
+        obj.SetActive(false);
+        PauseElementsHolder.SetActive(true);
     }
 
     public void ChangeKey(string key)

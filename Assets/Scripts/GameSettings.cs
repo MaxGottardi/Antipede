@@ -22,7 +22,7 @@ public class GameSettings : MonoBehaviour
 	private bool initialCheckpointDisable = false;
 
 
-	void Awake()
+	void Start()
 	{
 		Settings = new Settings();
 

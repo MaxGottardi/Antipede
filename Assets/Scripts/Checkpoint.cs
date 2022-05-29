@@ -52,18 +52,21 @@ public class Checkpoint : MonoBehaviour
 			}
 			weapons.Clear();
 
-			foreach (MSegment segment in player.GetComponent<MCentipedeBody>().Segments)
+			if (player && player.GetComponent<MCentipedeBody>())
 			{
-				if (segment.Weapon != null)
+				foreach (MSegment segment in player.GetComponent<MCentipedeBody>().Segments)
 				{
-					Weapon W = Instantiate(segment.Weapon);
-					string SubStr = W.name.Substring(0, W.name.Length - 14);
-					W.gameObject.name = SubStr;
+					if (segment.Weapon != null)
+					{
+						Weapon W = Instantiate(segment.Weapon);
+						string SubStr = W.name.Substring(0, W.name.Length - 14);
+						W.gameObject.name = SubStr;
 
-					if (W.TryGetComponent(out LineRenderer Arc))
-						Arc.enabled = false;
+						if (W.TryGetComponent(out LineRenderer Arc))
+							Arc.enabled = false;
 
-					weapons.Add(W);
+						weapons.Add(W);
+					}
 				}
 			}
 

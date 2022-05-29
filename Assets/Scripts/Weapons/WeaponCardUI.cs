@@ -140,8 +140,8 @@ public class WeaponCardUI : MonoBehaviour
 			UpdateText(ref AUII);
 
 			// Update the colour of the Card to match the Weapon GameObject.
-			Color WeaponColour = AUII.WeaponAttachment.Attachment.GetComponent<MeshRenderer>().sharedMaterial.color;
-			AUII.Background.color = new Color(WeaponColour.r, WeaponColour.g, WeaponColour.b, Alpha);
+//			Color WeaponColour = AUII.WeaponAttachment.Attachment.GetComponent<MeshRenderer>().sharedMaterial.color;
+//			AUII.Background.color = new Color(WeaponColour.r, WeaponColour.g, WeaponColour.b, Alpha);
 
 			return NewCard;
 		}

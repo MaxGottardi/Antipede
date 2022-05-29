@@ -22,10 +22,10 @@ public class Gun : Weapon
 
 		// Ignore the Direction param. For a Gun, we don't need it.
 		if (isAntGun)
-			StraightProjectile.Launch(transform.forward * LaunchSpeed/4.5f);
+			StraightProjectile.Launch(transform.GetChild(0).GetChild(0).GetChild(0).forward * LaunchSpeed/4.5f);
 		else
 		{
-			StraightProjectile.Launch(transform.forward * LaunchSpeed);
+			StraightProjectile.Launch(transform.GetChild(0).GetChild(0).GetChild(0).forward * LaunchSpeed);
 		}
 
 		return StraightProjectile;

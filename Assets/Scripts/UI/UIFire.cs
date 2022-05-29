@@ -8,7 +8,6 @@ public class UIFire : MonoBehaviour
     private void Start()
     {
         Projectile.hasSeenChanged = false;
-        Debug.Log(SettingsVariables.boolDictionary["bShootToActivate"] + "hsttd");
     }
 
     public Weapon[] weapons;
