@@ -269,7 +269,7 @@ public partial class MCentipedeBody : MonoBehaviour
 			}
 
 			// Make the check after removing a Segment.
-			if (Segments.Count <= 1)
+			if (NumberOfSegments <= 1)
 			{
 				foreach (GameObject checkpoint in checkPoints)
 				{
@@ -279,10 +279,12 @@ public partial class MCentipedeBody : MonoBehaviour
 						newPlayer.transform.position = new Vector3(newPlayer.transform.position.x, newPlayer.transform.position.y + 5, newPlayer.transform.position.z);
 						newPlayer.name = "Centipede";
 						backupPlayerExists = true;
+						checkpoint.GetComponent<Checkpoint>().SpawnBackupWeapons();
 						Camera.main.gameObject.GetComponent<SpringArm>().Target = newPlayer.transform;		
 						Destroy(Segments[0].gameObject);
 						Destroy(gameObject);
 						checkpoint.GetComponent<Checkpoint>().backupPlayerExists = false;
+						
 					}
 				}
 

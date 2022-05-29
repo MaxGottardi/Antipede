@@ -159,7 +159,7 @@ public class WeaponCardUI : MonoBehaviour
 		AUII.Update(AUII.WeaponAttachment.Attachment.name + "\nx" + AUII.Remaining);
 	}
 
-	struct AttachmentUIInfo
+	public struct AttachmentUIInfo
 	{
 		/// <summary>The number of this type of Weapon in the Inventory.</summary>
 		public int Remaining;

@@ -15,7 +15,7 @@ public class MSegment : MonoBehaviour
 
 	public bool bIgnoreFromWeapons;
 	Transform WeaponSocket;
-	Weapon Weapon;
+	public Weapon Weapon;
 
 	MCentipedeWeapons Owner;
 	public float health = 100;

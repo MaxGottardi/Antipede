@@ -9,6 +9,8 @@ public class Checkpoint : MonoBehaviour
     private GameObject[] checkPoints;
     private bool updatedPlayer = false;
     private GameObject currentBackup;
+    private List<Weapon> weapons = new List<Weapon>();
+
 
     // Start is called before the first frame update
     void Start()
@@ -22,15 +24,16 @@ public class Checkpoint : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
-            //Debug.Log(backupPlayer);
+            //Debug.Log(player.GetComponent<WeaponCardUI>().);
         }
 
-        if (player != null)
+        if (player == null)
         {
             player = GameObject.Find("Centipede");
         }
 
-        if (currentBackup != null && player.GetComponent<MCentipedeBody>().Segments.Count > currentBackup.GetComponent<MCentipedeBody>().Segments.Count)
+        if (currentBackup != null && (player.GetComponent<MCentipedeBody>().Segments.Count > currentBackup.GetComponent<MCentipedeBody>().Segments.Count
+            || player.GetComponent<MCentipedeWeapons>().SegmentsWithWeapons.Count > currentBackup.GetComponent<MCentipedeWeapons>().SegmentsWithWeapons.Count))
         {
             player = GameObject.Find("Centipede");
             updatedPlayer = true;
@@ -52,6 +55,26 @@ public class Checkpoint : MonoBehaviour
                     }
                 }
             }
+            weapons.Clear();
+
+            foreach (MSegment segment in player.GetComponent<MCentipedeBody>().Segments)
+            {
+                if (segment.Weapon != null)
+                {
+                    segment.Weapon.Owner = null;
+                    segment.Weapon.isAntGun = false;
+                    segment.Weapon.weaponPickup = null;
+                    weapons.Add(segment.Weapon);
+                }
+            }
+
+            foreach (WeaponAttachment weaponAttachment in GameObject.Find("Weapon Card System Interface").GetComponentsInChildren<WeaponAttachment>())
+            {
+                weaponAttachment.Attachment.Owner = null;
+                weaponAttachment.Attachment.isAntGun = false;
+                weaponAttachment.Attachment.weaponPickup = null;
+                weapons.Add(weaponAttachment.Attachment);
+            }
 
             GameObject backupPlayer = Instantiate(player, new Vector3(transform.position.x, transform.position.y-5, transform.position.z), player.transform.rotation);
             backupPlayer.tag = "backup";
@@ -61,6 +84,17 @@ public class Checkpoint : MonoBehaviour
             player.GetComponent<MCentipedeBody>().newPlayer = backupPlayer;
             backupPlayerExists = true;
             updatedPlayer = false;
+        }
+    }
+
+    public void SpawnBackupWeapons()
+    {
+        foreach (Weapon weapon in weapons)
+        {
+            weapon.Owner = null;
+            weapon.isAntGun = false;
+            //weapon.weaponPickup = null;
+            WeaponCardUI.Add(weapon);   
         }
     }
 }

@@ -40,7 +40,7 @@ public abstract class Weapon : MonoBehaviour
 	/// <summary>Marks this Segment as 'Deregistered'. Ignores Firing / Look At calls.</summary>
 	public virtual void Deregister() { bIsRegistered = false; }
 
-	public override int GetHashCode() => name.GetHashCode();
+	//public override int GetHashCode() => name.GetHashCode();
 
 	public virtual void OnAttatch() { }
 }
