@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    public GameObject backupPlayer;
+    public bool backupPlayerExists = false;
     private GameObject player;
     private GameObject[] checkPoints;
 
@@ -20,22 +20,26 @@ public class Checkpoint : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
-            Debug.Log(backupPlayer);
+            //Debug.Log(backupPlayer);
+        }
+
+        if (player == null)
+        {
+            player = GameObject.Find("Centipede");
         }
         
     }
     
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.CompareTag("PlayerSegment") && (backupPlayer == null || backupPlayer.name != "backupPlayer"))
+        if (collision.gameObject.CompareTag("PlayerSegment") && backupPlayerExists == false)
         {
-            foreach (GameObject CheckpointWithBackup in checkPoints)
-            {
-                Destroy(CheckpointWithBackup.GetComponent<Checkpoint>().backupPlayer);
-            }
-
-            backupPlayer = Instantiate(player, new Vector3(transform.position.x, transform.position.y-5, transform.position.z), player.transform.rotation);
+            GameObject backupPlayer = Instantiate(player, new Vector3(transform.position.x, transform.position.y-5, transform.position.z), player.transform.rotation);
+            backupPlayer.tag = "backup";
+            backupPlayer.name = "backupPlayer";
             backupPlayer.SetActive(false);
+            player.GetComponent<MCentipedeBody>().newPlayer = backupPlayer;
+            backupPlayerExists = true;
         }
     }
 }

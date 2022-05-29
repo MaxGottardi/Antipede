@@ -19,23 +19,12 @@ public class GameManager1 : MonoBehaviour
 
     }
 
-#if UNITY_EDITOR
-        void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.BackQuote) && uiButtons.Dev_Story_Skip)
-		{
-                        uiButtons.StoryFinished(uiButtons.Dev_Story_Skip);
-                        uiButtons.Continue();
-		}
-	}
-#endif
-
-        private void Start()
+    private void Start()
     {
         if (uiButtons != null)
             uiButtons.StartUI();
     }
-
+    
     private void Update()
     {
         if (playerObj == null)
@@ -43,5 +32,12 @@ public class GameManager1 : MonoBehaviour
             playerObj = GameObject.Find("Centipede");
             mCentipedeBody = playerObj.GetComponent<MCentipedeBody>();
         }
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.BackQuote) && uiButtons.Dev_Story_Skip)
+        {
+            uiButtons.StoryFinished(uiButtons.Dev_Story_Skip);
+            uiButtons.Continue();
+        }
+#endif
     }
 }
