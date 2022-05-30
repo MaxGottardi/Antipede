@@ -83,7 +83,6 @@ public class Shield : Weapon
 
     public override void OnAttatch()
     {
-        Debug.Log("Xdfdfdfdfdfdfdfdfdf");
         ActivateShield(5.0f);
     }
 }

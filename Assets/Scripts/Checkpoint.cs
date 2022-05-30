@@ -8,7 +8,7 @@ public class Checkpoint : MonoBehaviour
 	private GameObject player;
 	private GameObject[] checkPoints;
 	private bool updatedPlayer = false;
-	private GameObject currentBackup;
+	private MCentipedeBody currentBackup;
 	private List<Weapon> weapons = new List<Weapon>();
 
 
@@ -27,11 +27,20 @@ public class Checkpoint : MonoBehaviour
 			player = GameObject.Find("Centipede");
 		}
 
-		if (currentBackup != null && (player.GetComponent<MCentipedeBody>().Segments.Count > currentBackup.GetComponent<MCentipedeBody>().Segments.Count
-		    || player.GetComponent<MCentipedeWeapons>().SegmentsWithWeapons.Count > currentBackup.GetComponent<MCentipedeWeapons>().SegmentsWithWeapons.Count))
+		if (currentBackup != null)
 		{
-			player = GameObject.Find("Centipede");
-			updatedPlayer = true;
+			MCentipedeBody Player = player.GetComponent<MCentipedeBody>();
+			MCentipedeBody Backup = currentBackup.GetComponent<MCentipedeBody>();
+
+			if (Player && Backup)
+			{
+				if (Player.Segments.Count > Backup.Segments.Count
+				    || Player.Weapons.SegmentsWithWeapons.Count > Backup.Weapons.SegmentsWithWeapons.Count)
+				{
+					player = GameObject.Find("Centipede");
+					updatedPlayer = true;
+				}
+			}
 		}
 
 	}
@@ -52,15 +61,13 @@ public class Checkpoint : MonoBehaviour
 			}
 			weapons.Clear();
 
-			if (player && player.GetComponent<MCentipedeBody>())
+			if (player && player.TryGetComponent(out MCentipedeBody Body))
 			{
-				foreach (MSegment segment in player.GetComponent<MCentipedeBody>().Segments)
+				foreach (MSegment segment in Body.Segments)
 				{
 					if (segment.Weapon != null)
 					{
 						Weapon W = Instantiate(segment.Weapon);
-						string SubStr = W.name.Substring(0, W.name.Length - 14);
-						W.gameObject.name = SubStr;
 
 						if (W.TryGetComponent(out LineRenderer Arc))
 							Arc.enabled = false;
@@ -68,38 +75,39 @@ public class Checkpoint : MonoBehaviour
 						weapons.Add(W);
 					}
 				}
+
+				if (Body)
+				{
+					MCentipedeBody backupPlayer = Instantiate(Body, new Vector3(transform.position.x, transform.position.y - 5, transform.position.z), player.transform.rotation);
+					backupPlayer.tag = "backup";
+					backupPlayer.name = "backupPlayer";
+					currentBackup = backupPlayer;
+					backupPlayer.gameObject.SetActive(false);
+					MCentipedeBody.newPlayer = backupPlayer;
+					backupPlayerExists = true;
+					updatedPlayer = false;
+				}
 			}
 
-			foreach (WeaponAttachment weaponAttachment in GameObject.Find("Weapon Card System Interface").GetComponentsInChildren<WeaponAttachment>())
-			{
-				weaponAttachment.Attachment.Owner = null;
-				weaponAttachment.Attachment.isAntGun = false;
-				weapons.Add(weaponAttachment.Attachment);
-			}
-
-			GameObject backupPlayer = Instantiate(player, new Vector3(transform.position.x, transform.position.y - 5, transform.position.z), player.transform.rotation);
-			backupPlayer.tag = "backup";
-			backupPlayer.name = "backupPlayer";
-			currentBackup = backupPlayer;
-			backupPlayer.SetActive(false);
-			player.GetComponent<MCentipedeBody>().newPlayer = backupPlayer;
-			backupPlayerExists = true;
-			updatedPlayer = false;
+			// This loop and the same loop in SpawnBackupWeapons() counteract each other.
+			//foreach (WeaponAttachment weaponAttachment in GameObject.Find("Weapon Card System Interface").GetComponentsInChildren<WeaponAttachment>())
+			//{
+			//	weaponAttachment.Attachment.Owner = null;
+			//	weaponAttachment.Attachment.isAntGun = false;
+			//	weapons.Add(weaponAttachment.Attachment);
+			//}
 		}
 	}
 
 	public void SpawnBackupWeapons()
 	{
-		foreach (WeaponAttachment weaponAttachment in GameObject.Find("Weapon Card System Interface").GetComponentsInChildren<WeaponAttachment>())
-		{
-			WeaponCardUI.Sub(weaponAttachment.Attachment);
-		}
+		// Comment this loop to maintain the Weapon Cards in the UI.
+		// Uncomment this loop to remove all unattached Weapons.
+		WeaponCardUI.RemoveAll();
 
 		foreach (Weapon weapon in weapons)
 		{
-			weapon.Owner = null;
-			weapon.isAntGun = false;
-			WeaponCardUI.Add(weapon);
+			WeaponCardUI.Add(weapon.weaponPickup.GetComponent<WeaponPickup>().Weapon);
 		}
 	}
 }
