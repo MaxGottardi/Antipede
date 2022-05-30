@@ -1907,6 +1907,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &41694262
 BoxCollider:
@@ -3019,6 +3023,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &66672542
 BoxCollider:
@@ -5101,6 +5109,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &132927812
 BoxCollider:
@@ -6488,6 +6500,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &175287788
 BoxCollider:
@@ -6797,6 +6813,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &188431169
 BoxCollider:
@@ -9972,6 +9992,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &274609790
 BoxCollider:
@@ -10306,6 +10330,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &278078596
 BoxCollider:
@@ -11193,6 +11221,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &299737722
 BoxCollider:
@@ -17654,6 +17686,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &468363216
 BoxCollider:
@@ -20939,6 +20975,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &560079416
 BoxCollider:
@@ -22489,7 +22529,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: "Ants have captured you and taking you into their ant hill, and they are
     not pleased you are inedible.\r\nExplore the vast ant hill and become strong
-    enough to take on the spider and gain your freedom.\r"
+    enough to take on the spiders and gain your freedom.\r"
 --- !u!222 &595964234
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -23468,6 +23508,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &629165702
 BoxCollider:
@@ -24009,6 +24053,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &648690388
 BoxCollider:
@@ -25913,6 +25961,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &691405022
 BoxCollider:
@@ -27450,6 +27502,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &715988319
 BoxCollider:
@@ -27832,6 +27888,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &726217098
 BoxCollider:
@@ -32487,6 +32547,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &834173866
 BoxCollider:
@@ -33969,6 +34033,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &857284824
 BoxCollider:
@@ -34586,6 +34654,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &875168734
 BoxCollider:
@@ -36101,6 +36173,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &917797497
 BoxCollider:
@@ -39773,6 +39849,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &1009929022
 BoxCollider:
@@ -42447,6 +42527,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &1081437056
 BoxCollider:
@@ -44757,6 +44841,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &1132313783
 BoxCollider:
@@ -45171,7 +45259,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Success, terrified that you destroyed their god the ants let you leave
+  m_Text: Success, terrified that you destroyed their gods the ants let you leave
 --- !u!222 &1146793306
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -45397,6 +45485,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &1151507906
 BoxCollider:
@@ -48811,6 +48903,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &1238536471
 BoxCollider:
@@ -52398,6 +52494,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &1317347696
 BoxCollider:
@@ -60925,6 +61025,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &1539935329
 BoxCollider:
@@ -62342,6 +62446,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &1585900018
 BoxCollider:
@@ -64617,6 +64725,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &1636565080
 BoxCollider:
@@ -65397,6 +65509,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &1653541809
 BoxCollider:
@@ -65508,6 +65624,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &1653983915
 BoxCollider:
@@ -66914,6 +67034,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &1681906768
 BoxCollider:
@@ -72616,6 +72740,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &1814208009
 BoxCollider:
@@ -78438,6 +78566,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
 --- !u!65 &1949625929
 BoxCollider:
@@ -84240,6 +84372,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d59365e3a8723047a188e033581fdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLaser: 0
+  isGun: 0
+  isShield: 0
+  isLauncher: 0
   Weapon: {fileID: -5664104917214694642, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
 --- !u!65 &2133549663
 BoxCollider:
