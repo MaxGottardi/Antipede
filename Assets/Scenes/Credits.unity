@@ -25528,7 +25528,7 @@ GameObject:
   - component: {fileID: 433490360}
   - component: {fileID: 433490359}
   m_Layer: 5
-  m_Name: NameTxt (1)
+  m_Name: DevTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25579,7 +25579,9 @@ MonoBehaviour:
 
     Max
 
-    Michael'
+    Michael
+
+    Yingfa'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 344a7e2ec4fafca4da26bc931d7b9a26, type: 2}
   m_sharedMaterial: {fileID: 5347850528796258261, guid: 344a7e2ec4fafca4da26bc931d7b9a26, type: 2}
@@ -100125,7 +100127,6 @@ MonoBehaviour:
   slowed: 0
   DeathScreen: {fileID: 0}
   shieldActive: 0
-  newPlayer: {fileID: 0}
 --- !u!4 &1694827724
 Transform:
   m_ObjectHideFlags: 0
@@ -105258,7 +105259,7 @@ GameObject:
   - component: {fileID: 1775391641}
   - component: {fileID: 1775391640}
   m_Layer: 5
-  m_Name: NameTxt (2)
+  m_Name: AssetLabelTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113983,7 +113984,7 @@ GameObject:
   - component: {fileID: 1956151698}
   - component: {fileID: 1956151697}
   m_Layer: 5
-  m_Name: NameTxt (3)
+  m_Name: AssetTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124805,7 +124806,7 @@ GameObject:
   - component: {fileID: 8036119113896430421}
   - component: {fileID: 8036119113896432810}
   m_Layer: 5
-  m_Name: NameTxt
+  m_Name: DevLabelTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124949,7 +124950,7 @@ GameObject:
   - component: {fileID: 8036119114025508397}
   - component: {fileID: 8036119114025508386}
   m_Layer: 5
-  m_Name: SettingsCanvas
+  m_Name: CreditsCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

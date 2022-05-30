@@ -100,6 +100,10 @@ public class UIManager : MonoBehaviour
                 SettingsVariables.keyDictionary[changeKey] = e.keyCode;
                 changeText.text = e.keyCode.ToString();
                 enableKeyChange = false;
+                if(GameManager1.uiButtons != null)
+                {
+                    GameManager1.uiButtons.UpdateControlText();
+                }
             }
         }
     }

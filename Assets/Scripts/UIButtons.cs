@@ -9,6 +9,7 @@ public class UIButtons : MonoBehaviour
     public GameObject tutWindow, winWindow, spiderWindow;
 
     public GameObject moveUI, CamUI, pauseUI, attackUI, shootUI, addWeaponUI, speedUI;
+    public Text pauseTxt, camChangeTxt, attackTxt, speedTxt;
 
 #if UNITY_EDITOR
         // Skips needing the click begin and continue because I'm lazy.
@@ -99,6 +100,7 @@ public class UIButtons : MonoBehaviour
             moveUI.SetActive(true);
             pauseUI.SetActive(true);
             CamUI.SetActive(true);
+            UpdateControlText();
         }
         else
         {
@@ -113,6 +115,7 @@ public class UIButtons : MonoBehaviour
     {
         if (!seenAttack && SettingsVariables.boolDictionary["bPlayTutorial"])
         {
+            UpdateControlText();
             seenAttack = true;
             tutWindow.SetActive(true);
             Time.timeScale = 0;
@@ -140,6 +143,7 @@ public class UIButtons : MonoBehaviour
     {
         if (!seenShoot && SettingsVariables.boolDictionary["bPlayTutorial"])
         {
+            UpdateControlText();
             seenShoot = true;
             tutWindow.SetActive(true);
             Time.timeScale = 0;
@@ -157,6 +161,7 @@ public class UIButtons : MonoBehaviour
     {
         if (!seenSpeed && SettingsVariables.boolDictionary["bPlayTutorial"])
         {
+            UpdateControlText();
             seenSpeed = true;
             tutWindow.SetActive(true);
             Time.timeScale = 0;
@@ -168,5 +173,13 @@ public class UIButtons : MonoBehaviour
             addWeaponUI.SetActive(false);
             speedUI.SetActive(true);
         }
+    }
+
+    public void UpdateControlText()
+    {
+        pauseTxt.text = SettingsVariables.keyDictionary["Pause"].ToString();
+        attackTxt.text = SettingsVariables.keyDictionary["Fire"].ToString();
+        camChangeTxt.text = SettingsVariables.keyDictionary["ChangeCam"].ToString();
+        speedTxt.text = SettingsVariables.keyDictionary["HalveSpeed"].ToString();
     }
 }
