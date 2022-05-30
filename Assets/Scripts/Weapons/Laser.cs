@@ -11,6 +11,12 @@ public class Laser : Weapon
 	[SerializeField] GameObject laserLine;
 
 	*/
+	[SerializeField] SFXManager sfxManager;
+
+	public void Awake()
+	{
+		sfxManager = FindObjectOfType<SFXManager>();
+	}
 
 	public override Projectile Fire(Vector3 Position)
 	{
@@ -26,6 +32,7 @@ public class Laser : Weapon
 
 		if (bIsRegistered)
 		{
+			sfxManager.ActivateLazer();
 			Projectile Laser = InstantiateProjectile();
 			Laser.Initialise(isAntGun);
 			Laser.Launch(Position);
