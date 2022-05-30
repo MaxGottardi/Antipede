@@ -110,16 +110,20 @@ public class CallBackup : Node
 
 public class CanCallBackup : Node
 {
+    float maxBackupWait;
     public CanCallBackup(GenericAnt blackboard)
     {
         this.blackboard = blackboard;
+
+        blackboard.callBackupWait = 50;
+        maxBackupWait = blackboard.callBackupWait;
     }
     public override NodeState evaluate()
     {
         //within a certain range of the AI cast out and see who responds
         if (!blackboard.isHelper && Vector3.Distance(blackboard.transform.position, blackboard.nextPosTransform.position) < blackboard.maxBackupDist && blackboard.callBackupWait <= 0)
         {
-            blackboard.callBackupWait = 20;
+            blackboard.callBackupWait = maxBackupWait;
             return NodeState.Success; //can call for backup
         }
         else
