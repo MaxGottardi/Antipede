@@ -30,6 +30,10 @@ public class FollowMOuse : MonoBehaviour
 			{
 				SceneManager.LoadScene("Credits");
 			}
+			else if (gameObject.CompareTag("Quit"))
+			{
+				Application.Quit();
+			}
 			else if (gameObject.CompareTag("Back"))
 			{
 				SceneManager.LoadScene("MainMenu");

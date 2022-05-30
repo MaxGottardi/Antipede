@@ -5,6 +5,7 @@ using UnityEngine;
 public class WeaponPickup : MonoBehaviour
 {
 
+	public bool isLaser, isGun, isShield, isLauncher;
 	public Weapon Weapon;
 
 	float InitialHeight;
