@@ -69,13 +69,16 @@ public class SFXManager : MonoBehaviour
 
     public void EnterCave()
     {
+        Debug.Log("1");
         if (sourceMusic.clip == caveMusic)
         {
+            Debug.Log("2");
             sourceMusic.clip = mainMusic;
             sourceMusic.Play();
         }
         else if (sourceMusic.clip == mainMusic)
         {
+            Debug.Log("3");
             //AudioFadeOut(sourceMusic, 7f);
             sourceMusic.clip = caveMusic;
             sourceMusic.Play();
