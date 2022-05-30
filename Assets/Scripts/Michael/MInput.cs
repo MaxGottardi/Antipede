@@ -52,20 +52,20 @@ public class MInput : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.J))
 		{
-			body.AddSegment();
+			//body.AddSegment();
 		}
 		else if (Input.GetKeyDown(KeyCode.H))
 		{
-			body.RemoveSegment(100, transform.position);
+			//body.RemoveSegment(100, transform.position);
 		}
 
 		if (Input.GetKeyDown(KeyCode.K))
 		{
-			body.IncreaseSpeed(100.0f);
+			//body.IncreaseSpeed(100.0f);
 		}
 		else if (Input.GetKeyDown(KeyCode.L))
 		{
-			body.DecreaseSpeed(100.0f);
+			//body.DecreaseSpeed(100.0f);
 		}
 
 		if (Input.GetKeyDown(SettingsVariables.keyDictionary["HalveSpeed"]))
