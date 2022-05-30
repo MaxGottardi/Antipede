@@ -11,6 +11,7 @@ public class Shield : Weapon
     float shieldDuration;
     [SerializeField] GameObject centipede;
     MCentipedeBody mcb;
+    [SerializeField] GameObject ShieldEffect;
 
 
 
@@ -64,10 +65,15 @@ public class Shield : Weapon
     {
         return null;
     }
+    public override void LookAt(Vector3 Direction)
+    {
+        //do nothing instead
+    }
 
 
     public void ActivateShield(float duration)
     {
+        ShieldEffect.SetActive(true);
         shieldDuration = duration;
         sfxManager.ActivateShield();
         shieldStartTime = Time.time;
@@ -79,6 +85,8 @@ public class Shield : Weapon
         shieldStartTime = 0;
         shieldActive = false;
         sfxManager.DeactivateShield();
+        ShieldEffect.SetActive(false);
+
     }
 
     public override void OnAttatch()
