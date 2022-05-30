@@ -96,6 +96,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 320
+  sfxManager: {fileID: 0}
   callBackupWait: 0
   canInvestigate: 0
   callingBackup: 0

@@ -98,13 +98,13 @@ public class XLine : Projectile
 			Transform T = Hit.collider.transform.parent;
 			if (T && !T.TryGetComponent(out GuardAnt GUA) && T.TryGetComponent(out GenericAnt GA))
 			{
-				GA.ReduceHealth(100);
+				GA.ReduceHealth(10);
 				Instantiate(bloodParticles, Hit.point + Vector3.up * 0.5f, Quaternion.identity);
 			}
 			else if(Hit.collider.gameObject.CompareTag("Tarantula") && Hit.collider.gameObject.TryGetComponent(out Tarantula tarantula)
 				&& tarantula.healthSlider.value >= .5f)
             {
-				tarantula.DecreaseHealth(3);
+				tarantula.DecreaseHealth(1);
 				Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 			}
 		}

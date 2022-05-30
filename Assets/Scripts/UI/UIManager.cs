@@ -87,7 +87,12 @@ public class UIManager : MonoBehaviour
     {
         GameObject selectedObj = EventSystem.current.currentSelectedGameObject;
         if (selectedObj != null)
-            SettingsVariables.boolDictionary[component] = EventSystem.current.currentSelectedGameObject.GetComponent<Toggle>().isOn;
+        {
+            bool toggleValue = EventSystem.current.currentSelectedGameObject.GetComponent<Toggle>().isOn;
+            SettingsVariables.boolDictionary[component] = toggleValue;
+            SaveSettings.SaveBool(component);
+
+        }
     }
     private void OnGUI()
     {
@@ -100,7 +105,8 @@ public class UIManager : MonoBehaviour
                 SettingsVariables.keyDictionary[changeKey] = e.keyCode;
                 changeText.text = e.keyCode.ToString();
                 enableKeyChange = false;
-                if(GameManager1.uiButtons != null)
+                SaveSettings.SaveKey(changeKey);
+                if (GameManager1.uiButtons != null)
                 {
                     GameManager1.uiButtons.UpdateControlText();
                 }
