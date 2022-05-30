@@ -51,6 +51,11 @@ public class Projectile : MonoBehaviour
 			hasSeenChanged = true;
 			SceneManager.LoadScene("MainMenu");
 		}
+		else if (collision.gameObject.CompareTag("Credits") && !hasSeenChanged)
+		{
+			hasSeenChanged = true;
+			SceneManager.LoadScene("Credits");
+		}
 		else if (collision.gameObject.CompareTag("Sound"))
 		{
 			UIManager.soundPanel.SetActive(true);
