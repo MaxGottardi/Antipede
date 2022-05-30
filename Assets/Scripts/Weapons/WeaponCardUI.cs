@@ -152,6 +152,13 @@ public class WeaponCardUI : MonoBehaviour
 			NewCard.transform.SetParent(transform);
 			NewCard.AttachUI = AttachUI;
 
+			RawImage RI = NewCard.GetComponent<RawImage>();
+			RI.texture = PickedUp.Art;
+			RI.material = PickedUp.ArtMaterial;
+
+			TextMeshProUGUI Text = NewCard.GetComponentInChildren<TextMeshProUGUI>();
+			Text.color = PickedUp.TextColour;
+
 			// Mark as having one Inventory and initialise the Card.
 			AttachmentUIInfo AUII = new AttachmentUIInfo(1, NewCard, PickedUp, NoOfCards);
 			NewCard.name = AUII.WeaponAttachment.Attachment.name + " Card";

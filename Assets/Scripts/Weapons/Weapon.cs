@@ -3,12 +3,18 @@ using UnityEngine;
 /// <summary>The base class for a weapon.</summary>
 public abstract class Weapon : MonoBehaviour
 {
+	[Header("Base Weapon Settings.")]
 	[HideInInspector] public MCentipedeWeapons Owner;
 
 	[SerializeField, Tooltip("Where should projectiles shoot from?")] protected Transform BarrelEndSocket;
 	[SerializeField, Tooltip("The " + nameof(Projectile) + " to Fire.")] protected Projectile ProjectileObject;
 	public GameObject weaponPickup;
 	public bool isAntGun = false;
+
+	[Header("Weapon Card UI References.")]
+	public Texture2D Art;
+	public Material ArtMaterial;
+	public Color TextColour;
 
 	protected bool bIsRegistered = true;
 

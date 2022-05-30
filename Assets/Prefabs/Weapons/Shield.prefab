@@ -100,5 +100,8 @@ MonoBehaviour:
   ProjectileObject: {fileID: 0}
   weaponPickup: {fileID: 5686783741378203813, guid: cceb6fe1276b34442b977546fd84d745, type: 3}
   isAntGun: 0
+  Art: {fileID: 2800000, guid: 2d7d5b385cf4345448598d08ebf181d5, type: 3}
+  ArtMaterial: {fileID: 2100000, guid: c015c295cc37f7a4c8a7ca2a3e90e05a, type: 2}
+  TextColour: {r: 0.93725497, g: 0.32156864, b: 0.3137255, a: 1}
   sfxManager: {fileID: 0}
   centipede: {fileID: 4271346648809204056, guid: d038f55146cfd5a4c9bed2931ccb343a, type: 3}
