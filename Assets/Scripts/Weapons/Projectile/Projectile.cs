@@ -42,6 +42,10 @@ public class Projectile : MonoBehaviour
 			T.DecreaseHealth(tarantDamage);
 			Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 		}
+		else if (collision.gameObject.CompareTag("Quit"))
+		{
+			Application.Quit();
+		}
 		else if (collision.gameObject.CompareTag("Play") && !hasSeenChanged)
 		{
 			hasSeenChanged = true;

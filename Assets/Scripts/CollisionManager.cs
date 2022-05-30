@@ -66,27 +66,38 @@ public class CollisionManager : MonoBehaviour
 
             //cardManager.CollectCard(cardIndex);
            
-            if (other.gameObject.name == "ShieldCard")
+            if (other.gameObject.GetComponent<WeaponPickup>().isShield)
             {
                 player.IncreaseSpeed(50.0f);
+                GameManager1.uiButtons.SpeedUI();
+                GameManager1.uiButtons.AddSpeed();
             }
-            if (other.gameObject.name == "LauncherCard")
+            if (other.gameObject.GetComponent<WeaponPickup>().isLauncher)
             {
                 player.AddSegment();
                 player.AddSegment();
                 player.IncreaseSpeed(50.0f);
+                GameManager1.uiButtons.SpeedUI();
+                GameManager1.uiButtons.AddSpeed();
             }
-            if (other.gameObject.name == "LaserCard")
+            if (other.gameObject.GetComponent<WeaponPickup>().isLaser)
             {
                 player.AddSegment();
                 player.IncreaseSpeed(100.0f);
+                GameManager1.uiButtons.SpeedUI();
+                GameManager1.uiButtons.AddSpeed();
+                GameManager1.uiButtons.AddSpeed();
             }
-            if (other.gameObject.name == "GunCard")
+            if (other.gameObject.GetComponent<WeaponPickup>().isGun)
             {
                 player.AddSegment();
                 player.AddSegment();
                 player.AddSegment();
                 player.IncreaseSpeed(150.0f);
+                GameManager1.uiButtons.SpeedUI();
+                GameManager1.uiButtons.AddSpeed();
+                GameManager1.uiButtons.AddSpeed();
+                GameManager1.uiButtons.AddSpeed();
             }
 
             Destroy(other.gameObject);
