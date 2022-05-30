@@ -8733,7 +8733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5645349024952512283, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
       propertyPath: m_RootOrder
-      value: 107
+      value: 106
       objectReference: {fileID: 0}
     - target: {fileID: 5645349024952512283, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -26851,7 +26851,7 @@ RectTransform:
   m_LocalScale: {x: 0.14151622, y: 0.14151622, z: 0.14151622}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: -3.302}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -31267,7 +31267,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3587004889938142218, guid: f2979dff33818664381e12b6ce518823, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3587004889938142218, guid: f2979dff33818664381e12b6ce518823, type: 3}
       propertyPath: m_LocalPosition.x
@@ -48083,7 +48083,7 @@ Transform:
   m_Children:
   - {fileID: 761571452}
   m_Father: {fileID: 0}
-  m_RootOrder: 106
+  m_RootOrder: 107
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &853138576
 GameObject:
@@ -107052,7 +107052,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1825298257
 GameObject:
@@ -126390,7 +126390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8036119113242394523, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8036119113242394523, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: m_AnchorMax.x
@@ -126548,6 +126548,10 @@ PrefabInstance:
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1824832093}
+    - target: {fileID: 8036119114001989441, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8036119114092991641, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

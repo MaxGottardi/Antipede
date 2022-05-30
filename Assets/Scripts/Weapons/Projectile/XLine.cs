@@ -79,7 +79,7 @@ public class XLine : Projectile
 	IEnumerator FireLaser(Vector3 Position)
 	{
 
-		Sc.y = Vector3.Distance(transform.position, Position);
+		Sc.z = Vector3.Distance(transform.position, Position);
 
 		float t = 0f;
 
@@ -87,6 +87,7 @@ public class XLine : Projectile
 		while (t <= 1f)
 		{
 			Line.transform.localScale = Vector3.Lerp(Vector3.zero, Sc, t);
+			Line.transform.LookAt(Position);
 
 			yield return null;
 			t += Time.deltaTime * kFractionOfASecond;

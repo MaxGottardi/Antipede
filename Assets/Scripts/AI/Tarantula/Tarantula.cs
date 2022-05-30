@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Tarantula: MonoBehaviour
 {
+    public static int numTarantulasLeft = 3;
     private GameObject nest;
     private GameObject rotationPoint;
     private int nestArea = 50;
@@ -42,6 +43,7 @@ public class Tarantula: MonoBehaviour
     private float spawnAntTimer;
 
     [SerializeField] SFXManager sfxManager;
+    [SerializeField] GameObject shieldEffect;
     // Start is called before the first frame update
     void Awake()
     {
@@ -72,6 +74,8 @@ public class Tarantula: MonoBehaviour
         {
             player = GameObject.Find("Centipede").GetComponent<MCentipedeBody>();
         }
+        if (healthSlider.value < 0.5f && !shieldEffect.activeSelf)
+            shieldEffect.SetActive(true);
 
         if (!dying)
         {
@@ -171,7 +175,9 @@ public class Tarantula: MonoBehaviour
             animator.Play("Death");
             if (deathTimer >= 2)
             {
-                Win();
+                numTarantulasLeft--;
+                if (numTarantulasLeft <= 0)
+                    Win();
                 Destroy(gameObject);
             }
         }
