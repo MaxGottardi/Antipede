@@ -15,12 +15,14 @@ public class MInput : MonoBehaviour
 	SFXManager sfxManager;
 
 	bool bIsPaused = false;
-
+    private void Awake()
+    {
+		MainCamera = Camera.main;
+	}
 	void Start()
 	{
 		body = GetComponent<MCentipedeBody>();
 		movement = GetComponent<CentipedeMovement>();
-		MainCamera = Camera.main;
 
 		if (GameObject.Find("SFXMAnager"))
 			sfxManager = GameObject.Find("SFXMAnager").GetComponent<SFXManager>();
