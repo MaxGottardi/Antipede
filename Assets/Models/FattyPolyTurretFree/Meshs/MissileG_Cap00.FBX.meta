@@ -1,15 +1,14 @@
 fileFormatVersion: 2
-guid: 15a0e7a7ce870f54d97428ac5a990813
+guid: b034fedba8fdb2f45b070e2985755f90
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: 02 - Default
+    2100000: 08 - Default
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Bullet00
-    7400000: Take 001
+    4300000: MissileG_Cap00
     9500000: //RootNode
   externalObjects: {}
   materials:

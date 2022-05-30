@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 15a0e7a7ce870f54d97428ac5a990813
+guid: bc02584501fe4c546b6b0b55239d59ef
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -8,7 +8,7 @@ ModelImporter:
     2100000: 02 - Default
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Bullet00
+    4300000: Bullet02
     7400000: Take 001
     9500000: //RootNode
   externalObjects: {}
