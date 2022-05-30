@@ -47514,7 +47514,6 @@ MonoBehaviour:
   slowed: 0
   DeathScreen: {fileID: 0}
   shieldActive: 0
-  newPlayer: {fileID: 0}
 --- !u!114 &784085981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127427,6 +127426,7 @@ GameObject:
   - component: {fileID: 2082371841}
   - component: {fileID: 2082371842}
   - component: {fileID: 2082371843}
+  - component: {fileID: 2082371848}
   m_Layer: 12
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -127614,6 +127614,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 56, y: -15.58, z: 0}
+--- !u!114 &2082371848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082371840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c48d988032e0e143a6a7284eb8177a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: a566ffab5c0b6a14d9b73f3a26693c0a, type: 2}
 --- !u!1 &2083501588
 GameObject:
   m_ObjectHideFlags: 0
