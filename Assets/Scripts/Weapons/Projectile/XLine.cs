@@ -96,10 +96,16 @@ public class XLine : Projectile
 		if (Physics.Linecast(transform.position, Position, out RaycastHit Hit, 128))
 		{
 			Transform T = Hit.collider.transform.parent;
-			if (T && T.TryGetComponent(out GenericAnt GA))
+			if (T && !T.TryGetComponent(out GuardAnt GUA) && T.TryGetComponent(out GenericAnt GA))
 			{
-				GA.ReduceHealth(20);
+				GA.ReduceHealth(100);
 				Instantiate(bloodParticles, Hit.point + Vector3.up * 0.5f, Quaternion.identity);
+			}
+			else if(Hit.collider.gameObject.CompareTag("Tarantula") && Hit.collider.gameObject.TryGetComponent(out Tarantula tarantula)
+				&& tarantula.healthSlider.value >= .5f)
+            {
+				tarantula.DecreaseHealth(3);
+				Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 			}
 		}
 

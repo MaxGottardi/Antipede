@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour
 	public bool isEnemyProjectile = false; //is this projectile shot by an enemy or not
 	public GameObject hitParticles, bloodParticles;
 	public static bool hasSeenChanged = false;
+	public int DamageAmount, tarantDamage = 1;
 
 	/// <remarks>Use as Awake/Start method.</remarks>
 	public virtual void Initialise(bool isEnemyProjectile)
@@ -29,16 +30,16 @@ public class Projectile : MonoBehaviour
 	private void OnCollisionEnter(Collision collision)
 	{
 		//Destroy(this);
-		if (!isEnemyProjectile && collision.gameObject.CompareTag("Enemy"))
+		if (!isEnemyProjectile && collision.gameObject.CompareTag("Enemy") && collision.transform.parent.gameObject.GetComponent<GuardAnt>() == null)
 		{
-			collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(30);
+			collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(DamageAmount);
 			Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 			Destroy(gameObject);
 		}
 		if (!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula")
 			&& collision.gameObject.TryGetComponent(out Tarantula T) && T.healthSlider.value >= .5f)
 		{
-			T.DecreaseHealth();
+			T.DecreaseHealth(tarantDamage);
 			Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 		}
 		else if (collision.gameObject.CompareTag("Play") && !hasSeenChanged)
@@ -101,7 +102,7 @@ public class Projectile : MonoBehaviour
     {
         if(isEnemyProjectile && other.gameObject.CompareTag("PlayerSegment"))
         {
-			GameManager1.mCentipedeBody.RemoveSegment(30, transform.position + Vector3.up * 0.5f);
+			GameManager1.mCentipedeBody.RemoveSegment(DamageAmount, transform.position + Vector3.up * 0.5f);
 			Destroy(gameObject);
 		}
 	}

@@ -239,6 +239,8 @@ MonoBehaviour:
   isEnemyProjectile: 0
   hitParticles: {fileID: 1983914251257026005, guid: 9ed20eb1978768643b467b5f79d27218, type: 3}
   bloodParticles: {fileID: 3612848425264099771, guid: e16bd8ac4022a2447880058a8ae4a7cb, type: 3}
+  DamageAmount: 40
+  tarantDamage: 2
 --- !u!1 &8116467111339866537
 GameObject:
   m_ObjectHideFlags: 0

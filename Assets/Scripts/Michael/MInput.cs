@@ -130,14 +130,13 @@ public class MInput : MonoBehaviour
 		 //but it does so im rolling with it (especially because it wasnt working before)
 			if (antCollider.gameObject.CompareTag("TarantulaTail"))
 			{
-				antCollider.gameObject.transform.parent.GetComponent<Tarantula>().DecreaseHealth();
-				antCollider.gameObject.transform.parent.GetComponent<Tarantula>().DecreaseHealth();
+				antCollider.gameObject.transform.parent.GetComponent<Tarantula>().DecreaseHealth(2);
 				return;
 			}
 
 			if (antCollider.gameObject.CompareTag("Tarantula"))
 			{
-				antCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth();
+				antCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth(1);
 				Instantiate(hitParticles, antCollider.gameObject.transform.position, Quaternion.identity);
 				return;
 			}

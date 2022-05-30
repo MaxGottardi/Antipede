@@ -202,9 +202,9 @@ public class Tarantula: MonoBehaviour
         rotationPoint.transform.position += newPos;    
     }
 
-    public void DecreaseHealth()
+    public void DecreaseHealth(int amount)
     {
-        health--;
+        health-= amount;
         healthSlider.value = CalculateHealth();
     }
     float CalculateHealth()
