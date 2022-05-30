@@ -266,8 +266,11 @@ public class GenericAnt : MonoBehaviour
     /// </summary>
     public void loseAttackInterest()
     {
-        MSegment segment = nextPosTransform.gameObject.GetComponent<MSegment>();
-        if (segment != null && segment.numAttacking > 0)
-            segment.numAttacking--;
+        if (nextPosTransform)
+        {
+            MSegment segment = nextPosTransform.gameObject.GetComponent<MSegment>();
+            if (segment != null && segment.numAttacking > 0)
+                segment.numAttacking--;
+        }
     }
 }

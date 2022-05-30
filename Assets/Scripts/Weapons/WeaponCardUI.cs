@@ -89,6 +89,8 @@ public class WeaponCardUI : MonoBehaviour
 					AttachmentUIInfo EAUII = E.Value;
 					EAUII.PositionIndex--;
 
+					E.Value.WeaponAttachment.CalculateTargets();
+
 					// Mark this Entry for modification.
 					Modified.Add(new KeyValuePair<Weapon, AttachmentUIInfo>(E.Key, EAUII));
 				}
@@ -183,15 +185,16 @@ public class WeaponCardUI : MonoBehaviour
 
 	static Vector3 GetPositionFromInfo(int NoOfCards, Vector2 SizeOfTemplate, float AdjustedPadding)
 	{
-		return new Vector3(SizeOfTemplate.x - AdjustedPadding * NoOfCards, SizeOfTemplate.y);
+		return new Vector3(2f * SizeOfTemplate.x - AdjustedPadding * NoOfCards, SizeOfTemplate.y);
 	}
 
 	void UpdateText(ref AttachmentUIInfo AUII)
 	{
-		AUII.Update(AUII.WeaponAttachment.Attachment.name + "\nx" + AUII.Remaining);
+		//AUII.Update(AUII.WeaponAttachment.Attachment.name + "\nx" + AUII.Remaining);
+		AUII.Update("x" + AUII.Remaining);
 	}
 
-	public struct AttachmentUIInfo
+	struct AttachmentUIInfo
 	{
 		/// <summary>The number of this type of Weapon in the Inventory.</summary>
 		public int Remaining;

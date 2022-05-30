@@ -85,6 +85,9 @@ public class SpringArm : MonoBehaviour
 			bInheritRotation = !bInheritRotation;
 
 		ScrollDistance();
+
+		if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.Backslash))
+			bUseCustomProjection = !bUseCustomProjection;
 	}
 
 	void FixedUpdate()
