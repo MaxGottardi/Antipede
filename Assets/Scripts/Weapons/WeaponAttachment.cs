@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.UI;
 
 /// <summary>Class that holds a reference to a pickup-able/droppable <see cref="Weapon"/> in the game.</summary>
 public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
@@ -33,6 +34,81 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 	Vector3 PointUnderMouse;
 	RaycastHit Hit;
 
+	RectTransform RT;
+	Rect R;
+	bool bIsMouseHovering = false;
+	float t = 0;
+	Vector3 OriginalPosition;
+	Vector3 LerpTargetPosition;
+	RawImage RI;
+	Color OriginalColour;
+	Color LerpTargetColour;
+	Vector2 OWH;
+	Vector2 WH;
+
+	public const float kIncreaseBy = 100f;
+
+	void Start()
+	{
+		CalculateTargets();
+	}
+
+	public void CalculateTargets()
+	{
+		if (!K_bAnimateMouseHovering)
+			return;
+
+		RT = (RectTransform)transform;
+		R = RT.rect;
+
+		OWH = R.size;
+		WH = new Vector2(OWH.x + kIncreaseBy, OWH.y + kIncreaseBy);
+
+		OriginalPosition = RT.position;
+		LerpTargetPosition = OriginalPosition;
+		LerpTargetPosition.y += kIncreaseBy * .5f;
+		RI = GetComponent<RawImage>();
+		OriginalColour = RI.color;
+		LerpTargetColour = new Color(OriginalColour.r, OriginalColour.g, OriginalColour.b, 1f);
+	}
+
+	Vector2 SizeNow;
+	// Set to false if you don't the Cards to animate.
+	const bool K_bAnimateMouseHovering = true;
+
+	void Update()
+	{
+		if (!K_bAnimateMouseHovering)
+			return;
+
+		if (bIsMouseHovering)
+		{
+			t += Time.deltaTime * 5;
+
+			Vector2 Interp = Vector2.Lerp(SizeNow, WH, t);
+			RT.position = Vector3.Lerp(RT.position, LerpTargetPosition, t);
+			RI.color = Color.Lerp(RI.color, LerpTargetColour, t);
+
+			RT.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Interp.x);
+			RT.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Interp.y);
+			SizeNow = Interp;
+		}
+		else
+		{
+			t -= Time.deltaTime * 5;
+
+			Vector2 Interp = Vector2.Lerp(OWH, SizeNow, t);
+			RT.position = Vector3.Lerp(OriginalPosition, RT.position, t);
+			RI.color = Color.Lerp(OriginalColour, RI.color, t);
+
+			RT.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Interp.x);
+			RT.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Interp.y);
+			SizeNow = Interp;
+		}
+
+		t = Mathf.Clamp01(t);
+	}
+
 	void LateUpdate()
 	{
 		PointUnderMouse = CameraToWorld(out Hit);
@@ -40,15 +116,15 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 
 	#region Maybe Unused Events
 
-	public void OnPointerClick(PointerEventData EventData) {  }
+	public void OnPointerClick(PointerEventData EventData) { }
 
-	public void OnPointerDown(PointerEventData EventData) {  }
+	public void OnPointerDown(PointerEventData EventData) { }
 
-	public void OnPointerEnter(PointerEventData EventData) {  }
+	public void OnPointerEnter(PointerEventData EventData) { bIsMouseHovering = true; }
 
-	public void OnPointerExit(PointerEventData EventData) {  }
+	public void OnPointerExit(PointerEventData EventData) { bIsMouseHovering = false; }
 
-	public void OnPointerUp(PointerEventData EventData) {  }
+	public void OnPointerUp(PointerEventData EventData) { }
 
 	#endregion
 
