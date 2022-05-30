@@ -226,6 +226,11 @@ public class MSegment : MonoBehaviour
 		return health <= 0;
 	}
 
+	public void ForceRealign()
+	{
+		transform.rotation = ForwardNeighbour.rotation;
+	}
+
 	void DetachGameFunctions()
 	{
 		// If this Rigidbody is no longer required to simulate physics,

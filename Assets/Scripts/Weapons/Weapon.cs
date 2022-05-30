@@ -13,7 +13,7 @@ public abstract class Weapon : MonoBehaviour
 	protected bool bIsRegistered = true;
 
 	//                                          | UI    | PLAYER  | W. PICKUP | BOUNDARY
-	public const int kIgnoreFromWeaponRaycasts = 1 << 5 | 1 << 6  | 1 << 9    | 1 << 11;
+	public const int kIgnoreFromWeaponRaycasts = 1 << 5 | 1 << 6 | 1 << 9 | 1 << 11;
 
 	/// <summary>Fires Projectile towards Position.</summary>
 	/// <param name="Position">Intended target.</param>

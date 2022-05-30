@@ -9,6 +9,8 @@ public class SpringArm : MonoBehaviour
 	[SerializeField] bool bDrawRotationalLines;
 	[Space(10)]
 #endif
+	public static SpringArm Instance;
+
 	public GameSettings Settings;
 
 	[Header("Target Settings.")]
@@ -44,6 +46,18 @@ public class SpringArm : MonoBehaviour
 	[SerializeField] float NearClipDistance;
 	[SerializeField] float DistanceLimit;
 	Matrix4x4 DefaultProjection;
+
+	void Awake()
+	{
+		if (Instance)
+		{
+			Debug.LogWarning("Make sure there is only one " + nameof(SpringArm) + " in the Game!");
+		}
+		else
+		{
+			Instance = this;
+		}
+	}
 
 	void Start()
 	{

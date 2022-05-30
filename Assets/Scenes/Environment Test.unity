@@ -15197,7 +15197,6 @@ MonoBehaviour:
   slowed: 0
   DeathScreen: {fileID: 0}
   shieldActive: 0
-  newPlayer: {fileID: 0}
 --- !u!54 &454023612
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -23424,7 +23423,6 @@ MonoBehaviour:
   slowed: 0
   DeathScreen: {fileID: 0}
   shieldActive: 0
-  newPlayer: {fileID: 0}
 --- !u!54 &696952953
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -25007,7 +25005,6 @@ MonoBehaviour:
   slowed: 0
   DeathScreen: {fileID: 1659492444}
   shieldActive: 0
-  newPlayer: {fileID: 0}
 --- !u!54 &740873899
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -42163,7 +42160,7 @@ MonoBehaviour:
   PaddingBetweenCards: 10
   AttachUI: {fileID: 0}
   WeaponCheats:
-  - {fileID: -5726328306403970169, guid: 61d0affc515ed8648896a539880facb3, type: 3}
+  - {fileID: 2239036073940972491, guid: 61d0affc515ed8648896a539880facb3, type: 3}
   - {fileID: 1475715996781863676, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
   - {fileID: 692776519300176814, guid: c8bac3e7493054f44b5db96606925168, type: 3}
   - {fileID: 4066411363957430125, guid: 300e834a871c8ca4e9b72b89cdde0b59, type: 3}

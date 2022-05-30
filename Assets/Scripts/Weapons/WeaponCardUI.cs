@@ -60,7 +60,7 @@ public class WeaponCardUI : MonoBehaviour
 	/// <param name="Weapon">The Weapon that was dragged and dropped onto a Segment.</param>
 	public static void Sub(Weapon Weapon)
 	{
-		Debug.Assert(WeaponsInventory.ContainsKey(Weapon), "Attempt at removing a Weapon that doesn't exist.");
+		Debug.Assert(WeaponsInventory.ContainsKey(Weapon), "Attempt at removing a Weapon that doesn't exist in the Card UI.");
 
 		AttachmentUIInfo AUII = WeaponsInventory[Weapon];
 		AUII.Remaining--;
@@ -108,6 +108,26 @@ public class WeaponCardUI : MonoBehaviour
 		}
 	}
 
+	public static void RemoveAll()
+	{
+		int C = WeaponsInventory.Count;
+		KeyValuePair<Weapon, AttachmentUIInfo>[] ForUpdatAndRemove = new KeyValuePair<Weapon, AttachmentUIInfo>[C];
+		int U = 0;
+
+		foreach (KeyValuePair<Weapon, AttachmentUIInfo> WAUII in WeaponsInventory)
+		{
+			ForUpdatAndRemove[U++] = WAUII;
+		}
+
+		for (int i = 0; i < C; ++i)
+		{
+			AttachmentUIInfo T = ForUpdatAndRemove[i].Value;
+			T.Remaining = 0;
+			WeaponsInventory[ForUpdatAndRemove[i].Key] = T;
+			Sub(ForUpdatAndRemove[i].Key);
+		}
+	}
+
 	WeaponAttachment RegisterWeapon(Weapon PickedUp)
 	{
 		if (WeaponsInventory.ContainsKey(PickedUp))
@@ -140,8 +160,8 @@ public class WeaponCardUI : MonoBehaviour
 			UpdateText(ref AUII);
 
 			// Update the colour of the Card to match the Weapon GameObject.
-//			Color WeaponColour = AUII.WeaponAttachment.Attachment.GetComponent<MeshRenderer>().sharedMaterial.color;
-//			AUII.Background.color = new Color(WeaponColour.r, WeaponColour.g, WeaponColour.b, Alpha);
+			//			Color WeaponColour = AUII.WeaponAttachment.Attachment.GetComponent<MeshRenderer>().sharedMaterial.color;
+			//			AUII.Background.color = new Color(WeaponColour.r, WeaponColour.g, WeaponColour.b, Alpha);
 
 			return NewCard;
 		}
