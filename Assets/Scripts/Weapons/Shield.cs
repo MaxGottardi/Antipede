@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Shield : Weapon
 {
-
+    [Header("Shield Settings")]
     bool shieldActive;
     [SerializeField] SFXManager sfxManager;
     float shieldStartTime = 0;

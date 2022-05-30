@@ -206,6 +206,9 @@ MonoBehaviour:
   ProjectileObject: {fileID: 11400000, guid: b87b996291e47ad40a4a4c074f772d6e, type: 3}
   weaponPickup: {fileID: 4066411363957430124, guid: 28f8dce9adef5a6408117be8b9cb0716, type: 3}
   isAntGun: 0
+  Art: {fileID: 2800000, guid: 6180f81f869928f48bba749d3433f949, type: 3}
+  ArtMaterial: {fileID: 2100000, guid: c58f2fb5ab553884082363eeb38eb263, type: 2}
+  TextColour: {r: 0.82745105, g: 0.30588236, b: 1, a: 1}
 --- !u!1 &4527637621751971544
 GameObject:
   m_ObjectHideFlags: 0
