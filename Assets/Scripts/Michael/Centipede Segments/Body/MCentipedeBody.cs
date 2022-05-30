@@ -64,7 +64,7 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	private GameObject[] checkPoints;
 	private bool backupPlayerExists = false;
-	public GameObject newPlayer;
+	public static MCentipedeBody newPlayer;
 
 	void Start()
 	{
@@ -90,6 +90,30 @@ public partial class MCentipedeBody : MonoBehaviour
 
 		slowed = false;
 		Construct();
+
+		if (newPlayer)
+		{
+			for (byte i = 0; i < CustomSegments.Count; ++i)
+			{
+
+				MSegment ThisCustomSegment = CustomSegments[i];
+				if (i == 0)
+				{
+					MSegment LastSegment = newPlayer.GetLast(1);
+					Tail.position = LastSegment.transform.position - FollowDistance * LastSegment.transform.forward * kBufferZone;
+
+					MSegment TailSegment = newPlayer.GetLast();
+					ThisCustomSegment.transform.position = TailSegment.transform.position - FollowDistance * TailSegment.transform.forward * kBufferZone;
+				}
+				else
+				{
+					Vector3 ForwardNeighbourPosition = ThisCustomSegment.ForwardNeighbour.position;
+					ThisCustomSegment.transform.position = ForwardNeighbourPosition -
+						i * FollowDistance * ThisCustomSegment.ForwardNeighbour.forward
+						* kBufferZone;
+				}
+			}
+		}
 	}
 
 	private void Update()
@@ -192,7 +216,7 @@ public partial class MCentipedeBody : MonoBehaviour
 		{
 			// Set parent to the Centipede's object and inherit local position.
 			T.SetParent(transform);
-			T.localPosition = Head.localPosition - new Vector3(0, 0, Z*kBufferZone);
+			T.localPosition = Head.localPosition - new Vector3(0, 0, Z * kBufferZone);
 
 			T.parent = null;
 		}
@@ -273,18 +297,21 @@ public partial class MCentipedeBody : MonoBehaviour
 			{
 				foreach (GameObject checkpoint in checkPoints)
 				{
-					if (checkpoint.GetComponent<Checkpoint>().backupPlayerExists == true)
+					if (checkpoint.TryGetComponent(out Checkpoint Checkpoint) && Checkpoint.backupPlayerExists == true)
 					{
-						newPlayer.SetActive(true);
+						newPlayer.gameObject.SetActive(true);
 						newPlayer.transform.position = new Vector3(newPlayer.transform.position.x, newPlayer.transform.position.y + 5, newPlayer.transform.position.z);
 						newPlayer.name = "Centipede";
+
 						backupPlayerExists = true;
-						checkpoint.GetComponent<Checkpoint>().SpawnBackupWeapons();
-						Camera.main.gameObject.GetComponent<SpringArm>().Target = newPlayer.transform;		
+
+						Checkpoint.SpawnBackupWeapons();
+						SpringArm.Instance.Target = newPlayer.transform;
+
 						Destroy(Segments[0].gameObject);
 						Destroy(gameObject);
-						checkpoint.GetComponent<Checkpoint>().backupPlayerExists = false;
-						
+
+						Checkpoint.backupPlayerExists = false;
 					}
 				}
 
@@ -295,10 +322,10 @@ public partial class MCentipedeBody : MonoBehaviour
 						DeathScreen.SetActive(true);
 					Time.timeScale = 0;
 				}
-                else
-                {
+				else
+				{
 					backupPlayerExists = false;
-                }
+				}
 			}
 		}
 	}
@@ -359,7 +386,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	{
 		MovementSpeed = NewSpeed;
 		FollowSpeed = NewSpeed;
-		
+
 		foreach (MSegment segment in Segments)
 			segment.FollowSpeed = NewSpeed;
 
