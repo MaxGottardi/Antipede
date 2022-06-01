@@ -12,7 +12,8 @@ public class Tarantula: MonoBehaviour
     private int huntingRadius = 25;
     private float moveSpeed = 5f;
     private float health;
-    private float maxHealth = 100;
+    public float maxHealth = 100;
+    public float waitSpawnAntTime = 30;
 
     public Slider healthSlider;
     private bool dying;
@@ -89,8 +90,8 @@ public class Tarantula: MonoBehaviour
                 oldTargetSegDist = newTargetSegDist;
                 newTargetSegDist = Vector3.Distance(rotationPoint.transform.position, segment.gameObject.transform.position);
             }
-            
-            
+
+            bool nearPlayer = false;
             if (targetSeg != null)
             {
                 distToNest = Vector3.Distance(nest.transform.position, rotationPoint.transform.position);
@@ -106,6 +107,7 @@ public class Tarantula: MonoBehaviour
                         ChasePlayer();
                         ShootWeb();
                         SpawnAnts();
+                        nearPlayer = true;
                     }   
                     else
                     {
@@ -161,7 +163,7 @@ public class Tarantula: MonoBehaviour
             }
 
             spawnAntTimer += Time.deltaTime;
-            if (spawnAntTimer >= 30)
+            if (spawnAntTimer >= waitSpawnAntTime && nearPlayer)
             {
                 SpawnAnts();
                 spawnAntTimer = 0;
@@ -210,7 +212,7 @@ public class Tarantula: MonoBehaviour
 
     public void DecreaseHealth(int amount)
     {
-        health-= amount;
+        health -= amount;
         healthSlider.value = CalculateHealth();
     }
     float CalculateHealth()

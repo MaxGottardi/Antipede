@@ -28,7 +28,8 @@ public class FollowMOuse : MonoBehaviour
 			}
 			else if (gameObject.CompareTag("Credits"))
 			{
-				SceneManager.LoadScene("Credits");
+				Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToCredits();
+				//SceneManager.LoadScene("Credits");
 			}
 			else if (gameObject.CompareTag("Quit"))
 			{
@@ -36,7 +37,13 @@ public class FollowMOuse : MonoBehaviour
 			}
 			else if (gameObject.CompareTag("Back"))
 			{
-				SceneManager.LoadScene("MainMenu");
+				Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToMainMenu();
+				if (UIManager.enableKeyChange)
+				{
+					UIManager.RebindKeyPanel.SetActive(false);
+					UIManager.enableKeyChange = false;
+				}
+				//SceneManager.LoadScene("MainMenu");
 			}
 			else if (gameObject.CompareTag("Sound"))
 			{
@@ -66,7 +73,8 @@ public class FollowMOuse : MonoBehaviour
 			}
 			else if (gameObject.CompareTag("Settings"))
 			{
-				SceneManager.LoadScene("SettingsScene");
+				Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToSettings();
+				//SceneManager.LoadScene("SettingsScene");
 			}
 		}
 	}

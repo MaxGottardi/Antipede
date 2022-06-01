@@ -45,10 +45,8 @@ public class Card : MonoBehaviour
         
     }
 
-    int calculateRarity()
+    int calculateRarity() //while this works, a shuffle list or something is better as with those you can ensure you will only ever have x amount of a certain type
     {
-
-
         int random = Random.Range(0, 100);
 
         if (random < 40)

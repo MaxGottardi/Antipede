@@ -127,20 +127,22 @@ public class MInput : MonoBehaviour
 		GenericAnt closestAnt = null;
 		float currDist = -1;
 
+		bool seenTail = false, seenTarant = false;
+		Tarantula tarant = null;
 		foreach (Collider antCollider in colliders)
 		{//im not really sure why this works for differentiating between the tail and the rest of the body
 		 //but it does so im rolling with it (especially because it wasnt working before)
 			if (antCollider.gameObject.CompareTag("TarantulaTail"))
 			{
-				antCollider.gameObject.transform.parent.GetComponent<Tarantula>().DecreaseHealth(2);
-				return;
+				tarant = antCollider.gameObject.transform.parent.GetComponent<Tarantula>();//.DecreaseHealth(2);
+				seenTail = true;
 			}
 
 			if (antCollider.gameObject.CompareTag("Tarantula"))
 			{
-				antCollider.gameObject.GetComponent<Tarantula>().DecreaseHealth(1);
-				Instantiate(hitParticles, antCollider.gameObject.transform.position, Quaternion.identity);
-				return;
+				tarant = antCollider.gameObject.GetComponent<Tarantula>();//.DecreaseHealth(1);
+				//Instantiate(hitParticles, antCollider.gameObject.transform.position, Quaternion.identity);
+				seenTarant = true;
 			}
 
 			if (antCollider.gameObject.CompareTag("Enemy"))
@@ -151,8 +153,17 @@ public class MInput : MonoBehaviour
 			}
 		}
 
-
-		if (closestAnt != null) //only reduce health on the closest ant hit
+		if(seenTail)
+        {
+			tarant.DecreaseHealth(2);
+			Instantiate(hitParticles, tarant.gameObject.transform.position, Quaternion.identity);
+		}
+		else if(seenTarant)
+        {
+			tarant.DecreaseHealth(1);
+			Instantiate(hitParticles, tarant.gameObject.transform.position, Quaternion.identity);
+		}
+		else if (closestAnt != null) //only reduce health on the closest ant hit
 		{
 			closestAnt.ReduceHealth(100);
 			Instantiate(hitParticles, closestAnt.transform.position, Quaternion.identity);

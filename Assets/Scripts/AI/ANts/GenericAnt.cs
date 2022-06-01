@@ -188,6 +188,7 @@ public class GenericAnt : MonoBehaviour
 
             if (health <= 0)
             {
+                Destroy(transform.GetChild(0).GetComponent<Collider>());
                 loseAttackInterest();
                 stateMachine.changeState(stateMachine.Dead);
             }

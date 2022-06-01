@@ -54,12 +54,19 @@ public class Projectile : MonoBehaviour
 		else if (collision.gameObject.CompareTag("Back") && !hasSeenChanged)
 		{
 			hasSeenChanged = true;
-			SceneManager.LoadScene("MainMenu");
+			Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToMainMenu();
+			if(UIManager.enableKeyChange)
+            {
+				UIManager.RebindKeyPanel.SetActive(false);
+				UIManager.enableKeyChange = false;
+			}
+			//SceneManager.LoadScene("MainMenu");
 		}
 		else if (collision.gameObject.CompareTag("Credits") && !hasSeenChanged)
 		{
 			hasSeenChanged = true;
-			SceneManager.LoadScene("Credits");
+			Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToCredits();
+			//SceneManager.LoadScene("Credits");
 		}
 		else if (collision.gameObject.CompareTag("Sound"))
 		{
@@ -90,7 +97,8 @@ public class Projectile : MonoBehaviour
 		else if (collision.gameObject.CompareTag("Settings") && !hasSeenChanged)
 		{
 			hasSeenChanged = true;
-			SceneManager.LoadScene("SettingsScene");
+			Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToSettings();
+			//SceneManager.LoadScene("SettingsScene");
 		}
 		else if (collision.gameObject.layer != LayerMask.NameToLayer("Projectile") && (SceneManager.GetActiveScene().name == "MainMenu" || SceneManager.GetActiveScene().name == "SettingsScene"))
 			Destroy(this);
