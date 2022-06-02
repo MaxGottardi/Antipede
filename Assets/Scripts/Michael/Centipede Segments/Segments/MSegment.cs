@@ -40,7 +40,7 @@ public class MSegment : MonoBehaviour
 		SetForwardNeighbour(ForwardNeighbour);
 		rb = GetComponent<Rigidbody>();
 		this.FollowSpeed = FollowSpeed;
-		this.MaxTurnDegreesPerFrame = MaxTurnDegreesPerFrame * 20;
+		this.MaxTurnDegreesPerFrame = MaxTurnDegreesPerFrame;
 		this.Distance = Distance;
 
 		this.Reference = Reference;
@@ -65,13 +65,13 @@ public class MSegment : MonoBehaviour
 			return;
 		}
 
-		if (!MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance, out float SquareDistance))
+		if (!MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance * 1.25f, out float SquareDistance))
 		{
 			if (ForwardNeighbour)
 			{
 				if (Reference.AccelerationTime > 0f)
 				{
-					AccelerationTime += Time.deltaTime;
+					AccelerationTime += Time.deltaTime * .95f;
 				}
 
 				MMathStatics.HomeTowards(rb, ForwardNeighbour, EvaluateAcceleration(FollowSpeed), MaxTurnDegreesPerFrame);
@@ -224,11 +224,6 @@ public class MSegment : MonoBehaviour
 	{
 		health -= amount;
 		return health <= 0;
-	}
-
-	public void ForceRealign()
-	{
-		transform.rotation = ForwardNeighbour.rotation;
 	}
 
 	void DetachGameFunctions()
