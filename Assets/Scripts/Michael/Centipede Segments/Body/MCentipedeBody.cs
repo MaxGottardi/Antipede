@@ -288,7 +288,7 @@ public partial class MCentipedeBody : MonoBehaviour
 				Tail.position = NewPos;
 
 				for (byte i = 0; i < CustomSegments.Count; ++i)
-					CustomSegments[i].transform.position = NewPos - (i * FollowDistance * newLast.forward) * kBufferZone;
+					CustomSegments[i].transform.position = NewPos - ((i + 1) * FollowDistance * newLast.forward) * kBufferZone;
 
 			}
 
