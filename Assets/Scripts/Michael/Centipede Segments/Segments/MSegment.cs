@@ -2,26 +2,25 @@ using UnityEngine;
 
 public class MSegment : MonoBehaviour
 {
-	public Transform ForwardNeighbour;
+	static AnimationCurve AccelerationCurve;
+
+	[Header("Follow Settings.")]
+	[ReadOnly] public Transform ForwardNeighbour;
+	[ReadOnly] public float FollowSpeed, MaxTurnDegreesPerFrame;
 	Rigidbody rb;
-	public float FollowSpeed, MaxTurnDegreesPerFrame;
 	float Distance;
 	CentipedeMovement Reference;
-	static AnimationCurve AccelerationCurve;
 	float AccelerationTime = 0f;
 
-	public LayerMask segmentLayer;
-	//public bool beingAttacked = false;
-
+	[Header("Weapons Settings.")]
 	public bool bIgnoreFromWeapons;
-	Transform WeaponSocket;
 	public Weapon Weapon;
+	Transform WeaponSocket;
 
-	MCentipedeWeapons Owner;
 	public float health = 100;
-
 	public int numAttacking = 0; //does this segment has a player locked on for attacking
 
+	MCentipedeWeapons Owner;
 	bool bDetached = false;
 	float TimeDetached = 0f;
 

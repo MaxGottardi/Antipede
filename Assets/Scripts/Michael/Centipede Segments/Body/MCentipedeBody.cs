@@ -116,10 +116,9 @@ public partial class MCentipedeBody : MonoBehaviour
 		}
 	}
 
-	private void Update()
+	void Update()
 	{
-
-		if (slowed == true)
+		if (slowed)
 		{
 			slowTimer += Time.deltaTime;
 			if (slowTimer >= 5)
@@ -130,34 +129,15 @@ public partial class MCentipedeBody : MonoBehaviour
 				slowed = false;
 			}
 		}
-
-		//		Debug.Log(shieldActive);
-		//Debug.Log(Segments.Count);
-		//		Debug.Log(U2I(SegmentsInfo.End));
-		/*if (Input.GetKeyDown(KeyCode.Y)) {
-			sfxManager.ActivateShield();
-			shieldActive = true;
-        }
-		if (Input.GetKeyUp(KeyCode.Y))
-        {
-			sfxManager.DeactivateShield();
-			shieldActive = false;
-        }*/
-
 	}
 
 	public MSegment AddSegment()
 	{
-		if (slowed == true)
-		{
-			IncreaseSpeed(5);
-		}
-		else if (slowed == false)
-		{
-			IncreaseSpeed(10);
-		}
+		IncreaseSpeed(slowed ? 5 : 10);
+
 		if (GameManager1.uiButtons)
 			GameManager1.uiButtons.AddSegment();
+
 		float Z = NumberOfSegments * SegmentsInfo.SegmentScale.z + DeltaZ;
 
 		MSegment AddedSegment;
@@ -166,11 +146,11 @@ public partial class MCentipedeBody : MonoBehaviour
 		{
 			Transform End = GetLast();
 
-			Vector3 Displacement = SegmentsInfo.SegmentScale.z * -End.forward;
+			Vector3 Displacement = kBufferZone * SegmentsInfo.SegmentScale.z * -End.forward;
 			Tail.position += Displacement;
 
-			foreach (MSegment C in CustomSegments)
-				C.transform.position += Displacement;
+			for (byte i = 0; i < CustomSegments.Count; ++i)
+				CustomSegments[i].transform.position = (i + 1) * Displacement + Tail.position;
 
 			Quaternion Rot = MMathStatics.DirectionToQuat(((Transform)GetLast(1)).position, End.position);
 
@@ -232,17 +212,12 @@ public partial class MCentipedeBody : MonoBehaviour
 		return Seg;
 	}
 
-	public void RemoveSegment(float healthReduction, Vector3 particalPos)//MSegment deadSegment)
+	public void RemoveSegment(float healthReduction, Vector3 particalPos)
 	{
 		if (!shieldActive && Segments != null && Segments.Count > 0)
 		{
-			//		Debug.Log("Killing Player");
-
-			//Segments.Remove(Segments[Segments.Count - 1]);
-
 			if (Segments.Count <= 0)
 				return;
-
 
 			MSegment lastSegment = GetLast();
 
@@ -264,14 +239,7 @@ public partial class MCentipedeBody : MonoBehaviour
 
 				Instantiate(DamageParticles, particalPos, Quaternion.identity);
 
-				//Destroy(lastSegment.gameObject);
 				lastSegment.Detach();
-
-				//int nextIndex = 1;
-				//while (segmentIndex + nextIndex < Segments.Count - 1 && !Segments[segmentIndex + nextIndex]) //if multiple in a row get destroyed at same time, prevents it from bugging out
-				//	nextIndex++;
-				//if (segmentIndex + nextIndex < Segments.Count - 1)
-				//	Segments[segmentIndex + nextIndex].ForwardNeighbour = lastSegment.ForwardNeighbour;
 
 				Segments.RemoveAt(Segments.Count - 1);
 				--NumberOfSegments;
@@ -417,6 +385,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	void OnGUI()
 	{
 		GUI.Label(new Rect(10, 25, 250, 150), "Movement Speed: " + MovementSpeed);
+		GUI.Label(new Rect(10, 55, 250, 150), "Number of Segments: " + NumberOfSegments);
 	}
 
 #endif

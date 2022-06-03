@@ -37,6 +37,9 @@ public class CentipedeMovement : MonoBehaviour
 	float BoundaryCheckDistance = 3f;
 	bool bIsCourseCorrecting;
 	[SerializeField] bool bEnable90DegreeInclines;
+#if UNITY_EDITOR
+	bool bDoCollisionChecks;
+#endif
 
 	[Header("Interpolation Settings.")]
 	[SerializeField] bool bInterpolateHillClimb;
@@ -86,6 +89,13 @@ public class CentipedeMovement : MonoBehaviour
 				Debug.DrawLine(transform.position, InDirection, Color.white);
 #endif
 		}
+
+#if UNITY_EDITOR
+		if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.RightBracket))
+		{
+			bDoCollisionChecks = !bDoCollisionChecks;
+		}
+#endif
 	}
 
 	/// <summary>Send instructions for Horizontal (+X) and Vertical (+Z) Movement.</summary>
@@ -362,6 +372,11 @@ public class CentipedeMovement : MonoBehaviour
 
 	bool BoundariesCheckCollisions(ref MCentipedeBody Body)
 	{
+#if UNITY_EDITOR
+		if (bDoCollisionChecks)
+			return true;
+#endif
+
 		if (bIsCourseCorrecting)
 			return true;
 
