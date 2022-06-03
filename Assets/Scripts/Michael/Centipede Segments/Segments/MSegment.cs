@@ -68,10 +68,7 @@ public class MSegment : MonoBehaviour
 		{
 			if (ForwardNeighbour)
 			{
-				if (Reference.AccelerationTime > 0f)
-				{
-					AccelerationTime += Time.deltaTime * .95f;
-				}
+				AccelerationTime = Reference.AccelerationTime;
 
 				MMathStatics.HomeTowards(rb, ForwardNeighbour, EvaluateAcceleration(FollowSpeed), MaxTurnDegreesPerFrame);
 				bHasRayAligned = false;
