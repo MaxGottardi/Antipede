@@ -548,6 +548,8 @@ public class CentipedeMovement : MonoBehaviour
 			AutoCorrect = Vector3.Reflect(NormalisedInDirection, BoundariesCheck.normal);
 			InDirection = transform.position + AutoCorrect;
 
+
+#if UNITY_EDITOR
 			// From the Boundary to the Reflected point.
 			Debug.DrawRay(BoundariesCheck.point, AutoCorrect, Color.blue, 5);
 
@@ -555,7 +557,6 @@ public class CentipedeMovement : MonoBehaviour
 			Debug.DrawLine(transform.position, Point, Color.white, 5);  // From the Centipede's actual position to the point.
 			Debug.DrawRay(Point, NormalisedInDirection, Color.cyan, 5); // From the Boundary to where the Centipede is going towards.
 
-#if UNITY_EDITOR
 			Debug.Log("Centipede collided with Boundary: " + BoundariesCheck.collider.name);
 
 			if (bShowGizmos)

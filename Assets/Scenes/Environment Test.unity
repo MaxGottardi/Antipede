@@ -7900,9 +7900,6 @@ MonoBehaviour:
   ForwardNeighbour: {fileID: 0}
   FollowSpeed: 0
   MaxTurnDegreesPerFrame: 0
-  segmentLayer:
-    serializedVersion: 2
-    m_Bits: 0
   bIgnoreFromWeapons: 0
   Weapon: {fileID: 0}
   health: 100
@@ -28661,9 +28658,6 @@ MonoBehaviour:
   ForwardNeighbour: {fileID: 0}
   FollowSpeed: 0
   MaxTurnDegreesPerFrame: 0
-  segmentLayer:
-    serializedVersion: 2
-    m_Bits: 0
   bIgnoreFromWeapons: 0
   Weapon: {fileID: 0}
   health: 100

@@ -1,5 +1,17 @@
 using UnityEngine;
 
+/// <summary>
+/// The central class that handles Segment logic.
+/// <br></br>
+/// <br>Anything related to a Centipede's Segment can be accessed from here.</br>
+/// <br><br>Includes:</br></br>
+/// <br>The <see cref="MCentipedeWeapons"/> component this Segment belongs to. This is the Centipede.</br>
+/// <br>The attached <see cref="global::Weapon"/>.</br>
+/// <br>Handles Segment Following and Movement.</br>
+/// </summary>
+/// <remarks>
+/// Not mentioned is the <see cref="FABRIK"/> component, which is unrelated to MSegment.
+/// </remarks>
 public class MSegment : MonoBehaviour
 {
 	static AnimationCurve AccelerationCurve;
@@ -53,6 +65,7 @@ public class MSegment : MonoBehaviour
 	bool bHasRayAligned = false;
 	Vector3 SurfaceNormal;
 
+	/// <summary>Segment Movement.</summary>
 	void FixedUpdate()
 	{
 		
@@ -128,6 +141,8 @@ public class MSegment : MonoBehaviour
 		return AccelRate * Scalar;
 	}
 
+	/// <summary>Override the <see cref="AccelerationTime"/>.</summary>
+	/// <param name="Time">New Acceleration Time.</param>
 	public void InjectAccelerationTime(float Time)
 	{
 		AccelerationTime = Time;
@@ -205,6 +220,8 @@ public class MSegment : MonoBehaviour
 		SetWeapon(NewWeapon);
 	}
 
+	/// <param name="Socket">Outs the Weapon Socket.</param>
+	/// <returns>True if there is a Weapon Socket.</returns>
 	public bool TryGetWeaponSocket(out Transform Socket)
 	{
 		Socket = WeaponSocket;
@@ -222,6 +239,7 @@ public class MSegment : MonoBehaviour
 		return health <= 0;
 	}
 
+	/// <summary>Destroy anything that makes this Segment an <see cref="MSegment"/>.</summary>
 	void DetachGameFunctions()
 	{
 		// If this Rigidbody is no longer required to simulate physics,
@@ -243,6 +261,7 @@ public class MSegment : MonoBehaviour
 		}
 	}
 
+	/// <summary>Visually fling this Segment off the Centipede line.</summary>
 	public void Detach()
 	{
 		Deregister();
@@ -271,7 +290,9 @@ public class MSegment : MonoBehaviour
 
 		// Disable FABRIK.
 		Destroy(GetComponent<FABRIK>());
+
 		gameObject.tag = "Untagged";
+
 		// Deregister and ignore Weapon commands (if any).
 		if (Weapon)
 			Weapon.Deregister();
@@ -287,6 +308,7 @@ public class MSegment : MonoBehaviour
 		Owner.SegmentsWithWeapons.Remove(this);
 	}
 
+	// Shorthand conversions.
 	public static implicit operator Transform(MSegment s) => s.transform;
 	public static implicit operator Weapon(MSegment s) => s.Weapon;
 }
