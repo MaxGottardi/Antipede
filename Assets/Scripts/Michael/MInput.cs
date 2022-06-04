@@ -89,6 +89,23 @@ public class MInput : MonoBehaviour
 				sfxManager.Walk();
 	}
 
+	public void AnimationMovementHorizontal(float Horizontal)
+	{
+		float Vertical = 0;
+		movement.Set(ref Horizontal, ref Vertical, ref body);
+		//if (Horizontal != 0 || Vertical != 0)
+		//	if (sfxManager != null && Time.timeScale > 0)
+		//		sfxManager.Walk();
+	}
+	public void AnimationMovementVertical(float Vertical)
+	{
+		float Horizontal = 0;
+		movement.Set(ref Horizontal, ref Vertical, ref body);
+		//if (Horizontal != 0 || Vertical != 0)
+		//	if (sfxManager != null && Time.timeScale > 0)
+		//		sfxManager.Walk();
+	}
+
 	void LateUpdate()
 	{
 		if (bIsPaused)
