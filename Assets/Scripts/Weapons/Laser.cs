@@ -30,7 +30,7 @@ public class Laser : Weapon
 
 		*/
 
-		if (CanFire())
+		if (CanFire(Position))
 		{
 			sfxManager.ActivateLazer();
 			Projectile Laser = InstantiateProjectile();

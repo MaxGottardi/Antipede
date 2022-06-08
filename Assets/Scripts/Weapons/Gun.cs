@@ -12,7 +12,7 @@ public class Gun : Weapon
     }
     public override Projectile Fire(Vector3 Direction)
 	{
-		if (!CanFire())
+		if (!CanFire(Direction))
 			return null;
 
 		//sfxManager.ShootGun();

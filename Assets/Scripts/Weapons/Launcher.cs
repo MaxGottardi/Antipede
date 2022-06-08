@@ -20,7 +20,7 @@ public class Launcher : Weapon
 
 	public override Projectile Fire(Vector3 Position)
 	{
-		if (CanFire()) {
+		if (CanFire(Position)) {
 			if (sfxManager)
 			{
 				sfxManager.ShootLauncher();
