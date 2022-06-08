@@ -31,6 +31,7 @@ TagManager:
   - CheckPoint
   - backup
   - SFXM
+  - ParentWeb
   layers:
   - Default
   - TransparentFX
@@ -39,7 +40,7 @@ TagManager:
   - Water
   - UI
   - Player
-  - Enemy
+  - Biteable
   - Ground
   - Weapon Pickup
   - Projectile

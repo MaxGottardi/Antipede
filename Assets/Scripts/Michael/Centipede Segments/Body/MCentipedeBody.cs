@@ -57,6 +57,8 @@ public partial class MCentipedeBody : MonoBehaviour
 	public float slowTimer;
 	public bool slowed;
 
+	[HideInInspector]public int maxParentParts = 14, currCollectedParentParts = 0;
+
 	[Space(10)]
 
 	public GameObject DeathScreen;

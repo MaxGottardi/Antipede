@@ -5,7 +5,7 @@ public class MInput : MonoBehaviour
 {
 	MCentipedeBody body;
 	CentipedeMovement movement;
-	public LayerMask EnemyLayer;
+	public LayerMask BiteLayer;
 	public GameObject hitParticles;
 
 	bool doneAttack = false, attackRequested = false;
@@ -133,40 +133,45 @@ public class MInput : MonoBehaviour
 	}
 
 	/// <summary>
-	/// for all enemies within a radius of the pincers, they get damaged
+	/// find the enemy which is closest to the pincers and deal it damage, unless taranturla seen, then always deal it damage
 	/// </summary>
 	void DoAttack()
 	{
 		sfxManager.CollectLarvae();
 		transform.GetChild(0).GetComponent<Animator>().SetTrigger("Pincers");
 		float dist = 1.25f;
-		Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * 1.1f, dist, EnemyLayer);
+		Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * 1.1f, dist, BiteLayer);
 		GenericAnt closestAnt = null;
 		float currDist = -1;
 
 		bool seenTail = false, seenTarant = false;
 		Tarantula tarant = null;
-		foreach (Collider antCollider in colliders)
+		foreach (Collider nearbyColliders in colliders)
 		{//im not really sure why this works for differentiating between the tail and the rest of the body
 		 //but it does so im rolling with it (especially because it wasnt working before)
-			if (antCollider.gameObject.CompareTag("TarantulaTail"))
+			
+			if(nearbyColliders.gameObject.CompareTag("ParentWeb"))
+            {
+				nearbyColliders.gameObject.GetComponent<ParentCollectible>().Collect();
+            }
+			if (nearbyColliders.gameObject.CompareTag("TarantulaTail"))
 			{
-				tarant = antCollider.gameObject.transform.parent.GetComponent<Tarantula>();//.DecreaseHealth(2);
+				tarant = nearbyColliders.gameObject.transform.parent.GetComponent<Tarantula>();//.DecreaseHealth(2);
 				seenTail = true;
 			}
 
-			if (antCollider.gameObject.CompareTag("Tarantula"))
+			if (nearbyColliders.gameObject.CompareTag("Tarantula"))
 			{
-				tarant = antCollider.gameObject.GetComponent<Tarantula>();//.DecreaseHealth(1);
+				tarant = nearbyColliders.gameObject.GetComponent<Tarantula>();//.DecreaseHealth(1);
 				//Instantiate(hitParticles, antCollider.gameObject.transform.position, Quaternion.identity);
 				seenTarant = true;
 			}
 
-			if (antCollider.gameObject.CompareTag("Enemy"))
+			if (nearbyColliders.gameObject.CompareTag("Enemy"))
 			{
-				float newDist = Vector3.Distance(transform.position, antCollider.gameObject.transform.position);
-				if (currDist < 0 || newDist < currDist)
-					closestAnt = antCollider.gameObject.transform.parent.GetComponent<GenericAnt>();
+				float newDist = Vector3.Distance(transform.position, nearbyColliders.gameObject.transform.position);
+				if (currDist < 0 || newDist < currDist) //find the ant which is the closest to the player currently
+					closestAnt = nearbyColliders.gameObject.transform.parent.GetComponent<GenericAnt>();
 			}
 		}
 

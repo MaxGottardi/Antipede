@@ -2506,7 +2506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b37a0366552e844b4fcbb12b4d5a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyLayer:
+  BiteLayer:
     serializedVersion: 2
     m_Bits: 128
   hitParticles: {fileID: 3612848425264099771, guid: e16bd8ac4022a2447880058a8ae4a7cb, type: 3}
