@@ -19,6 +19,7 @@ public class MSegment : MonoBehaviour
 	[Header("Follow Settings.")]
 	[ReadOnly] public Transform ForwardNeighbour;
 	[ReadOnly] public float FollowSpeed, MaxTurnDegreesPerFrame;
+	[SerializeField] bool bUseDynamicAlignment = true;
 	Rigidbody rb;
 	float Distance;
 	CentipedeMovement Reference;
@@ -37,7 +38,6 @@ public class MSegment : MonoBehaviour
 	float TimeDetached = 0f;
 
 	/// <summary>Initialises this Segment to follow ForwardNeighbour at FollowSpeed and turning at MaxTurnDegreesPerFrame.</summary>
-	/// <remarks>MaxTurnDegreesPerFrame will be multiplied to try and prevent disconnection. Increase as needed.</remarks>
 	/// <param name="Owner">The Weapons Component this Segment belongs to. The Centipede.</param>
 	/// <param name="Reference">The Centipede's Movement Component to judge the rate of acceleration and deceleration.</param>
 	/// <param name="ForwardNeighbour">The Transform to follow when the body moves.</param>
@@ -68,7 +68,7 @@ public class MSegment : MonoBehaviour
 	/// <summary>Segment Movement.</summary>
 	void FixedUpdate()
 	{
-		
+
 		if (bDetached)
 		{
 			rb.AddTorque(transform.up * 50f);
@@ -81,6 +81,7 @@ public class MSegment : MonoBehaviour
 		{
 			if (ForwardNeighbour)
 			{
+
 				AccelerationTime = Reference.AccelerationTime;
 
 				MMathStatics.HomeTowards(rb, ForwardNeighbour, EvaluateAcceleration(FollowSpeed), MaxTurnDegreesPerFrame);
@@ -141,7 +142,34 @@ public class MSegment : MonoBehaviour
 		return AccelRate * Scalar;
 	}
 
-	/// <summary>Override the <see cref="AccelerationTime"/>.</summary>
+#if UNITY_EDITOR
+	[System.Obsolete("Doesn't Work")]
+	bool NeedsAlignment(out RaycastHit Terrain)
+	{
+		const float kErrorAngle = 35f; // An angle difference > this degrees will trigger Alignment.
+
+		Ray R = new Ray(transform.position, -transform.up);
+		if (Physics.Raycast(R, out Terrain, 1, 256))
+		{
+			return Vector3.Angle(transform.up, Terrain.normal) > kErrorAngle;
+		}
+
+		return false;
+	}
+
+	[System.Obsolete("Doesn't Work")]
+	void Align(ref RaycastHit Terrain)
+	{
+		if (!Terrain.collider)
+			return;
+
+		Vector3 Normal = Terrain.normal;
+
+		transform.rotation = Quaternion.FromToRotation(transform.up, Normal) * transform.rotation;
+	}
+#endif
+
+	/// <summary>Overrides <see cref="AccelerationTime"/>.</summary>
 	/// <param name="Time">New Acceleration Time.</param>
 	public void InjectAccelerationTime(float Time)
 	{

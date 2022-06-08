@@ -31,6 +31,7 @@ TagManager:
   - CheckPoint
   - backup
   - SFXM
+  - Projectile
   layers:
   - Default
   - TransparentFX
