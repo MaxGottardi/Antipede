@@ -10,12 +10,15 @@ public abstract class Weapon : MonoBehaviour
 	[SerializeField, Tooltip("The " + nameof(Projectile) + " to Fire.")] protected Projectile ProjectileObject;
 	public GameObject weaponPickup;
 	public bool isAntGun = false;
+	[Tooltip("This Weapon can fire at this rate per second."), Min(0)] public float FireRate = .1f;
+	protected float TimeLastFired = 0;
 
 	[Header("Weapon Card UI References.")]
 	public Texture2D Art;
 	public Material ArtMaterial;
 	public Color TextColour;
 
+	/// <summary><see langword="true"/> if this Weapon is accepting Firing commands and is attached to an <see cref="MSegment"/>.</summary>
 	protected bool bIsRegistered = true;
 	/// <summary>The <see cref="MSegment"/> that controls this Weapon.</summary>
 	protected MSegment Owner;
@@ -27,6 +30,16 @@ public abstract class Weapon : MonoBehaviour
 	/// <param name="Position">Intended target.</param>
 	/// <returns>The <see cref="Projectile"/> gameobject that was fired.</returns>
 	public abstract Projectile Fire(Vector3 Position);
+
+	/// <returns><see langword="true"/> if the time between now and <see cref="TimeLastFired"/> is &gt; <see cref="FireRate"/>.</returns>
+	protected bool CanFire()
+	{
+		bool bCanFire = bIsRegistered && Time.time - TimeLastFired > FireRate;
+		if (bCanFire)
+			TimeLastFired = Time.time;
+
+		return bCanFire;
+	}
 
 	/// <summary>Make this Weapon look towards where it is firing.</summary>
 	/// <param name="Direction">The direction to look at.</param>

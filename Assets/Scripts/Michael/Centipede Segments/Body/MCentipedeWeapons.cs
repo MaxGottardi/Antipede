@@ -38,7 +38,7 @@ public class MCentipedeWeapons : MonoBehaviour
 		{
 			bHasLineOfSight = HasLineOfSight();
 
-			if (bHasLineOfSight && Input.GetMouseButtonDown(0))
+			if (bHasLineOfSight && Input.GetMouseButton(0))
 			{
 				if (!bUsePropagationDelay)
 				{
@@ -47,7 +47,7 @@ public class MCentipedeWeapons : MonoBehaviour
 				}
 				else
 				{
-					StartCoroutine(IE_Fire());
+					StartCoroutine(FireWithPropagation());
 				}
 			}
 		}
@@ -88,7 +88,7 @@ public class MCentipedeWeapons : MonoBehaviour
 			MouseToWorld != Vector3.zero; // There is nothing under the mouse. The mouse is pointing at the sky / nothing.
 	}
 
-	IEnumerator IE_Fire()
+	IEnumerator FireWithPropagation()
 	{
 		// If an InvalidOperationException is thrown here. It's because either the player has
 		// dragged a Weapon onto a Segment while firing.
