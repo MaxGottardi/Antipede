@@ -61,6 +61,21 @@ public class CentipedeMovement : MonoBehaviour
 	Vector3 PreviousNormal;
 	Vector3 SurfaceNormal;
 
+	/*
+	                               -- Dynamic Centipede-Terrain Alignment --
+
+	If there are problems with the Centipede, especially, but not limited to, when going over Terrain,
+	switch K_bUseDynamicAlignment to false and see if it fixes it, otherwise the problem is elsewhere.
+
+	Alternatively, increase / decrease kErrorAngle or kFrameSkips.
+
+	Note that Segments have their own implementation.
+
+	*/
+	const bool K_bUseDynamicAlignment = true; // True to use Dynamic Centipede-Terrain Alignment.
+	const float kErrorAngle = 5f;   // An angle difference > this degrees will trigger Alignment.
+	const int kFrameSkips = 10;   // Skip this many frames before checking if this Centipede needs realigning.
+
 	void Start()
 	{
 		rb = GetComponent<Rigidbody>();
@@ -249,7 +264,14 @@ public class CentipedeMovement : MonoBehaviour
 		{
 			AccelerationTime += Time.deltaTime;
 
-			MMathStatics.HomeTowards(rb, InDirection, EvaluateAcceleration(Body.MovementSpeed), Body.TurnDegrees);
+			if (K_bUseDynamicAlignment && Time.frameCount % kFrameSkips == 0 && AccelerationTime > 0f && NeedsAlignment(out RaycastHit Terrain))
+			{
+				Align(ref Terrain);
+			}
+			else
+			{
+				MMathStatics.HomeTowards(rb, InDirection, EvaluateAcceleration(Body.MovementSpeed), Body.TurnDegrees);
+			}
 
 			AccelerationTime = Mathf.Min(AccelerationTime, 1f);
 		}
@@ -576,6 +598,27 @@ public class CentipedeMovement : MonoBehaviour
 		}
 
 		return AutoCorrect;
+	}
+
+	bool NeedsAlignment(out RaycastHit Terrain)
+	{
+		Ray R = new Ray(transform.position, -transform.up);
+		if (Physics.Raycast(R, out Terrain, 1, 256))
+		{
+			return Vector3.Angle(transform.up, Terrain.normal) > kErrorAngle;
+		}
+
+		return false;
+	}
+
+	void Align(ref RaycastHit Terrain)
+	{
+		if (!Terrain.collider)
+			return;
+
+		Vector3 Normal = Terrain.normal;
+
+		transform.rotation = Quaternion.FromToRotation(transform.up, Normal) * transform.rotation;
 	}
 
 #if UNITY_EDITOR
