@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
 	[Header("Base Weapon Settings.")]
-	[HideInInspector] public MCentipedeWeapons Owner;
+	[HideInInspector] public MCentipedeWeapons WeaponsComponent;
 
 	[SerializeField, Tooltip("Where should projectiles shoot from?")] protected Transform BarrelEndSocket;
 	[SerializeField, Tooltip("The " + nameof(Projectile) + " to Fire.")] protected Projectile ProjectileObject;
@@ -17,9 +17,11 @@ public abstract class Weapon : MonoBehaviour
 	public Color TextColour;
 
 	protected bool bIsRegistered = true;
+	/// <summary>The <see cref="MSegment"/> that controls this Weapon.</summary>
+	protected MSegment Owner;
 
-	//                                          | UI    | PLAYER  | W. PICKUP | BOUNDARY
-	public const int kIgnoreFromWeaponRaycasts = 1 << 5 | 1 << 6 | 1 << 9 | 1 << 11;
+	//                                          | UI    | PLAYER | W. PICKUP | BOUNDARY
+	public const int kIgnoreFromWeaponRaycasts = 1 << 5 | 1 << 6 | 1 << 9    | 1 << 11;
 
 	/// <summary>Fires Projectile towards Position.</summary>
 	/// <param name="Position">Intended target.</param>
@@ -50,5 +52,7 @@ public abstract class Weapon : MonoBehaviour
 
 	public override int GetHashCode() => name.GetHashCode();
 
-	public virtual void OnAttatch() { }
+	/// <summary>Called when this <see cref="Weapon"/> is attached onto an <see cref="MSegment"/>.</summary>
+	/// <param name="Parent">The <see cref="MSegment"/> this Weapon is attached to.</param>
+	public virtual void OnAttach(MSegment Parent) { Owner = Parent; }
 }

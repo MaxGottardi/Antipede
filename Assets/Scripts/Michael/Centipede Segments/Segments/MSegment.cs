@@ -197,10 +197,10 @@ public class MSegment : MonoBehaviour
 
 		Weapon AttachedWeapon = Instantiate(Weapon, WeaponSocket.position, WeaponSocket.rotation);
 		this.Weapon = AttachedWeapon;
-		this.Weapon.Owner = GetOwner();
+		this.Weapon.WeaponsComponent = GetWeaponsComponent();
 
 		AttachedWeapon.transform.SetParent(WeaponSocket);
-		AttachedWeapon.OnAttatch();
+		AttachedWeapon.OnAttach(this);
 
 		Owner.SegmentsWithWeapons.Add(this);
 
@@ -209,10 +209,18 @@ public class MSegment : MonoBehaviour
 
 	public void ReplaceWeapon(Weapon NewWeapon)
 	{
+		DetachWeapon();
+
+		// Reregister this Segment into Weapons.
+		SetWeapon(NewWeapon);
+	}
+
+	public void DetachWeapon()
+	{
 		Weapon WeaponNow = Weapon;
 
 		// Deregister this Segment from Weapons.
-		Deregister();
+		DeregisterWeapon();
 
 		Debug.Assert(WeaponNow != null, "Trying to replace a Segment's Weapon, but no Weapon is attached!");
 
@@ -239,13 +247,12 @@ public class MSegment : MonoBehaviour
 		WNRB.AddTorque(Force * 5000);
 
 		// Enable physics collisions.
-		WNRB.gameObject.AddComponent<BoxCollider>();
+		BoxCollider BC = WNRB.gameObject.AddComponent<BoxCollider>();
+		BC.center = Vector3.zero;
+		BC.size = Vector3.one;
 
 		WeaponNow.Deregister();
 		Destroy(Weapon.gameObject, 5f);
-
-		// Reregister this Segment into Weapons.
-		SetWeapon(NewWeapon);
 	}
 
 	/// <param name="Socket">Outs the Weapon Socket.</param>
@@ -256,7 +263,7 @@ public class MSegment : MonoBehaviour
 		return Socket;
 	}
 
-	public MCentipedeWeapons GetOwner()
+	public MCentipedeWeapons GetWeaponsComponent()
 	{
 		return Owner;
 	}
@@ -292,7 +299,7 @@ public class MSegment : MonoBehaviour
 	/// <summary>Visually fling this Segment off the Centipede line.</summary>
 	public void Detach()
 	{
-		Deregister();
+		DeregisterWeapon();
 		bDetached = true;
 		TimeDetached = Time.time;
 
@@ -327,7 +334,7 @@ public class MSegment : MonoBehaviour
 	}
 
 	/// <summary>Make this Segment ignore Weapon commands.</summary>
-	void Deregister()
+	void DeregisterWeapon()
 	{
 		if (Owner)
 			// If this doesn't fix the InvalidOperationException problem, then idk.

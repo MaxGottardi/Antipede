@@ -4,93 +4,72 @@ using UnityEngine;
 
 public class Shield : Weapon
 {
-    [Header("Shield Settings")]
-    bool shieldActive;
-    [SerializeField] SFXManager sfxManager;
-    float shieldStartTime = 0;
-    float shieldDuration;
-    [SerializeField] GameObject centipede;
-    MCentipedeBody mcb;
-    [SerializeField] GameObject ShieldEffect;
+	[Header("Shield Settings")]
+	bool shieldActive;
+	[SerializeField] SFXManager sfxManager;
+	float shieldStartTime = 0;
+	float shieldDuration;
+	[SerializeField] GameObject centipede;
+	MCentipedeBody mcb;
+	[SerializeField] GameObject ShieldEffect;
 
+	private void Awake()
+	{
+		sfxManager = FindObjectOfType<SFXManager>();
+		mcb = GameManager1.mCentipedeBody;
+		//mcb = centipede.GetComponent<MCentipedeBody>();
+		shieldActive = false;
+	}
 
+	void Update()
+	{
+		mcb.shieldActive = shieldActive;
 
+		if (Input.GetKeyDown(KeyCode.Y))
+		{
+			ActivateShield(15.0f);
+		}
 
-    // Start is called before the first frame update
-    void Start()
-    {
+		if (shieldStartTime > 0)
+		{
+			if (Time.time <= shieldStartTime + shieldDuration)
+			{
+				shieldActive = true;
+			}
+			else
+			{
+				DeactivateShield();
+			}
+		}
+	}
 
+	public override Projectile Fire(Vector3 Position) => null;
 
- 
-    }
+	public override void LookAt(Vector3 Direction) { /* do nothing instead */ }
 
-    private void Awake()
-    {
-        sfxManager = FindObjectOfType<SFXManager>();
-        mcb = FindObjectOfType<MCentipedeBody>();
-        //mcb = centipede.GetComponent<MCentipedeBody>();
-        shieldActive = false;
-    }
+	public void ActivateShield(float duration)
+	{
+		ShieldEffect.SetActive(true);
+		shieldDuration = duration;
+		sfxManager.ActivateShield();
+		shieldStartTime = Time.time;
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (shieldActive)
-        {
-            mcb.shieldActive = true;
-        }
-        else
-        {
-            mcb.shieldActive = false;
-        }
+	public void DeactivateShield()
+	{
+		Debug.Log("dsfsdfs");
+		shieldStartTime = 0;
+		shieldActive = false;
+		sfxManager.DeactivateShield();
+		ShieldEffect.SetActive(false);
 
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            ActivateShield(15.0f);
-        }
+		Owner.DetachWeapon();
+	}
 
-        if (shieldStartTime > 0)
-        {
-            if (Time.time <= shieldStartTime + shieldDuration)
-            {
-                shieldActive = true;
-            }
-            else
-            {
-                DeactivateShield();
-            }
-        }
-    }
-    public override Projectile Fire(Vector3 Position)
-    {
-        return null;
-    }
-    public override void LookAt(Vector3 Direction)
-    {
-        //do nothing instead
-    }
+	public override void OnAttach(MSegment Parent)
+	{
+		base.OnAttach(Parent);
 
-
-    public void ActivateShield(float duration)
-    {
-        ShieldEffect.SetActive(true);
-        shieldDuration = duration;
-        sfxManager.ActivateShield();
-        shieldStartTime = Time.time;
-    }
-
-    public void DeactivateShield()
-    {
-        Debug.Log("dsfsdfs");
-        shieldStartTime = 0;
-        shieldActive = false;
-        sfxManager.DeactivateShield();
-        ShieldEffect.SetActive(false);
-
-    }
-
-    public override void OnAttatch()
-    {
-        ActivateShield(5.0f);
-    }
+		ActivateShield(5.0f);
+	}
 }
