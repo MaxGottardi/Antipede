@@ -32,6 +32,8 @@ public class SpringArm : MonoBehaviour
 	Vector2 PreviousMouseDragPosition;
 	Vector3 GimbalRotationInherited;
 	Vector3 CameraRotationInherited;
+	Vector2 PreviousMousePanPosition;
+	Vector3 OriginalTargetOffset;
 
 	[Header("Collisions")]
 	[SerializeField] LayerMask OnlyCollideWith;
@@ -79,12 +81,15 @@ public class SpringArm : MonoBehaviour
 		GimbalRotationInherited = DefaultGimbalRotation;
 		CameraRotationInherited = DefaultCameraRotation;
 
+		OriginalTargetOffset = TargetOffset;
+
 		DefaultProjection = MInput.MainCamera.projectionMatrix;
 	}
 
 	void Update()
 	{
 		UpdateRotationOnMouse();
+		PanCameraOnMouse();
 
 		if (Input.GetKeyDown(SettingsVariables.keyDictionary["ChangeCam"]))
 			bInheritRotation = !bInheritRotation;
@@ -251,7 +256,6 @@ public class SpringArm : MonoBehaviour
 
 		if (Input.GetMouseButton(1))
 		{
-
 			float DeltaX = (MousePosition.x - PreviousMouseDragPosition.x) * SettingsVariables.sliderDictionary["camRotSpeed"];
 			float DeltaY = (MousePosition.y - PreviousMouseDragPosition.y) * SettingsVariables.sliderDictionary["camRotSpeed"];
 
@@ -283,6 +287,27 @@ public class SpringArm : MonoBehaviour
 		}
 
 		PreviousMouseDragPosition = MousePosition;
+	}
+
+	void PanCameraOnMouse()
+	{
+		Vector3 MousePosition = Input.mousePosition;
+
+		if (Input.GetMouseButton(2))
+		{
+			float DeltaX = (MousePosition.x - PreviousMousePanPosition.x) * SettingsVariables.sliderDictionary["camRotSpeed"];
+			float DeltaY = (MousePosition.y - PreviousMousePanPosition.y) * SettingsVariables.sliderDictionary["camRotSpeed"];
+
+			// Ensure 'Right' and 'Up' is relative to the Camera.
+			TargetOffset -= DeltaX * Time.deltaTime * Camera.right + DeltaY * Time.deltaTime * Camera.up;
+			TargetOffset = Vector3.ClampMagnitude(TargetOffset, 5f);
+		}
+		else
+		{
+			TargetOffset = Vector3.Lerp(TargetOffset, OriginalTargetOffset, .2f);
+		}
+
+		PreviousMousePanPosition = MousePosition;
 	}
 
 	void ComputeProjection()
