@@ -6,18 +6,16 @@ public class Shield : Weapon
 {
 	[Header("Shield Settings")]
 	bool shieldActive;
-	[SerializeField] SFXManager sfxManager;
 	float shieldStartTime = 0;
 	float shieldDuration;
-	[SerializeField] GameObject centipede;
 	MCentipedeBody mcb;
 	[SerializeField] GameObject ShieldEffect;
 
-	private void Awake()
+	public override void Awake()
 	{
-		sfxManager = FindObjectOfType<SFXManager>();
+		base.Awake();
+
 		mcb = GameManager1.mCentipedeBody;
-		//mcb = centipede.GetComponent<MCentipedeBody>();
 		shieldActive = false;
 	}
 

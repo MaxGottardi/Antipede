@@ -3,9 +3,9 @@ using UnityEngine;
 /// <summary>The base class for a weapon.</summary>
 public abstract class Weapon : MonoBehaviour
 {
-	[Header("Base Weapon Settings.")]
 	[HideInInspector] public MCentipedeWeapons WeaponsComponent;
 
+	[Header("Base Weapon Settings.")]
 	[SerializeField, Tooltip("Where should projectiles shoot from?")] protected Transform BarrelEndSocket;
 	[SerializeField, Tooltip("The " + nameof(Projectile) + " to Fire.")] protected Projectile ProjectileObject;
 	public GameObject weaponPickup;
@@ -26,6 +26,13 @@ public abstract class Weapon : MonoBehaviour
 
 	//                                          | UI    | PLAYER | W. PICKUP | BOUNDARY
 	public const int kIgnoreFromWeaponRaycasts = 1 << 5 | 1 << 6 | 1 << 9    | 1 << 11;
+
+	[SerializeField, ReadOnly] protected SFXManager sfxManager;
+
+	public virtual void Awake()
+	{
+		sfxManager = FindObjectOfType<SFXManager>();
+	}
 
 	/// <summary>Fires Projectile towards Position.</summary>
 	/// <param name="Position">Intended target.</param>
@@ -87,7 +94,7 @@ public abstract class Weapon : MonoBehaviour
 #if UNITY_EDITOR
 	void OnDrawGizmos()
 	{
-		if (!isAntGun)
+		if (!isAntGun && BarrelEndSocket)
 		{
 			Gizmos.color = TextColour;
 			Gizmos.DrawWireSphere(BarrelEndSocket.position, Range);

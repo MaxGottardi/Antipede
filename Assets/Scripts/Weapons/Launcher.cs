@@ -11,12 +11,6 @@ public class Launcher : Weapon
 
 	Vector3 LaunchVelocity;
 	bool bDetached = false;
-	[SerializeField] SFXManager sfxManager;
-
-	public void Awake()
-	{
-		sfxManager = FindObjectOfType<SFXManager>();
-	}
 
 	public override Projectile Fire(Vector3 Position)
 	{
