@@ -401,6 +401,20 @@ public class HunterDead : DeadState
     }
 }
 
+public class GuardDead : DeadState
+{
+    GuardAnt owner;
+    public GuardDead(GenericAnt owner) : base(owner) //also initilize any behaviour tree used on the state as well
+    {
+        this.owner = owner.gameObject.GetComponent<GuardAnt>();
+    }
+
+    public override void dropWeapon()
+    {
+        owner.DropParentSeg();
+    }
+}
+
 /// <summary>
 /// guards attack state, basically just remove more health, and at a different speed
 /// </summary>

@@ -33,7 +33,8 @@ public class ParentCollectible : MonoBehaviour
 
     public void Collect()
     {
-        GetComponent<Collider>().enabled = false;
+        if (GetComponent<Collider>())
+            GetComponent<Collider>().enabled = false;
         GetComponent<MeshRenderer>().enabled = false;
         adjustScaleTween = new Tween(transform.localScale, Vector3.zero, Time.time, 3);
 

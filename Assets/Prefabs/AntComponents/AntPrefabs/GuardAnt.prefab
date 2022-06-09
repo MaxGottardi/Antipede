@@ -134,6 +134,16 @@ MonoBehaviour:
   rightAntenna: {fileID: 7924855639672096187}
   minFleeChance: 0
   audioSource: {fileID: 0}
+  parentParts:
+  - {fileID: 2249745141605134200, guid: ccec0973f0abc3a4b9d702083c4b4c14, type: 3}
+  - {fileID: 2249745141605134200, guid: ccec0973f0abc3a4b9d702083c4b4c14, type: 3}
+  - {fileID: 2249745141605134200, guid: ccec0973f0abc3a4b9d702083c4b4c14, type: 3}
+  - {fileID: 2249745141605134200, guid: ccec0973f0abc3a4b9d702083c4b4c14, type: 3}
+  - {fileID: 2249745141605134200, guid: ccec0973f0abc3a4b9d702083c4b4c14, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1001 &5886298893699072678
 PrefabInstance:
   m_ObjectHideFlags: 0

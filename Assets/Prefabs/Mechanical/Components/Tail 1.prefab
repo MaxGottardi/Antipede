@@ -1295,6 +1295,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   bIgnoreFromWeapons: 1
+  Weapon: {fileID: 0}
   health: 100
   numAttacking: 0
 --- !u!114 &3225271519566883058
