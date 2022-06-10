@@ -35,6 +35,11 @@ public class SpringArm : MonoBehaviour
 	Vector2 PreviousMousePanPosition;
 	Vector3 OriginalTargetOffset;
 
+	[Header("Inverse Settings.")]
+	[SerializeField] bool bInvertX; // Inverse LR dragging Orbit Controls.
+	[SerializeField] bool bInvertY; // Inverse UD dragging Orbit Controls.
+	[SerializeField] bool bInvertZ; // Inverse Zoom Controls.
+
 	[Header("Collisions")]
 	[SerializeField] LayerMask OnlyCollideWith;
 
@@ -150,17 +155,7 @@ public class SpringArm : MonoBehaviour
 			Quaternion InheritRotation = Quaternion.AngleAxis(GimbalRotationInherited.y, Target.right);
 			ArmDirection = (InheritRotation * Target.forward).normalized;
 
-			// Look at the Target, but add the CameraRotation's custom Pitch setting from the Inspector.
-			// (-) Pitches towards global up. (+) Pitches towards global down.
-			//if (!Input.GetMouseButton(1))
-			//{
-			//	Camera.LookAt(TargetPos());
-			//	Camera.localEulerAngles -= new Vector3(DefaultCameraRotation.x, 0, 0);
-			//}
-			//else
-			//{
 			FinalRotation = GetInheritedRotation();
-			//}
 		}
 
 		// If the Spring Arm will collider with something:
@@ -215,30 +210,23 @@ public class SpringArm : MonoBehaviour
 
 	Quaternion GetInheritedRotation()
 	{
-		return Quaternion.Euler(new Vector3(GetInheritedPitch() + GimbalRotationInherited.y - CameraRotationInherited.x, CameraRotationInherited.y + GetInheritedYaw()));
+		return Quaternion.Euler(new Vector3(GetInheritedAxis(Target.localEulerAngles.x) + GimbalRotationInherited.y - CameraRotationInherited.x, CameraRotationInherited.y + GetInheritedAxis(Target.localEulerAngles.y)));
 	}
 
-	float GetInheritedPitch()
+	float GetInheritedAxis(float AxisAngle)
 	{
-		float TargetPitch = Target.localEulerAngles.x;
-		if (TargetPitch < 0f)
-			TargetPitch = 360f - TargetPitch;
-		return TargetPitch;
-	}
-
-	float GetInheritedYaw()
-	{
-		float TargetYaw = Target.localEulerAngles.y;
-		if (TargetYaw < 0f)
-			TargetYaw = 360f - TargetYaw;
-		return TargetYaw;
+		float TargetAxis = AxisAngle;
+		if (TargetAxis < 0f)
+			TargetAxis = 360f - TargetAxis;
+		return TargetAxis;
 	}
 
 	void ScrollDistance()
 	{
 		if (bEnableScrollToDistance)
 		{
-			Distance += Input.mouseScrollDelta.y * -SettingsVariables.sliderDictionary["zoomSpeed"];
+			Distance += Input.mouseScrollDelta.y * (bInvertZ ? -1f : 1f) * -SettingsVariables.sliderDictionary["zoomSpeed"];
+
 			Distance = Mathf.Clamp(Distance, 1, 30);
 		}
 	}
@@ -258,6 +246,8 @@ public class SpringArm : MonoBehaviour
 		{
 			float DeltaX = (MousePosition.x - PreviousMouseDragPosition.x) * SettingsVariables.sliderDictionary["camRotSpeed"];
 			float DeltaY = (MousePosition.y - PreviousMouseDragPosition.y) * SettingsVariables.sliderDictionary["camRotSpeed"];
+
+			DetermineInverse(ref DeltaX, ref DeltaY);
 
 			if (!bInheritRotation)
 			{
@@ -288,6 +278,17 @@ public class SpringArm : MonoBehaviour
 
 		PreviousMouseDragPosition = MousePosition;
 	}
+
+	void DetermineInverse(ref float DeltaX, ref float DeltaY)
+	{
+		if (bInvertX)
+			Inverse(ref DeltaX);
+		else if (bInvertY)
+			Inverse(ref DeltaY);
+
+		static void Inverse(ref float F) => F *= -1f;
+	}
+
 
 	void PanCameraOnMouse()
 	{
