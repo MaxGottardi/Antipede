@@ -26,13 +26,6 @@ public class SaveSettings : MonoBehaviour
     const string camRotSpeed = "camRotSpeed";
 
     public AudioMixer audioMixer;
-
-    private void Awake()
-    {
-        LoadKeys();
-        LoadFloats();
-        LoadBools();
-    }
     private void Start()
     {
         //adjust the audio volumns to match their values
@@ -41,60 +34,73 @@ public class SaveSettings : MonoBehaviour
         audioMixer.SetFloat("MusicVolume", Mathf.Log10(Mathf.Clamp(SettingsVariables.sliderDictionary[musicSound], 0.01f, 1)) * 40); //set the audio value so it is in the proper decible formate and between -80 and 0
     }
     // Start is called before the first frame update
-    void LoadKeys()
-    {
-        if (PlayerPrefs.HasKey(Forward))
-            SettingsVariables.keyDictionary[Forward] = (KeyCode)PlayerPrefs.GetInt(Forward);
+    //KeyCode LoadKeys(string item, KeyCode defaultKey)
+    //{
+    //    if (PlayerPrefs.HasKey(item))
+    //        return (KeyCode)PlayerPrefs.GetInt(item);
+    //    else
+    //        return defaultKey;
+    //    ////if (PlayerPrefs.HasKey(Forward))
+    //    ////    SettingsVariables.keyDictionary[Forward] = (KeyCode)PlayerPrefs.GetInt(Forward);
 
-        if (PlayerPrefs.HasKey(Left))
-            SettingsVariables.keyDictionary[Left] = (KeyCode)PlayerPrefs.GetInt(Left);
+    //    ////if (PlayerPrefs.HasKey(Left))
+    //    ////    SettingsVariables.keyDictionary[Left] = (KeyCode)PlayerPrefs.GetInt(Left);
 
-        if (PlayerPrefs.HasKey(Right))
-            SettingsVariables.keyDictionary[Right] = (KeyCode)PlayerPrefs.GetInt(Right);
+    //    ////if (PlayerPrefs.HasKey(Right))
+    //    ////    SettingsVariables.keyDictionary[Right] = (KeyCode)PlayerPrefs.GetInt(Right);
 
-        if (PlayerPrefs.HasKey(Fire))
-            SettingsVariables.keyDictionary[Fire] = (KeyCode)PlayerPrefs.GetInt(Fire);
+    //    ////if (PlayerPrefs.HasKey(Fire))
+    //    ////    SettingsVariables.keyDictionary[Fire] = (KeyCode)PlayerPrefs.GetInt(Fire);
 
-        if (PlayerPrefs.HasKey(Pause))
-            SettingsVariables.keyDictionary[Pause] = (KeyCode)PlayerPrefs.GetInt(Pause);
+    //    ////if (PlayerPrefs.HasKey(Pause))
+    //    ////    SettingsVariables.keyDictionary[Pause] = (KeyCode)PlayerPrefs.GetInt(Pause);
 
-        if (PlayerPrefs.HasKey(ChangeCam))
-            SettingsVariables.keyDictionary[ChangeCam] = (KeyCode)PlayerPrefs.GetInt(ChangeCam);
+    //    ////if (PlayerPrefs.HasKey(ChangeCam))
+    //    ////    SettingsVariables.keyDictionary[ChangeCam] = (KeyCode)PlayerPrefs.GetInt(ChangeCam);
 
-        if (PlayerPrefs.HasKey(HalveSpeed))
-            SettingsVariables.keyDictionary[HalveSpeed] = (KeyCode)PlayerPrefs.GetInt(HalveSpeed);
-    }
-    void LoadFloats()
-    {
-        if (PlayerPrefs.HasKey(totalSound))
-        {
-            SettingsVariables.sliderDictionary[totalSound] = PlayerPrefs.GetFloat(totalSound);
-        }
+    //    ////if (PlayerPrefs.HasKey(HalveSpeed))
+    //    ////    SettingsVariables.keyDictionary[HalveSpeed] = (KeyCode)PlayerPrefs.GetInt(HalveSpeed);
+    //}
+    //float LoadFloats(string item, float defaultValue = 1.0f)
+    //{
+    //    if (PlayerPrefs.HasKey(item))
+    //        return PlayerPrefs.GetFloat(item);
+    //    else
+    //        return defaultValue;
 
-        if (PlayerPrefs.HasKey(sfxSound))
-        {
-            SettingsVariables.sliderDictionary[sfxSound] = PlayerPrefs.GetFloat(sfxSound);
-        }
+    //    ////if (PlayerPrefs.HasKey(totalSound))
+    //    ////{
+    //    ////    SettingsVariables.sliderDictionary[totalSound] = PlayerPrefs.GetFloat(totalSound);
+    //    ////}
 
-        if (PlayerPrefs.HasKey(musicSound))
-        {
-            SettingsVariables.sliderDictionary[musicSound] = PlayerPrefs.GetFloat(musicSound);
-        }
+    //    ////if (PlayerPrefs.HasKey(sfxSound))
+    //    ////{
+    //    ////    SettingsVariables.sliderDictionary[sfxSound] = PlayerPrefs.GetFloat(sfxSound);
+    //    ////}
 
-        if (PlayerPrefs.HasKey(camRotSpeed))
-            SettingsVariables.sliderDictionary[camRotSpeed] = PlayerPrefs.GetFloat(camRotSpeed);
-    }
-    void LoadBools()
-    {
-        if (PlayerPrefs.HasKey(bPlayTutorial))
-            SettingsVariables.boolDictionary[bPlayTutorial] = System.Convert.ToBoolean(PlayerPrefs.GetInt(bPlayTutorial));
+    //    ////if (PlayerPrefs.HasKey(musicSound))
+    //    ////{
+    //    ////    SettingsVariables.sliderDictionary[musicSound] = PlayerPrefs.GetFloat(musicSound);
+    //    ////}
 
-        if (PlayerPrefs.HasKey(bShootToActivate))
-            SettingsVariables.boolDictionary[bShootToActivate] = System.Convert.ToBoolean(PlayerPrefs.GetInt(bShootToActivate));
+    //    ////if (PlayerPrefs.HasKey(camRotSpeed))
+    //    ////    SettingsVariables.sliderDictionary[camRotSpeed] = PlayerPrefs.GetFloat(camRotSpeed);
+    //}
+    //bool LoadBools(string item, bool defaultValue)
+    //{
+    //    if (PlayerPrefs.HasKey(item))
+    //        return System.Convert.ToBoolean(PlayerPrefs.GetInt(item));
+    //    else
+    //        return defaultValue;
+    //    ////if (PlayerPrefs.HasKey(bPlayTutorial))
+    //    ////    SettingsVariables.boolDictionary[bPlayTutorial] = System.Convert.ToBoolean(PlayerPrefs.GetInt(bPlayTutorial));
 
-        if (PlayerPrefs.HasKey(bEnableCheckpoints))
-            SettingsVariables.boolDictionary[bEnableCheckpoints] = System.Convert.ToBoolean(PlayerPrefs.GetInt(bEnableCheckpoints));
-    }
+    //    ////if (PlayerPrefs.HasKey(bShootToActivate))
+    //    ////    SettingsVariables.boolDictionary[bShootToActivate] = System.Convert.ToBoolean(PlayerPrefs.GetInt(bShootToActivate));
+
+    //    ////if (PlayerPrefs.HasKey(bEnableCheckpoints))
+    //    ////    SettingsVariables.boolDictionary[bEnableCheckpoints] = System.Convert.ToBoolean(PlayerPrefs.GetInt(bEnableCheckpoints));
+    //}
 
     public static void SaveFloat(string value)
     {

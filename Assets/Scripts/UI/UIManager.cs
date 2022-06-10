@@ -17,6 +17,11 @@ public class UIManager : MonoBehaviour
 
     public TextMeshProUGUI forwardTxt, leftTxt, rightTxt, halfTxt, camTxt, attackTxt, pauseTxt;
     public Toggle checkpointToogle, tutorialToggle, shootMenuToggle;
+
+    [Header("Controls Toggles")]
+    public Toggle weaponToggle;
+    public Toggle attackToggle;
+    public Toggle halveSpeedToggle;
     void Awake()
     {
         soundPanel = GameObject.Find("SoundPanel");
@@ -44,6 +49,19 @@ public class UIManager : MonoBehaviour
         checkpointToogle.isOn = SettingsVariables.boolDictionary["bEnableCheckpoints"];
         tutorialToggle.isOn = SettingsVariables.boolDictionary["bPlayTutorial"];
         shootMenuToggle.isOn = SettingsVariables.boolDictionary["bShootToActivate"];
+
+        //Controls Toggles
+        halveSpeedToggle.isOn = SettingsVariables.boolDictionary["bHalveSpeedToggle"];
+        if(halveSpeedToggle.isOn)
+            halveSpeedToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Halve Speed: Toggle";
+
+        attackToggle.isOn = SettingsVariables.boolDictionary["bAttackToggle"];
+        if (attackToggle.isOn)
+            attackToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Attack: Toggle";
+
+        weaponToggle.isOn = SettingsVariables.boolDictionary["bWeaponToggle"];
+        if (weaponToggle.isOn)
+            weaponToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Weapon Fire: Toggle";
     }
     public void GameControls()
     {
@@ -92,6 +110,24 @@ public class UIManager : MonoBehaviour
             SettingsVariables.boolDictionary[component] = toggleValue;
             SaveSettings.SaveBool(component);
 
+        }
+    }
+
+    public void ToggleText(string defaultText)
+    {
+        GameObject selectedObj = EventSystem.current.currentSelectedGameObject;
+        if (selectedObj != null)
+        {
+            bool toggleValue = EventSystem.current.currentSelectedGameObject.GetComponent<Toggle>().isOn;
+            if (toggleValue) //adjust the toggles name to match its state
+            {
+                string textName = defaultText.Substring(0, defaultText.IndexOf(":") + 1); //get the first part of the toogles label, detailing its name
+                selectedObj.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = textName + " Toggle";
+            }
+            else
+                selectedObj.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = defaultText;
+
+            Debug.Log("Stuff is changed");
         }
     }
     private void OnGUI()

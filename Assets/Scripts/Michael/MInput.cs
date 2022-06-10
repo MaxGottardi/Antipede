@@ -15,7 +15,9 @@ public class MInput : MonoBehaviour
 	SFXManager sfxManager;
 
 	bool bIsPaused = false;
-    private void Awake()
+	bool bHasHalvedSpeed = false, bHasAttackActivated = false;
+
+	private void Awake()
     {
 		MainCamera = Camera.main;
 	}
@@ -38,14 +40,25 @@ public class MInput : MonoBehaviour
 
 		Vector3 rayPos = new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z);
 		Debug.DrawRay(rayPos, transform.forward * 2, Color.red);
-		if (Time.timeScale > 0.1f && (Input.GetKeyDown(SettingsVariables.keyDictionary["Fire"]) || attackRequested))
+		if (Input.GetKeyDown(SettingsVariables.keyDictionary["Fire"]) && SettingsVariables.boolDictionary["bAttackToggle"])
+		{
+			if (bHasAttackActivated)
+			{
+				bHasAttackActivated = false;
+				attackRequested = false;
+			}
+			else
+				bHasAttackActivated = true;
+			Debug.Log("Update attqd" + bHasAttackActivated);
+		}
+		if (Time.timeScale > 0.1f && (Input.GetKeyDown(SettingsVariables.keyDictionary["Fire"]) || attackRequested || SettingsVariables.boolDictionary["bAttackToggle"] && bHasAttackActivated))
 		{
 			if (!doneAttack)
 			{
 				DoAttack();
 				doneAttack = true;
 				attackRequested = false;
-				Invoke("wait", 0.5f);
+				Invoke("AttackWait", 0.5f);
 			}
 			else if (!attackRequested)
 				attackRequested = true;
@@ -72,10 +85,23 @@ public class MInput : MonoBehaviour
 
 		if (Input.GetKeyDown(SettingsVariables.keyDictionary["HalveSpeed"]))
 		{
-			PreSlowShift = body.MovementSpeed;
-			body.ChangeSpeedDirectly(PreSlowShift * .5f);
+			if(!bHasHalvedSpeed)
+            {
+				PreSlowShift = body.MovementSpeed;
+				body.ChangeSpeedDirectly(PreSlowShift * .5f);
+			}
+			if (SettingsVariables.boolDictionary["bHalveSpeedToggle"])
+			{
+				if (!bHasHalvedSpeed)
+					bHasHalvedSpeed = true;
+				else
+				{
+					body.ChangeSpeedDirectly(PreSlowShift); //as key has already been pressed, release it
+					bHasHalvedSpeed = false;
+				}
+			}
 		}
-		else if (Input.GetKeyUp(SettingsVariables.keyDictionary["HalveSpeed"]))
+		else if (Input.GetKeyUp(SettingsVariables.keyDictionary["HalveSpeed"]) && !SettingsVariables.boolDictionary["bHalveSpeedToggle"])
 		{
 			body.ChangeSpeedDirectly(PreSlowShift);
 		}
@@ -87,8 +113,26 @@ public class MInput : MonoBehaviour
 		if (Horizontal != 0 || Vertical != 0)
 			if (sfxManager != null && Time.timeScale > 0)
 				sfxManager.Walk();
-	}
 
+		AccessibilityDisabledActive();
+	}
+	/// <summary>
+	/// if the accessibility key setting has been disabled while it is currently active, deactivate it
+	/// </summary>
+	void AccessibilityDisabledActive()
+    {
+		if (!SettingsVariables.boolDictionary["bAttackToggle"] && bHasAttackActivated)
+		{
+			bHasAttackActivated = false;
+			attackRequested = false;
+		}
+		
+		if (!SettingsVariables.boolDictionary["bHalveSpeedToggle"] && bHasHalvedSpeed) //deactivate the halve speed if it was active when the setting was turned off
+		{
+				body.ChangeSpeedDirectly(PreSlowShift);
+				bHasHalvedSpeed = false;
+		}
+	}
 	void LateUpdate()
 	{
 		if (bIsPaused)
@@ -170,7 +214,7 @@ public class MInput : MonoBehaviour
 		}
 
 	}
-	void wait()
+	void AttackWait()
 	{
 		doneAttack = false;
 	}

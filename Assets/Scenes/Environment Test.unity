@@ -45916,6 +45916,9 @@ MonoBehaviour:
   checkpointToogle: {fileID: 1848800166}
   tutorialToggle: {fileID: 1848800165}
   shootMenuToggle: {fileID: 1848800164}
+  weaponToggle: {fileID: 1848800175}
+  attackToggle: {fileID: 1848800174}
+  halveSpeedToggle: {fileID: 1848800173}
 --- !u!4 &1163255022
 Transform:
   m_ObjectHideFlags: 0
@@ -74550,6 +74553,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2440750878389892822, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5753585289388019679, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1163255021}
+    - target: {fileID: 5753585289388019679, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1163255021}
+    - target: {fileID: 5753585289388019679, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeBool
+      objectReference: {fileID: 0}
+    - target: {fileID: 5753585289388019679, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ToggleText
+      objectReference: {fileID: 0}
+    - target: {fileID: 6340097419148806906, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6340097419148806906, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6340097419148806906, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8036119112838258694, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -75038,6 +75073,38 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8619049890442408415, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1163255021}
+    - target: {fileID: 8619049890442408415, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1163255021}
+    - target: {fileID: 8619049890442408415, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeBool
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619049890442408415, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ToggleText
+      objectReference: {fileID: 0}
+    - target: {fileID: 8781790171249943290, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1163255021}
+    - target: {fileID: 8781790171249943290, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1163255021}
+    - target: {fileID: 8781790171249943290, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeBool
+      objectReference: {fileID: 0}
+    - target: {fileID: 8781790171249943290, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ToggleText
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
 --- !u!114 &1848800163 stripped
@@ -75148,6 +75215,39 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1848800173 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8781790171249943290, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+  m_PrefabInstance: {fileID: 1848800162}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1848800174 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5753585289388019679, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+  m_PrefabInstance: {fileID: 1848800162}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1848800175 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8619049890442408415, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+  m_PrefabInstance: {fileID: 1848800162}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1850731326
