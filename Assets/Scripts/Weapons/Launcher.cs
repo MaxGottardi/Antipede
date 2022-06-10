@@ -14,11 +14,13 @@ public class Launcher : Weapon
 
 	public override Projectile Fire(Vector3 Position)
 	{
-		if (CanFire(Position)) {
+		if (CanFire(Position))
+		{
 			if (sfxManager)
 			{
 				sfxManager.ShootLauncher();
 			}
+
 			Vector3 Velocity = LaunchVelocity;
 			if (!MMathStatics.DiagnosticCheckNaN(LaunchVelocity))
 			{
@@ -38,7 +40,7 @@ public class Launcher : Weapon
 		if (!bIsRegistered)
 			return;
 
-		if (Direction == Vector3.zero)
+		if (Direction == Vector3.zero || !CanFire(Direction))
 		{
 			ClearArc();
 			return;

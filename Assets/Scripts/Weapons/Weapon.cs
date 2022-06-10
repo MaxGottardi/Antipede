@@ -25,7 +25,7 @@ public abstract class Weapon : MonoBehaviour
 	protected MSegment Owner;
 
 	//                                          | UI    | PLAYER | W. PICKUP | BOUNDARY
-	public const int kIgnoreFromWeaponRaycasts = 1 << 5 | 1 << 6 | 1 << 9    | 1 << 11;
+	public const int kIgnoreFromWeaponRaycasts = 1 << 5 | 1 << 6 | 1 << 9 | 1 << 11;
 
 	[SerializeField, ReadOnly] protected SFXManager sfxManager;
 
@@ -57,9 +57,6 @@ public abstract class Weapon : MonoBehaviour
 		// Is this Weapon In-Range?
 		bCanFire &= MMathStatics.HasReached(BarrelEndSocket.position, Position, Range);
 
-		if (bCanFire)
-			TimeLastFired = Time.time;
-
 		return bCanFire;
 	}
 
@@ -80,7 +77,12 @@ public abstract class Weapon : MonoBehaviour
 
 	/// <summary>Spawn a <see cref="Projectile"/> to fire.</summary>
 	/// <returns>The newly spawned <see cref="Projectile"/> object for <see cref="Projectile.Launch(Vector3)"/>.</returns>
-	protected Projectile InstantiateProjectile() { return Instantiate(ProjectileObject, BarrelEndSocket.position, transform.rotation); }
+	protected Projectile InstantiateProjectile()
+	{
+		TimeLastFired = Time.time;
+
+		return Instantiate(ProjectileObject, BarrelEndSocket.position, transform.rotation);
+	}
 
 	/// <summary>Marks this Segment as 'Deregistered'. Ignores Firing / Look At calls.</summary>
 	public virtual void Deregister() { bIsRegistered = false; }

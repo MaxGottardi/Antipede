@@ -38,6 +38,11 @@ public class GameManager1 : MonoBehaviour
             uiButtons.StoryFinished(uiButtons.Dev_Story_Skip);
             uiButtons.Continue();
         }
+                else if (Input.GetKeyDown(KeyCode.B) && Input.GetKey(KeyCode.LeftShift))
+		{
+                        // Debug Break without needing to move mouse.
+                        Debug.Break();
+		}
 #endif
     }
 }

@@ -42,6 +42,7 @@ public static class MMathStatics
 		return EulerRadians * Mathf.Rad2Deg;
 	}
 
+	/// <summary>A fast <see cref="Vector3.Distance(Vector3, Vector3)"/> check against a known value: ToleranceInUnits.</summary>
 	/// <param name="Location">The location of the GameObject.</param>
 	/// <param name="Target">The location to test whether the GameObject has reached.</param>
 	/// <param name="ToleranceInUnits">The distance to consider 'reached'.</param>
@@ -52,6 +53,7 @@ public static class MMathStatics
 		return SqrDistance <= ((ToleranceInUnits * ToleranceInUnits) + Vector3.kEpsilon);
 	}
 
+	/// <summary>A fast <see cref="Vector3.Distance(Vector3, Vector3)"/> check against a known value: ToleranceInUnits.</summary>
 	/// <param name="Location">The location of the GameObject.</param>
 	/// <param name="Target">The location to test whether the GameObject has reached.</param>
 	/// <param name="ToleranceInUnits">The distance to consider 'reached'.</param>
