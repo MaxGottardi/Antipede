@@ -37,6 +37,9 @@ public class CentipedeMovement : MonoBehaviour
 	float BoundaryCheckDistance = 3f;
 	bool bIsCourseCorrecting;
 	[SerializeField] bool bEnable90DegreeInclines;
+#if UNITY_EDITOR
+	bool bDoCollisionChecks;
+#endif
 
 	[Header("Interpolation Settings.")]
 	[SerializeField] bool bInterpolateHillClimb;
@@ -57,6 +60,21 @@ public class CentipedeMovement : MonoBehaviour
 	// Surface Normals.
 	Vector3 PreviousNormal;
 	Vector3 SurfaceNormal;
+
+	/*
+	                               -- Dynamic Centipede-Terrain Alignment --
+
+	If there are problems with the Centipede, especially, but not limited to, when going over Terrain,
+	switch K_bUseDynamicAlignment to false and see if it fixes it, otherwise the problem is elsewhere.
+
+	Alternatively, increase / decrease kErrorAngle or kFrameSkips.
+
+	Note that Segments have their own implementation.
+
+	*/
+	const bool K_bUseDynamicAlignment = true; // True to use Dynamic Centipede-Terrain Alignment.
+	const float kErrorAngle = 5f;   // An angle difference > this degrees will trigger Alignment.
+	const int kFrameSkips = 10;   // Skip this many frames before checking if this Centipede needs realigning.
 
 	void Start()
 	{
@@ -86,6 +104,13 @@ public class CentipedeMovement : MonoBehaviour
 				Debug.DrawLine(transform.position, InDirection, Color.white);
 #endif
 		}
+
+#if UNITY_EDITOR
+		if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.RightBracket))
+		{
+			bDoCollisionChecks = !bDoCollisionChecks;
+		}
+#endif
 	}
 
 	/// <summary>Send instructions for Horizontal (+X) and Vertical (+Z) Movement.</summary>
@@ -239,7 +264,14 @@ public class CentipedeMovement : MonoBehaviour
 		{
 			AccelerationTime += Time.deltaTime;
 
-			MMathStatics.HomeTowards(rb, InDirection, EvaluateAcceleration(Body.MovementSpeed), Body.TurnDegrees);
+			if (K_bUseDynamicAlignment && Time.frameCount % kFrameSkips == 0 && AccelerationTime > 0f && NeedsAlignment(out RaycastHit Terrain))
+			{
+				Align(ref Terrain);
+			}
+			else
+			{
+				MMathStatics.HomeTowards(rb, InDirection, EvaluateAcceleration(Body.MovementSpeed), Body.TurnDegrees);
+			}
 
 			AccelerationTime = Mathf.Min(AccelerationTime, 1f);
 		}
@@ -362,6 +394,11 @@ public class CentipedeMovement : MonoBehaviour
 
 	bool BoundariesCheckCollisions(ref MCentipedeBody Body)
 	{
+#if UNITY_EDITOR
+		if (bDoCollisionChecks)
+			return true;
+#endif
+
 		if (bIsCourseCorrecting)
 			return true;
 
@@ -533,6 +570,8 @@ public class CentipedeMovement : MonoBehaviour
 			AutoCorrect = Vector3.Reflect(NormalisedInDirection, BoundariesCheck.normal);
 			InDirection = transform.position + AutoCorrect;
 
+
+#if UNITY_EDITOR
 			// From the Boundary to the Reflected point.
 			Debug.DrawRay(BoundariesCheck.point, AutoCorrect, Color.blue, 5);
 
@@ -540,7 +579,6 @@ public class CentipedeMovement : MonoBehaviour
 			Debug.DrawLine(transform.position, Point, Color.white, 5);  // From the Centipede's actual position to the point.
 			Debug.DrawRay(Point, NormalisedInDirection, Color.cyan, 5); // From the Boundary to where the Centipede is going towards.
 
-#if UNITY_EDITOR
 			Debug.Log("Centipede collided with Boundary: " + BoundariesCheck.collider.name);
 
 			if (bShowGizmos)
@@ -560,6 +598,27 @@ public class CentipedeMovement : MonoBehaviour
 		}
 
 		return AutoCorrect;
+	}
+
+	bool NeedsAlignment(out RaycastHit Terrain)
+	{
+		Ray R = new Ray(transform.position, -transform.up);
+		if (Physics.Raycast(R, out Terrain, 1, 256))
+		{
+			return Vector3.Angle(transform.up, Terrain.normal) > kErrorAngle;
+		}
+
+		return false;
+	}
+
+	void Align(ref RaycastHit Terrain)
+	{
+		if (!Terrain.collider)
+			return;
+
+		Vector3 Normal = Terrain.normal;
+
+		transform.rotation = Quaternion.FromToRotation(transform.up, Normal) * transform.rotation;
 	}
 
 #if UNITY_EDITOR

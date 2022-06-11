@@ -31,6 +31,9 @@ public partial class MCentipedeBody : MonoBehaviour
 
 				AddSegment(Z, ParentRotation);
 			}
+
+			for (int i = 0; i < CustomSegments.Count; ++i)
+				CustomSegments[i].transform.position = Tail.position + (SegmentsInfo.SegmentScale.z * (i + 1) * -Tail.forward);
 		}
 		else
 		{

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8236571481672462520}
   m_Layer: 10
   m_Name: Launched Projectile
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -223,7 +223,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &8236571481672462520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,6 +241,8 @@ MonoBehaviour:
   bloodParticles: {fileID: 3612848425264099771, guid: e16bd8ac4022a2447880058a8ae4a7cb, type: 3}
   DamageAmount: 40
   tarantDamage: 2
+  Shockwave: {fileID: 109590912624951486, guid: caf21d49f8d1ad24fa7eff7b340eda11, type: 3}
+  ExplosionRadius: 5
 --- !u!1 &8116467111339866537
 GameObject:
   m_ObjectHideFlags: 0

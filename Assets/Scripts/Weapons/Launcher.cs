@@ -11,16 +11,10 @@ public class Launcher : Weapon
 
 	Vector3 LaunchVelocity;
 	bool bDetached = false;
-	[SerializeField] SFXManager sfxManager;
-
-	public void Awake()
-	{
-		sfxManager = FindObjectOfType<SFXManager>();
-	}
 
 	public override Projectile Fire(Vector3 Position)
 	{
-		if (bIsRegistered) {
+		if (CanFire(Position)) {
 			if (sfxManager)
 			{
 				sfxManager.ShootLauncher();
@@ -65,7 +59,7 @@ public class Launcher : Weapon
 		transform.GetChild(0).GetChild(0).GetChild(0).LookAt(lookPos + LaunchVelocity);
 
 		// Somebody disabled the Dotted-line arc. Do not compute the arc if it's disabled.
-		if (Owner && ArcRenderer && ArcRenderer.gameObject.activeSelf && ArcRenderer.gameObject == gameObject)
+		if (WeaponsComponent && ArcRenderer && ArcRenderer.gameObject.activeSelf && ArcRenderer.gameObject == gameObject)
 		{
 			DrawArc(LaunchVelocity, Time);
 		}

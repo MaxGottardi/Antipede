@@ -27,7 +27,7 @@ public class Projectile : MonoBehaviour
 		rb.AddForce(LaunchVelocity);
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	protected virtual void OnCollisionEnter(Collision collision)
 	{
 		//Destroy(this);
 		if (!isEnemyProjectile && collision.gameObject.CompareTag("Enemy") && collision.transform.parent.gameObject.GetComponent<GuardAnt>() == null)

@@ -56,7 +56,7 @@ public static class MMathStatics
 	/// <param name="Target">The location to test whether the GameObject has reached.</param>
 	/// <param name="ToleranceInUnits">The distance to consider 'reached'.</param>
 	/// <param name="SquareDistance">Outs the square distance that was calculated.</param>
-	/// <returns>True if the square distance between Location and Target &lt;= ToleranceInSquareUnits.</returns>
+	/// <returns>True if the square distance between Location and Target &lt;= ToleranceInUnits.</returns>
 	public static bool HasReached(Vector3 Location, Vector3 Target, float ToleranceInUnits, out float SquareDistance)
 	{
 		float SqrDistance = Mathf.Abs((Target - Location).sqrMagnitude);
