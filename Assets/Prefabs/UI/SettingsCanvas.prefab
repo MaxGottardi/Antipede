@@ -1229,7 +1229,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Weapon Fire: Repeat Press'
+  m_text: 'Weapon Fire: Hold'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 344a7e2ec4fafca4da26bc931d7b9a26, type: 2}
   m_sharedMaterial: {fileID: 5347850528796258261, guid: 344a7e2ec4fafca4da26bc931d7b9a26, type: 2}
@@ -2879,8 +2879,8 @@ RectTransform:
   m_Father: {fileID: 8036119113028930844}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.6635679}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}

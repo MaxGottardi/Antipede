@@ -7900,7 +7900,6 @@ MonoBehaviour:
   ForwardNeighbour: {fileID: 0}
   FollowSpeed: 0
   MaxTurnDegreesPerFrame: 0
-  bUseDynamicAlignment: 1
   bIgnoreFromWeapons: 0
   Weapon: {fileID: 0}
   health: 100
@@ -28659,7 +28658,6 @@ MonoBehaviour:
   ForwardNeighbour: {fileID: 0}
   FollowSpeed: 0
   MaxTurnDegreesPerFrame: 0
-  bUseDynamicAlignment: 1
   bIgnoreFromWeapons: 0
   Weapon: {fileID: 0}
   health: 100
@@ -74995,6 +74993,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8036119113928121481, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.04017733
+      objectReference: {fileID: 0}
     - target: {fileID: 8036119114001989440, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -75198,6 +75200,10 @@ PrefabInstance:
     - target: {fileID: 8619049890442408415, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ToggleText
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619049890442408415, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: 'Weapon Fire: Hold'
       objectReference: {fileID: 0}
     - target: {fileID: 8781790171249943290, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
