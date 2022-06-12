@@ -73,6 +73,17 @@ public class Projectile : MonoBehaviour
 			UIManager.soundPanel.SetActive(true);
 			UIManager.otherPanel.SetActive(false);
 			UIManager.controlsPanel.SetActive(false);
+			UIManager.graphicsPanel.SetActive(false);
+
+			UIManager.RebindKeyPanel.SetActive(false);
+			UIManager.enableKeyChange = false;
+		}
+		else if (collision.gameObject.CompareTag("Graphics"))
+		{
+			UIManager.soundPanel.SetActive(false);
+			UIManager.otherPanel.SetActive(false);
+			UIManager.controlsPanel.SetActive(false);
+			UIManager.graphicsPanel.SetActive(true);
 
 			UIManager.RebindKeyPanel.SetActive(false);
 			UIManager.enableKeyChange = false;
@@ -83,6 +94,8 @@ public class Projectile : MonoBehaviour
 			UIManager.otherPanel.SetActive(true);
 			UIManager.controlsPanel.SetActive(false);
 			UIManager.RebindKeyPanel.SetActive(false);
+			UIManager.graphicsPanel.SetActive(false);
+
 			UIManager.enableKeyChange = false;
 		}
 		else if (collision.gameObject.CompareTag("Controls"))
@@ -90,6 +103,7 @@ public class Projectile : MonoBehaviour
 			UIManager.soundPanel.SetActive(false);
 			UIManager.otherPanel.SetActive(false);
 			UIManager.controlsPanel.SetActive(true);
+			UIManager.graphicsPanel.SetActive(false);
 
 			UIManager.RebindKeyPanel.SetActive(false);
 			UIManager.enableKeyChange = false;

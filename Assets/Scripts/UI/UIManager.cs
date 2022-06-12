@@ -7,7 +7,7 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public static GameObject soundPanel, otherPanel, controlsPanel;
+    public static GameObject soundPanel, otherPanel, controlsPanel, graphicsPanel;
     public static GameObject RebindKeyPanel;
     public GameObject PauseElementsHolder;
 
@@ -22,17 +22,22 @@ public class UIManager : MonoBehaviour
     public Toggle weaponToggle;
     public Toggle attackToggle;
     public Toggle halveSpeedToggle;
+
+    [Header("Graphics Toggles")]
+    public Toggle solidBackToggle;
     void Awake()
     {
         soundPanel = GameObject.Find("SoundPanel");
         otherPanel = GameObject.Find("OtherPanel");
         controlsPanel = GameObject.Find("ControlsPanel");
+        graphicsPanel = GameObject.Find("GraphicsPanel");
         RebindKeyPanel = GameObject.Find("KeyPanel");
         RebindKeyPanel.SetActive(false);
 
         otherPanel.SetActive(false);
         soundPanel.SetActive(true);
         controlsPanel.SetActive(false);
+        graphicsPanel.SetActive(false);
 
         AssignValues();
     }
@@ -62,6 +67,9 @@ public class UIManager : MonoBehaviour
         weaponToggle.isOn = SettingsVariables.boolDictionary["bWeaponToggle"];
         if (weaponToggle.isOn)
             weaponToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Weapon Fire: Toggle";
+
+        //graphics toggles
+        solidBackToggle.isOn = SettingsVariables.boolDictionary["bSolidTxtBackgrounds"];
     }
     public void GameControls()
     {

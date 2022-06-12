@@ -32,6 +32,7 @@ TagManager:
   - backup
   - SFXM
   - Projectile
+  - Graphics
   layers:
   - Default
   - TransparentFX

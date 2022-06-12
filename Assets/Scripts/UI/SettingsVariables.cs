@@ -12,7 +12,9 @@ public static class SettingsVariables
 
             {"bAttackToggle",  LoadBools("bAttackToggle", false) },
             {"bHalveSpeedToggle",  LoadBools("bHalveSpeedToggle", false) },
-            {"bWeaponToggle",  LoadBools("bWeaponToggle", false) }
+            {"bWeaponToggle",  LoadBools("bWeaponToggle", false) },
+
+            {"bSolidTxtBackgrounds",  LoadBools("bSolidTxtBackgrounds", false) }
         };
     public static Dictionary<string, float> sliderDictionary = new Dictionary<string, float>()
         {
