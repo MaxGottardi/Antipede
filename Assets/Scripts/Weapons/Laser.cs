@@ -36,7 +36,12 @@ public class Laser : Weapon
 		return null;
 	}
 
-	/* - Block commented out by MW.
+    public override void Deactivate()
+    {
+		sfxManager.DeactivateLaser();
+    }
+
+    /* - Block commented out by MW.
 	 * - Obsolete. Shooting a Laser should be done in Fire(Position);
 	
 	public void shootLine()
