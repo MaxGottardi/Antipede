@@ -1,5 +1,6 @@
 ﻿// Alan Zucconi
 // www.alanzucconi.com
+//installed from here https://www.alanzucconi.com/2015/12/16/color-blindness/
 using UnityEngine;
 
 public enum ColorBlindMode

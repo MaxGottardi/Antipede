@@ -16,14 +16,21 @@ public static class SettingsVariables
 
             {"bSolidTxtBackgrounds",  LoadBools("bSolidTxtBackgrounds", false) }
         };
+
     public static Dictionary<string, float> sliderDictionary = new Dictionary<string, float>()
         {
-            {"totalSound", LoadFloats("totalSound") },
-            {"sfxSound", LoadFloats("sfxSound") },
-            {"musicSound", LoadFloats("musicSound") },
+            //sound
+            {"totalSound", LoadFloats("totalSound", 100) },
+            {"sfxSound", LoadFloats("sfxSound", 100) },
+            {"musicSound", LoadFloats("musicSound", 100) },
 
+            //controls
             {"camRotSpeed", LoadFloats("camRotSpeed") },
-            {"zoomSpeed", LoadFloats("zoomSpeed") }
+            {"zoomSpeed", LoadFloats("zoomSpeed") },
+
+            //lighting
+            {"fogPercentage", LoadFloats("fogPercentage", 100) },
+            {"brightnessMultiplier", LoadFloats("brightnessMultiplier", 0) }
 
         };
 
