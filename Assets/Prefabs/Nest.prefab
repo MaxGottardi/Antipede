@@ -318,8 +318,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0, a: 1}
+  m_Material: {fileID: 2100000, guid: 42ae3903ce0278749bcd8faf6fc25687, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -770,6 +770,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 012ecea03e657f34a99fa51150298d7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 100
+  waitSpawnAntTime: 30
   healthSlider: {fileID: 0}
   attackingPlayer: 0
   antPrefab: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}

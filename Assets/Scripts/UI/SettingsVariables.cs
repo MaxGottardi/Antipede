@@ -30,7 +30,17 @@ public static class SettingsVariables
 
             //lighting
             {"fogPercentage", LoadFloats("fogPercentage", 100) },
-            {"brightnessMultiplier", LoadFloats("brightnessMultiplier", 0) }
+            {"brightnessMultiplier", LoadFloats("brightnessMultiplier", 0) },
+
+            //colours
+            {"antennaColourR", LoadFloats("antennaColourR", 255/255) },            
+            {"antennaColourG", LoadFloats("antennaColourG", 233/255) },            
+            {"antennaColourB", LoadFloats("antennaColourB", 0) },
+
+            {"spiderColourR", LoadFloats("spiderColourR", 0) },
+            {"spiderColourG", LoadFloats("spiderColourG", 250/255) },
+            {"spiderColourB", LoadFloats("spiderColourB", 0) }
+
 
         };
 

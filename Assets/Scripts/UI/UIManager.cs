@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
 {
     public static GameObject soundPanel, otherPanel, controlsPanel, graphicsPanel;
     public static GameObject RebindKeyPanel;
-    public GameObject PauseElementsHolder;
+    [HideInInspector]public GameObject PauseElementsHolder, colourPicker;
 
     public static bool enableKeyChange = false;
     string changeKey;
@@ -25,14 +25,30 @@ public class UIManager : MonoBehaviour
 
     [Header("Graphics Toggles")]
     public Toggle solidBackToggle;
+
+    enum MaterialIDEnum
+    {
+        antAntenna,
+        spiderHealth
+    };
+    int materialID;
+
+    public Material antennaMat, spiderMat, spiderSliderMat;
+    public Image antennaImg, spiderImg;
+
+    //colour buttons
+    public Button blackBtn, whiteBtn, lGrayBtn, dGrayBtn, redBtn, yellowBtn, orangeBtn, lGreenBtn, greenBtn, cyanBtn, blueBtn, purpleBtn;
+    public Texture2D blackTxture, whiteTxture, lGrayTxture, dGrayTxture, redTxture, yellowTxture, orangeTxture, lGreenTxture, greenTxture, cyanTxture, blueTxture, purpleTxture;
     void Awake()
     {
         soundPanel = GameObject.Find("SoundPanel");
         otherPanel = GameObject.Find("OtherPanel");
         controlsPanel = GameObject.Find("ControlsPanel");
         graphicsPanel = GameObject.Find("GraphicsPanel");
+        colourPicker = GameObject.Find("ColourPanel");
         RebindKeyPanel = GameObject.Find("KeyPanel");
         RebindKeyPanel.SetActive(false);
+        colourPicker.SetActive(false);
 
         otherPanel.SetActive(false);
         soundPanel.SetActive(true);
@@ -51,7 +67,7 @@ public class UIManager : MonoBehaviour
         attackTxt.text = SettingsVariables.keyDictionary["Fire"].ToString();
         pauseTxt.text = SettingsVariables.keyDictionary["Pause"].ToString();
 
-        checkpointToogle.isOn = SettingsVariables.boolDictionary["bEnableCheckpoints"];
+////    checkpointToogle.isOn = SettingsVariables.boolDictionary["bEnableCheckpoints"];
         tutorialToggle.isOn = SettingsVariables.boolDictionary["bPlayTutorial"];
         shootMenuToggle.isOn = SettingsVariables.boolDictionary["bShootToActivate"];
 
@@ -70,6 +86,31 @@ public class UIManager : MonoBehaviour
 
         //graphics toggles
         solidBackToggle.isOn = SettingsVariables.boolDictionary["bSolidTxtBackgrounds"];
+    
+    }
+
+    void SetupColourButtons()
+    {
+        blackBtn.onClick.AddListener(() => SetMaterialColour(blackBtn.gameObject.GetComponent<Image>(), blackTxture));
+        whiteBtn.onClick.AddListener(() => SetMaterialColour(whiteBtn.gameObject.GetComponent<Image>(), whiteTxture));
+        lGrayBtn.onClick.AddListener(() => SetMaterialColour(lGrayBtn.gameObject.GetComponent<Image>(), lGrayTxture));
+        dGrayBtn.onClick.AddListener(() => SetMaterialColour(dGrayBtn.gameObject.GetComponent<Image>(), dGrayTxture));
+
+        redBtn.onClick.AddListener(() => SetMaterialColour(redBtn.gameObject.GetComponent<Image>(), redTxture));
+        yellowBtn.onClick.AddListener(() => SetMaterialColour(yellowBtn.gameObject.GetComponent<Image>(), yellowTxture));
+        orangeBtn.onClick.AddListener(() => SetMaterialColour(orangeBtn.gameObject.GetComponent<Image>(), orangeTxture));
+
+        lGreenBtn.onClick.AddListener(() => SetMaterialColour(lGreenBtn.gameObject.GetComponent<Image>(), lGreenTxture));
+        greenBtn.onClick.AddListener(() => SetMaterialColour(greenBtn.gameObject.GetComponent<Image>(), greenTxture));
+        cyanBtn.onClick.AddListener(() => SetMaterialColour(cyanBtn.gameObject.GetComponent<Image>(), cyanTxture));
+        blueBtn.onClick.AddListener(() => SetMaterialColour(blueBtn.gameObject.GetComponent<Image>(), blueTxture));
+        purpleBtn.onClick.AddListener(() => SetMaterialColour(purpleBtn.gameObject.GetComponent<Image>(), purpleTxture));
+    }
+
+    private void Start()
+    {
+        InitilizeColours();
+        SetupColourButtons();
     }
     public void GameControls()
     {
@@ -156,5 +197,59 @@ public class UIManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void EnableColourPick(int materialID)
+    {
+        this.materialID = materialID;
+        colourPicker.SetActive(true);
+    }
+
+    public void SetMaterialColour(Image image, Texture2D spiderTexture)
+    {
+        Color imgColour = image.color;
+
+        switch (materialID)
+        {
+            case (int)MaterialIDEnum.antAntenna:
+                antennaMat.SetColor("_Color", imgColour);
+                antennaMat.SetColor("_EmissionColor", imgColour);
+                antennaImg.color = imgColour;
+                SettingsVariables.sliderDictionary["antennaColourR"] = imgColour.r;
+                SaveSettings.SaveFloat("antennaColourR");
+                SettingsVariables.sliderDictionary["antennaColourG"] = imgColour.g;
+                SaveSettings.SaveFloat("antennaColourG");
+                SettingsVariables.sliderDictionary["antennaColourB"] = imgColour.b;
+                SaveSettings.SaveFloat("antennaColourB");
+                break;
+            case (int)MaterialIDEnum.spiderHealth:
+                spiderSliderMat.SetColor("_Color", image.color);
+                spiderSliderMat.SetColor("_EmissionColor", imgColour);
+                spiderMat.SetTexture("_MainTex", spiderTexture);
+
+                spiderImg.color = imgColour;
+                SettingsVariables.sliderDictionary["spiderColourR"] = imgColour.r;
+                SaveSettings.SaveFloat("spiderColourR");
+                SettingsVariables.sliderDictionary["spiderColourG"] = imgColour.g;
+                SaveSettings.SaveFloat("spiderColourG");
+                SettingsVariables.sliderDictionary["spiderColourB"] = imgColour.b;
+                SaveSettings.SaveFloat("spiderColourB");
+                break;
+            default:
+                break;
+        }
+        colourPicker.SetActive(false);
+    }
+
+    void InitilizeColours()
+    {
+        Color antennaColour = new Color(SettingsVariables.sliderDictionary["antennaColourR"], SettingsVariables.sliderDictionary["antennaColourG"], SettingsVariables.sliderDictionary["antennaColourB"]);
+        antennaMat.SetColor("_Color", antennaColour);
+        antennaMat.SetColor("_EmissionColor", antennaColour);
+        antennaImg.color = antennaColour;
+
+        Color spiderColour = new Color(SettingsVariables.sliderDictionary["spiderColourR"], SettingsVariables.sliderDictionary["spiderColourG"], SettingsVariables.sliderDictionary["spiderColourB"]);
+        spiderSliderMat.SetColor("_Color", spiderColour);
+        spiderImg.color = spiderColour;
     }
 }

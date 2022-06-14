@@ -26,12 +26,26 @@ public class SaveSettings : MonoBehaviour
     const string camRotSpeed = "camRotSpeed";
 
     public AudioMixer audioMixer;
+    public Material antennaMat, spiderMat, spiderSliderMat;
+
     private void Start()
     {
         //adjust the audio volumns to match their values
         audioMixer.SetFloat("MasterVolume", Mathf.Log10(Mathf.Clamp(SettingsVariables.sliderDictionary[totalSound], 0.01f, 1)) * 40); //set the audio value so it is in the proper decible formate and between -80 and 0
         audioMixer.SetFloat("SFXVolume", Mathf.Log10(Mathf.Clamp(SettingsVariables.sliderDictionary[sfxSound], 0.01f, 1)) * 40); //set the audio value so it is in the proper decible formate and between -80 and 0
         audioMixer.SetFloat("MusicVolume", Mathf.Log10(Mathf.Clamp(SettingsVariables.sliderDictionary[musicSound], 0.01f, 1)) * 40); //set the audio value so it is in the proper decible formate and between -80 and 0
+
+        SetMaterialColours();
+    }
+
+    void SetMaterialColours()
+    {
+        Color antennaColour = new Color(SettingsVariables.sliderDictionary["antennaColourR"], SettingsVariables.sliderDictionary["antennaColourG"], SettingsVariables.sliderDictionary["antennaColourB"]);
+        antennaMat.SetColor("_Color", antennaColour);
+        antennaMat.SetColor("_EmissionColor", antennaColour);
+
+        Color spiderColour = new Color(SettingsVariables.sliderDictionary["spiderColourR"], SettingsVariables.sliderDictionary["spiderColourG"], SettingsVariables.sliderDictionary["spiderColourB"]);
+        spiderSliderMat.SetColor("_Color", spiderColour);
     }
     // Start is called before the first frame update
     //KeyCode LoadKeys(string item, KeyCode defaultKey)
