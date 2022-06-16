@@ -15,7 +15,7 @@ public class MInput : MonoBehaviour
 	SFXManager sfxManager;
 
 	bool bIsPaused = false;
-	bool bHasHalvedSpeed = false, bHasAttackActivated = false;
+	bool bHasHalvedSpeed = false, bHasAttackActivated = false, bForwardActivated = false;
 
 	private void Awake()
     {
@@ -108,11 +108,23 @@ public class MInput : MonoBehaviour
 			body.ChangeSpeedDirectly(PreSlowShift);
 		}
 
-		float Horizontal = Input.GetAxisRaw("Horizontal");
+		if(Input.GetButtonDown("Vertical") && SettingsVariables.boolDictionary["bForwardMoveToggle"])
+        {
+			if (bForwardActivated)
+			{
+				bForwardActivated = false;
+			}
+			else
+				bForwardActivated = true;
+		}
+		float Horizontal = Input.GetAxis("Horizontal");
+
 		float Vertical = Input.GetAxisRaw("Vertical");
+		if (Vertical == 0 && bForwardActivated && SettingsVariables.boolDictionary["bForwardMoveToggle"])
+			Vertical = 1;
 
 		movement.Set(ref Horizontal, ref Vertical, ref body);
-		if (Horizontal != 0 || Vertical != 0)
+		if ((Horizontal != 0 || bForwardActivated)|| Vertical != 0)
 			if (sfxManager != null && Time.timeScale > 0)
 				sfxManager.Walk();
 
@@ -123,6 +135,10 @@ public class MInput : MonoBehaviour
 	/// </summary>
 	void AccessibilityDisabledActive()
     {
+		if(bForwardActivated && !SettingsVariables.boolDictionary["bForwardMoveToggle"])
+        {
+			bForwardActivated = false;
+        }
 		if (!SettingsVariables.boolDictionary["bAttackToggle"] && bHasAttackActivated)
 		{
 			bHasAttackActivated = false;

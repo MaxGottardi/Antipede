@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The generic movement for the ants
+/// </summary>
 public class GenericMovement
 {
     public static Quaternion SetRotation(GenericAnt blackboard, Vector3 lookDir)
@@ -36,7 +39,7 @@ public class GenericMovement
     /// note not actual RVO, a heavily simplified and basic attempt at it which overall gives desired effects
     /// </summary>
     /// <param name="blackboard">the object the transformations get applied to</param>
-    /// <returns></returns>
+    /// <returns>a new orientation for the ant so that it will move away from the object it is colliding with</returns>
     public static Vector3 RVOAvoidance(GenericAnt blackboard, Vector3 lookDirOrign)
     {
         Vector3 lookDir = lookDirOrign;

@@ -16,12 +16,13 @@ public class UIManager : MonoBehaviour
     TextMeshProUGUI changeText;
 
     public TextMeshProUGUI forwardTxt, leftTxt, rightTxt, halfTxt, camTxt, attackTxt, pauseTxt;
-    public Toggle checkpointToogle, tutorialToggle, shootMenuToggle;
+    public Toggle checkpointToggle, tutorialToggle, shootMenuToggle;
 
     [Header("Controls Toggles")]
     public Toggle weaponToggle;
     public Toggle attackToggle;
     public Toggle halveSpeedToggle;
+    public Toggle forwardMoveToggle;
 
     [Header("Graphics Toggles")]
     public Toggle solidBackToggle;
@@ -67,28 +68,37 @@ public class UIManager : MonoBehaviour
         attackTxt.text = SettingsVariables.keyDictionary["Fire"].ToString();
         pauseTxt.text = SettingsVariables.keyDictionary["Pause"].ToString();
 
-////    checkpointToogle.isOn = SettingsVariables.boolDictionary["bEnableCheckpoints"];
+        checkpointToggle.isOn = SettingsVariables.boolDictionary["bEnableCheckpoints"];
         tutorialToggle.isOn = SettingsVariables.boolDictionary["bPlayTutorial"];
         shootMenuToggle.isOn = SettingsVariables.boolDictionary["bShootToActivate"];
 
         //Controls Toggles
         halveSpeedToggle.isOn = SettingsVariables.boolDictionary["bHalveSpeedToggle"];
         if(halveSpeedToggle.isOn)
-            halveSpeedToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Halve Speed: Toggle";
+            halveSpeedToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Toggle";
 
         attackToggle.isOn = SettingsVariables.boolDictionary["bAttackToggle"];
         if (attackToggle.isOn)
-            attackToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Attack: Toggle";
+            attackToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Toggle";
 
         weaponToggle.isOn = SettingsVariables.boolDictionary["bWeaponToggle"];
         if (weaponToggle.isOn)
-            weaponToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Weapon Fire: Toggle";
+            weaponToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Toggle"; 
+        
+        forwardMoveToggle.isOn = SettingsVariables.boolDictionary["bForwardMoveToggle"];
+        if (forwardMoveToggle.isOn)
+            forwardMoveToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Toggle";
 
         //graphics toggles
         solidBackToggle.isOn = SettingsVariables.boolDictionary["bSolidTxtBackgrounds"];
-    
+        if (solidBackToggle.isOn)
+            solidBackToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Enabled";
+
     }
 
+    /// <summary>
+    /// for all the colour buttons, setup their appropriate on click events
+    /// </summary>
     void SetupColourButtons()
     {
         blackBtn.onClick.AddListener(() => SetMaterialColour(blackBtn.gameObject.GetComponent<Image>(), blackTxture));
@@ -162,6 +172,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// when a toggle changes, update its text if required
+    /// </summary>
+    /// <param name="defaultText">The default setting for the toggle</param>
     public void ToggleText(string defaultText)
     {
         GameObject selectedObj = EventSystem.current.currentSelectedGameObject;
@@ -170,15 +184,37 @@ public class UIManager : MonoBehaviour
             bool toggleValue = EventSystem.current.currentSelectedGameObject.GetComponent<Toggle>().isOn;
             if (toggleValue) //adjust the toggles name to match its state
             {
-                string textName = defaultText.Substring(0, defaultText.IndexOf(":") + 1); //get the first part of the toogles label, detailing its name
-                selectedObj.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = textName + " Toggle";
+                //string textName = defaultText.Substring(0, defaultText.IndexOf(":") + 1); //get the first part of the toogles label, detailing its name
+                selectedObj.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Toggle";
             }
             else
                 selectedObj.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = defaultText;
-
-            Debug.Log("Stuff is changed");
         }
     }
+
+    /// <summary>
+    /// same as above, though switches the text between enabled and disabled
+    /// </summary>
+    /// <param name="defaultText"></param>
+    public void ToggleTextDefault()
+    {
+        GameObject selectedObj = EventSystem.current.currentSelectedGameObject;
+        if (selectedObj != null)
+        {
+            bool toggleValue = EventSystem.current.currentSelectedGameObject.GetComponent<Toggle>().isOn;
+            if (toggleValue) //adjust the toggles name to match its state
+            {
+                //string textName = defaultText.Substring(0, defaultText.IndexOf(":") + 1); //get the first part of the toogles label, detailing its name
+                selectedObj.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Enabled";
+            }
+            else
+                selectedObj.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Disabled";
+        }
+    }
+
+    /// <summary>
+    /// whenever a key is pressed down and it has been allowed, update the key to the new value
+    /// </summary>
     private void OnGUI()
     {
         if(enableKeyChange)
@@ -251,5 +287,10 @@ public class UIManager : MonoBehaviour
         Color spiderColour = new Color(SettingsVariables.sliderDictionary["spiderColourR"], SettingsVariables.sliderDictionary["spiderColourG"], SettingsVariables.sliderDictionary["spiderColourB"]);
         spiderSliderMat.SetColor("_Color", spiderColour);
         spiderImg.color = spiderColour;
+    }
+
+    public void ShowHideSection(GameObject section)
+    {
+        section.SetActive(!section.activeSelf);
     }
 }

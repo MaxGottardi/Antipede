@@ -5,25 +5,10 @@ using UnityEngine.Audio;
 
 public class SaveSettings : MonoBehaviour
 {
-    //bool save
-    const string bPlayTutorial = "bPlayTutorial";
-    const string bShootToActivate = "bShootToActivate";
-    const string bEnableCheckpoints = "bEnableCheckpoints";
-
-    //key saves
-    const string Forward = "Forward";
-    const string Left = "Left";
-    const string Right = "Right";
-    const string Fire = "Fire";
-    const string Pause = "Pause";
-    const string ChangeCam = "ChangeCam";
-    const string HalveSpeed = "HalveSpeed";
-
     //float saves
     const string totalSound = "totalSound";
     const string sfxSound = "sfxSound";
     const string musicSound = "musicSound";
-    const string camRotSpeed = "camRotSpeed";
 
     public AudioMixer audioMixer;
     public Material antennaMat, spiderMat, spiderSliderMat;

@@ -13,6 +13,7 @@ public static class SettingsVariables
             {"bAttackToggle",  LoadBools("bAttackToggle", false) },
             {"bHalveSpeedToggle",  LoadBools("bHalveSpeedToggle", false) },
             {"bWeaponToggle",  LoadBools("bWeaponToggle", false) },
+            {"bForwardMoveToggle",  LoadBools("bForwardMoveToggle", false) },
 
             {"bSolidTxtBackgrounds",  LoadBools("bSolidTxtBackgrounds", false) }
         };
@@ -25,8 +26,8 @@ public static class SettingsVariables
             {"musicSound", LoadFloats("musicSound", 100) },
 
             //controls
-            {"camRotSpeed", LoadFloats("camRotSpeed") },
-            {"zoomSpeed", LoadFloats("zoomSpeed") },
+            {"camRotSpeed", LoadFloats("camRotSpeed", 100) },
+            {"zoomSpeed", LoadFloats("zoomSpeed", 100) },
 
             //lighting
             {"fogPercentage", LoadFloats("fogPercentage", 100) },

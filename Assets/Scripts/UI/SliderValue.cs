@@ -15,6 +15,8 @@ public class SliderValue : MonoBehaviour
     public AudioMixer audioMixer;
 
     PostProcessVolume postProcessVolume;
+
+    public string endUnit = "";
     // Start is called before the first frame update
     void Start()
     {
@@ -46,7 +48,7 @@ public class SliderValue : MonoBehaviour
             slider.value = SettingsVariables.sliderDictionary["brightnessMultiplier"];
 
 
-        text.text = slider.value.ToString("F2");
+        text.text = slider.value.ToString() + endUnit;//"F2"
 
         AdjustBrightness();
         AdjustFog();
@@ -55,7 +57,7 @@ public class SliderValue : MonoBehaviour
     // Update is called once per frame
     public void UpdateText(string value)
     {
-        text.text = slider.value.ToString("F2");
+        text.text = slider.value.ToString() + endUnit;
 
         if (value == "totalSound")
         {
