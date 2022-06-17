@@ -133,13 +133,14 @@ MonoBehaviour:
   FollowingNodes: HunterNode
   groundOffset: 0.13
   backGroundCheckOffset: 2.2
-  maxSightDist: 15.05
+  maxSightDist: 20.05
   shortSightDist: 2.8
   largeViewAnlge: 50
   shortViewAngle: 360
   chanceSpawnHelpers: 1
-  maxBackupDist: 7.5
-  backupCallDist: 10
+  maxBackupDist: 75
+  backupCallDist: 80
+  backupRingScale: 41
   spawnedHelp:
   - {fileID: 3326833427437991793}
   - {fileID: 1933701853150098644, guid: 140d3819dabc74b45b9dd6ba3e8c4206, type: 3}
@@ -417,6 +418,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2898114516813716898, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315396748602138855, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315396748602138855, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315396748602138855, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_LocalScale.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3437038205995143333, guid: d03430b02136fae41a430a78a3a68665, type: 3}
@@ -857,6 +870,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8395566384454598168, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9040950338240070818, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

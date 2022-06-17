@@ -89,7 +89,7 @@ public class ShockState : State
 public class InvestigateState : State
 {
     protected GenericAnt owner;
-    float lostPlayerTime = 6.0f;
+    float lostPlayerTime = 10.0f;
 
     protected Node topNode;
     public InvestigateState(GenericAnt owner) //also initilize any behaviour tree used on the state as well
@@ -114,7 +114,7 @@ public class InvestigateState : State
 
     public virtual void enter()
     {   
-        lostPlayerTime = 6.0f;
+        lostPlayerTime = 10.0f;
 
         owner.callingBackup = false;
 
@@ -127,8 +127,8 @@ public class InvestigateState : State
 
         if (!owner.DetectPlayer())
             lostPlayerTime -= Time.deltaTime; //update amount of time not seen player for
-        else if(lostPlayerTime < 6.0f)
-            lostPlayerTime = 6.0f;
+        else if(lostPlayerTime < 10.0f) //if have seen the player, reset amount of time
+            lostPlayerTime = 10.0f;
 
         if (!owner.callingBackup && lostPlayerTime <= 0) //when haven't seen player for 3 seconds or segment already destroyed
         {
