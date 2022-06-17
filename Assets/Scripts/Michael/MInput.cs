@@ -7,6 +7,7 @@ public class MInput : MonoBehaviour
 	CentipedeMovement movement;
 	public LayerMask EnemyLayer;
 	public GameObject hitParticles;
+	Transform head;
 
 	bool doneAttack = false, attackRequested = false;
 	public static Camera MainCamera;
@@ -25,6 +26,7 @@ public class MInput : MonoBehaviour
 	{
 		body = GetComponent<MCentipedeBody>();
 		movement = GetComponent<CentipedeMovement>();
+		head = transform.GetChild(0);
 
 		if (GameObject.Find("SFXMAnager"))
 			sfxManager = GameObject.Find("SFXMAnager").GetComponent<SFXManager>();
@@ -218,17 +220,17 @@ public class MInput : MonoBehaviour
 		if(seenTail)
         {
 			tarant.DecreaseHealth(2);
-			Instantiate(hitParticles, tarant.gameObject.transform.position, Quaternion.identity);
+			Instantiate(hitParticles, head.transform.position + head.transform.right*1.5f, Quaternion.identity);
 		}
 		else if(seenTarant)
         {
 			tarant.DecreaseHealth(1);
-			Instantiate(hitParticles, tarant.gameObject.transform.position, Quaternion.identity);
+			Instantiate(hitParticles, head.transform.position + head.transform.right*1.5f, Quaternion.identity);
 		}
 		else if (closestAnt != null) //only reduce health on the closest ant hit
 		{
 			closestAnt.ReduceHealth(100);
-			Instantiate(hitParticles, closestAnt.transform.position, Quaternion.identity);
+			Instantiate(hitParticles, head.transform.position + head.transform.right*1.5f, Quaternion.identity);
 		}
 
 	}
