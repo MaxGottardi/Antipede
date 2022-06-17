@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
 {
     public static GameObject soundPanel, otherPanel, controlsPanel, graphicsPanel;
     public static GameObject RebindKeyPanel;
-    [HideInInspector]public GameObject PauseElementsHolder, colourPicker;
+    [HideInInspector] public GameObject PauseElementsHolder, colourPicker;
 
     public static bool enableKeyChange = false;
     string changeKey;
@@ -74,7 +74,7 @@ public class UIManager : MonoBehaviour
 
         //Controls Toggles
         halveSpeedToggle.isOn = SettingsVariables.boolDictionary["bHalveSpeedToggle"];
-        if(halveSpeedToggle.isOn)
+        if (halveSpeedToggle.isOn)
             halveSpeedToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Toggle";
 
         attackToggle.isOn = SettingsVariables.boolDictionary["bAttackToggle"];
@@ -83,8 +83,8 @@ public class UIManager : MonoBehaviour
 
         weaponToggle.isOn = SettingsVariables.boolDictionary["bWeaponToggle"];
         if (weaponToggle.isOn)
-            weaponToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Toggle"; 
-        
+            weaponToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Toggle";
+
         forwardMoveToggle.isOn = SettingsVariables.boolDictionary["bForwardMoveToggle"];
         if (forwardMoveToggle.isOn)
             forwardMoveToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Toggle";
@@ -217,7 +217,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     private void OnGUI()
     {
-        if(enableKeyChange)
+        if (enableKeyChange)
         {
             Event e = Event.current;
             if (e != null && e.isKey)
@@ -289,8 +289,18 @@ public class UIManager : MonoBehaviour
         spiderImg.color = spiderColour;
     }
 
+    /// <summary>
+    /// When clicked, either expand or collapse the current section so users do not need to worry about those settings any more
+    /// </summary>
+    /// <param name="section">The current section of objects to either show or hide</param>
     public void ShowHideSection(GameObject section)
     {
+        GameObject selectedObj = EventSystem.current.currentSelectedGameObject;
         section.SetActive(!section.activeSelf);
+        if (selectedObj != null)
+        {
+            TextMeshProUGUI text = selectedObj.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+            text.text = section.activeSelf ? "[Collapse]" : "[Expand]";
+        }
     }
 }
