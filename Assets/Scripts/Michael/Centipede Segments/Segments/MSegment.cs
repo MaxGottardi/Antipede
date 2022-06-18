@@ -30,7 +30,7 @@ public class MSegment : MonoBehaviour
 	Transform WeaponSocket;
 
 	public float health = 100;
-	public int numAttacking = 0; //does this segment has a player locked on for attacking
+	public int numAttacking = 0; //the number of ants locked on for attacking this segment
 
 	MCentipedeWeapons Owner;
 	bool bDetached = false;

@@ -20,7 +20,7 @@ using UnityEngine;
 /// <br>MCentipedeUtils.cs. (Contains the utility implementation for accessing Segments easier)</br>
 /// </remarks>
 [RequireComponent(typeof(MCentipedeEvents))]
-public partial class MCentipedeBody : MonoBehaviour
+public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 {
 	[Header("Construction References.")]
 
@@ -414,6 +414,77 @@ public partial class MCentipedeBody : MonoBehaviour
 	{
 		GUI.Label(new Rect(10, 25, 250, 150), "Movement Speed: " + MovementSpeed);
 		GUI.Label(new Rect(10, 55, 250, 150), "Number of Segments: " + NumberOfSegments);
+	}
+
+
+	//saving and loading the data for the centipede
+    void IDataInterface.LoadData(SaveableData saveableData)
+    {
+		int numSegments = saveableData.centipedeSegmentPosition.list.Count;
+		if(numSegments < Segments.Count)
+        {
+            for (int i = Segments.Count; i > numSegments; i--)
+            {
+				RemoveSegment(200, Vector3.zero); //as too many segments added, remove the now unessesary ones
+            }
+        }
+		else if (numSegments > Segments.Count)
+        {
+			for (int i = Segments.Count; i < numSegments; i++)
+			{
+				AddSegment(); //as not enough segments added, add some more
+			}
+		}
+
+		//set the heads pos and rotation
+		transform.position = saveableData.centipedeHeadPosition;
+		transform.rotation = saveableData.centipedeHeadRotation;
+		GetComponent<Rigidbody>().velocity = Vector3.zero;
+		GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+
+		TailSegment.gameObject.transform.position = saveableData.centipedeTailPosition;
+		TailSegment.gameObject.transform.rotation = saveableData.centipedeTailRotation;
+		TailSegment.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+		TailSegment.gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+		//for each existing segment, set its position and orientation
+		for (int i = 0; i < Segments.Count; i++)
+        {
+			Segments[i].gameObject.transform.position = saveableData.centipedeSegmentPosition.list[i];
+			Segments[i].gameObject.transform.rotation = saveableData.centipedeSegmentRotation.list[i];
+			Segments[i].health = saveableData.centipedeSegmentHealth.list[i];
+			Segments[i].numAttacking = saveableData.centipedeSegmentNumAttacking.list[i];
+
+			Segments[i].gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+			Segments[i].gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+			Debug.Log(Segments[i] + "/" + i);
+		}
+		ChangeSpeedDirectly(saveableData.centipedeSpeed);
+
+		//reset the ground orientation, this works but not the greatest IDK what to do yet, will look into more
+		float horizontal = 4, vertical = 0;
+		MCentipedeBody body = this;
+		gameObject.GetComponent<CentipedeMovement>().Set(ref horizontal, ref vertical, ref body);
+	}
+
+	void IDataInterface.SaveData(ref SaveableData saveableData)
+    {
+		saveableData.centipedeHeadPosition = transform.position;
+		saveableData.centipedeHeadRotation = transform.rotation;
+
+		saveableData.centipedeTailPosition = TailSegment.gameObject.transform.position;
+		saveableData.centipedeTailRotation = TailSegment.gameObject.transform.rotation;
+
+		saveableData.centipedeSpeed = MovementSpeed;
+		for (int i = 0; i < Segments.Count; i++)
+        {
+			saveableData.centipedeSegmentPosition.list.Add(Segments[i].gameObject.transform.position); //length of the list is the number of segments required
+
+			saveableData.centipedeSegmentRotation.list.Add(Segments[i].gameObject.transform.rotation);
+			saveableData.centipedeSegmentHealth.list.Add(Segments[i].health);
+			saveableData.centipedeSegmentNumAttacking.list.Add(Segments[i].numAttacking);
+			//type of weapon on it
+
+		}
 	}
 
 #endif
