@@ -1,9 +1,9 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LaunchedProjectile : Projectile
 {
+	/// Weapon is <see cref="Launcher"/>
 
 	[Header("Launcher Settings.")]
 	[SerializeField] ParticleSystem Shockwave;
@@ -22,7 +22,10 @@ public class LaunchedProjectile : Projectile
 		if (!collision.gameObject.CompareTag("Projectile") && SceneManager.GetActiveScene().name == "Environment Test")
 		{
 			ParticleSystem ShockwaveParticles = Instantiate(Shockwave, transform.position, Quaternion.identity);
-			Destroy(ShockwaveParticles.gameObject, ShockwaveParticles.main.duration);
+
+			float Duration = ShockwaveParticles.main.duration;
+			Duration += Duration * .5f; // Let it play for a little longer.
+			Destroy(ShockwaveParticles.gameObject, Duration);
 
 			Destroy(gameObject);
 

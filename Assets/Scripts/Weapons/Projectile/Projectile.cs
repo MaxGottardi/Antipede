@@ -6,6 +6,16 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour
 {
+	/// Links because I'm too lazy to go through the folder structure.
+	/// This file is the <see cref="Gun"/>'s Projectile.
+	/// <see cref="LaunchedProjectile"/>
+	/// <see cref="Shield"/>
+	/// <see cref="XLine"/>
+	
+	/// <see cref="Weapon"/>
+
+	/// Weapon is <see cref="Gun"/>
+
 	protected Rigidbody rb;
 	public bool isEnemyProjectile = false; //is this projectile shot by an enemy or not
 	public GameObject hitParticles, bloodParticles;

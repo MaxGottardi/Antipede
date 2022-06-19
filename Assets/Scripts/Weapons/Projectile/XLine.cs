@@ -3,14 +3,16 @@ using UnityEngine;
 
 public class XLine : Projectile
 {
+	/// Weapon is <see cref="Laser"/>
+
 	public GameObject Line;
-	public GameObject FXef;//激光击中物体的粒子效果
-			       // Particle effect of laser hitting object
+	public GameObject FXef;  //激光击中物体的粒子效果
+                            // Particle effect of laser hitting object
 
 	[SerializeField] bool bFireNormallyAsYingfaInitiallyDesignedItToBe;
 
-	Vector3 Sc;// 变换大小
-		   // Transform size.
+	Vector3 Sc;  // 变换大小
+                // Transform size.
 
 	// If = 12, it means a 12th of a second.
 	const float kFractionOfASecond = 12f;
