@@ -69,9 +69,14 @@ public abstract class Weapon : MonoBehaviour
 #endif
 
 		// Is this Weapon In-Range?
-		bCanFire &= MMathStatics.HasReached(BarrelEndSocket.position, Position, Range);
+		bCanFire &= InRange(ref Position);
 
 		return bCanFire;
+	}
+
+	protected bool InRange(ref Vector3 Position)
+	{
+		return MMathStatics.HasReached(BarrelEndSocket.position, Position, Range);
 	}
 
 	/// <summary>Make this Weapon look towards where it is firing.</summary>

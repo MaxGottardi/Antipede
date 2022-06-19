@@ -41,7 +41,7 @@ public class Launcher : Weapon
 		if (!bIsRegistered)
 			return;
 
-		if (Direction == Vector3.zero)
+		if (Direction == Vector3.zero || !InRange(ref Direction))
 		{
 			ClearArc();
 			return;
