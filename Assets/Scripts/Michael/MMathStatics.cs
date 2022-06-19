@@ -149,7 +149,7 @@ public static class MMathStatics
 			}
 			else
 			{
-				TargetHeight += DeltaY;
+				TargetHeight = DeltaY;
 			}
 		}
 
@@ -157,8 +157,9 @@ public static class MMathStatics
 
 		Vector3 DeltaXZ = new Vector3(To.x - From.x, 0, To.z - From.z);
 		float Gravity = Physics.gravity.y;
+		float InverseG = 1 / Gravity;
 		Vector3 VY = Vector3.up * Mathf.Sqrt(-2f * Gravity * TargetHeight);
-		Time = Mathf.Sqrt(-2f * TargetHeight / Gravity) + Mathf.Sqrt(2 * (DeltaY - TargetHeight) / Gravity);
+		Time = Mathf.Sqrt(-2f * TargetHeight * InverseG) + Mathf.Sqrt(2 * (DeltaY - TargetHeight) * InverseG);
 		Vector3 VXZ = DeltaXZ / Time;
 
 		Vector3 LaunchVelocity = VXZ + VY * -Mathf.Sign(Gravity);
