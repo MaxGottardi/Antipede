@@ -79,6 +79,20 @@ public class MSegment : MonoBehaviour
 	bool bHasRayAligned = false;
 	Vector3 SurfaceNormal;
 
+	/// <summary>
+	/// set the normal of the surface when loading in from a save
+	/// </summary>
+	public void SetSurfaceNormal()
+	{
+		if (Physics.Raycast(transform.position, -transform.up, out RaycastHit Hit, 1, 256))
+		{
+			SurfaceNormal = Hit.normal;
+		}
+		else
+		{
+			SurfaceNormal = Vector3.zero;
+		}
+	}
 	/// <summary>Segment Movement.</summary>
 	void FixedUpdate()
 	{

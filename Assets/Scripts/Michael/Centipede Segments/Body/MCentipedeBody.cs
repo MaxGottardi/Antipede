@@ -417,9 +417,10 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 	}
 
 
-	//saving and loading the data for the centipede
+	//loading the data for the centipede
     void IDataInterface.LoadData(SaveableData saveableData)
     {
+		//by using add and remove segment, determine the number of segments to add or remove based on the number the player initially starts with
 		int numSegments = saveableData.centipedeSegmentPosition.list.Count;
 		if(numSegments < Segments.Count)
         {
@@ -441,14 +442,14 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 		transform.rotation = saveableData.centipedeHeadRotation;
 		GetComponent<Rigidbody>().velocity = Vector3.zero;
 		GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+		//align head to terrain
+		if (gameObject.TryGetComponent(out CentipedeMovement centipedeMovement))
+			centipedeMovement.SetSurfaceNormal();
 
-		TailSegment.gameObject.transform.position = saveableData.centipedeTailPosition;
-		TailSegment.gameObject.transform.rotation = saveableData.centipedeTailRotation;
-		TailSegment.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-		TailSegment.gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-		//for each existing segment, set its position and orientation
+
+		//for each existing segment, set its values
 		for (int i = 0; i < Segments.Count; i++)
-        {
+		{
 			Segments[i].gameObject.transform.position = saveableData.centipedeSegmentPosition.list[i];
 			Segments[i].gameObject.transform.rotation = saveableData.centipedeSegmentRotation.list[i];
 			Segments[i].health = saveableData.centipedeSegmentHealth.list[i];
@@ -456,35 +457,75 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 
 			Segments[i].gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 			Segments[i].gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-			Debug.Log(Segments[i] + "/" + i);
-		}
-		ChangeSpeedDirectly(saveableData.centipedeSpeed);
 
-		//reset the ground orientation, this works but not the greatest IDK what to do yet, will look into more
-		float horizontal = 4, vertical = 0;
-		MCentipedeBody body = this;
-		gameObject.GetComponent<CentipedeMovement>().Set(ref horizontal, ref vertical, ref body);
+			//align the segment to the terrain
+			Segments[i].SetSurfaceNormal();
+		}
+
+		//the initial tail segment
+		TailSegment.gameObject.transform.position = saveableData.centipedeTailBeginSegmentPosition;
+		TailSegment.gameObject.transform.rotation = saveableData.centipedeTailBeginSegmentRotation;
+		TailSegment.health = saveableData.centipedeTailBeginSegmentHealth;
+		TailSegment.numAttacking = saveableData.centipedeTailBeginSegmentNumAttack;
+
+		TailSegment.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+		TailSegment.gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+
+		//allign to the terrain
+		TailSegment.SetSurfaceNormal();
+
+		//for each custom segment, set its values
+		for (int i = 0; i < CustomSegments.Count; i++)
+		{
+			CustomSegments[i].gameObject.transform.position = saveableData.centipedeCustomSegmentPositon.list[i];
+			CustomSegments[i].gameObject.transform.rotation = saveableData.centipedeCustomSegmentRotation.list[i];
+			CustomSegments[i].health = saveableData.centipedeCustomSegmentHealth.list[i];
+			CustomSegments[i].numAttacking = saveableData.centipedeCustomSegmentNumAttack.list[i];
+
+			CustomSegments[i].gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+			CustomSegments[i].gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+
+			//align the custom segment to the terrain
+			CustomSegments[i].SetSurfaceNormal();
+		}
+		//set the current speed for all parts of the centipede
+		ChangeSpeedDirectly(saveableData.centipedeSpeed);
 	}
 
 	void IDataInterface.SaveData(ref SaveableData saveableData)
     {
+		//head values
 		saveableData.centipedeHeadPosition = transform.position;
 		saveableData.centipedeHeadRotation = transform.rotation;
 
-		saveableData.centipedeTailPosition = TailSegment.gameObject.transform.position;
-		saveableData.centipedeTailRotation = TailSegment.gameObject.transform.rotation;
-
 		saveableData.centipedeSpeed = MovementSpeed;
+
+		//each segment of the game
 		for (int i = 0; i < Segments.Count; i++)
         {
 			saveableData.centipedeSegmentPosition.list.Add(Segments[i].gameObject.transform.position); //length of the list is the number of segments required
-
 			saveableData.centipedeSegmentRotation.list.Add(Segments[i].gameObject.transform.rotation);
 			saveableData.centipedeSegmentHealth.list.Add(Segments[i].health);
 			saveableData.centipedeSegmentNumAttacking.list.Add(Segments[i].numAttacking);
 			//type of weapon on it
 
 		}
+
+		//the initial tail segment
+		saveableData.centipedeTailBeginSegmentPosition = TailSegment.gameObject.transform.position;
+		saveableData.centipedeTailBeginSegmentRotation = TailSegment.gameObject.transform.rotation;
+		saveableData.centipedeTailBeginSegmentHealth = TailSegment.health;
+		saveableData.centipedeTailBeginSegmentNumAttack = TailSegment.numAttacking;
+		//the custom segments
+		for (int i = 0; i < CustomSegments.Count; i++)
+        {
+			saveableData.centipedeCustomSegmentPositon.list.Add(CustomSegments[i].gameObject.transform.position);
+			saveableData.centipedeCustomSegmentRotation.list.Add(CustomSegments[i].gameObject.transform.rotation);
+			saveableData.centipedeCustomSegmentHealth.list.Add(CustomSegments[i].health);
+			saveableData.centipedeCustomSegmentNumAttack.list.Add(CustomSegments[i].numAttacking);
+		}
+
+		//also need to at some point save if slowed down by a web and for how long
 	}
 
 #endif

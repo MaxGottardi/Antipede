@@ -10,8 +10,10 @@ using UnityEngine;
 /// </summary>
 public interface IDataInterface
 {
+    //within this function in any class with saveable data, add code to update the values of this class from the save
     void LoadData(SaveableData saveableData);
 
     //use a ref so actually get the reference and can modify the data itself
+    //specify values to save to the SaveableData class, within each class with saveable data
     void SaveData(ref SaveableData saveableData);
 }

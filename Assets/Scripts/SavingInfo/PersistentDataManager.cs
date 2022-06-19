@@ -77,7 +77,6 @@ public class PersistentDataManager : MonoBehaviour
         saveableData.ResetData();
         foreach (IDataInterface dataObj in ObjsDataSaveable())
         {
-            Debug.Log("Segment");
             dataObj.SaveData(ref saveableData);
         }
 
