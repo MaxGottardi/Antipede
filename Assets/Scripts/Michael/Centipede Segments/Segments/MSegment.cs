@@ -212,7 +212,7 @@ public class MSegment : MonoBehaviour
 		}
 	}
 
-	public void SetWeapon(Weapon Weapon)
+	public void SetWeapon(Weapon NewWeapon)
 	{
 		if (bIgnoreFromWeapons)
 			return;
@@ -223,7 +223,7 @@ public class MSegment : MonoBehaviour
 			return;
 		}
 
-		Weapon AttachedWeapon = Instantiate(Weapon, WeaponSocket.position, WeaponSocket.rotation);
+		Weapon AttachedWeapon = Instantiate(NewWeapon, WeaponSocket.position, WeaponSocket.rotation);
 		this.Weapon = AttachedWeapon;
 		this.Weapon.WeaponsComponent = GetWeaponsComponent();
 
@@ -237,50 +237,59 @@ public class MSegment : MonoBehaviour
 
 	public void ReplaceWeapon(Weapon NewWeapon)
 	{
-		DetachWeapon();
 
-		// Reregister this Segment into Weapons.
-		SetWeapon(NewWeapon);
+		DetachWeapon();
+		if (NewWeapon != null)
+		{
+			// Reregister this Segment into Weapons.
+			SetWeapon(NewWeapon);
+		}
 	}
 
 	public void DetachWeapon()
 	{
 		Weapon WeaponNow = Weapon;
+		if (WeaponNow != null)
+		{
+			// Deregister this Segment from Weapons.
+			DeregisterWeapon();
 
-		// Deregister this Segment from Weapons.
-		DeregisterWeapon();
+			Debug.Assert(WeaponNow != null, "Trying to replace a Segment's Weapon, but no Weapon is attached!");
 
-		Debug.Assert(WeaponNow != null, "Trying to replace a Segment's Weapon, but no Weapon is attached!");
+			WeaponNow.transform.parent = null;
 
-		WeaponNow.transform.parent = null;
+			if (WeaponNow.gameObject.GetComponent<Rigidbody>() == null) //shields for some reason when detached still remain linked
+			{
+				Rigidbody WNRB = WeaponNow.gameObject.AddComponent<Rigidbody>();
 
-		Rigidbody WNRB = WeaponNow.gameObject.AddComponent<Rigidbody>();
+				// Random force parameters.
+				float RandomUAxis = Random.Range(0f, 1f);
+				float RandomRAxis = Random.Range(-1f, 1f);
 
-		// Random force parameters.
-		float RandomUAxis = Random.Range(0f, 1f);
-		float RandomRAxis = Random.Range(-1f, 1f);
+				// Calculate a random upwards force.
+				Vector3 Force = transform.up * RandomUAxis + transform.right * RandomRAxis;
+				Force.Normalize();
+				Force *= 5f;
 
-		// Calculate a random upwards force.
-		Vector3 Force = transform.up * RandomUAxis + transform.right * RandomRAxis;
-		Force.Normalize();
-		Force *= 5f;
+				// Ignore inertial forces from pre-detachment.
+				WNRB.velocity = Vector3.zero;
+				WNRB.useGravity = true;
 
-		// Ignore inertial forces from pre-detachment.
-		WNRB.velocity = Vector3.zero;
-		WNRB.useGravity = true;
+				// Apply upwards force and random rotation.
+				WNRB.AddForce(Force, ForceMode.VelocityChange);
+				WNRB.transform.rotation = MMathStatics.V2Q(Random.onUnitSphere);
+				WNRB.AddTorque(Force * 5000);
 
-		// Apply upwards force and random rotation.
-		WNRB.AddForce(Force, ForceMode.VelocityChange);
-		WNRB.transform.rotation = MMathStatics.V2Q(Random.onUnitSphere);
-		WNRB.AddTorque(Force * 5000);
+				// Enable physics collisions.
+				BoxCollider BC = WNRB.gameObject.AddComponent<BoxCollider>();
+				BC.center = Vector3.zero;
+				BC.size = Vector3.one;
 
-		// Enable physics collisions.
-		BoxCollider BC = WNRB.gameObject.AddComponent<BoxCollider>();
-		BC.center = Vector3.zero;
-		BC.size = Vector3.one;
-
-		WeaponNow.Deregister();
-		Destroy(Weapon.gameObject, 5f);
+				WeaponNow.Deregister();
+				Destroy(Weapon.gameObject, 5f);
+				this.Weapon = null;
+			}
+		}
 	}
 
 	/// <param name="Socket">Outs the Weapon Socket.</param>

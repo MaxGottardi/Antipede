@@ -415,10 +415,11 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 		GUI.Label(new Rect(10, 25, 250, 150), "Movement Speed: " + MovementSpeed);
 		GUI.Label(new Rect(10, 55, 250, 150), "Number of Segments: " + NumberOfSegments);
 	}
+#endif
 
 
 	//loading the data for the centipede
-    void IDataInterface.LoadData(SaveableData saveableData)
+	void IDataInterface.LoadData(SaveableData saveableData)
     {
 		//by using add and remove segment, determine the number of segments to add or remove based on the number the player initially starts with
 		int numSegments = saveableData.centipedeSegmentPosition.list.Count;
@@ -446,7 +447,7 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 		if (gameObject.TryGetComponent(out CentipedeMovement centipedeMovement))
 			centipedeMovement.SetSurfaceNormal();
 
-
+		Weapons.SegmentsWithWeapons.Clear();
 		//for each existing segment, set its values
 		for (int i = 0; i < Segments.Count; i++)
 		{
@@ -457,6 +458,9 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 
 			Segments[i].gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 			Segments[i].gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+
+			//add the weapon to the segment
+			Segments[i].ReplaceWeapon(saveableData.IntToWeapon(saveableData.centipedeSegmentWeaponType.list[i]));
 
 			//align the segment to the terrain
 			Segments[i].SetSurfaceNormal();
@@ -471,6 +475,8 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 		TailSegment.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 		TailSegment.gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
+		TailSegment.ReplaceWeapon(saveableData.IntToWeapon(saveableData.centipedeTailBeginSegmentWeaponType));
+
 		//allign to the terrain
 		TailSegment.SetSurfaceNormal();
 
@@ -484,6 +490,9 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 
 			CustomSegments[i].gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 			CustomSegments[i].gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+
+			//add the weapon to the segment
+			CustomSegments[i].ReplaceWeapon(saveableData.IntToWeapon(saveableData.centipedeCustomSegmentWeaponType.list[i]));
 
 			//align the custom segment to the terrain
 			CustomSegments[i].SetSurfaceNormal();
@@ -508,7 +517,7 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 			saveableData.centipedeSegmentHealth.list.Add(Segments[i].health);
 			saveableData.centipedeSegmentNumAttacking.list.Add(Segments[i].numAttacking);
 			//type of weapon on it
-
+			saveableData.centipedeSegmentWeaponType.list.Add(saveableData.WeaponToInt(Segments[i].Weapon));
 		}
 
 		//the initial tail segment
@@ -516,6 +525,7 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 		saveableData.centipedeTailBeginSegmentRotation = TailSegment.gameObject.transform.rotation;
 		saveableData.centipedeTailBeginSegmentHealth = TailSegment.health;
 		saveableData.centipedeTailBeginSegmentNumAttack = TailSegment.numAttacking;
+		saveableData.centipedeTailBeginSegmentWeaponType = saveableData.WeaponToInt(TailSegment.Weapon);
 		//the custom segments
 		for (int i = 0; i < CustomSegments.Count; i++)
         {
@@ -523,11 +533,10 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 			saveableData.centipedeCustomSegmentRotation.list.Add(CustomSegments[i].gameObject.transform.rotation);
 			saveableData.centipedeCustomSegmentHealth.list.Add(CustomSegments[i].health);
 			saveableData.centipedeCustomSegmentNumAttack.list.Add(CustomSegments[i].numAttacking);
+			saveableData.centipedeCustomSegmentWeaponType.list.Add(saveableData.WeaponToInt(CustomSegments[i].Weapon));
 		}
 
 		//also need to at some point save if slowed down by a web and for how long
 	}
-
-#endif
 }
 
