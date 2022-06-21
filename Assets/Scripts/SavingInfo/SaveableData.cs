@@ -177,6 +177,14 @@ public class SaveableData
         Debug.Log(applePos.list.Count + "Apples posses: " + tag);
     }
 
+    /// <summary>
+    /// every time load a save, get all apples in the scene and move them to the saved positions
+    /// if still requiring more apples, spawn some in
+    /// if any apples which started in the scene have not been moved to a position where one was not eated, it must have been eater, so destroy it
+    /// </summary>
+    /// <param name="tag">the tag to search the scene for</param>
+    /// <param name="applePos">the list of positions to use</param>
+    /// <param name="assetPath">the file path to the prefab</param>
     public void LoadApple(string tag, ref SerializableList<Vector3> applePos, string assetPath)
     {
         GameObject[] apple = GameObject.FindGameObjectsWithTag(tag);
