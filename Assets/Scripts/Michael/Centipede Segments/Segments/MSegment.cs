@@ -237,7 +237,6 @@ public class MSegment : MonoBehaviour
 
 	public void ReplaceWeapon(Weapon NewWeapon)
 	{
-
 		DetachWeapon();
 		if (NewWeapon != null)
 		{

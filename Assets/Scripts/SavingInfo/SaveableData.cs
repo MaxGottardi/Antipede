@@ -40,10 +40,9 @@ public class SaveableData
     [SerializeField] public float centipedeSpeed, centipedeTailBeginSegmentHealth; //current movement speed and segment follow speeds
 
     //the weapon information about each segment
+    [SerializeField] public float centipedeTailBeginSegmentWeaponLastFireTime;
     [SerializeField] public SerializableList<int> centipedeSegmentWeaponType, centipedeCustomSegmentWeaponType;
-
-    //all the weapon cards in the game
-
+    [SerializeField] public SerializableList<float> centipedeSegmentWeaponLastFireTime, centipedeCustomSegmentWeaponLastFireTime; //for the shield this is the current time of it
     //all the red apples
 
     //all the green apples
@@ -53,6 +52,7 @@ public class SaveableData
     //all the dasher ants
 
     //all the hunter ants
+    //all the weapon cards in the game
 
     //all the farmer ants
     //all the ant larvae
@@ -87,7 +87,9 @@ public class SaveableData
         centipedeCustomSegmentPositon = new SerializableList<Vector3>();
         centipedeCustomSegmentRotation = new SerializableList<Quaternion>();
         centipedeCustomSegmentWeaponType = new SerializableList<int>();
+        centipedeCustomSegmentWeaponLastFireTime = new SerializableList<float>();
         centipedeSegmentWeaponType = new SerializableList<int>();
+        centipedeSegmentWeaponLastFireTime = new SerializableList<float>();
 
         centipedeSegmentHealth = new SerializableList<float>();
         centipedeSegmentNumAttacking = new SerializableList<int>();

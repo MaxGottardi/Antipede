@@ -6,7 +6,7 @@ public class Shield : Weapon
 {
 	[Header("Shield Settings")]
 	bool shieldActive;
-	float shieldStartTime = 0;
+	public float shieldStartTime = 0;
 	float shieldDuration;
 	MCentipedeBody mcb;
 	[SerializeField] GameObject ShieldEffect;
@@ -30,7 +30,8 @@ public class Shield : Weapon
 
 		if (shieldStartTime > 0)
 		{
-			if (Time.time <= shieldStartTime + shieldDuration)
+			shieldStartTime -= Time.deltaTime;
+			if (shieldStartTime > 0)
 			{
 				shieldActive = true;
 			}
@@ -50,7 +51,8 @@ public class Shield : Weapon
 		ShieldEffect.SetActive(true);
 		shieldDuration = duration;
 		sfxManager.ActivateShield();
-		shieldStartTime = Time.time;
+
+		shieldStartTime = shieldDuration;
 	}
 
 	public void DeactivateShield()

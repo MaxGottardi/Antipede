@@ -460,8 +460,17 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 			Segments[i].gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
 			//add the weapon to the segment
-			Segments[i].ReplaceWeapon(saveableData.IntToWeapon(saveableData.centipedeSegmentWeaponType.list[i]));
-
+			int segWeaponInt = saveableData.centipedeSegmentWeaponType.list[i];
+			Segments[i].ReplaceWeapon(saveableData.IntToWeapon(segWeaponInt));
+			if (segWeaponInt == (int)EWeaponType.shield) //if the weapon is the shield, set its current activation time, otherwise set its general fire time
+				Segments[i].Weapon.gameObject.GetComponent<Shield>().shieldStartTime = saveableData.centipedeSegmentWeaponLastFireTime.list[i];
+			else if (segWeaponInt != (int)EWeaponType.empty)
+			{
+				Debug.Log(Segments[i] + "Orign");
+				Debug.Log(Segments[i].Weapon);
+				Debug.Log(saveableData.centipedeSegmentWeaponLastFireTime.list.Count);
+				Segments[i].Weapon.TimeLastFired = saveableData.centipedeSegmentWeaponLastFireTime.list[i];
+			}
 			//align the segment to the terrain
 			Segments[i].SetSurfaceNormal();
 		}
@@ -475,8 +484,12 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 		TailSegment.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 		TailSegment.gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
-		TailSegment.ReplaceWeapon(saveableData.IntToWeapon(saveableData.centipedeTailBeginSegmentWeaponType));
-
+		int tailWeaponInt = saveableData.centipedeTailBeginSegmentWeaponType;
+		TailSegment.ReplaceWeapon(saveableData.IntToWeapon(tailWeaponInt));
+		if (tailWeaponInt == (int)EWeaponType.shield) //if the weapon is the shield, set its current activation time, otherwise set its general fire time
+			TailSegment.Weapon.gameObject.GetComponent<Shield>().shieldStartTime = saveableData.centipedeTailBeginSegmentWeaponLastFireTime;
+		else if (tailWeaponInt != (int)EWeaponType.empty)
+			TailSegment.Weapon.TimeLastFired = saveableData.centipedeTailBeginSegmentWeaponLastFireTime;
 		//allign to the terrain
 		TailSegment.SetSurfaceNormal();
 
@@ -492,10 +505,14 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 			CustomSegments[i].gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
 			//add the weapon to the segment
-			CustomSegments[i].ReplaceWeapon(saveableData.IntToWeapon(saveableData.centipedeCustomSegmentWeaponType.list[i]));
-
-			//align the custom segment to the terrain
-			CustomSegments[i].SetSurfaceNormal();
+			int custSegWeaponInt = saveableData.centipedeCustomSegmentWeaponType.list[i];
+			CustomSegments[i].ReplaceWeapon(saveableData.IntToWeapon(custSegWeaponInt));
+            if (custSegWeaponInt == (int)EWeaponType.shield) //if the weapon is the shield, set its current activation time, otherwise set its general fire time
+            	CustomSegments[i].Weapon.gameObject.GetComponent<Shield>().shieldStartTime = saveableData.centipedeCustomSegmentWeaponLastFireTime.list[i];
+            else if (custSegWeaponInt != (int)EWeaponType.empty)
+            	CustomSegments[i].Weapon.TimeLastFired = saveableData.centipedeCustomSegmentWeaponLastFireTime.list[i];
+            //align the custom segment to the terrain
+            CustomSegments[i].SetSurfaceNormal();
 		}
 		//set the current speed for all parts of the centipede
 		ChangeSpeedDirectly(saveableData.centipedeSpeed);
@@ -517,7 +534,14 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 			saveableData.centipedeSegmentHealth.list.Add(Segments[i].health);
 			saveableData.centipedeSegmentNumAttacking.list.Add(Segments[i].numAttacking);
 			//type of weapon on it
-			saveableData.centipedeSegmentWeaponType.list.Add(saveableData.WeaponToInt(Segments[i].Weapon));
+			int segWeaponInt = saveableData.WeaponToInt(Segments[i].Weapon);
+			saveableData.centipedeSegmentWeaponType.list.Add(segWeaponInt);
+			if (segWeaponInt == (int)EWeaponType.shield)
+				saveableData.centipedeSegmentWeaponLastFireTime.list.Add(Segments[i].Weapon.gameObject.GetComponent<Shield>().shieldStartTime);
+			else if (segWeaponInt != (int)EWeaponType.empty)
+				saveableData.centipedeSegmentWeaponLastFireTime.list.Add(Segments[i].Weapon.TimeLastFired);
+			else//no weapon so no last fire time
+				saveableData.centipedeSegmentWeaponLastFireTime.list.Add(0);
 		}
 
 		//the initial tail segment
@@ -525,7 +549,15 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 		saveableData.centipedeTailBeginSegmentRotation = TailSegment.gameObject.transform.rotation;
 		saveableData.centipedeTailBeginSegmentHealth = TailSegment.health;
 		saveableData.centipedeTailBeginSegmentNumAttack = TailSegment.numAttacking;
-		saveableData.centipedeTailBeginSegmentWeaponType = saveableData.WeaponToInt(TailSegment.Weapon);
+		
+		int weaponInt = saveableData.WeaponToInt(TailSegment.Weapon);
+		saveableData.centipedeTailBeginSegmentWeaponType = weaponInt;
+		if (weaponInt == (int)EWeaponType.shield)
+			saveableData.centipedeTailBeginSegmentWeaponLastFireTime = TailSegment.Weapon.gameObject.GetComponent<Shield>().shieldStartTime;
+		else if (weaponInt != (int)EWeaponType.empty)
+			saveableData.centipedeTailBeginSegmentWeaponLastFireTime = TailSegment.Weapon.TimeLastFired;
+		else//no weapon so no last fire time
+			saveableData.centipedeTailBeginSegmentWeaponLastFireTime = 0;
 		//the custom segments
 		for (int i = 0; i < CustomSegments.Count; i++)
         {
@@ -533,7 +565,15 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 			saveableData.centipedeCustomSegmentRotation.list.Add(CustomSegments[i].gameObject.transform.rotation);
 			saveableData.centipedeCustomSegmentHealth.list.Add(CustomSegments[i].health);
 			saveableData.centipedeCustomSegmentNumAttack.list.Add(CustomSegments[i].numAttacking);
-			saveableData.centipedeCustomSegmentWeaponType.list.Add(saveableData.WeaponToInt(CustomSegments[i].Weapon));
+
+			int custSegWeaponInt = saveableData.WeaponToInt(CustomSegments[i].Weapon);
+			saveableData.centipedeCustomSegmentWeaponType.list.Add(custSegWeaponInt);
+			if (custSegWeaponInt == (int)EWeaponType.shield)
+				saveableData.centipedeCustomSegmentWeaponLastFireTime.list.Add(CustomSegments[i].Weapon.gameObject.GetComponent<Shield>().shieldStartTime);
+			else if (custSegWeaponInt != (int)EWeaponType.empty)
+				saveableData.centipedeCustomSegmentWeaponLastFireTime.list.Add(CustomSegments[i].Weapon.TimeLastFired);
+			else //no weapon so no last fire time
+				saveableData.centipedeCustomSegmentWeaponLastFireTime.list.Add(0);
 		}
 
 		//also need to at some point save if slowed down by a web and for how long
