@@ -67,6 +67,9 @@ public class PersistentDataManager : MonoBehaviour
         {
             dataObj.LoadData(saveableData);
         }
+
+        saveableData.LoadApple("Health", ref saveableData.healthApplePos, "Assets/Prefabs/RedApple.prefab");
+        saveableData.LoadApple("Speed", ref saveableData.speedApplePos, "Assets/Prefabs/GreenApple.prefab");
     }
 
     /// <summary>
@@ -79,6 +82,9 @@ public class PersistentDataManager : MonoBehaviour
         {
             dataObj.SaveData(ref saveableData);
         }
+        saveableData.SaveApple("Health", ref saveableData.healthApplePos);
+        saveableData.SaveApple("Speed", ref saveableData.speedApplePos);
+
 
         string fullPath = Path.Combine(dataDirectory, dataFileName);//this accounts for different paths having different path seperators
         try

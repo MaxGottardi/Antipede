@@ -43,35 +43,55 @@ public class SaveableData
     [SerializeField] public float centipedeTailBeginSegmentWeaponLastFireTime;
     [SerializeField] public SerializableList<int> centipedeSegmentWeaponType, centipedeCustomSegmentWeaponType;
     [SerializeField] public SerializableList<float> centipedeSegmentWeaponLastFireTime, centipedeCustomSegmentWeaponLastFireTime; //for the shield this is the current time of it
+
     //all the red apples
+    [SerializeField] public SerializableList<Vector3> healthApplePos;
 
     //all the green apples
+    [SerializeField] public SerializableList<Vector3> speedApplePos;
 
     //all the spiders
 
+
     //all the dasher ants
 
+
     //all the hunter ants
+
+
     //all the weapon cards in the game
 
+
     //all the farmer ants
+
+
     //all the ant larvae
+
 
     //all the guard ants
 
+
     //all the bomb ants
+
 
     //the cameras stuff
 
+
     //stuff for the centipede input and remembering when something was pressed
+
 
     //the UI elements, such as
 
+
     //everything else, such as which tutorial screens have been seen yet or not
+
 
     //i guess all the bullets in the scene as well as the particles(detached segments?probs not required)
 
+
     //stuff for registering if only temporarily 
+
+
     //the weapon which is attached to each segment, save a reference to it
 
     //add a constructor to initilize the default values
@@ -95,6 +115,9 @@ public class SaveableData
         centipedeSegmentNumAttacking = new SerializableList<int>();
         centipedeCustomSegmentHealth = new SerializableList<float>();
         centipedeCustomSegmentNumAttack = new SerializableList<int>();
+
+        healthApplePos = new SerializableList<Vector3>();
+        speedApplePos = new SerializableList<Vector3>();
     }
 
     /// <summary>
@@ -118,6 +141,11 @@ public class SaveableData
         }
     }
 
+    /// <summary>
+    /// based on an int given, determine the specific type of weapon prefab to spawn in
+    /// </summary>
+    /// <param name="weapon">the type of weapon to spawn</param>
+    /// <returns></returns>
     public Weapon IntToWeapon(int weapon)
     {
         switch (weapon)
@@ -136,6 +164,41 @@ public class SaveableData
                 return obj3.GetComponent<Weapon>();
             default:
                 return null;
+        }
+    }
+
+    public void SaveApple(string tag, ref SerializableList<Vector3> applePos)
+    {
+        GameObject[] apples = GameObject.FindGameObjectsWithTag(tag);
+        foreach (GameObject apple in apples)//get every apple which currently exists in the scene and store its position
+        {
+            applePos.list.Add(apple.transform.position);
+        }
+        Debug.Log(applePos.list.Count + "Apples posses: " + tag);
+    }
+
+    public void LoadApple(string tag, ref SerializableList<Vector3> applePos, string assetPath)
+    {
+        GameObject[] apple = GameObject.FindGameObjectsWithTag(tag);
+        int i = 0;
+        while(i < applePos.list.Count)//for all apples, whose position has been saved, load it in
+        {
+            if (i < apple.Length)
+                apple[i].transform.position = applePos.list[i]; //for all apples currently in the scene, move them to one of the preset, saved positions
+            else //apple does not exist in the scene when it should, so spawn in a new apple
+            {
+                GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath(assetPath, typeof(GameObject));
+                MonoBehaviour.Instantiate(obj, applePos.list[i], Quaternion.identity);
+                Debug.Log("Loading in a new Apple");
+            }
+            i++;
+        }
+        Debug.Log(i + "applepos" + applePos.list.Count+"  " + apple.Length);
+        //if apples still exist in the scene but are already eaten destroy them
+        for (int j = apple.Length - 1;  j >= i; j--)
+        {
+            Debug.Log("Destroy Apple");
+            MonoBehaviour.Destroy(apple[j]);
         }
     }
 }
