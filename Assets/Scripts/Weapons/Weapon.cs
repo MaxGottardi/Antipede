@@ -93,10 +93,9 @@ public abstract class Weapon : MonoBehaviour
 	/// <param name="Parent">The <see cref="MSegment"/> this Weapon is attached to.</param>
 	public virtual void OnAttach(MSegment Parent) { Owner = Parent; }
 
-	public virtual void Deactivate()
-    {
+	/// <summary>Deactivates weapons that are intended to be fired constantly</summary>
+	public virtual void Deactivate() { }
 
-    }
 
 #if UNITY_EDITOR
 	void OnDrawGizmos()
