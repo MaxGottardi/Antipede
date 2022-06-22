@@ -49,7 +49,7 @@ public static class MMathStatics
 	/// <returns>True if the square distance between Location and Target &lt;= ToleranceInSquareUnits.</returns>
 	public static bool HasReached(Vector3 Location, Vector3 Target, float ToleranceInUnits)
 	{
-		float SqrDistance = Mathf.Abs((Target - Location).sqrMagnitude);
+		float SqrDistance = (Target - Location).sqrMagnitude;
 		return SqrDistance <= ((ToleranceInUnits * ToleranceInUnits) + Vector3.kEpsilon);
 	}
 
@@ -61,7 +61,7 @@ public static class MMathStatics
 	/// <returns>True if the square distance between Location and Target &lt;= ToleranceInUnits.</returns>
 	public static bool HasReached(Vector3 Location, Vector3 Target, float ToleranceInUnits, out float SquareDistance)
 	{
-		float SqrDistance = Mathf.Abs((Target - Location).sqrMagnitude);
+		float SqrDistance = (Target - Location).sqrMagnitude;
 		SquareDistance = SqrDistance;
 		return SqrDistance <= ((ToleranceInUnits * ToleranceInUnits) + Vector3.kEpsilon);
 	}
@@ -159,12 +159,30 @@ public static class MMathStatics
 		float Gravity = Physics.gravity.y;
 		float InverseG = 1 / Gravity;
 		Vector3 VY = Vector3.up * Mathf.Sqrt(-2f * Gravity * TargetHeight);
-		Time = Mathf.Sqrt(-2f * TargetHeight * InverseG) + Mathf.Sqrt(2 * (DeltaY - TargetHeight) * InverseG);
+		Time = FastSqrt(-2f * TargetHeight * InverseG) + FastSqrt(2 * (DeltaY - TargetHeight) * InverseG);
 		Vector3 VXZ = DeltaXZ / Time;
 
 		Vector3 LaunchVelocity = VXZ + VY * -Mathf.Sign(Gravity);
 		return LaunchVelocity;
 	}
+
+	/// <summary>1 / sqrt(N).</summary>
+	/// <remarks>Slightly modified from: <see href="https://github.com/id-Software/Quake-III-Arena/blob/dbe4ddb10315479fc00086f08e25d968b4b43c49/code/game/q_math.c#L552"/></remarks>
+	/// <param name="N">1 / sqrt(x) where x is N.</param>
+	/// <returns>1 / sqrt(N) within 2% accuracy.</returns>
+	public static unsafe float FastInverseSqrt(float N)
+	{
+		int F = *(int*)&N;
+		F = 0x5F3759DF - (F >> 1);
+		float X = *(float*)&F;
+
+		return X * (1.5f - .5f * N * X * X);
+	}
+
+	/// <summary>Faster version of <see cref="Mathf.Sqrt(float)"/>.</summary>
+	/// <param name="F"></param>
+	/// <returns><see cref="FastInverseSqrt(float)"/> with other fancy tricks.</returns>
+	public static float FastSqrt(float F) => FastInverseSqrt(Mathf.Max(F, Vector3.kEpsilon)) * F;
 
 	public static bool DiagnosticCheckNaN(Vector3 V)
 	{
