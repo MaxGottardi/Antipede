@@ -6,7 +6,7 @@ public class Flame : Weapon
 {
 
 	[Header(nameof(Flame) + " Settings.")]
-	[SerializeField] float LaunchSpeed = 5.0f;
+	[SerializeField] float LaunchSpeed;
 
     public override Projectile Fire(Vector3 Direction)
     {
@@ -15,7 +15,7 @@ public class Flame : Weapon
 
 		sfxManager.ShootFlame();
 		Projectile StraightProjectile = InstantiateProjectile();
-		StraightProjectile.Initialise(isAntGun);
+		StraightProjectile.Initialise(isAntGun, true);
 		
 		// Ignore the Direction param. For a Gun, we don't need it.
 		if (isAntGun)

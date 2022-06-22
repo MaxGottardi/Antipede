@@ -64,7 +64,7 @@ MonoBehaviour:
   ArtMaterial: {fileID: 2100000, guid: e780c00d26c71ae408449d2601f8caee, type: 2}
   TextColour: {r: 0.5529412, g: 0.30588236, b: 0.18039216, a: 1}
   sfxManager: {fileID: 0}
-  LaunchSpeed: 5000
+  LaunchSpeed: 3500
 --- !u!1001 &6704582579264302589
 PrefabInstance:
   m_ObjectHideFlags: 0

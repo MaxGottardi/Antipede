@@ -11,11 +11,23 @@ public class Projectile : MonoBehaviour
 	public GameObject hitParticles, bloodParticles;
 	public static bool hasSeenChanged = false;
 	public int DamageAmount, tarantDamage = 1;
+	public bool isFlame = false;
+	public int enemyCollisionCounter;
 
 	/// <remarks>Use as Awake/Start method.</remarks>
 	public virtual void Initialise(bool isEnemyProjectile)
 	{
+		enemyCollisionCounter = 0;
 		this.isEnemyProjectile = isEnemyProjectile;
+		rb = GetComponent<Rigidbody>();
+		Destroy(gameObject, 10f);
+	}
+
+	public virtual void Initialise(bool isEnemyProjectile, bool isFlame)
+	{
+		enemyCollisionCounter = 0;
+		this.isEnemyProjectile = isEnemyProjectile;
+		this.isFlame = isFlame;
 		rb = GetComponent<Rigidbody>();
 		Destroy(gameObject, 10f);
 	}
@@ -30,6 +42,24 @@ public class Projectile : MonoBehaviour
 	protected virtual void OnCollisionEnter(Collision collision)
 	{
 		//Destroy(this);
+		if (isFlame && !isEnemyProjectile && collision.gameObject.CompareTag("Enemy") && collision.transform.parent.gameObject.GetComponent<GuardAnt>() == null)
+        {
+			enemyCollisionCounter++;
+			if (enemyCollisionCounter == 3)
+            {
+				//collide and destroy
+				collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(DamageAmount);
+				Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
+				Destroy(gameObject);
+			}
+			else
+            {
+				//collide and return
+				collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(DamageAmount);
+				Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
+				return;
+			}
+        }
 		if (!isEnemyProjectile && collision.gameObject.CompareTag("Enemy") && collision.transform.parent.gameObject.GetComponent<GuardAnt>() == null)
 		{
 			collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(DamageAmount);

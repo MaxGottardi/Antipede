@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 5786406520703476863}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 0.1}
+  m_LocalScale: {x: 1, y: 0.1, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -116,6 +116,7 @@ MonoBehaviour:
   bloodParticles: {fileID: 3612848425264099771, guid: e16bd8ac4022a2447880058a8ae4a7cb, type: 3}
   DamageAmount: 100
   tarantDamage: 3
+  isFlame: 1
 --- !u!96 &-8579126699900254828
 TrailRenderer:
   serializedVersion: 2
