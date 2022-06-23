@@ -52,6 +52,12 @@ public class MCentipedeWeapons : MonoBehaviour
 			}
 		}
 
+		if (Input.GetMouseButtonUp(0))
+        {
+			foreach (Weapon W in SegmentsWithWeapons)
+				W.Deactivate();
+		}
+
 		if (HUD)
 			UpdateWeaponHUD();
 	}

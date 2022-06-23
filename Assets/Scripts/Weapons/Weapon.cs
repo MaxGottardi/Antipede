@@ -37,7 +37,7 @@ public abstract class Weapon : MonoBehaviour
 	//                                          | UI    | PLAYER | W. PICKUP | BOUNDARY
 	public const int kIgnoreFromWeaponRaycasts = 1 << 5 | 1 << 6 | 1 << 9 | 1 << 11;
 
-	[SerializeField, ReadOnly] protected SFXManager sfxManager;
+	[SerializeField, ReadOnly] public SFXManager sfxManager;
 
 	public virtual void Awake()
 	{
@@ -111,6 +111,10 @@ public abstract class Weapon : MonoBehaviour
 	/// <summary>Called when this <see cref="Weapon"/> is attached onto an <see cref="MSegment"/>.</summary>
 	/// <param name="Parent">The <see cref="MSegment"/> this Weapon is attached to.</param>
 	public virtual void OnAttach(MSegment Parent) { Owner = Parent; }
+
+	/// <summary>Deactivates weapons that are intended to be fired constantly</summary>
+	public virtual void Deactivate() { }
+
 
 #if UNITY_EDITOR
 	void OnDrawGizmos()

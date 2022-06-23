@@ -152,12 +152,18 @@ public class SFXManager : MonoBehaviour
     public void ActivateLazer()
     {
         sourceLazer.clip = lazerSFX;
-        sourceLazer.Play();
+        if (!sourceLazer.isPlaying)
+        {
+            sourceLazer.Play();
+        }
     }
 
     public void DeactivateLaser()
     {
-        sourceLazer.Stop();
+        if (sourceLazer.isPlaying)
+        {
+            sourceLazer.Stop();
+        }
     }
 
     public void AntAttack()
@@ -176,6 +182,11 @@ public class SFXManager : MonoBehaviour
     {
         sourceSpider.clip = shootWebSFX;
         sourceSpider.Play();
+    }
+
+    public void ShootFlame()
+    {
+
     }
 
 
