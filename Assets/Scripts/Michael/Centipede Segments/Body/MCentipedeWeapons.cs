@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿//#define SHOW_WEAPON_RANGE
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -13,8 +15,10 @@ public class MCentipedeWeapons : MonoBehaviour
 	[SerializeField] bool bUsePropagationDelay;
 	[SerializeField] float PropagationDelay;
 
+#if SHOW_WEAPON_RANGE
 	[Header("Weapons HUD")]
 	[SerializeField] TextMeshProUGUI HUD;
+#endif
 
 	[HideInInspector] public List<MSegment> SegmentsWithWeapons;
 	bool bHasWeapons;
@@ -58,8 +62,10 @@ public class MCentipedeWeapons : MonoBehaviour
 				W.Deactivate();
 		}
 
+#if SHOW_WEAPON_RANGE
 		if (HUD)
 			UpdateWeaponHUD();
+#endif
 	}
 
 	static Vector3 ZeroVector = Vector3.zero;
@@ -116,6 +122,7 @@ public class MCentipedeWeapons : MonoBehaviour
 		}
 	}
 
+#if SHOW_WEAPON_RANGE
 	static readonly Color DistanceColour = new Color(1, 1, 1, .5f);
 	static readonly Color NoSightColour = new Color(1, 0, 0, .5f);
 
@@ -146,4 +153,5 @@ public class MCentipedeWeapons : MonoBehaviour
 			HUD.color = NoSightColour;
 		}
 	}
+#endif
 }
