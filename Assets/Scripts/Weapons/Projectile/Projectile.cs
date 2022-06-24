@@ -11,12 +11,15 @@ public class Projectile : MonoBehaviour
 	/// <see cref="LaunchedProjectile"/>
 	/// <see cref="Shield"/>
 	/// <see cref="XLine"/>
-	
+
 	/// <see cref="Weapon"/>
 
 	/// Weapon is <see cref="Gun"/>
 
 	protected Rigidbody rb;
+
+	[Header("Inherited from " + nameof(Projectile))]
+
 	public bool isEnemyProjectile = false; //is this projectile shot by an enemy or not
 	public GameObject hitParticles, bloodParticles;
 	public static bool hasSeenChanged = false;

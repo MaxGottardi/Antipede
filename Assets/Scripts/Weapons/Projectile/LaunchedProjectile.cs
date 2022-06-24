@@ -5,7 +5,7 @@ public class LaunchedProjectile : Projectile
 {
 	/// Weapon is <see cref="Launcher"/>
 
-	[Header("Launcher Settings.")]
+	[Header("Launched Projectile Settings.")]
 	[SerializeField] ParticleSystem Shockwave;
 	[SerializeField] float ExplosionRadius;
 

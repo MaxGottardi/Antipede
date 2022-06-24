@@ -9,6 +9,8 @@ public class XLine : Projectile
 {
 	/// Weapon is <see cref="Laser"/>
 
+	[Header(nameof(XLine) + " References.")]
+
 	public GameObject Line;
 	public GameObject FXef;  //激光击中物体的粒子效果
 				 // Particle effect of laser hitting object
