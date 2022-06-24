@@ -134,6 +134,7 @@ public class WeaponCardUI : MonoBehaviour
 	{
 		if (WeaponsInventory.ContainsKey(PickedUp))
 		{
+			Debug.Log("1");
 			// If the Picked Up Weapon already has Inventory, add another to the Inventory.
 			AttachmentUIInfo AUII = WeaponsInventory[PickedUp];
 			AUII.Remaining++;
@@ -144,6 +145,7 @@ public class WeaponCardUI : MonoBehaviour
 		}
 		else
 		{
+			Debug.Log("2");
 			// This Weapon does NOT exist in the Inventory; add it.
 
 			// Get the relevant information to calculate Card positions.

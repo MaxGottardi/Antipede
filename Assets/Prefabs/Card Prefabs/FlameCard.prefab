@@ -151,7 +151,7 @@ MonoBehaviour:
   isShield: 0
   isLauncher: 0
   isFlame: 1
-  Weapon: {fileID: 2239036073940972491, guid: 6780d73850f566e43a23244590ba7e4f, type: 3}
+  Weapon: {fileID: -7977923614501240936, guid: 6780d73850f566e43a23244590ba7e4f, type: 3}
 --- !u!114 &1829853529852746796
 MonoBehaviour:
   m_ObjectHideFlags: 0
