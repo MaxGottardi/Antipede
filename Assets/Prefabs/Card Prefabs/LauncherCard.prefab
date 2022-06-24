@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 1332047328893984492}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 125, y: 1.77, z: 125}
-  m_LocalScale: {x: 0.01, y: 1.5, z: 0.85}
+  m_LocalScale: {x: 0.01, y: 2.3, z: 0.85}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9ec0d4aff6543a24ab41a2bf46c8e1d9, type: 2}
+  - {fileID: 2100000, guid: 60a0669a32d789e438d56046944f57c7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -149,4 +149,5 @@ MonoBehaviour:
   isGun: 0
   isShield: 0
   isLauncher: 1
+  isFlame: 0
   Weapon: {fileID: 1475715996781863676, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
