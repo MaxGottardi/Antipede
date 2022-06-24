@@ -17395,7 +17395,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bUsePropagationDelay: 1
   PropagationDelay: 0.05
-  HUD: {fileID: 0}
   SegmentsWithWeapons: []
 --- !u!114 &454023611
 MonoBehaviour:
@@ -26907,7 +26906,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bUsePropagationDelay: 1
   PropagationDelay: 0.05
-  HUD: {fileID: 0}
   SegmentsWithWeapons: []
 --- !u!114 &696952956
 MonoBehaviour:
@@ -28587,7 +28585,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bUsePropagationDelay: 1
   PropagationDelay: 0.1
-  HUD: {fileID: 0}
   SegmentsWithWeapons: []
 --- !u!114 &740873898
 MonoBehaviour:
