@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 1664531792698132577}
   - component: {fileID: 1829853529852746796}
   m_Layer: 0
-  m_Name: xdd
+  m_Name: FlameCard
   m_TagString: Weapon Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 4417545337916853528}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 125, y: 1.77, z: 125}
-  m_LocalScale: {x: 0.01, y: 1.5, z: 0.85}
+  m_LocalScale: {x: 0.01, y: 2.3, z: 0.85}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e780c00d26c71ae408449d2601f8caee, type: 2}
+  - {fileID: 2100000, guid: 184adb5976fcb634784c18605c6842c5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -151,7 +151,7 @@ MonoBehaviour:
   isShield: 0
   isLauncher: 0
   isFlame: 1
-  Weapon: {fileID: 2239036073940972491, guid: 6780d73850f566e43a23244590ba7e4f, type: 3}
+  Weapon: {fileID: -7977923614501240936, guid: 6780d73850f566e43a23244590ba7e4f, type: 3}
 --- !u!114 &1829853529852746796
 MonoBehaviour:
   m_ObjectHideFlags: 0

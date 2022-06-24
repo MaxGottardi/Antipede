@@ -134,6 +134,7 @@ public class WeaponCardUI : MonoBehaviour
 	{
 		if (WeaponsInventory.ContainsKey(PickedUp))
 		{
+			Debug.Log("1");
 			// If the Picked Up Weapon already has Inventory, add another to the Inventory.
 			AttachmentUIInfo AUII = WeaponsInventory[PickedUp];
 			AUII.Remaining++;
@@ -144,6 +145,7 @@ public class WeaponCardUI : MonoBehaviour
 		}
 		else
 		{
+			Debug.Log("2");
 			// This Weapon does NOT exist in the Inventory; add it.
 
 			// Get the relevant information to calculate Card positions.
@@ -171,6 +173,13 @@ public class WeaponCardUI : MonoBehaviour
 			// Update the colour of the Card to match the Weapon GameObject.
 			//			Color WeaponColour = AUII.WeaponAttachment.Attachment.GetComponent<MeshRenderer>().sharedMaterial.color;
 			//			AUII.Background.color = new Color(WeaponColour.r, WeaponColour.g, WeaponColour.b, Alpha);
+
+
+
+			//If anyone asks, i didnt write this
+			//I swear i know how to code
+			NewCard.transform.localScale = new Vector3(0.5f, 0.6f, 0.5f);
+			NewCard.transform.position = new Vector2(NewCard.transform.position.x - 75f, NewCard.transform.position.y - 20.0f);
 
 			return NewCard;
 		}

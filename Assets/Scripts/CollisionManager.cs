@@ -99,6 +99,15 @@ public class CollisionManager : MonoBehaviour
                 GameManager1.uiButtons.AddSpeed();
                 GameManager1.uiButtons.AddSpeed();
             }
+            if (other.gameObject.GetComponent<WeaponPickup>().isFlame)
+            {
+                player.AddSegment();
+                player.AddSegment();
+                player.IncreaseSpeed(100.0f);
+                GameManager1.uiButtons.SpeedUI();
+                GameManager1.uiButtons.AddSpeed();
+                GameManager1.uiButtons.AddSpeed();
+            }
 
             Destroy(other.gameObject);
 
