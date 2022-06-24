@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Tarantula: MonoBehaviour
+public class Tarantula: MonoBehaviour, IDataInterface
 {
+    public int idValue; //the current id value to specify this element as unique
     public static int numTarantulasLeft = 3;
     private GameObject nest;
     private GameObject rotationPoint;
@@ -19,14 +20,15 @@ public class Tarantula: MonoBehaviour
     private bool dying;
     private float deathTimer;
 
-    private float distToNest;
-    private float distToPlayer;
+    private float distToNest;//not saved
+    private float distToPlayer;//not saved
 
     private GameObject targetSeg;
-    float newTargetSegDist;
-    float oldTargetSegDist;
+    float newTargetSegDist;//not saved
+    float oldTargetSegDist;//not saved
 
     private Animation animator;
+    private string currClipName;
     private bool tarantulaMoving;
 
     public bool attackingPlayer;
@@ -34,7 +36,7 @@ public class Tarantula: MonoBehaviour
     private float attackTimer;
     private MCentipedeBody player;
 
-    private Rigidbody webPrefab;
+    [SerializeField] private Rigidbody webPrefab;
     private float shootTimer;
     private float shootAnimTimer;
     private float shootDelay = 0.7f;
@@ -65,7 +67,7 @@ public class Tarantula: MonoBehaviour
         shooting = false;
         player = GameObject.Find("Centipede").GetComponent<MCentipedeBody>();
 
-        webPrefab = gameObject.transform.Find("Web").gameObject.GetComponent<Rigidbody>();
+        //webPrefab = gameObject.transform.Find("Web").gameObject.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -134,11 +136,13 @@ public class Tarantula: MonoBehaviour
 
             if (tarantulaMoving && !attackingPlayer && !shooting)
             {
+                currClipName = "Walk";
                 animator.Play("Walk");
             }
 
             if (!tarantulaMoving && !attackingPlayer && !shooting)
             {
+                currClipName = "Idle";
                 animator.Play("Idle");
             }
 
@@ -174,6 +178,7 @@ public class Tarantula: MonoBehaviour
         {
             dying = true;
             deathTimer += Time.deltaTime;
+            currClipName = "Death";
             animator.Play("Death");
             if (deathTimer >= 2)
             {
@@ -224,6 +229,7 @@ public class Tarantula: MonoBehaviour
     {
         if (!shooting)
         {
+            currClipName = "Attack";
             animator.Play("Attack");
             attackingPlayer = true;
             attackTimer = 0;
@@ -239,6 +245,7 @@ public class Tarantula: MonoBehaviour
             if (shootTimer >= 5)
             {
                 shooting = true;
+                currClipName = "Attack_Left";
                 animator.Play("Attack_Left");
                 shootAnimTimer += Time.deltaTime;
                 if (shootAnimTimer >= shootDelay)
@@ -290,5 +297,64 @@ public class Tarantula: MonoBehaviour
     {
         //Show Canvas with you won
         GameManager1.uiButtons.Win();
+    }
+
+    public void LoadData(SaveableData saveableData)
+    {
+        if(!saveableData.spiderData.dictionary.ContainsKey(idValue))
+        {//as the key was not saved, it means it must have been destroyed before the saving occured so delete it
+            Destroy(nest);
+            return;
+        }
+        SpiderData spiderData = saveableData.spiderData.dictionary[idValue];
+        //also loading in of the players save
+
+        health = spiderData.spiderHealth;
+        healthSlider.value = CalculateHealth();
+
+        deathTimer = spiderData.spiderDeathTimer;
+        attackTimer = spiderData.spiderAttackTimer;
+        shootTimer = spiderData.spiderShootTimer;
+        shootAnimTimer = spiderData.spiderShootAnimTimer;
+        spawnAntTimer = spiderData.spiderSpawnAntTimer;
+
+        dying = spiderData.spiderDying;
+        tarantulaMoving = spiderData.spiderMoving;
+        attackingPlayer = spiderData.spiderAttackPlayer;
+        shooting = spiderData.spiderShooting;
+
+        rotationPoint.transform.position = spiderData.spiderPosition;
+        rotationPoint.transform.rotation = spiderData.spiderRotation;
+
+        currClipName = spiderData.spiderCurAnimClip;
+        animator.Play(currClipName);
+        animator[currClipName].normalizedTime = spiderData.spiderCurAnimTime;
+
+
+        Debug.Log("Loading Spider Data");
+    }
+
+    public void SaveData(ref SaveableData saveableData)
+    {
+        SpiderData spiderData = new SpiderData();
+        spiderData.spiderHealth = health;
+        spiderData.spiderDeathTimer = deathTimer;
+        spiderData.spiderAttackTimer = attackTimer;
+        spiderData.spiderShootTimer = shootTimer;
+        spiderData.spiderShootAnimTimer = shootAnimTimer;
+        spiderData.spiderSpawnAntTimer = spawnAntTimer;
+
+        spiderData.spiderDying = dying;
+        spiderData.spiderMoving = tarantulaMoving;
+        spiderData.spiderAttackPlayer = attackingPlayer;
+        spiderData.spiderShooting = shooting;
+
+        spiderData.spiderPosition = rotationPoint.transform.position;
+        spiderData.spiderRotation = rotationPoint.transform.rotation;
+
+        spiderData.spiderCurAnimClip = currClipName;
+        spiderData.spiderCurAnimTime = animator[currClipName].normalizedTime;
+
+        saveableData.spiderData.dictionary.Add(idValue, spiderData);
     }
 }

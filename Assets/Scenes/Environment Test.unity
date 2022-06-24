@@ -6407,6 +6407,10 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6532764907737699642, guid: 3eac7928ca1b1f84383a1356da0b91bd, type: 3}
+      propertyPath: idValue
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6532764907737699642, guid: 3eac7928ca1b1f84383a1356da0b91bd, type: 3}
       propertyPath: maxHealth
       value: 50
       objectReference: {fileID: 0}
@@ -9064,6 +9068,10 @@ PrefabInstance:
     - target: {fileID: 4070592134389656540, guid: 3eac7928ca1b1f84383a1356da0b91bd, type: 3}
       propertyPath: m_Name
       value: Nest (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6532764907737699642, guid: 3eac7928ca1b1f84383a1356da0b91bd, type: 3}
+      propertyPath: idValue
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3eac7928ca1b1f84383a1356da0b91bd, type: 3}

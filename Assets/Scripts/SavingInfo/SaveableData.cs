@@ -9,6 +9,39 @@ public class SerializableList<T>
 {
     public List<T> list = new List<T>();
 }
+
+/// <summary>
+/// convert and unconvert the dictionary to a format which can be saved to json
+/// </summary>
+/// <typeparam name="TKey">the key of the dictionary</typeparam>
+/// <typeparam name="TValue">the value of the dictionary</typeparam>
+[System.Serializable]
+public class SerializableDictionary<TKey, TValue>: ISerializationCallbackReceiver
+{
+    public Dictionary<TKey, TValue> dictionary = new Dictionary<TKey, TValue>();
+
+    [SerializeField] SerializableList<TKey> keys = new SerializableList<TKey>();
+    [SerializeField] SerializableList<TValue> values = new SerializableList<TValue>();
+    void ISerializationCallbackReceiver.OnAfterDeserialize()
+    {
+        dictionary.Clear();
+        for(int i = 0; i < keys.list.Count; i++)
+        {
+            dictionary.Add(keys.list[i], values.list[i]);
+        }
+    }
+
+    void ISerializationCallbackReceiver.OnBeforeSerialize()
+    {
+        keys.list.Clear();
+        values.list.Clear();
+        foreach (KeyValuePair<TKey, TValue> item in dictionary)
+        {
+            keys.list.Add(item.Key);
+            values.list.Add(item.Value);
+        }
+    }
+}
 public enum EWeaponType
 {
     empty = -1,
@@ -17,6 +50,36 @@ public enum EWeaponType
     launcher,
     gun
 }
+[System.Serializable]
+public class SpiderData
+{
+    [SerializeField] public float spiderCurAnimTime; //also saving of current spider animation state
+    [SerializeField] public string spiderCurAnimClip; //also saving of current spider animation state
+    [SerializeField] public float spiderHealth, spiderDeathTimer, spiderAttackTimer, spiderShootTimer, spiderShootAnimTimer, spiderSpawnAntTimer;
+    [SerializeField] public bool spiderDying, spiderMoving, spiderAttackPlayer, spiderShooting;
+    [SerializeField] public Vector3 spiderPosition;
+    [SerializeField] public Quaternion spiderRotation;
+}
+[System.Serializable]
+public class WebData
+{
+    [SerializeField] public bool bWebIsShot;
+    [SerializeField] public float webDespawnTimer;
+    [SerializeField] public Vector3 webPosition, webVelocity;
+    [SerializeField] public Quaternion webRotation;
+
+}
+[System.Serializable]
+public class GenericAntData
+{
+    [SerializeField] public Vector3 antPosition;
+    [SerializeField] public Quaternion antRotation;
+
+    [SerializeField] public float health;
+
+    //stuff for the current state and lengths of time in each one which uses and animation
+}
+
 /// <summary>
 /// within this class, hold values containing all the data(or copies of it) of the game which are required to be saved
 /// </summary>
@@ -50,7 +113,23 @@ public class SaveableData
     //all the green apples
     [SerializeField] public SerializableList<Vector3> speedApplePos;
 
-    //all the spiders
+    //all the spiders values
+    [SerializeField] public int numSpidersLeft;
+    [SerializeField] public SerializableDictionary<int, SpiderData> spiderData;
+    /// //////////////////////////////////Issue is that if destroyed and the player loads back in a save while still in the same scene, it will not spawn in a new spider to replace it
+
+    //find all the cobwebs and save them as well
+    [SerializeField] public SerializableList<WebData> cobwebData;
+
+
+    //for the centipede save if slowed down by a cobweb or not as well
+    [SerializeField] public float centipedePreSlowedSpeed, centipedeSlowedTimer;
+    [SerializeField] public bool bCentipedeSlowed;
+    //as already save the speed, if it is a slowed one this will ensure that after xxx time it will stop being slowed
+
+
+    //all the guard ants
+    [SerializeField] SerializableList<GenericAnt> guardAntData;
 
 
     //all the dasher ants
@@ -66,10 +145,6 @@ public class SaveableData
 
 
     //all the ant larvae
-
-
-    //all the guard ants
-
 
     //all the bomb ants
 
@@ -118,6 +193,9 @@ public class SaveableData
 
         healthApplePos = new SerializableList<Vector3>();
         speedApplePos = new SerializableList<Vector3>();
+
+        spiderData = new SerializableDictionary<int, SpiderData>();
+        cobwebData = new SerializableList<WebData>();
     }
 
     /// <summary>
@@ -207,6 +285,24 @@ public class SaveableData
         {
             Debug.Log("Destroy Apple");
             MonoBehaviour.Destroy(apple[j]);
+        }
+    }
+
+    public void LoadCobwebs()
+    {
+        GameObject prefab = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Web.prefab", typeof(GameObject));
+        foreach (WebData web in cobwebData.list)
+        {
+            GameObject obj = MonoBehaviour.Instantiate(prefab, web.webPosition, web.webRotation);
+            Web objWeb = obj.GetComponent<Web>();
+
+            objWeb.isShot = web.bWebIsShot;
+            objWeb.despawnTimer = web.webDespawnTimer;
+
+            obj.transform.position = web.webPosition;
+            obj.transform.rotation = web.webRotation;
+
+            obj.GetComponent<Rigidbody>().velocity = web.webVelocity;
         }
     }
 }

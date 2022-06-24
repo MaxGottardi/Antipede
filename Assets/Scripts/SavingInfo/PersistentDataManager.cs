@@ -13,11 +13,12 @@ public class PersistentDataManager : MonoBehaviour
 
     string dataDirectory; //for the unity project the persistant data path 
 
-    string dataFileName = "SaveFile1.json";
+    string dataFileName = "SaveFile1.txt";
 
     private void Awake()
     {
         dataDirectory = Application.persistentDataPath;
+        //the full path C:\Users\[usersname]\AppData\LocalLow\[companyname]\[projectname]
     }
 
     private void Start()
@@ -70,6 +71,8 @@ public class PersistentDataManager : MonoBehaviour
 
         saveableData.LoadApple("Health", ref saveableData.healthApplePos, "Assets/Prefabs/RedApple.prefab");
         saveableData.LoadApple("Speed", ref saveableData.speedApplePos, "Assets/Prefabs/GreenApple.prefab");
+        Tarantula.numTarantulasLeft = saveableData.numSpidersLeft;
+        saveableData.LoadCobwebs();
     }
 
     /// <summary>
@@ -84,6 +87,7 @@ public class PersistentDataManager : MonoBehaviour
         }
         saveableData.SaveApple("Health", ref saveableData.healthApplePos);
         saveableData.SaveApple("Speed", ref saveableData.speedApplePos);
+        saveableData.numSpidersLeft = Tarantula.numTarantulasLeft;
 
 
         string fullPath = Path.Combine(dataDirectory, dataFileName);//this accounts for different paths having different path seperators
@@ -115,11 +119,18 @@ public class PersistentDataManager : MonoBehaviour
             Debug.Log("Saving current game state");
             SaveGame();
         }
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.O) && Time.timeScale > 0.5f)
         {
             Debug.Log("Loading in game from a save");
             LoadGame();
+            StartCoroutine(TempPaused(1f));
         }
+    }
+    IEnumerator TempPaused(float waitTime)
+    {
+        Time.timeScale = 0;
+        yield return new WaitForSecondsRealtime(waitTime);
+        Time.timeScale = 1;
     }
 
     IEnumerable<IDataInterface> ObjsDataSaveable()

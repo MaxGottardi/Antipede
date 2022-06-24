@@ -516,6 +516,11 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 		}
 		//set the current speed for all parts of the centipede
 		ChangeSpeedDirectly(saveableData.centipedeSpeed);
+
+		//load if slowed down by a web
+		preSlowedSpeed = saveableData.centipedePreSlowedSpeed;
+		slowed = saveableData.bCentipedeSlowed;
+		slowTimer = saveableData.centipedeSlowedTimer;
 	}
 
 	void IDataInterface.SaveData(ref SaveableData saveableData)
@@ -576,7 +581,10 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 				saveableData.centipedeCustomSegmentWeaponLastFireTime.list.Add(0);
 		}
 
-		//also need to at some point save if slowed down by a web and for how long
+		//save if slowed down by a web
+		saveableData.centipedePreSlowedSpeed = preSlowedSpeed;
+		saveableData.bCentipedeSlowed = slowed;
+		saveableData.centipedeSlowedTimer = slowTimer;
 	}
 }
 
