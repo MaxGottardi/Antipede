@@ -55,7 +55,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WeaponsComponent: {fileID: 0}
   BarrelEndSocket: {fileID: 5645349024952512283}
-  ProjectileObject: {fileID: -6691305767071978364, guid: ad69596cf549b6d4bab9890f3d3dbfed, type: 3}
+  ProjectileObject: {fileID: 2971821860114138902, guid: 1f4444c64236e6140897f1cffcbedc8f, type: 3}
   weaponPickup: {fileID: 1514110319033228670, guid: 9fac12c9594335f4699a511be43f136c, type: 3}
   isAntGun: 0
   FireRate: 1
