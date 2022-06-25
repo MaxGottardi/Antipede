@@ -381,8 +381,8 @@ public class SaveableData
                 GameObject spawnedObj = MonoBehaviour.Instantiate(obj, antData.list[i].antPosition, antData.list[i].antRotation);
 
                 GenericAnt genericAnt = spawnedObj.GetComponent<GenericAnt>();
+                genericAnt.Start(); //initilize the ants values
                 LoadAntData(i, ref antData, ref genericAnt);//this for some reason bugs out and doesnt set the values if using an ant which is just loaded in
-                //Debug.Log("Loading in a new Ant");
             }
             i++;
         }
@@ -404,7 +404,7 @@ public class SaveableData
         genericAnt.canInvestigate = genericAntData.bCanInvestigate;
         genericAnt.callingBackup = genericAntData.bCallingBackup;
 
-        ////genericAnt.spawnedHelp;//////
+        ////genericAnt.spawnedHelp;//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         genericAnt.spawnedHelpBag.currPos = genericAntData.spawnedHelpCurrPos;
 
         genericAnt.isHelper = genericAntData.bIsHelper;

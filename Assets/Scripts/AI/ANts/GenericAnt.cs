@@ -80,27 +80,30 @@ public class GenericAnt : MonoBehaviour, IDataInterface
 
     public virtual void Start()
     {
-        sfxManager = FindObjectOfType<SFXManager>();
+        if (healthBag == null) //if this is not yet set, then it means it hasn't run start, otherwise do run the start method. this required to be called before setting the ants data on its spawning in
+        {
+            sfxManager = FindObjectOfType<SFXManager>();
 
-        backupRing.SetActive(false);
-        healthBag = new ShuffleBag<bool>();
-        healthBag.shuffleList = damageStageChance;
+            backupRing.SetActive(false);
+            healthBag = new ShuffleBag<bool>();
+            healthBag.shuffleList = damageStageChance;
 
-        spawnedHelpBag = new ShuffleBag<GameObject>();
-        spawnedHelpBag.shuffleList = spawnedHelp;
+            spawnedHelpBag = new ShuffleBag<GameObject>();
+            spawnedHelpBag.shuffleList = spawnedHelp;
 
-        maxHealth = health;
-        pathToNextPos = new List<Vector3>();
-        anim = transform.GetChild(0).gameObject.GetComponent<Animator>();
-        audioSource = transform.GetChild(0).gameObject.GetComponent<AudioSource>();
-        anim.SetFloat("SpeedMultiplier", animMultiplier);
-        //anim.SetTrigger("Walk");
-        nodesList = GameObject.FindGameObjectsWithTag(FollowingNodes);
-        stateMachine = new StateMachine(this);
-        if (isHelper)
-            stateMachine.changeState(stateMachine.SpawnIn);
-        else
-            stateMachine.changeState(stateMachine.Movement);
+            maxHealth = health;
+            pathToNextPos = new List<Vector3>();
+            anim = transform.GetChild(0).gameObject.GetComponent<Animator>();
+            audioSource = transform.GetChild(0).gameObject.GetComponent<AudioSource>();
+            anim.SetFloat("SpeedMultiplier", animMultiplier);
+            //anim.SetTrigger("Walk");
+            nodesList = GameObject.FindGameObjectsWithTag(FollowingNodes);
+            stateMachine = new StateMachine(this);
+            if (isHelper)
+                stateMachine.changeState(stateMachine.SpawnIn);
+            else
+                stateMachine.changeState(stateMachine.Movement);
+        }
     }
 
     // Update is called once per frame
