@@ -35,7 +35,7 @@ public abstract class Weapon : MonoBehaviour
 	protected MSegment Owner;
 
 	//                                          | UI    | PLAYER | W. PICKUP | BOUNDARY
-	public const int kIgnoreFromWeaponRaycasts = 1 << 5 | 1 << 6 | 1 << 9 | 1 << 11;
+	public const int kIgnoreFromWeaponRaycasts = 1 << 5 | 1 << 6 | 1 << 9    | 1 << 11;
 
 	[SerializeField, ReadOnly] public SFXManager sfxManager;
 

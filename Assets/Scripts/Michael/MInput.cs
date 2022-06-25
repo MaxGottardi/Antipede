@@ -15,10 +15,12 @@ public class MInput : MonoBehaviour
 	SFXManager sfxManager;
 
 	bool bIsPaused = false;
-    private void Awake()
-    {
+
+	private void Awake()
+	{
 		MainCamera = Camera.main;
 	}
+
 	void Start()
 	{
 		body = GetComponent<MCentipedeBody>();
@@ -86,6 +88,7 @@ public class MInput : MonoBehaviour
 		float Vertical = Input.GetAxisRaw("Vertical");
 
 		movement.Set(ref Horizontal, ref Vertical, ref body);
+
 		if (Horizontal != 0 || Vertical != 0)
 			if (sfxManager != null && Time.timeScale > 0)
 				sfxManager.Walk();
@@ -143,7 +146,7 @@ public class MInput : MonoBehaviour
 			if (antCollider.gameObject.CompareTag("Tarantula"))
 			{
 				tarant = antCollider.gameObject.GetComponent<Tarantula>();//.DecreaseHealth(1);
-				//Instantiate(hitParticles, antCollider.gameObject.transform.position, Quaternion.identity);
+											  //Instantiate(hitParticles, antCollider.gameObject.transform.position, Quaternion.identity);
 				seenTarant = true;
 			}
 
@@ -155,13 +158,13 @@ public class MInput : MonoBehaviour
 			}
 		}
 
-		if(seenTail)
-        {
+		if (seenTail)
+		{
 			tarant.DecreaseHealth(2);
 			Instantiate(hitParticles, tarant.gameObject.transform.position, Quaternion.identity);
 		}
-		else if(seenTarant)
-        {
+		else if (seenTarant)
+		{
 			tarant.DecreaseHealth(1);
 			Instantiate(hitParticles, tarant.gameObject.transform.position, Quaternion.identity);
 		}

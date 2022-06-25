@@ -1,3 +1,5 @@
+#define WITH_DYNAMIC_ALIGNMENT
+
 using UnityEngine;
 
 /// <summary>
@@ -36,20 +38,21 @@ public class MSegment : MonoBehaviour
 	bool bDetached = false;
 	float TimeDetached = 0f;
 
+#if WITH_DYNAMIC_ALIGNMENT
 	/*
 	                               -- Dynamic Segment-Terrain Alignment --
 
 	If there are problems with the Segments, especially, but not limited to, when going over Terrain,
-	switch K_bUseDynamicAlignment to false and see if it fixes it, otherwise the problem is elsewhere.
+	undefine WITH_DYNAMIC_ALIGNMENT and see if it fixes it, otherwise the problem is elsewhere.
 
 	Alternatively, increase / decrease kErrorAngle or kFrameSkips.
 
 	Note that the Centipede has it's own implementation.
 
 	*/
-	const bool  K_bUseDynamicAlignment = true; // True to use Dynamic Segment-Terrain Alignment.
-	const float kErrorAngle            = 5f;   // An angle difference > this degrees will trigger Alignment.
-	const int   kFrameSkips            = 10;   // Skip this many frames before checking if this Segment needs realigning.
+	const float kErrorAngle = 5f;   // An angle difference > this degrees will trigger Alignment.
+	const int kFrameSkips = 10;   // Skip this many frames before checking if this Segment needs realigning.
+#endif
 
 	/// <summary>Initialises this Segment to follow ForwardNeighbour at FollowSpeed and turning at MaxTurnDegreesPerFrame.</summary>
 	/// <param name="Owner">The Weapons Component this Segment belongs to. The Centipede.</param>
@@ -97,7 +100,8 @@ public class MSegment : MonoBehaviour
 
 				AccelerationTime = Reference.AccelerationTime;
 
-				if (K_bUseDynamicAlignment && Time.frameCount % kFrameSkips == 0 && NeedsAlignment(out RaycastHit Terrain))
+#if WITH_DYNAMIC_ALIGNMENT
+				if (Time.frameCount % kFrameSkips == 0 && NeedsAlignment(out RaycastHit Terrain))
 				{
 					Align(ref Terrain);
 				}
@@ -106,6 +110,10 @@ public class MSegment : MonoBehaviour
 					MMathStatics.HomeTowards(rb, ForwardNeighbour, EvaluateAcceleration(FollowSpeed), MaxTurnDegreesPerFrame);
 					bHasRayAligned = false;
 				}
+#else
+				MMathStatics.HomeTowards(rb, ForwardNeighbour, EvaluateAcceleration(FollowSpeed), MaxTurnDegreesPerFrame);
+				bHasRayAligned = false;
+#endif
 
 				AccelerationTime = Mathf.Clamp(AccelerationTime, Distance, 1f);
 			}
@@ -162,6 +170,7 @@ public class MSegment : MonoBehaviour
 		return AccelRate * Scalar;
 	}
 
+#if WITH_DYNAMIC_ALIGNMENT
 	bool NeedsAlignment(out RaycastHit Terrain)
 	{
 		Ray R = new Ray(transform.position, -transform.up);
@@ -182,6 +191,7 @@ public class MSegment : MonoBehaviour
 
 		transform.rotation = Quaternion.FromToRotation(transform.up, Normal) * transform.rotation;
 	}
+#endif
 
 	/// <summary>Overrides <see cref="AccelerationTime"/>.</summary>
 	/// <param name="Time">New Acceleration Time.</param>

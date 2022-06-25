@@ -18,9 +18,10 @@ public class Projectile : MonoBehaviour
 
 	protected Rigidbody rb;
 
+	/// <summary><see langword="true"/> if this Projectile shot by an enemy.</summary>
 	[Header("Inherited from " + nameof(Projectile))]
 
-	public bool isEnemyProjectile = false; //is this projectile shot by an enemy or not
+	public bool isEnemyProjectile = false;
 	public GameObject hitParticles, bloodParticles;
 	public static bool hasSeenChanged = false;
 	public int DamageAmount, tarantDamage = 1;
@@ -38,11 +39,9 @@ public class Projectile : MonoBehaviour
 
 	public virtual void Initialise(bool isEnemyProjectile, bool isFlame)
 	{
-		enemyCollisionCounter = 0;
-		this.isEnemyProjectile = isEnemyProjectile;
+		Initialise(isEnemyProjectile);
+
 		this.isFlame = isFlame;
-		rb = GetComponent<Rigidbody>();
-		Destroy(gameObject, 10f);
 	}
 
 	/// <summary>Launches this projectile at LaunchVelocity.</summary>

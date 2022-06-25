@@ -77286,7 +77286,6 @@ GameObject:
   - component: {fileID: 1332805273}
   - component: {fileID: 1332805272}
   - component: {fileID: 1332805271}
-  - component: {fileID: 1332805270}
   - component: {fileID: 1332805269}
   - component: {fileID: 1332805268}
   - component: {fileID: 1332805267}
@@ -77399,19 +77398,6 @@ MonoBehaviour:
   - {fileID: 1526376182}
   - {fileID: 2079575030}
   - {fileID: 1003659726}
---- !u!114 &1332805270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1332805266}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54e5c331f26edf643a409c5c9ac4eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerHead: {fileID: 0}
 --- !u!81 &1332805271
 AudioListener:
   m_ObjectHideFlags: 0
@@ -79436,7 +79422,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bUsePropagationDelay: 1
   PropagationDelay: 0.1
-  HUD: {fileID: 0}
   SegmentsWithWeapons: []
 --- !u!114 &1368409711
 MonoBehaviour:

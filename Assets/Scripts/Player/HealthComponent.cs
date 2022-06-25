@@ -1,3 +1,5 @@
+#if false
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -78,3 +80,4 @@ public class HealthComponent : MonoBehaviour
         Time.timeScale = 0;
     }
 }
+#endif

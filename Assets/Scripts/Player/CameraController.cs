@@ -1,3 +1,5 @@
+#if false
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,3 +31,4 @@ public class CameraController : MonoBehaviour
         transform.position += transform.forward * 2;
     }
 }
+#endif

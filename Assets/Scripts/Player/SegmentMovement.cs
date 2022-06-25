@@ -1,3 +1,4 @@
+#if false
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -54,3 +55,4 @@ public class SegmentMovement : MonoBehaviour
         nextSeg = GameObject.Find(nextSegInt.ToString());
     }
 }
+#endif
