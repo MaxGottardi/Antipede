@@ -14,13 +14,13 @@ public class FarmerAnt : GenericAnt
     // Start is called before the first frame update
     public override void Start()
     {
-        if(larvaeBag == null)
+        if (larvaeBag == null)
         {
             larvaeBag = new ShuffleBag<bool>();
             larvaeBag.shuffleList = useLarvae;
         }
         SpawnLarvae();
-        
+
         base.Start();
     }
 
@@ -51,5 +51,9 @@ public class FarmerAnt : GenericAnt
             Larvae = null;
         }
         base.ReduceHealth(amount);
+    }
+
+    public override void SaveData(ref SaveableData saveableData)
+    {
     }
 }

@@ -73,6 +73,7 @@ public class PersistentDataManager : MonoBehaviour
         saveableData.LoadApple("Speed", ref saveableData.speedApplePos, "Assets/Prefabs/GreenApple.prefab");
         Tarantula.numTarantulasLeft = saveableData.numSpidersLeft;
         saveableData.LoadCobwebs();
+        saveableData.LoadAnt(ref saveableData.guardAntData, "Assets/Prefabs/AntComponents/AntPrefabs/GuardAnt.prefab");
     }
 
     /// <summary>

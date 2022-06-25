@@ -46,5 +46,21 @@ public class ParallelSelector : Node
             childNode.interupt();
         }
     }
+
+    public override void loadData(ref GenericAntData saveableData)
+    {
+        for (int i = 0; i < children.Count; i++)
+        {
+            children[i].loadData(ref saveableData);
+        }
+    }
+
+    public override void saveData(ref GenericAntData saveableData)
+    {
+        for (int i = 0; i < children.Count; i++)
+        {
+            children[i].saveData(ref saveableData);
+        }
+    }
 }
 

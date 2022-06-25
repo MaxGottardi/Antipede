@@ -64,6 +64,16 @@ public class DetermineAttackSeg : Node
         return NodeState.Failure; //no segments found
         //////This for some reason causes an error to appear
     }
+
+    public override void loadData(ref GenericAntData saveableData)
+    {
+        //do nothing as no new data to save
+    }
+
+    public override void saveData(ref GenericAntData saveableData)
+    {
+        //do nothing as no new data to save
+    }
 }
 
 public class PathToSegment : Node
@@ -90,7 +100,7 @@ public class PathToSegment : Node
             }
             if (blackboard.pathToNextPos.Count <= 0) //as no new tiles to move towards can safely say move towards the final goal
                 blackboard.nextPosVector = blackboard.nextPosTransform.position;
-            //currSegment.beingAttacked = true;
+
             return NodeState.Success; //assigned segment
         }
         return NodeState.Failure;
@@ -102,5 +112,15 @@ public class PathToSegment : Node
         {
             blackboard.pathToNextPos = GameManager1.generateGrid.APathfinding(currPos, goalPos);//generate the new path
         }
+    }
+
+    public override void loadData(ref GenericAntData saveableData)
+    {
+        //do nothing as no new data to save
+    }
+
+    public override void saveData(ref GenericAntData saveableData)
+    {
+        //do nothing as no new data to save
     }
 }

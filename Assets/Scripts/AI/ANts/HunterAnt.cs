@@ -80,4 +80,8 @@ public class HunterAnt : GenericAnt
         weaponClass.isAntGun = true;
         weaponClass.LookAt(transform.forward);
     }
+
+    public override void SaveData(ref SaveableData saveableData)
+    {
+    }
 }

@@ -34,4 +34,7 @@ public abstract class Node
     {
         end();
     }
+
+    public abstract void saveData(ref GenericAntData saveableData);
+    public abstract void loadData(ref GenericAntData saveableData);
 }

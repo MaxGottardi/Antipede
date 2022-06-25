@@ -29,5 +29,15 @@ public class Succeeder : Node
         end();
         return nodeState;
     }
+
+    public override void loadData(ref GenericAntData saveableData)
+    {
+        child.loadData(ref saveableData);
+    }
+
+    public override void saveData(ref GenericAntData saveableData)
+    {
+        child.saveData(ref saveableData);
+    }
 }
 

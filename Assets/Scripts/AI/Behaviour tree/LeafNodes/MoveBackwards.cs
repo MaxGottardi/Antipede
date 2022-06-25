@@ -18,6 +18,16 @@ public class PlayerTooClose : Node
     {
         return Vector3.Distance(blackboard.transform.position, GameManager1.mCentipedeBody.Head.position);
     }
+
+    public override void loadData(ref GenericAntData saveableData)
+    {
+        //no data to load
+    }
+
+    public override void saveData(ref GenericAntData saveableData)
+    {
+        //not required as no new data to save
+    }
 }
 
 public class MoveBackwards : Node
@@ -26,7 +36,7 @@ public class MoveBackwards : Node
     float backwardOffset;
     float backwardTime = 2; //num seconds it can move backwards for
 
-    int doGoBack = 1;
+    int doGoBack = 1; //the direction to move in when going backwards, with -1 meaning it would move forward instead
     HunterAnt realOwner;
     public MoveBackwards(GenericAnt blackboard, int doGoBack = 1)
     {
@@ -83,5 +93,20 @@ public class MoveBackwards : Node
         if (realOwner)
             realOwner.isFleeing = false;
         base.end();
+    }
+
+    public override void saveData(ref GenericAntData saveableData)
+    {
+
+        saveableData.moveBackwardsOffset.list.Add(backwardOffset);
+        saveableData.moveBackwardsTime.list.Add(backwardTime);
+    }
+
+    public override void loadData(ref GenericAntData saveableData)
+    {
+        backwardOffset = saveableData.moveBackwardsOffset.list[0];
+        saveableData.moveBackwardsOffset.list.RemoveAt(0);
+        backwardTime = saveableData.moveBackwardsTime.list[0];
+        saveableData.moveBackwardsTime.list.RemoveAt(0);
     }
 }

@@ -9,7 +9,7 @@ public class DasherAnt : GenericAnt
     public float dashRoteSpeed;
     public float dashAnimSpeed;
 
-    [HideInInspector]public float tempSpeed, tempRoteSpeed, tempAnimSpeed;
+    [HideInInspector] public float tempSpeed, tempRoteSpeed, tempAnimSpeed;
 
     public override void Start()
     {
@@ -19,5 +19,9 @@ public class DasherAnt : GenericAnt
         tempAnimSpeed = animMultiplier;
 
         stateMachine.Investigate = new DasherInvestigate(this);
+    }
+
+    public override void SaveData(ref SaveableData saveableData)
+    {
     }
 }

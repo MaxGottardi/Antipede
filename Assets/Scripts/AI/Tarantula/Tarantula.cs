@@ -285,8 +285,8 @@ public class Tarantula: MonoBehaviour, IDataInterface
                 genericAnt.maxSightDist = 100;
                 genericAnt.largeViewAnlge = 360;
                 genericAnt.isHelper = true;
-                if (genericAnt.stateMachine != null)
-                    genericAnt.stateMachine.changeState(genericAnt.stateMachine.SpawnIn);
+                //if (genericAnt.stateMachine != null)
+                  //  genericAnt.stateMachine.changeState(genericAnt.stateMachine.SpawnIn);
 
             }
             spawnAntTimer = 0;
@@ -329,9 +329,6 @@ public class Tarantula: MonoBehaviour, IDataInterface
         currClipName = spiderData.spiderCurAnimClip;
         animator.Play(currClipName);
         animator[currClipName].normalizedTime = spiderData.spiderCurAnimTime;
-
-
-        Debug.Log("Loading Spider Data");
     }
 
     public void SaveData(ref SaveableData saveableData)

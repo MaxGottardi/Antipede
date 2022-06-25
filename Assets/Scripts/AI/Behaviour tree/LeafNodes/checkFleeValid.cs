@@ -24,4 +24,13 @@ public class CheckFleeValid : Node
         return NodeState.Failure;//as failed to flee play the damage animation
     }
 
+    public override void loadData(ref GenericAntData saveableData)
+    {
+        //nothing to load
+    }
+
+    public override void saveData(ref GenericAntData saveableData)
+    {
+        //nothing to save
+    }
 }

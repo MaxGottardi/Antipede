@@ -49,4 +49,25 @@ public class Sequence : Node
             childNode.interupt();
         }
     }
+
+    public override void loadData(ref GenericAntData saveableData)
+    {
+        currChild = saveableData.aISequenceChildCounts.list[0];//as always adding to the end of the list, when reach this script it should be the first one
+        saveableData.aISequenceChildCounts.list.RemoveAt(0);//as used no longer needed so remove it, making the next element in the list the first one
+        for (int i = 0; i < children.Count; i++)
+        {
+            children[i].loadData(ref saveableData);
+        }
+    }
+
+    public override void saveData(ref GenericAntData saveableData)
+    {
+        saveableData.aISequenceChildCounts.list.Add(currChild);
+        for (int i = 0; i < children.Count; i++)
+        {
+            children[i].saveData(ref saveableData);
+        }
+
+        ////need some way to tell it which selector gets which curr child value
+    }
 }

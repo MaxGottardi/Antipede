@@ -26,4 +26,16 @@ public class GenericLeaf : Node
     {
         base.end();
     }
+
+
+    //functions for saving and loading the data from an ant
+    public override void saveData(ref GenericAntData saveableData)
+    {
+        
+    }
+
+    public override void loadData(ref GenericAntData saveableData)
+    {
+    
+    }
 }

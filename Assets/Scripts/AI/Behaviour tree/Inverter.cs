@@ -33,4 +33,14 @@ public class Inverter : Node //invert the value recieved
         //as all children were either running or a success
         return nodeState;
     }
+
+    public override void loadData(ref GenericAntData saveableData)
+    {
+        child.loadData(ref saveableData);
+    }
+
+    public override void saveData(ref GenericAntData saveableData)
+    {
+        child.saveData(ref saveableData);
+    }
 }

@@ -53,9 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5bd5509f7756f0439eeaa7b864265d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avoidanceDir: {x: 0, y: 0, z: 0}
-  avoidanceUpdateFreqCurr: -1
-  waitTimeAvoidance: 0.1
+  antType: 3
   nextPosTransform: {fileID: 0}
   pathToNextPos: []
   nextPosVector: {x: 0, y: 0, z: 0}

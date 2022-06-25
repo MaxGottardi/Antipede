@@ -10,4 +10,9 @@ public class GuardAnt : GenericAnt
         stateMachine.Attack = new GuardAttack(this);
         stateMachine.Investigate = new GuardInvestigate(this);
     }
+
+    public override void SaveData(ref SaveableData saveableData)
+    {
+        base.SaveData(ref saveableData);
+    }
 }

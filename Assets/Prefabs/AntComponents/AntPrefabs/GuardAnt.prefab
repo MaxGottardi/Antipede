@@ -66,9 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e134888c7f459004c9f52a716e3504c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avoidanceDir: {x: 0, y: 0, z: 0}
-  avoidanceUpdateFreqCurr: -1
-  waitTimeAvoidance: 0.1
+  antType: 2
   nextPosTransform: {fileID: 0}
   pathToNextPos: []
   nextPosVector: {x: 0, y: 0, z: 0}
@@ -120,6 +118,7 @@ MonoBehaviour:
   chanceSpawnHelpers: 0
   maxBackupDist: 75
   backupCallDist: 80
+  backupRingScale: 32
   spawnedHelp:
   - {fileID: 1768346567234793843, guid: f2979dff33818664381e12b6ce518823, type: 3}
   isHelper: 0
@@ -576,6 +575,10 @@ PrefabInstance:
     - target: {fileID: 6295644759531088180, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6305046320654929380, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 6739587167527364892, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_Mesh

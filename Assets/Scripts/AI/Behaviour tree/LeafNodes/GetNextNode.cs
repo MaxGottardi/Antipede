@@ -35,7 +35,16 @@ public class GetNextNode : Node
                 return NodeState.Success;
             }
         }
-//        Debug.Log("Failed Getting a new path");
         return NodeState.Failure; //no node or path could be found
+    }
+
+    public override void loadData(ref GenericAntData saveableData)
+    {
+        //no data to load
+    }
+
+    public override void saveData(ref GenericAntData saveableData)
+    {
+        //not required as the data is set when this class is initilized and never changed
     }
 }
