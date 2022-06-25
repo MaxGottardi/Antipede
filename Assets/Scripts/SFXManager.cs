@@ -19,6 +19,7 @@ public class SFXManager : MonoBehaviour
     [SerializeField] AudioSource sourceLazer;
     [SerializeField] AudioSource sourceAnt;
     [SerializeField] AudioSource sourceSpider;
+    [SerializeField] AudioSource sourceFlame;
 
     [SerializeField] AudioClip menuMusic;
     [SerializeField] AudioClip loadingMusic;
@@ -39,6 +40,7 @@ public class SFXManager : MonoBehaviour
     [SerializeField] AudioClip antAttackSFX;
     [SerializeField] AudioClip spiderAttackSFX;
     [SerializeField] AudioClip shootWebSFX;
+    [SerializeField] AudioClip fireSFX;
 
     // Start is called before the first frame update
     void Start()
@@ -186,7 +188,8 @@ public class SFXManager : MonoBehaviour
 
     public void ShootFlame()
     {
-
+        sourceFlame.clip = fireSFX;
+        sourceFlame.Play();
     }
 
 
