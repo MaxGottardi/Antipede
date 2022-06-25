@@ -14,17 +14,20 @@ public class Card : MonoBehaviour
     [SerializeField] Material cardSprite2;
     [SerializeField] Material cardSprite3;
     [SerializeField] Material cardSprite4;
+    [SerializeField] Material cardSprite5;
 
     [SerializeField] GameObject card1Prefab;
     [SerializeField] GameObject card2Prefab;
     [SerializeField] GameObject card3Prefab;
     [SerializeField] GameObject card4Prefab;
+    [SerializeField] GameObject card5Prefab;
 
     MeshRenderer meshRenderer;
     bool gun = false;
     bool laser = false;
     bool launcher = false;
     bool shield = false;
+    bool flame = false;
     bool active = false;
     int speedIncrease = 0;
 
@@ -49,33 +52,39 @@ public class Card : MonoBehaviour
     {
         int random = Random.Range(0, 100);
 
-        if (random < 40)
+        if (random < 35)
         {
             //Shield
             shield = true;
             rarity = "common";
             return 1;
         }
-        if (random >= 40 && random < 65)
+        if (random >= 35 && random < 60)
         {
             //Launcher
             launcher = true;
             rarity = "uncommon";
             return 2;
         }
-        if (random >= 65 && random < 90)
+        if (random >= 60 && random < 85)
         {
             //Laser
             laser = true;
             rarity = "uncommon";
             return 3;
         }
-        if (random >= 90)
+        if (random >= 85 && random < 95)
         {
             //Gun
             gun = true;
             rarity = "rare";
             return 4;
+        }
+        if (random >= 95)
+        {
+            flame = true;
+            rarity = "ultra-rare";
+            return 5;
         }
 
         return 0;
@@ -98,6 +107,10 @@ public class Card : MonoBehaviour
         if (index == 4)
         {
             meshRenderer.material = cardSprite4;
+        }
+        if (index == 5)
+        {
+            meshRenderer.material = cardSprite5;
         }
     }
 
@@ -123,6 +136,11 @@ public class Card : MonoBehaviour
         if (cardIndex == 4)
         {
             Instantiate(card4Prefab, this.transform.position, Quaternion.identity);
+            Destroy(this.gameObject);
+        }
+        if (cardIndex == 5)
+        {
+            Instantiate(card5Prefab, this.transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
     }

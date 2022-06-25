@@ -128,7 +128,9 @@ MonoBehaviour:
   cardSprite2: {fileID: 2100000, guid: 9ec0d4aff6543a24ab41a2bf46c8e1d9, type: 2}
   cardSprite3: {fileID: 2100000, guid: c58f2fb5ab553884082363eeb38eb263, type: 2}
   cardSprite4: {fileID: 2100000, guid: ca7c4994f181da84a8ba38ab232f4a8e, type: 2}
+  cardSprite5: {fileID: 2100000, guid: e780c00d26c71ae408449d2601f8caee, type: 2}
   card1Prefab: {fileID: 4263386421578837108, guid: 10a9f069bfcdf694d99b6198a7698aaf, type: 3}
   card2Prefab: {fileID: 1332047328893984492, guid: 6b7749803109491469fe9d0fdcbc1863, type: 3}
   card3Prefab: {fileID: 24611930172040355, guid: 04b8f75dfd5eb4c499aed0e1c0bb3c3e, type: 3}
   card4Prefab: {fileID: 1728774939834552395, guid: ba9d407944d4f284c97a36e9f38b7ef8, type: 3}
+  card5Prefab: {fileID: 4417545337916853528, guid: 48a373f7d7bf2d4489e5f402f0942b4d, type: 3}
