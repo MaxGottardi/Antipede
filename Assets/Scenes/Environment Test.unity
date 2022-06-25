@@ -48259,7 +48259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TemplateCard: {fileID: 8785330127099431165, guid: 5e642c782cb4e394bb92f7ef663d3d01, type: 3}
-  PaddingBetweenCards: -50
+  PaddingBetweenCards: 10
   AttachUI: {fileID: 1270414645}
   WeaponCheats:
   - {fileID: 2239036073940972491, guid: 61d0affc515ed8648896a539880facb3, type: 3}
