@@ -187,7 +187,6 @@ public class WeaponCardUI : MonoBehaviour
 
 	void UpdateText(ref AttachmentUIInfo AUII)
 	{
-		Debug.Log("updatetext");
 		//AUII.Update(AUII.WeaponAttachment.Attachment.name + "\nx" + AUII.Remaining);
 		AUII.Update("x" + AUII.Remaining);
 	}
