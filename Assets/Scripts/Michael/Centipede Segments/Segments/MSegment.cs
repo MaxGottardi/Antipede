@@ -18,7 +18,7 @@ public class MSegment : MonoBehaviour
 {
 	static AnimationCurve AccelerationCurve;
 
-	[Header("Follow Settings.")]
+	[Header("Follow References.")]
 	[ReadOnly] public Transform ForwardNeighbour;
 	[ReadOnly] public float FollowSpeed, MaxTurnDegreesPerFrame;
 	Rigidbody rb;
@@ -50,7 +50,7 @@ public class MSegment : MonoBehaviour
 	Note that the Centipede has it's own implementation.
 
 	*/
-	const float kErrorAngle = 5f;   // An angle difference > this degrees will trigger Alignment.
+	const float kErrorAngle = 1f;   // An angle difference > this degrees will trigger Alignment.
 	const int kFrameSkips = 10;   // Skip this many frames before checking if this Segment needs realigning.
 #endif
 
@@ -107,11 +107,11 @@ public class MSegment : MonoBehaviour
 				}
 				else
 				{
-					MMathStatics.HomeTowards(rb, ForwardNeighbour, EvaluateAcceleration(FollowSpeed), MaxTurnDegreesPerFrame);
+					MMathStatics.HomeTowards(rb, ForwardNeighbour, EvaluateAcceleration(), MaxTurnDegreesPerFrame);
 					bHasRayAligned = false;
 				}
 #else
-				MMathStatics.HomeTowards(rb, ForwardNeighbour, EvaluateAcceleration(FollowSpeed), MaxTurnDegreesPerFrame);
+				MMathStatics.HomeTowards(rb, ForwardNeighbour, EvaluateAcceleration(), MaxTurnDegreesPerFrame);
 				bHasRayAligned = false;
 #endif
 
@@ -160,14 +160,12 @@ public class MSegment : MonoBehaviour
 		}
 	}
 
-	float EvaluateAcceleration(float Scalar)
+	float EvaluateAcceleration()
 	{
 		if (Reference.AccelerationTime < Vector3.kEpsilon)
-			return 250; // Known safe speed for Segments and Centipede.
+			return CentipedeMovement.kSafeSpeed; // Known safe speed for Segments and Centipede.
 
-		float AccelRate = AccelerationCurve.Evaluate(AccelerationTime);
-
-		return AccelRate * Scalar;
+		return Reference.EvaluateAcceleration(Reference.MBody);
 	}
 
 #if WITH_DYNAMIC_ALIGNMENT
@@ -175,21 +173,16 @@ public class MSegment : MonoBehaviour
 	{
 		Ray R = new Ray(transform.position, -transform.up);
 		if (Physics.Raycast(R, out Terrain, 1, 256))
-		{
 			return Vector3.Angle(transform.up, Terrain.normal) > kErrorAngle;
-		}
 
-		return false;
+		// If nothing was hit, return true anyway and force an Alignment to Up.
+		Terrain.normal = Vector3.up;
+		return true;
 	}
 
 	void Align(ref RaycastHit Terrain)
 	{
-		if (!Terrain.collider)
-			return;
-
-		Vector3 Normal = Terrain.normal;
-
-		transform.rotation = Quaternion.FromToRotation(transform.up, Normal) * transform.rotation;
+		transform.rotation = Quaternion.FromToRotation(transform.up, Terrain.normal) * transform.rotation;
 	}
 #endif
 

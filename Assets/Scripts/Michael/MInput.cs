@@ -107,7 +107,7 @@ public class MInput : MonoBehaviour
 		if (bIsPaused)
 			return;
 
-		movement.HandleMovement(ref body);
+		movement.HandleMovement();
 	}
 
 	void OnPause()

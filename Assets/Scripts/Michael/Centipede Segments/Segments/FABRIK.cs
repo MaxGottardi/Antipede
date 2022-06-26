@@ -21,7 +21,6 @@ public class FABRIK : MonoBehaviour
 
 	// Optimisations
 	static SpringArm MainSpringArmComponent;
-	bool bIsVisible;
 	const float kSpringArmThreshold = 15;
 	const float kCameraDistanceThreshold = 17f;
 
@@ -59,11 +58,6 @@ public class FABRIK : MonoBehaviour
 
 	void Update()
 	{
-		bFrameLimiterActive = MMathStatics.FPS() < 30;
-	}
-
-	void FixedUpdate()
-	{
 #if UNITY_EDITOR
 		if (bAlwaysRunRegardless)
 		{
@@ -78,6 +72,8 @@ public class FABRIK : MonoBehaviour
 			return;
 		}
 #endif
+
+		bFrameLimiterActive = MMathStatics.FPS() < 30;
 
 		if (bFrameLimiterActive)
 		{

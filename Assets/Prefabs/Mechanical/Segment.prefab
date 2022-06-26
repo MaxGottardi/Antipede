@@ -1218,7 +1218,6 @@ MonoBehaviour:
   ForwardNeighbour: {fileID: 0}
   FollowSpeed: 0
   MaxTurnDegreesPerFrame: 0
-  bUseDynamicAlignment: 1
   bIgnoreFromWeapons: 0
   Weapon: {fileID: 0}
   health: 100
@@ -1241,7 +1240,7 @@ MonoBehaviour:
   BiasGizmosRadius: 0.02
   bShowRays: 0
   bAlwaysRunRegardless: 0
-  MaximumPasses: 60
+  MaximumPasses: 30
   Tolerance: 0.01
   MinLegUpHeight: 0.2
   MaxLegUpHeight: 0.6
