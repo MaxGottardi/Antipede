@@ -66,6 +66,10 @@ public partial class MCentipedeBody : MonoBehaviour
 	private bool backupPlayerExists = false;
 	public static MCentipedeBody newPlayer;
 
+	public float distanceToNest;
+	public Tarantula[] nests;
+
+
 	void Start()
 	{
 		shieldActive = false;
@@ -115,6 +119,9 @@ public partial class MCentipedeBody : MonoBehaviour
 				}
 			}
 		}
+
+		nests = Object.FindObjectsOfType<Tarantula>();
+
 	}
 
 	void Update()
@@ -130,7 +137,28 @@ public partial class MCentipedeBody : MonoBehaviour
 				slowed = false;
 			}
 		}
+
+		distanceToNest = CalculateNestDistance();
 	}
+
+	float CalculateNestDistance()
+    {
+		float smallestDistance = 0;
+
+		if (nests.Length > 0)
+        {
+			foreach (Tarantula t in nests)
+            {
+				float f = Vector3.Distance(t.transform.position, Head.transform.position);
+				if (f > smallestDistance)
+                {
+					smallestDistance = f;
+                }
+            }
+        }
+
+		return smallestDistance;
+    }
 
 	/// <summary>Adds a Segment to the back of the Centipede.</summary>
 	/// <remarks>
@@ -414,6 +442,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	{
 		GUI.Label(new Rect(10, 25, 250, 150), "Movement Speed: " + MovementSpeed);
 		GUI.Label(new Rect(10, 55, 250, 150), "Number of Segments: " + NumberOfSegments);
+		GUI.Label(new Rect(10, 70, 250, 150), "Distance to Nest: " + Mathf.Round(distanceToNest));
 	}
 
 #endif
