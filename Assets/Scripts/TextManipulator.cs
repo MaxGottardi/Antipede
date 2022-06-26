@@ -26,7 +26,7 @@ public class TextManipulator : MonoBehaviour
     {
         body = Object.FindObjectOfType<MCentipedeBody>();
         startingPosition = this.transform.position;
-        startingShakeRate = shakeRate;
+        startingShakeRate = 1;
     }
 
     // Update is called once per frame
@@ -40,7 +40,8 @@ public class TextManipulator : MonoBehaviour
 
         if (multiplier == 0)
         {
-            this.transform.position = startingPosition;
+            text.transform.position = startingPosition;
+            shakeRate = startingShakeRate;
         }
         else
         {
