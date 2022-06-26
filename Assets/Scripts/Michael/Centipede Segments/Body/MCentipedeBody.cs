@@ -145,14 +145,14 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	float CalculateNestDistance()
     {
-		float smallestDistance = 0;
+		float smallestDistance = 1000000;
 
 		if (nests.Length > 0)
         {
 			foreach (Tarantula t in nests)
             {
 				float f = Vector3.Distance(t.transform.position, Head.transform.position);
-				if (f > smallestDistance)
+				if (f < smallestDistance)
                 {
 					smallestDistance = f;
                 }

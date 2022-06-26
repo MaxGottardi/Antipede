@@ -48,13 +48,18 @@ public class TextManipulator : MonoBehaviour
             text.fontSize = 26 + Mathf.RoundToInt(Mathf.Sin(Time.time * speed) * range);
         }
 
-        if (multiplier > 10)
+        if (multiplier >= 10 && multiplier < 25)
         {
             text.transform.position = new Vector3(startingPosition.x + shake, startingPosition.y, 0);
         }
-        if (multiplier > 20)
+        if (multiplier >= 25 && multiplier < 49)
         {
             shakeRate = startingShakeRate * 2;
+            text.transform.position = new Vector3(startingPosition.x + shake, startingPosition.y, 0);
+        }
+        if (multiplier >= 50)
+        {
+            shakeRate = startingShakeRate * 3;
             text.transform.position = new Vector3(startingPosition.x + shake, startingPosition.y, 0);
         }
 
