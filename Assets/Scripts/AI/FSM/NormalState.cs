@@ -47,14 +47,14 @@ public class MovementState : State
             owner.canInvestigate = false;
     }
 
-    public void loadData(ref GenericAntData saveableData)
+    public void loadData(GenericAntData saveableData)
     {
-        topNode.loadData(ref saveableData);
+        topNode.loadData(saveableData);
     }
 
-    public void saveData(ref GenericAntData saveableData)
+    public void saveData(GenericAntData saveableData)
     { 
-        topNode.saveData(ref saveableData); 
+        topNode.saveData(saveableData); 
     }
 }
 /// <summary>
@@ -90,20 +90,20 @@ public class ShockState : State
         owner.shockBar.SetActive(false);
     }
 
-    public void loadData(ref GenericAntData saveableData)
+    public void loadData(GenericAntData saveableData)
     {
         shockTime = saveableData.shockTimeLeft;
         owner.shockBar.SetActive(saveableData.bShockBarActiveState);
 
         if (saveableData.bShockBarActiveState)//if the shockbar was visible when saved, reset it to where it left from
-            owner.shockBar.GetComponent<Animator>().Play("Show", -1, saveableData.shockBarCurrAntimNormTime);
+            owner.shockBar.GetComponent<Animator>().Play("Show", 0, saveableData.shockBarCurrAntimNormTime);
     }
 
-    public void saveData(ref GenericAntData saveableData)
+    public void saveData(GenericAntData saveableData)
     {
         saveableData.shockTimeLeft = shockTime;
         saveableData.bShockBarActiveState = owner.shockBar.activeSelf;
-        saveableData.shockBarCurrAntimNormTime = owner.shockBar.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime;
+        saveableData.shockBarCurrAntimNormTime = saveableData.bShockBarActiveState ? owner.shockBar.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime : 0;
     }
 }
 /// <summary>
@@ -194,16 +194,16 @@ public class InvestigateState : State
         lostPlayerTime = 0;
     }
 
-    public virtual void saveData(ref GenericAntData saveableData)
+    public virtual void saveData(GenericAntData saveableData)
     {
         saveableData.investigateStateLostPlayerTime = lostPlayerTime;
-        topNode.saveData(ref saveableData);
+        topNode.saveData(saveableData);
     }
 
-    public virtual void loadData(ref GenericAntData saveableData)
+    public virtual void loadData(GenericAntData saveableData)
     {
         lostPlayerTime = saveableData.investigateStateLostPlayerTime;
-        topNode.loadData(ref saveableData);
+        topNode.loadData(saveableData);
     }
 }
 /// <summary>
@@ -234,7 +234,6 @@ public class AttackState : State
 
     public virtual void execute()
     {
-        Debug.Log(attackTime);
         attackTime -= Time.deltaTime;
         if (attackTime <= owner.attackAnimLength)//when finished attacking add any damage to the appropriate segment
         {
@@ -257,17 +256,16 @@ public class AttackState : State
         //owner.headTransform.rotation = headNormRote;
     }
 
-    public virtual void saveData(ref GenericAntData saveableData)
+    public virtual void saveData(GenericAntData saveableData)
     {
         saveableData.bAttackDone = attackDone;
         saveableData.currAttackTime = attackTime;
     }
 
-    public virtual void loadData(ref GenericAntData saveableData)
+    public virtual void loadData(GenericAntData saveableData)
     {
         attackDone = saveableData.bAttackDone;
         attackTime = saveableData.currAttackTime;
-        Debug.Log("reset Attack Time: " + attackTime);
     }
 }
 
@@ -319,16 +317,16 @@ public class DamageState : State
         damageTime = 1.7f;
     }
 
-    public void loadData(ref GenericAntData saveableData)
+    public void loadData(GenericAntData saveableData)
     {
         damageTime = saveableData.currDamageTime;
-        topNode.loadData(ref saveableData);
+        topNode.loadData(saveableData);
     }
 
-    public void saveData(ref GenericAntData saveableData)
+    public void saveData(GenericAntData saveableData)
     {
         saveableData.currDamageTime = damageTime;
-        topNode.saveData(ref saveableData);
+        topNode.saveData(saveableData);
     }
 }
 
@@ -371,12 +369,12 @@ public class DeadState : State
         deadTime = 3;
     }
 
-    public void saveData(ref GenericAntData saveableData)
+    public void saveData(GenericAntData saveableData)
     {
         saveableData.currDeadTime = deadTime;
     }
 
-    public void loadData(ref GenericAntData saveableData)
+    public void loadData(GenericAntData saveableData)
     {
         deadTime = saveableData.currDeadTime;
     }
@@ -397,7 +395,7 @@ public class HunterAttack : AttackState
     public override void enter()
     {
         owner = owner.gameObject.GetComponent<HunterAnt>();
-        shootDelay = 0.25f;
+        shootDelay = 0.5f;
         owner.anim.SetTrigger("Idle");
     }
 
@@ -420,16 +418,16 @@ public class HunterAttack : AttackState
         shootDelay = 0.5f;
     }
 
-    public override void loadData(ref GenericAntData saveableData)
+    public override void loadData(GenericAntData saveableData)
     {
-        base.loadData(ref saveableData);
+        base.loadData(saveableData);
         ////HunterAntData hunterAntData = saveableData as HunterAntData;
         ////shootDelay = hunterAntData.currShootDelay;
     }
 
-    public override void saveData(ref GenericAntData saveableData)
+    public override void saveData(GenericAntData saveableData)
     {
-        base.saveData(ref saveableData);
+        base.saveData(saveableData);
       ////  HunterAntData hunterAntData = saveableData as HunterAntData;
       ////  hunterAntData.currShootDelay = shootDelay;
         //not 100% sure this will work correctly though
@@ -473,16 +471,16 @@ public class HunterInvestigate : InvestigateState
         return base.checkAttack() && !owner.isFleeing;
     }
 
-    public override void saveData(ref GenericAntData saveableData)
+    public override void saveData(GenericAntData saveableData)
     {
         saveableData.investigateStateLostPlayerTime = lostPlayerTime;
-        topNode.saveData(ref saveableData);
+        topNode.saveData(saveableData);
     }
 
-    public override void loadData(ref GenericAntData saveableData)
+    public override void loadData(GenericAntData saveableData)
     {
         lostPlayerTime = saveableData.investigateStateLostPlayerTime;
-        topNode.loadData(ref saveableData);
+        topNode.loadData(saveableData);
     }
 }
 
@@ -544,13 +542,13 @@ public class GuardAttack : AttackState
         attackTime = 2.5f;
     }
 
-    public override void saveData(ref GenericAntData saveableData)
+    public override void saveData(GenericAntData saveableData)
     {
         saveableData.currAttackTime = attackTime;
         saveableData.bAttackDone = attackDone;
     }
 
-    public override void loadData(ref GenericAntData saveableData)
+    public override void loadData(GenericAntData saveableData)
     {
         attackTime = saveableData.currAttackTime;
         attackDone = saveableData.bAttackDone;
@@ -577,14 +575,14 @@ public class GuardInvestigate : InvestigateState
         topNode = new Sequence(new List<Node> { determineAttackSeg, repeatUntilFail });
     }
 
-    public override void saveData(ref GenericAntData saveableData)
+    public override void saveData(GenericAntData saveableData)
     {
-        topNode.saveData(ref saveableData);
+        topNode.saveData(saveableData);
     }
 
-    public override void loadData(ref GenericAntData saveableData)
+    public override void loadData(GenericAntData saveableData)
     {
-        topNode.loadData(ref saveableData);
+        topNode.loadData(saveableData);
     }
 }
 
@@ -701,12 +699,12 @@ public class SpawnInState : State
         waitTime = 1;
     }
 
-    public void loadData(ref GenericAntData saveableData)
+    public void loadData(GenericAntData saveableData)
     {
         waitTime = saveableData.spawnInWaitTime;
     }
 
-    public void saveData(ref GenericAntData saveableData)
+    public void saveData(GenericAntData saveableData)
     {
         saveableData.spawnInWaitTime = waitTime;
     }

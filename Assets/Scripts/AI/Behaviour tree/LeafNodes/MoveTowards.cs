@@ -204,15 +204,19 @@ public class MoveTowards : Node
         return upSmooth;
     }
 
-    public override void saveData(ref GenericAntData saveableData)
+    public override void saveData(GenericAntData saveableData)
     {
+        base.saveData(saveableData);
+
         saveableData.moveTowardsPrevDistToNode.list.Add(previousDistToNode);
         saveableData.moveTowardsForwardOffset.list.Add(forwardOffset);
 
     }
 
-    public override void loadData(ref GenericAntData saveableData)
+    public override void loadData(GenericAntData saveableData)
     {
+        base.loadData(saveableData);
+
         forwardOffset = saveableData.moveTowardsForwardOffset.list[0];
         saveableData.moveTowardsForwardOffset.list.RemoveAt(0);
         

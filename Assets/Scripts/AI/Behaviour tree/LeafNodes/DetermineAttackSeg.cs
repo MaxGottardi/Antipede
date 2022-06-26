@@ -65,13 +65,15 @@ public class DetermineAttackSeg : Node
         //////This for some reason causes an error to appear
     }
 
-    public override void loadData(ref GenericAntData saveableData)
+    public override void loadData(GenericAntData saveableData)
     {
+        base.loadData(saveableData);
         //do nothing as no new data to save
     }
 
-    public override void saveData(ref GenericAntData saveableData)
+    public override void saveData(GenericAntData saveableData)
     {
+        base.saveData(saveableData);
         //do nothing as no new data to save
     }
 }
@@ -114,13 +116,15 @@ public class PathToSegment : Node
         }
     }
 
-    public override void loadData(ref GenericAntData saveableData)
+    public override void loadData(GenericAntData saveableData)
     {
+        base.loadData(saveableData);
         //do nothing as no new data to save
     }
 
-    public override void saveData(ref GenericAntData saveableData)
+    public override void saveData(GenericAntData saveableData)
     {
+        base.saveData(saveableData);
         //do nothing as no new data to save
     }
 }

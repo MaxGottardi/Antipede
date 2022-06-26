@@ -68,12 +68,24 @@ public class PersistentDataManager : MonoBehaviour
         {
             dataObj.LoadData(saveableData);
         }
+        SerializableList<Quaternion> emptyList = new SerializableList<Quaternion>(); //used for items with no saved rotation
+        saveableData.LoadApple("Health", ref saveableData.healthApplePos, "Assets/Prefabs/RedApple.prefab", ref emptyList);
+        saveableData.LoadApple("Speed", ref saveableData.speedApplePos, "Assets/Prefabs/GreenApple.prefab", ref emptyList);
+        saveableData.LoadApple("Larvae", ref saveableData.larvaePos, "Assets/Prefabs/Larvae.prefab", ref saveableData.larvaeRot);
 
-        saveableData.LoadApple("Health", ref saveableData.healthApplePos, "Assets/Prefabs/RedApple.prefab");
-        saveableData.LoadApple("Speed", ref saveableData.speedApplePos, "Assets/Prefabs/GreenApple.prefab");
         Tarantula.numTarantulasLeft = saveableData.numSpidersLeft;
         saveableData.LoadCobwebs();
-        saveableData.LoadAnt(ref saveableData.guardAntData, "Assets/Prefabs/AntComponents/AntPrefabs/GuardAnt.prefab");
+        saveableData.LoadAllAnts();
+        FarmerAnt.larvaeBag.shuffleList = saveableData.useLarvaeBag;
+        FarmerAnt.larvaeBag.currPos = saveableData.farmerAntCurrBagPos;
+
+        //assign the appropriate values to the shuffle list
+        HunterAnt.weaponsBag.currPos = saveableData.hunterAntCurrBagPos;
+        for (int i = 0; i < saveableData.hunterAntWeaponBag.Length; i++)
+        {
+            HunterAnt.weaponsBag.shuffleList[i] = saveableData.IntToWeapon(saveableData.hunterAntWeaponBag[i]).gameObject;
+        }
+        ////saveableData.LoadAnt(ref saveableData.guardAntData, "Assets/Prefabs/AntComponents/AntPrefabs/GuardAnt.prefab");
     }
 
     /// <summary>
@@ -89,6 +101,8 @@ public class PersistentDataManager : MonoBehaviour
         saveableData.SaveApple("Health", ref saveableData.healthApplePos);
         saveableData.SaveApple("Speed", ref saveableData.speedApplePos);
         saveableData.numSpidersLeft = Tarantula.numTarantulasLeft;
+
+        saveableData.SaveLarvae();
 
 
         string fullPath = Path.Combine(dataDirectory, dataFileName);//this accounts for different paths having different path seperators

@@ -9,8 +9,8 @@ public interface State
     public void execute(); //update code for when running the state
     public void exit(); //runs when leaving the state
 
-    public void saveData(ref GenericAntData saveableData);
-    public void loadData(ref GenericAntData saveableData);
+    public void saveData(GenericAntData saveableData);
+    public void loadData(GenericAntData saveableData);
 
 }
 [System.Serializable]
@@ -47,26 +47,26 @@ public class StateMachine
     }
 
     //save the nessesary data for each state
-    public void saveData(ref GenericAntData saveableData)
+    public void saveData(GenericAntData saveableData)
     {
-        Movement.saveData(ref saveableData);
-        Shock.saveData(ref saveableData);
-        Investigate.saveData(ref saveableData);
-        Attack.saveData(ref saveableData);
-        Damage.saveData(ref saveableData);
-        Dead.saveData(ref saveableData);
-        SpawnIn.saveData(ref saveableData);
+        Movement.saveData(saveableData);
+        Shock.saveData(saveableData);
+        Investigate.saveData(saveableData);
+        Attack.saveData(saveableData);
+        Damage.saveData(saveableData);
+        Dead.saveData(saveableData);
+        SpawnIn.saveData(saveableData);
     }
 
     //load in the data from a file and set it to the appropriate states
-    public void loadData(ref GenericAntData saveableData)
+    public void loadData(GenericAntData saveableData)
     {
-        Movement.loadData(ref saveableData);
-        Shock.loadData(ref saveableData);
-        Investigate.loadData(ref saveableData);
-        Attack.loadData(ref saveableData);
-        Damage.loadData(ref saveableData);
-        Dead.loadData(ref saveableData);
-        SpawnIn.loadData(ref saveableData);
+        Movement.loadData(saveableData);
+        Shock.loadData(saveableData);
+        Investigate.loadData(saveableData);
+        Attack.loadData(saveableData);
+        Damage.loadData(saveableData);
+        Dead.loadData(saveableData);
+        SpawnIn.loadData(saveableData);
     }
 }

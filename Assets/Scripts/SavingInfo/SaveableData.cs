@@ -110,26 +110,32 @@ public class GenericAntData
     [SerializeField] public SerializableList<float> callBackupRunTime = new SerializableList<float>(); //in theory if saving and loading from scripts in exactly the same order it should work fine
     [SerializeField] public SerializableList<float> callBackupTweenStartTime = new SerializableList<float>(); //in theory if saving and loading from scripts in exactly the same order it should work fine
     [SerializeField] public SerializableList<bool> callBackupPlayedAudio = new SerializableList<bool>(); //in theory if saving and loading from scripts in exactly the same order it should work fine
+    [SerializeField] public SerializableList<bool> bIsNodeRunning = new SerializableList<bool>(); //in theory if saving and loading from scripts in exactly the same order it should work fine
 
 
     [SerializeField] public int spawnedHelpCurrPos, damageStateCurrPos;
     [SerializeField] public bool[] damageStateOrder;
 }
+[System.Serializable]
 public class HunterAntData : GenericAntData
 {
     [SerializeField] public float currShootDelay;
     //weapon held
+    [SerializeField] public int heldWeapon;
 }
-
+[System.Serializable]
 public class FarmerAntData : GenericAntData
 {
     [SerializeField] public bool bHoldingLarvae;
 }
+
+[System.Serializable]
 public class DasherAntData : GenericAntData
 {
-    [SerializeField] public float speeds;
+    [SerializeField] public float tempSpeed, tempRotSpeed, tempAnimSpeed,
+        speed, rotSpeed, animSpeed;
 }
-
+[System.Serializable]
 public class BombAntData : GenericAntData
 {
     ////[SerializeField] public bool bHoldingLarvae;
@@ -195,17 +201,22 @@ public class SaveableData
     [SerializeField] public SerializableList<DasherAntData> dasherAntData;
 
 
-    //all the hunter ants
-    [SerializeField] public SerializableList<HunterAntData> hunterAntData;
-
-
-    //all the weapon cards in the game
-
 
     //all the farmer ants
     [SerializeField] public SerializableList<FarmerAntData> farmerAntData;
+    [SerializeField] public bool[] useLarvaeBag;
+    [SerializeField] public int farmerAntCurrBagPos;
 
     //all the ant larvae
+    [SerializeField] public SerializableList<Vector3> larvaePos;
+    [SerializeField] public SerializableList<Quaternion> larvaeRot;
+
+    //all the hunter ants
+    [SerializeField] public SerializableList<HunterAntData> hunterAntData;
+    [SerializeField] public int[] hunterAntWeaponBag;
+    [SerializeField] public int hunterAntCurrBagPos;
+
+    //all the weapon cards in the game
 
 
     //all the bomb ants
@@ -263,6 +274,9 @@ public class SaveableData
         guardAntData = new SerializableList<GenericAntData>();
         dasherAntData = new SerializableList<DasherAntData>();
         farmerAntData = new SerializableList<FarmerAntData>();
+        larvaePos = new SerializableList<Vector3>();
+        larvaeRot = new SerializableList<Quaternion>();
+
         bombAntData = new SerializableList<BombAntData>();
         hunterAntData = new SerializableList<HunterAntData>();
     }
@@ -324,6 +338,16 @@ public class SaveableData
         Debug.Log(applePos.list.Count + "Apples posses: " + tag);
     }
 
+    public void SaveLarvae()
+    {
+        GameObject[] larvae = GameObject.FindGameObjectsWithTag("Larvae");
+        foreach (GameObject item in larvae)//get every larvae which currently exists in the scene and store its position + rotation
+        {
+            larvaePos.list.Add(item.transform.position);
+            larvaeRot.list.Add(item.transform.rotation);
+        }
+    }
+
     /// <summary>
     /// every time load a save, get all apples in the scene and move them to the saved positions
     /// if still requiring more apples, spawn some in
@@ -332,18 +356,22 @@ public class SaveableData
     /// <param name="tag">the tag to search the scene for</param>
     /// <param name="applePos">the list of positions to use</param>
     /// <param name="assetPath">the file path to the prefab</param>
-    public void LoadApple(string tag, ref SerializableList<Vector3> applePos, string assetPath)
+    public void LoadApple(string tag, ref SerializableList<Vector3> applePos, string assetPath, ref SerializableList<Quaternion> appleRot)
     {
         GameObject[] apple = GameObject.FindGameObjectsWithTag(tag);
         int i = 0;
         while(i < applePos.list.Count)//for all apples, whose position has been saved, load it in
         {
+            Quaternion rot = appleRot.list.Count > 0 ? appleRot.list[i] : Quaternion.identity; //if some rotation data exists use it, else set default rotation
             if (i < apple.Length)
+            {
                 apple[i].transform.position = applePos.list[i]; //for all apples currently in the scene, move them to one of the preset, saved positions
+                apple[i].transform.rotation = rot;
+            }
             else //apple does not exist in the scene when it should, so spawn in a new apple
             {
                 GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath(assetPath, typeof(GameObject));
-                MonoBehaviour.Instantiate(obj, applePos.list[i], Quaternion.identity);
+                MonoBehaviour.Instantiate(obj, applePos.list[i], rot);
                 Debug.Log("Loading in a new Apple");
             }
             i++;
@@ -356,24 +384,55 @@ public class SaveableData
         }
     }
 
-    public void LoadAnt(ref SerializableList<GenericAntData> antData, string assetPath)
+    public void LoadAllAnts()
     {
+        ///find all the different enemy types in the scene
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");//FindObjectsOfType<MonoBehaviour>();//GameObject.FindGameObjectsWithTag(tag);
-        List<GameObject> ant = new List<GameObject>();
+        List<GameObject> farmerAnt = new List<GameObject>();
+        List<GameObject> guardAnt = new List<GameObject>();
+        List<GameObject> dasherAnt = new List<GameObject>();
+        List<GameObject> bombAnt = new List<GameObject>();
+        List<GameObject> hunterAnt = new List<GameObject>();
         foreach (GameObject item in enemies) //loop through all collected items and add them to the appropriate element
         {
             if (item.GetComponent<GuardAnt>() != null)
-                ant.Add(item);
+                guardAnt.Add(item);
+            if (item.GetComponent<FarmerAnt>() != null)
+                farmerAnt.Add(item);
+            if (item.GetComponent<DasherAnt>() != null)
+                dasherAnt.Add(item);
+            if (item.GetComponent<BombAnt>() != null)
+                bombAnt.Add(item);
+            if (item.GetComponent<HunterAnt>() != null)
+                hunterAnt.Add(item);
         }
+
+        LoadAnt<GenericAntData>(ref guardAnt, ref guardAntData, "Assets/Prefabs/AntComponents/AntPrefabs/GuardAnt.prefab");
+        LoadAnt<DasherAntData>(ref dasherAnt, ref dasherAntData, "Assets/Prefabs/AntComponents/AntPrefabs/DasherAnt.prefab");
+        LoadAnt<FarmerAntData>(ref farmerAnt, ref farmerAntData, "Assets/Prefabs/AntComponents/AntPrefabs/FarmerAnt.prefab");
+        LoadAnt<HunterAntData>(ref hunterAnt, ref hunterAntData, "Assets/Prefabs/AntComponents/AntPrefabs/HunterAnt.prefab");
+    }
+
+    /// <summary>
+    /// for each type of ant load in the data related to it
+    /// </summary>
+    /// <typeparam name="T">the specific ant type refering to</typeparam>
+    /// <param name="antObjs">all the gameobjects in the scene for the selected ant type</param>
+    /// <param name="antData">the ants data for the selected type</param>
+    /// <param name="assetPath">the file location of the ants prefab</param>
+    public void LoadAnt<T> (ref List<GameObject> antObjs, ref SerializableList<T> antData, string assetPath) where T : GenericAntData
+    {
         int i = 0;
+//        Debug.Log(antData.list.Count + "num objs to create " + antObjs.Count);
         while (i < antData.list.Count)//for all ants, whose position has been saved, load it in
         {
-            if (i < ant.Count)
+            if (i < antObjs.Count)
             {
-                ant[i].transform.position = antData.list[i].antPosition; //for all ants currently in the scene, move them to one of the preset, saved positions
-                ant[i].transform.rotation = antData.list[i].antRotation; //for all ants currently in the scene, move them to one of the preset, saved positions
-                GenericAnt genericAnt = ant[i].GetComponent<GenericAnt>();
-                LoadAntData(i, ref antData, ref genericAnt);
+                antObjs[i].transform.position = antData.list[i].antPosition; //for all ants currently in the scene, move them to one of the preset, saved positions
+                antObjs[i].transform.rotation = antData.list[i].antRotation; //for all ants currently in the scene, move them to one of the preset, saved positions
+                GenericAnt genericAnt = antObjs[i].GetComponent<GenericAnt>();
+                genericAnt.Start(); //reset the ant to its spawned in state
+                LoadAntData(i, ref antData, ref genericAnt); //assign the appropriate values
             }
             else //ant does not exist in the scene when it should, so spawn in a new apple
             {
@@ -388,14 +447,21 @@ public class SaveableData
         }
         //Debug.Log(i + "ants setup" + antData.list.Count + "  " + ant.Count);
         //if ant still exist in the scene but are already dead destroy them
-        for (int j = ant.Count - 1; j >= i; j--)
+        for (int j = antObjs.Count - 1; j >= i; j--)
         {
             //Debug.Log("Destroying unrequired ant");
-            MonoBehaviour.Destroy(ant[j]);
+            MonoBehaviour.Destroy(antObjs[j]);
         }
     }
 
-    void LoadAntData(int i, ref SerializableList<GenericAntData> antData, ref GenericAnt genericAnt)
+    /// <summary>
+    /// physically set the ants data here
+    /// </summary>
+    /// <typeparam name="T">the type of ant class</typeparam>
+    /// <param name="i">the position in the antData list using for the data</param>
+    /// <param name="antData">list of data for all ants of the selected type</param>
+    /// <param name="genericAnt">the specific ant, either existing or just spawned in setting data for</param>
+    void LoadAntData<T>(int i, ref SerializableList<T> antData, ref GenericAnt genericAnt) where T : GenericAntData
     {
         GenericAntData genericAntData = antData.list[i];
 
@@ -415,8 +481,60 @@ public class SaveableData
         genericAnt.AssignAntennaPositions();
 
         AIIntToState(genericAntData.currAIState, ref genericAnt.stateMachine);
-        genericAnt.stateMachine.loadData(ref genericAntData);
-        genericAnt.anim.Play(genericAntData.currAnimName, 0, genericAntData.currAnimNormTime);     
+        genericAnt.stateMachine.loadData(genericAntData);
+        genericAnt.anim.Play(genericAntData.currAnimName, 0, genericAntData.currAnimNormTime);
+
+        ////for each ant type load in the info specific to it as well
+        if (genericAnt as DasherAnt)
+        {
+            Debug.Log("Loading in the dasher ant data");
+            DasherAnt dasherAnt = genericAnt as DasherAnt;
+
+            DasherAntData dasherAntData = genericAntData as DasherAntData;
+            dasherAnt.tempAnimSpeed = dasherAntData.tempAnimSpeed;
+            dasherAnt.tempRoteSpeed = dasherAntData.tempRotSpeed;
+            dasherAnt.tempSpeed = dasherAntData.tempSpeed;
+
+            dasherAnt.Speed = dasherAntData.speed;
+            dasherAnt.animMultiplier = dasherAntData.animSpeed;
+            dasherAnt.rotSpeed = dasherAntData.rotSpeed;
+        }
+
+        else if (genericAnt as FarmerAnt)
+        {
+            Debug.Log("Loading in the Farmer ant data");
+            FarmerAnt farmerAnt = genericAnt as FarmerAnt;
+
+            FarmerAntData farmerAntData = genericAntData as FarmerAntData;
+            if (farmerAntData.bHoldingLarvae)
+            {
+                if (farmerAnt.Larvae == null)
+                    farmerAnt.AddLarvae();
+            }
+            else if (farmerAnt.Larvae != null)
+            {
+                MonoBehaviour.Destroy(farmerAnt.Larvae);
+                farmerAnt.Larvae = null;
+            }
+        }
+        else if (genericAnt as HunterAnt)
+        {
+            Debug.Log("Loading in the Farmer ant data");
+            HunterAnt hunterAnt = genericAnt as HunterAnt;
+
+            HunterAntData hunterAntData = genericAntData as HunterAntData;
+            if (hunterAnt.weaponClass != null) //destroy any weapon which currently exists on the ant
+                MonoBehaviour.Destroy(hunterAnt.weaponClass.gameObject);
+
+            //spawn in the appropriate, saved weapon
+            if (hunterAntData.heldWeapon == (int)EWeaponType.empty)
+                hunterAnt.PickWeapon(null);
+            else
+            {
+                hunterAnt.PickWeapon(IntToWeapon(hunterAntData.heldWeapon).gameObject);
+                //for the spawned in weapon assign the appropriate values for its things like shooting and stuff/////////////////////////
+            }
+        }
     }
 
     public void LoadCobwebs()

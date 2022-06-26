@@ -38,13 +38,15 @@ public class GetNextNode : Node
         return NodeState.Failure; //no node or path could be found
     }
 
-    public override void loadData(ref GenericAntData saveableData)
+    public override void loadData(GenericAntData saveableData)
     {
+        base.loadData(saveableData);
         //no data to load
     }
 
-    public override void saveData(ref GenericAntData saveableData)
+    public override void saveData(GenericAntData saveableData)
     {
+        base.saveData(saveableData);
         //not required as the data is set when this class is initilized and never changed
     }
 }

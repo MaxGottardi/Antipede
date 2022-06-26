@@ -19,13 +19,15 @@ public class PlayerTooClose : Node
         return Vector3.Distance(blackboard.transform.position, GameManager1.mCentipedeBody.Head.position);
     }
 
-    public override void loadData(ref GenericAntData saveableData)
+    public override void loadData(GenericAntData saveableData)
     {
+        base.loadData(saveableData);
         //no data to load
     }
 
-    public override void saveData(ref GenericAntData saveableData)
+    public override void saveData(GenericAntData saveableData)
     {
+        base.saveData(saveableData);
         //not required as no new data to save
     }
 }
@@ -95,15 +97,18 @@ public class MoveBackwards : Node
         base.end();
     }
 
-    public override void saveData(ref GenericAntData saveableData)
+    public override void saveData(GenericAntData saveableData)
     {
+        base.saveData(saveableData);
 
         saveableData.moveBackwardsOffset.list.Add(backwardOffset);
         saveableData.moveBackwardsTime.list.Add(backwardTime);
     }
 
-    public override void loadData(ref GenericAntData saveableData)
+    public override void loadData(GenericAntData saveableData)
     {
+        base.loadData(saveableData);
+
         backwardOffset = saveableData.moveBackwardsOffset.list[0];
         saveableData.moveBackwardsOffset.list.RemoveAt(0);
         backwardTime = saveableData.moveBackwardsTime.list[0];
