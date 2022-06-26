@@ -450,6 +450,11 @@ public partial class MCentipedeBody : MonoBehaviour
 		multiplier = 0;
     }
 
+	public int GetMultiplier()
+    {
+		return multiplier;
+    }
+
 #if UNITY_EDITOR
 	void OnGUI()
 	{
