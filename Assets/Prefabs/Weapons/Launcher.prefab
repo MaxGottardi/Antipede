@@ -153,7 +153,7 @@ MonoBehaviour:
   ArtMaterial: {fileID: 2100000, guid: 9ec0d4aff6543a24ab41a2bf46c8e1d9, type: 2}
   TextColour: {r: 0.19215688, g: 0.9960785, b: 0.22352943, a: 1}
   sfxManager: {fileID: 0}
-  LaunchHeight: 2.5
+  LaunchHeight: 0
 --- !u!1001 &458721776021495644
 PrefabInstance:
   m_ObjectHideFlags: 0

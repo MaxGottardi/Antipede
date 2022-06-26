@@ -2,7 +2,6 @@
 
 using System.Collections;
 using UnityEngine;
-using System;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
