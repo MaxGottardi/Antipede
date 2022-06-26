@@ -14,9 +14,12 @@ public class Projectile : MonoBehaviour
 	public bool isFlame = false;
 	public int enemyCollisionCounter;
 
+	[SerializeField] MCentipedeBody body;
+
 	/// <remarks>Use as Awake/Start method.</remarks>
 	public virtual void Initialise(bool isEnemyProjectile)
 	{
+		body = Object.FindObjectOfType<MCentipedeBody>();
 		enemyCollisionCounter = 0;
 		this.isEnemyProjectile = isEnemyProjectile;
 		rb = GetComponent<Rigidbody>();
@@ -25,6 +28,7 @@ public class Projectile : MonoBehaviour
 
 	public virtual void Initialise(bool isEnemyProjectile, bool isFlame)
 	{
+		body = Object.FindObjectOfType<MCentipedeBody>();
 		enemyCollisionCounter = 0;
 		this.isEnemyProjectile = isEnemyProjectile;
 		this.isFlame = isFlame;
@@ -44,6 +48,7 @@ public class Projectile : MonoBehaviour
 		//Destroy(this);
 		if (isFlame && !isEnemyProjectile && collision.gameObject.CompareTag("Enemy") && collision.transform.parent.gameObject.GetComponent<GuardAnt>() == null)
         {
+			body.IncreaseMultiplier();
 			enemyCollisionCounter++;
 			if (enemyCollisionCounter == 3)
             {
@@ -62,6 +67,7 @@ public class Projectile : MonoBehaviour
         }
 		if (!isEnemyProjectile && collision.gameObject.CompareTag("Enemy") && collision.transform.parent.gameObject.GetComponent<GuardAnt>() == null)
 		{
+			body.IncreaseMultiplier();
 			collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(DamageAmount);
 			Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 			Destroy(gameObject);
@@ -69,6 +75,7 @@ public class Projectile : MonoBehaviour
 		if (!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula")
 			&& collision.gameObject.TryGetComponent(out Tarantula T) && T.healthSlider.value >= .5f)
 		{
+			body.IncreaseMultiplier();
 			T.DecreaseHealth(tarantDamage);
 			Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 		}

@@ -68,10 +68,12 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	public float distanceToNest;
 	public Tarantula[] nests;
+	public int multiplier;
 
 
 	void Start()
 	{
+		multiplier = 0;
 		shieldActive = false;
 		//shieldDuration = 5.0f;
 		Weapons = GetComponent<MCentipedeWeapons>();
@@ -262,6 +264,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	/// <param name="particalPos">Where should the damage particles spawn?</param>
 	public void RemoveSegment(float healthReduction, Vector3 particalPos)
 	{
+		KillMultiplier();
 		if (!shieldActive && Segments != null && Segments.Count > 0)
 		{
 			if (Segments.Count <= 0)
@@ -437,12 +440,23 @@ public partial class MCentipedeBody : MonoBehaviour
 		}
 	}
 
+	public void IncreaseMultiplier()
+    {
+		multiplier++;
+    }
+
+	public void KillMultiplier()
+    {
+		multiplier = 0;
+    }
+
 #if UNITY_EDITOR
 	void OnGUI()
 	{
 		GUI.Label(new Rect(10, 25, 250, 150), "Movement Speed: " + MovementSpeed);
 		GUI.Label(new Rect(10, 55, 250, 150), "Number of Segments: " + NumberOfSegments);
 		GUI.Label(new Rect(10, 70, 250, 150), "Distance to Nest: " + Mathf.Round(distanceToNest));
+		GUI.Label(new Rect(10, 85, 250, 150), "Multiplier: " + multiplier);
 	}
 
 #endif
