@@ -48,7 +48,8 @@ public enum EWeaponType
     shield,
     laser,
     launcher,
-    gun
+    gun,
+    flame
 }
 [System.Serializable]
 public class SpiderData
@@ -217,6 +218,11 @@ public class SaveableData
     [SerializeField] public int hunterAntCurrBagPos;
 
     //all the weapon cards in the game
+    [SerializeField] public SerializableList<Vector3> gunCards;
+    [SerializeField] public SerializableList<Vector3> launcherCards;
+    [SerializeField] public SerializableList<Vector3> flameCards;
+    [SerializeField] public SerializableList<Vector3> shieldCards;
+    [SerializeField] public SerializableList<Vector3> laserCards;
 
 
     //all the bomb ants
@@ -279,6 +285,12 @@ public class SaveableData
 
         bombAntData = new SerializableList<BombAntData>();
         hunterAntData = new SerializableList<HunterAntData>();
+
+        gunCards = new SerializableList<Vector3>();
+        flameCards = new SerializableList<Vector3>();
+        launcherCards = new SerializableList<Vector3>();
+        shieldCards = new SerializableList<Vector3>();
+        laserCards = new SerializableList<Vector3>();
     }
 
     /// <summary>
@@ -297,6 +309,8 @@ public class SaveableData
                 return (int)EWeaponType.launcher;
             case Gun gun:
                 return (int)EWeaponType.gun;
+            case Flame flame:
+                return (int)EWeaponType.flame;
             default: //no weapon
                 return (int)EWeaponType.empty;
         }
@@ -323,6 +337,9 @@ public class SaveableData
             case (int)EWeaponType.gun:
                 GameObject obj3 = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Weapons/Gun.prefab", typeof(GameObject));
                 return obj3.GetComponent<Weapon>();
+            case (int)EWeaponType.flame:
+                GameObject obj4 = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Weapons/Flamer.prefab", typeof(GameObject));
+                return obj4.GetComponent<Weapon>();
             default:
                 return null;
         }
@@ -353,12 +370,12 @@ public class SaveableData
     /// if still requiring more apples, spawn some in
     /// if any apples which started in the scene have not been moved to a position where one was not eated, it must have been eater, so destroy it
     /// </summary>
-    /// <param name="tag">the tag to search the scene for</param>
+    /// <param name="apple">the list of all objects either moving or spawning in</param>
     /// <param name="applePos">the list of positions to use</param>
     /// <param name="assetPath">the file path to the prefab</param>
-    public void LoadApple(string tag, ref SerializableList<Vector3> applePos, string assetPath, ref SerializableList<Quaternion> appleRot)
+    public void LoadApple(GameObject[] apple, ref SerializableList<Vector3> applePos, string assetPath, ref SerializableList<Quaternion> appleRot)
     {
-        GameObject[] apple = GameObject.FindGameObjectsWithTag(tag);
+        //GameObject[] apple = GameObject.FindGameObjectsWithTag(tag);
         int i = 0;
         while(i < applePos.list.Count)//for all apples, whose position has been saved, load it in
         {
@@ -411,6 +428,7 @@ public class SaveableData
         LoadAnt<DasherAntData>(ref dasherAnt, ref dasherAntData, "Assets/Prefabs/AntComponents/AntPrefabs/DasherAnt.prefab");
         LoadAnt<FarmerAntData>(ref farmerAnt, ref farmerAntData, "Assets/Prefabs/AntComponents/AntPrefabs/FarmerAnt.prefab");
         LoadAnt<HunterAntData>(ref hunterAnt, ref hunterAntData, "Assets/Prefabs/AntComponents/AntPrefabs/HunterAnt.prefab");
+        LoadAnt<BombAntData>(ref bombAnt, ref bombAntData, "Assets/Prefabs/AntComponents/AntPrefabs/BombAnt.prefab");
     }
 
     /// <summary>
@@ -480,11 +498,13 @@ public class SaveableData
         genericAnt.health = genericAntData.health;
         genericAnt.AssignAntennaPositions();
 
-        AIIntToState(genericAntData.currAIState, ref genericAnt.stateMachine);
-        genericAnt.stateMachine.loadData(genericAntData);
-        genericAnt.anim.Play(genericAntData.currAnimName, 0, genericAntData.currAnimNormTime);
 
-        ////for each ant type load in the info specific to it as well
+        //////////////////////////////////////////As difficult and buggy to implement, do not save the current state of the AI
+        ///////////AIIntToState(genericAntData.currAIState, ref genericAnt.stateMachine);
+        ////////genericAnt.stateMachine.loadData(genericAntData);
+        ///////genericAnt.anim.Play(genericAntData.currAnimName, 0, genericAntData.currAnimNormTime);
+
+        ////for each ant type load in the info specific to it as well, if it has any
         if (genericAnt as DasherAnt)
         {
             Debug.Log("Loading in the dasher ant data");
@@ -534,6 +554,12 @@ public class SaveableData
                 hunterAnt.PickWeapon(IntToWeapon(hunterAntData.heldWeapon).gameObject);
                 //for the spawned in weapon assign the appropriate values for its things like shooting and stuff/////////////////////////
             }
+        }
+        else if (genericAnt as BombAnt)
+        {
+            if (genericAnt.transform.parent != null) //if the bomb ant is attached to a segment, detach it
+                genericAnt.transform.parent = null;
+            genericAnt.gameObject.transform.GetChild(0).gameObject.GetComponent<Collider>().enabled = true;
         }
     }
 
@@ -608,5 +634,67 @@ public class SaveableData
                 stateMachine.changeState(stateMachine.SpawnIn);
                 break;
         }
+    }
+
+    public void SaveWeaponCards()
+    {
+        GameObject[] cards = GameObject.FindGameObjectsWithTag("Weapon Pickup");
+        foreach (GameObject card in cards)//get every apple which currently exists in the scene and store its position
+        {
+            WeaponPickup weaponPickup = card.GetComponent<WeaponPickup>();
+            if (weaponPickup.isFlame)
+                flameCards.list.Add(card.transform.position);
+            else if (weaponPickup.isGun)
+                gunCards.list.Add(card.transform.position);
+            else if (weaponPickup.isLauncher)
+                launcherCards.list.Add(card.transform.position);
+            else if (weaponPickup.isShield)
+                shieldCards.list.Add(card.transform.position);
+            else if (weaponPickup.isLaser)
+                laserCards.list.Add(card.transform.position);
+        }
+    }
+
+    public void LoadWeaponCards()
+    {
+        GameObject[] generalCards = GameObject.FindGameObjectsWithTag("Card");
+        foreach (GameObject item in generalCards) //all the cards related to lasers
+        {
+            MonoBehaviour.Destroy(item);
+        }
+
+        GameObject[] pickupCards = GameObject.FindGameObjectsWithTag("Weapon Pickup");
+        foreach (GameObject item in pickupCards) //any cards which exist in the scene destroy them
+        {
+            MonoBehaviour.Destroy(item);
+        }
+
+        foreach (Vector3 cardPos in gunCards.list)
+        {
+            GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/GunCard.prefab", typeof(GameObject));
+            MonoBehaviour.Instantiate(obj, cardPos, Quaternion.identity);
+        }
+        foreach (Vector3 cardPos in flameCards.list)
+        {
+            GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/FlameCard.prefab", typeof(GameObject));
+            MonoBehaviour.Instantiate(obj, cardPos, Quaternion.identity);
+        }
+        foreach (Vector3 cardPos in laserCards.list)
+        {
+            GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/LaserCard.prefab", typeof(GameObject));
+            MonoBehaviour.Instantiate(obj, cardPos, Quaternion.identity);
+        }
+        foreach (Vector3 cardPos in launcherCards.list)
+        {
+            GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/LauncherCard.prefab", typeof(GameObject));
+            MonoBehaviour.Instantiate(obj, cardPos, Quaternion.identity);
+        }
+        foreach (Vector3 cardPos in shieldCards.list)
+        {
+            GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/ShieldCard.prefab", typeof(GameObject));
+            MonoBehaviour.Instantiate(obj, cardPos, Quaternion.identity);
+        }
+
+
     }
 }

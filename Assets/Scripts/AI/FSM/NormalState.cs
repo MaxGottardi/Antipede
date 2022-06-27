@@ -649,6 +649,7 @@ public class BombAttack : AttackState
         owner.transform.GetChild(0).GetComponent<Collider>().enabled = false;
 
         owner.anim.SetTrigger("Core"); //play the explode animation
+        Debug.Log("Set the bomb up to explode...");
     }
 
     public override void execute()

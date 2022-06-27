@@ -498,7 +498,7 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 			Segments[i].gameObject.transform.position = saveableData.centipedeSegmentPosition.list[i];
 			Segments[i].gameObject.transform.rotation = saveableData.centipedeSegmentRotation.list[i];
 			Segments[i].health = saveableData.centipedeSegmentHealth.list[i];
-			Segments[i].numAttacking = saveableData.centipedeSegmentNumAttacking.list[i];
+			////////Segments[i].numAttacking = saveableData.centipedeSegmentNumAttacking.list[i];
 
 			Segments[i].gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 			Segments[i].gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
@@ -523,7 +523,7 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 		TailSegment.gameObject.transform.position = saveableData.centipedeTailBeginSegmentPosition;
 		TailSegment.gameObject.transform.rotation = saveableData.centipedeTailBeginSegmentRotation;
 		TailSegment.health = saveableData.centipedeTailBeginSegmentHealth;
-		TailSegment.numAttacking = saveableData.centipedeTailBeginSegmentNumAttack;
+		///////TailSegment.numAttacking = saveableData.centipedeTailBeginSegmentNumAttack;
 
 		TailSegment.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 		TailSegment.gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
@@ -543,7 +543,7 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 			CustomSegments[i].gameObject.transform.position = saveableData.centipedeCustomSegmentPositon.list[i];
 			CustomSegments[i].gameObject.transform.rotation = saveableData.centipedeCustomSegmentRotation.list[i];
 			CustomSegments[i].health = saveableData.centipedeCustomSegmentHealth.list[i];
-			CustomSegments[i].numAttacking = saveableData.centipedeCustomSegmentNumAttack.list[i];
+			////////CustomSegments[i].numAttacking = saveableData.centipedeCustomSegmentNumAttack.list[i];
 
 			CustomSegments[i].gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 			CustomSegments[i].gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;

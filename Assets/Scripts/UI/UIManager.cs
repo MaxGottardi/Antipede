@@ -346,6 +346,9 @@ public class UIManager : MonoBehaviour
                 spiderSliderMat.SetColor("_EmissionColor", imgColour);
                 spiderMat.SetTexture("_MainTex", spiderTexture);
 
+                SettingsVariables.intDictionary["SpiderTxtColour"] = SpiderTxtToInt(spiderTexture);
+                SaveSettings.SaveInt("SpiderTxtColour");
+                
                 spiderImg.color = imgColour;
                 SettingsVariables.sliderDictionary["spiderColourR"] = imgColour.r;
                 SaveSettings.SaveFloat("spiderColourR");
@@ -360,16 +363,86 @@ public class UIManager : MonoBehaviour
         colourPicker.SetActive(false);
     }
 
+    /// <summary>
+    /// converts the texture of the spider to an int value for saving
+    /// </summary>
+    /// <param name="texture"></param>
+    /// <returns></returns>
+    int SpiderTxtToInt(Texture2D texture)
+    {
+        if (texture == blackTxture)
+            return 0;
+        else if (texture == whiteTxture)
+            return 1;
+        else if (texture == lGrayTxture)
+            return 2;
+        else if (texture == dGrayTxture)
+            return 3;
+        else if (texture == redTxture)
+            return 4;
+        else if (texture == yellowTxture)
+            return 5;
+        else if (texture == orangeTxture)
+            return 6;
+        else if (texture == lGreenTxture)
+            return 7;
+        else if (texture == greenTxture)
+            return 8;
+        else if (texture == cyanTxture)
+            return 9;
+        else if (texture == blueTxture)
+            return 10;
+        else //purple texture
+            return 11;
+    }
+
+    /// <summary>
+    /// converts the saved int back to a texture for assigning when loading a save
+    /// </summary>
+    /// <returns></returns>
+    Texture2D IntToSpiderTxt()
+    {
+        switch (SettingsVariables.intDictionary["SpiderTxtColour"])
+        {
+            case 0:
+                return blackTxture;
+            case 1:
+                return whiteTxture;
+            case 2:
+                return lGrayTxture;
+            case 3:
+                return dGrayTxture;
+            case 4:
+                return redTxture;
+            case 5:
+                return yellowTxture;
+            case 6:
+                return orangeTxture;
+            case 7:
+                return lGreenTxture;
+            case 8:
+                return greenTxture;
+            case 9:
+                return cyanTxture;
+            case 10:
+                return blueTxture;
+            default:
+                return purpleTxture;
+        }
+    }
+
     void InitilizeColours()
     {
-        Color antennaColour = new Color(SettingsVariables.sliderDictionary["antennaColourR"], SettingsVariables.sliderDictionary["antennaColourG"], SettingsVariables.sliderDictionary["antennaColourB"]);
+        Color antennaColour = new Color(SettingsVariables.sliderDictionary["antennaColourR"], SettingsVariables.sliderDictionary["antennaColourG"], SettingsVariables.sliderDictionary["antennaColourB"], 1);
         antennaMat.SetColor("_Color", antennaColour);
         antennaMat.SetColor("_EmissionColor", antennaColour);
         antennaImg.color = antennaColour;
 
-        Color spiderColour = new Color(SettingsVariables.sliderDictionary["spiderColourR"], SettingsVariables.sliderDictionary["spiderColourG"], SettingsVariables.sliderDictionary["spiderColourB"]);
+        Color spiderColour = new Color(SettingsVariables.sliderDictionary["spiderColourR"], SettingsVariables.sliderDictionary["spiderColourG"], SettingsVariables.sliderDictionary["spiderColourB"], 1);
         spiderSliderMat.SetColor("_Color", spiderColour);
         spiderImg.color = spiderColour;
+        spiderMat.SetTexture("_MainTex", IntToSpiderTxt());
+
     }
 
     /// <summary>

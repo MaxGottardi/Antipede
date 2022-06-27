@@ -5617,7 +5617,6 @@ GameObject:
   - component: {fileID: 1742923924}
   - component: {fileID: 1742923923}
   - component: {fileID: 1742923922}
-  - component: {fileID: 1742923921}
   - component: {fileID: 1742923920}
   - component: {fileID: 1742923919}
   - component: {fileID: 1742923918}
@@ -5741,19 +5740,6 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
---- !u!114 &1742923921
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1742923915}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54e5c331f26edf643a409c5c9ac4eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerHead: {fileID: 0}
 --- !u!81 &1742923922
 AudioListener:
   m_ObjectHideFlags: 0

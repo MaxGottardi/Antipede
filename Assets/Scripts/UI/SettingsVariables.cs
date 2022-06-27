@@ -27,7 +27,8 @@ public static class SettingsVariables
     {
         { "ViewMode", LoadInts("ViewMode")},
         { "ShadowRes", LoadInts("ShadowRes", 1)},
-        { "TextureRes", LoadInts("TextureRes", 0)}
+        { "TextureRes", LoadInts("TextureRes", 0)},
+        { "SpiderTxtColour", LoadInts("SpiderTxtColour", 8)} //8 is for the green texture
     };
     public static Dictionary<string, float> sliderDictionary = new Dictionary<string, float>()
         {
@@ -49,12 +50,12 @@ public static class SettingsVariables
 
 
             //colours
-            {"antennaColourR", LoadFloats("antennaColourR", 255/255) },            
-            {"antennaColourG", LoadFloats("antennaColourG", 233/255) },            
+            {"antennaColourR", LoadFloats("antennaColourR", 1) },            
+            {"antennaColourG", LoadFloats("antennaColourG", 0.9137255f) },            
             {"antennaColourB", LoadFloats("antennaColourB", 0) },
 
             {"spiderColourR", LoadFloats("spiderColourR", 0) },
-            {"spiderColourG", LoadFloats("spiderColourG", 250/255) },
+            {"spiderColourG", LoadFloats("spiderColourG", 0.9803922f) },
             {"spiderColourB", LoadFloats("spiderColourB", 0) }
 
 

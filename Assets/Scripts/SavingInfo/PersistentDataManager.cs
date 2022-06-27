@@ -69,9 +69,9 @@ public class PersistentDataManager : MonoBehaviour
             dataObj.LoadData(saveableData);
         }
         SerializableList<Quaternion> emptyList = new SerializableList<Quaternion>(); //used for items with no saved rotation
-        saveableData.LoadApple("Health", ref saveableData.healthApplePos, "Assets/Prefabs/RedApple.prefab", ref emptyList);
-        saveableData.LoadApple("Speed", ref saveableData.speedApplePos, "Assets/Prefabs/GreenApple.prefab", ref emptyList);
-        saveableData.LoadApple("Larvae", ref saveableData.larvaePos, "Assets/Prefabs/Larvae.prefab", ref saveableData.larvaeRot);
+        saveableData.LoadApple(GameObject.FindGameObjectsWithTag("Health"), ref saveableData.healthApplePos, "Assets/Prefabs/RedApple.prefab", ref emptyList);
+        saveableData.LoadApple(GameObject.FindGameObjectsWithTag("Speed"), ref saveableData.speedApplePos, "Assets/Prefabs/GreenApple.prefab", ref emptyList);
+        saveableData.LoadApple(GameObject.FindGameObjectsWithTag("Larvae"), ref saveableData.larvaePos, "Assets/Prefabs/Larvae.prefab", ref saveableData.larvaeRot);
 
         Tarantula.numTarantulasLeft = saveableData.numSpidersLeft;
         saveableData.LoadCobwebs();
@@ -85,7 +85,9 @@ public class PersistentDataManager : MonoBehaviour
         {
             HunterAnt.weaponsBag.shuffleList[i] = saveableData.IntToWeapon(saveableData.hunterAntWeaponBag[i]).gameObject;
         }
-        ////saveableData.LoadAnt(ref saveableData.guardAntData, "Assets/Prefabs/AntComponents/AntPrefabs/GuardAnt.prefab");
+
+        saveableData.LoadWeaponCards();
+
     }
 
     /// <summary>
@@ -103,7 +105,7 @@ public class PersistentDataManager : MonoBehaviour
         saveableData.numSpidersLeft = Tarantula.numTarantulasLeft;
 
         saveableData.SaveLarvae();
-
+        saveableData.SaveWeaponCards();
 
         string fullPath = Path.Combine(dataDirectory, dataFileName);//this accounts for different paths having different path seperators
         try

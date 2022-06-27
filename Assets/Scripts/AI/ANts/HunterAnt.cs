@@ -93,7 +93,6 @@ public class HunterAnt : GenericAnt
     {
         if (stateMachine.currState != stateMachine.Dead)
         {
-            Debug.Log("Saving Dasher Data");
             HunterAntData genericAntData = new HunterAntData();
 
             //general data for the ants
