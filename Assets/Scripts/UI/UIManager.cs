@@ -95,8 +95,16 @@ public class UIManager : MonoBehaviour
         pauseTxt.text = SettingsVariables.keyDictionary["Pause"].ToString();
 
         checkpointToggle.isOn = SettingsVariables.boolDictionary["bEnableCheckpoints"];
+        if (checkpointToggle.isOn)
+            checkpointToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Enabled";
+       
         tutorialToggle.isOn = SettingsVariables.boolDictionary["bPlayTutorial"];
+        if (tutorialToggle.isOn)
+            tutorialToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Enabled";
+        
         shootMenuToggle.isOn = SettingsVariables.boolDictionary["bShootToActivate"];
+        if (shootMenuToggle.isOn)
+            shootMenuToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Enabled";
 
         //Controls Toggles
         halveSpeedToggle.isOn = SettingsVariables.boolDictionary["bHalveSpeedToggle"];
