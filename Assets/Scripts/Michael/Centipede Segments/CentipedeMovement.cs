@@ -660,9 +660,9 @@ public class CentipedeMovement : MonoBehaviour
 			ft = 0;
 		}
 
-		GUI.Label(new Rect(10, 10, 150, 150), "FPS: " + FPS_NOW);
+		//GUI.Label(new Rect(10, 10, 150, 150), "FPS: " + FPS_NOW);
 
-		GUI.Label(new Rect(10, 40, 350, 150), "Acceleration Time: " + AccelerationTime);
+		//GUI.Label(new Rect(10, 40, 350, 150), "Acceleration Time: " + AccelerationTime);
 	}
 
 	void OnValidate()

@@ -458,10 +458,12 @@ public partial class MCentipedeBody : MonoBehaviour
 #if UNITY_EDITOR
 	void OnGUI()
 	{
-		GUI.Label(new Rect(10, 25, 250, 150), "Movement Speed: " + MovementSpeed);
-		GUI.Label(new Rect(10, 55, 250, 150), "Number of Segments: " + NumberOfSegments);
-		GUI.Label(new Rect(10, 70, 250, 150), "Distance to Nest: " + Mathf.Round(distanceToNest));
-		GUI.Label(new Rect(10, 85, 250, 150), "Multiplier: " + multiplier);
+		GUI.Label(new Rect(10, 10, 250, 150), "Movement Speed: " + MovementSpeed);
+		GUI.Label(new Rect(10, 25, 250, 150), "Number of Segments: " + NumberOfSegments);
+		GUI.Label(new Rect(10, 40, 250, 150), "Distance to Nest: " + Mathf.Round(distanceToNest));
+		//GUI.Label(new Rect(10, 55, 250, 150), "Multiplier: " + multiplier);
+
+
 	}
 
 #endif
