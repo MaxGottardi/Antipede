@@ -11,7 +11,7 @@ public abstract class Weapon : MonoBehaviour
 	public GameObject weaponPickup;
 	public bool isAntGun = false;
 	[SerializeField, Tooltip("This Weapon can fire at this rate per second."), Min(0)] float FireRate = .1f;
-	protected float TimeLastFired = 0;
+	[HideInInspector]public float TimeLastFired = 0;
 	[SerializeField, Tooltip("The Range of this Weapon"), Min(1)] float Range = 100f;
 
 	[Header("Weapon Card UI References.")]
@@ -52,13 +52,14 @@ public abstract class Weapon : MonoBehaviour
 	protected bool CanFire(Vector3 Position)
 	{
 		// Has this Weapon cooled down?
-		bool bCanFire = bIsRegistered && Time.time - TimeLastFired > FireRate;
+		TimeLastFired -= Time.deltaTime;
+		bool bCanFire = bIsRegistered && TimeLastFired < 0;
 
 		// Is this Weapon In-Range?
 		bCanFire &= MMathStatics.HasReached(BarrelEndSocket.position, Position, Range);
 
 		if (bCanFire)
-			TimeLastFired = Time.time;
+			TimeLastFired = FireRate;
 
 		return bCanFire;
 	}

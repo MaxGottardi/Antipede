@@ -34,4 +34,14 @@ public abstract class Node
     {
         end();
     }
+
+    public virtual void saveData(GenericAntData saveableData)
+    {
+        saveableData.bIsNodeRunning.list.Add(isRunning);
+    }
+    public virtual void loadData(GenericAntData saveableData)
+    {
+        isRunning = saveableData.bIsNodeRunning.list[0];
+        saveableData.bIsNodeRunning.list.RemoveAt(0);
+    }
 }

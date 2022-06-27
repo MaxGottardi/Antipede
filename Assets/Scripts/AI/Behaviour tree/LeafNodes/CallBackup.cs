@@ -61,6 +61,9 @@ public class CallBackup : Node
         }
         else
         {
+            if (!blackboard.backupRing.activeSelf)
+                blackboard.backupRing.SetActive(true);
+
             blackboard.backupRing.transform.localScale = backupRingTween.UpdatePosition();
 
             runTime -= Time.deltaTime;
@@ -111,6 +114,36 @@ public class CallBackup : Node
         blackboard.callingBackup = false;
         blackboard.backupRing.SetActive(false);
     }
+
+    public override void saveData(GenericAntData saveableData)
+    {
+        base.saveData(saveableData);
+
+        saveableData.callBackupRunTime.list.Add(runTime);
+        saveableData.callBackupPlayedAudio.list.Add(playedAudio);
+        if (backupRingTween != null)
+            saveableData.callBackupTweenStartTime.list.Add(backupRingTween.StartTime);
+        else //as not currently in backup calling no need for it, so add in a dummy value to keep the reference orders correct
+            saveableData.callBackupTweenStartTime.list.Add(0);
+    }
+
+    public override void loadData(GenericAntData saveableData)
+    {
+        base.loadData(saveableData);
+        Debug.Log("loading in backup data from a save");
+        runTime = saveableData.callBackupRunTime.list[0];
+        saveableData.callBackupRunTime.list.RemoveAt(0);
+
+        playedAudio = saveableData.callBackupPlayedAudio.list[0];
+        saveableData.callBackupPlayedAudio.list.RemoveAt(0);
+        //if (backupRingTween == null)
+        {
+            ////////note this will not actually work as when loading from a save time.time will be different
+            backupRingTween = new Tween(Vector3.zero, new Vector3(blackboard.backupRingScale, blackboard.backupRingScale, blackboard.backupRingScale), Quaternion.identity,
+            Quaternion.identity, saveableData.callBackupTweenStartTime.list[0], 2);
+        }
+        saveableData.callBackupTweenStartTime.list.RemoveAt(0);
+    }
 }
 
 public class CanCallBackup : Node
@@ -133,5 +166,17 @@ public class CanCallBackup : Node
         }
         else
             return NodeState.Failure; //cannot call for backup
+    }
+
+    public override void loadData(GenericAntData saveableData)
+    {
+        base.loadData(saveableData);
+        //nothing to load in
+    }
+
+    public override void saveData(GenericAntData saveableData)
+    {
+        base.saveData(saveableData);
+        //nothing to save either
     }
 }

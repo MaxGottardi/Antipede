@@ -7,7 +7,7 @@ public class ShuffleBag<T>
 
     //based on this explanation https://gamedevelopment.tutsplus.com/tutorials/shuffle-bags-making-random-feel-more-random--gamedev-1249
     public T[] shuffleList; //list of all elements wanting to pick from
-    int currPos = -1;
+    public int currPos = -1;
 
     public T getNext()//the next item in the list to get
     {

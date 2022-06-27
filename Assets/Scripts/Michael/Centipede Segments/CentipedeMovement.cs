@@ -113,6 +113,13 @@ public class CentipedeMovement : MonoBehaviour
 #endif
 	}
 
+	/// <summary>
+	/// when loading up from a save, set the surface normal
+	/// </summary>
+	public void SetSurfaceNormal()
+    {
+		SurfaceNormal = GetSurfaceNormal(out bool bGroundWasHit, out RaycastHit Surface);
+	}
 	/// <summary>Send instructions for Horizontal (+X) and Vertical (+Z) Movement.</summary>
 	/// <param name="H">Horizontal. -X &lt; 0 &gt; +X.</param>
 	/// <param name="V">Vertical. -Z &lt; 0 &gt; +Z.</param>

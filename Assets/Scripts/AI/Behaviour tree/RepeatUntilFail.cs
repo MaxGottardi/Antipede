@@ -30,4 +30,16 @@ public class RepeatUntilFail : Node
         }
         return nodeState;
     }
+
+    public override void loadData(GenericAntData saveableData)
+    {
+        base.loadData(saveableData);
+        child.loadData(saveableData);
+    }
+
+    public override void saveData(GenericAntData saveableData)
+    {
+        base.saveData(saveableData);
+        child.saveData(saveableData);
+    }
 }

@@ -50,4 +50,27 @@ public class Selector : Node
             childNode.interupt();
         }
     }
+
+    public override void loadData(GenericAntData saveableData)
+    {
+        base.loadData(saveableData);
+        currChild = saveableData.aISelectorChildCounts.list[0];//as always adding to the end of the list, when reach this script it should be the first one
+        saveableData.aISelectorChildCounts.list.RemoveAt(0);//as used no longer needed so remove it, making the next element in the list the first one
+        for (int i = 0; i < children.Count; i++)
+        {
+            children[i].loadData(saveableData);
+        }
+    }
+
+    public override void saveData(GenericAntData saveableData)
+    {
+        base.saveData(saveableData);
+        saveableData.aISelectorChildCounts.list.Add(currChild);
+        for (int i = 0; i < children.Count; i++)
+        {
+            children[i].saveData(saveableData);
+        }
+
+        ////need some way to tell it which selector gets which curr child value
+    }
 }

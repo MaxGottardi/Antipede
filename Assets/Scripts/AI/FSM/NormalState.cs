@@ -17,7 +17,7 @@ public class MovementState : State
 
         topNode = new Sequence(new List<Node> { getNextNode, moveTowards });
     }
-    public void enter() //omly important when other states also added in
+    public void enter()
     {
         GameObject closestNode = owner.nodesList[0]; //find the next location to move towards
         foreach (GameObject node in owner.nodesList)
@@ -26,10 +26,6 @@ public class MovementState : State
                 closestNode = node;
         }
         owner.nextPosTransform = closestNode.transform;
-
-        //owner.shockBar.SetActive(false);
-        //find the nearest node to this object as it would have been lost
-        //stuff do when enter the state
     }
 
     public void execute()
@@ -50,6 +46,16 @@ public class MovementState : State
         if (owner.canInvestigate)
             owner.canInvestigate = false;
     }
+
+    public void loadData(GenericAntData saveableData)
+    {
+        topNode.loadData(saveableData);
+    }
+
+    public void saveData(GenericAntData saveableData)
+    { 
+        topNode.saveData(saveableData); 
+    }
 }
 /// <summary>
 /// Called when AI first sees player and it showcases warning above head
@@ -58,6 +64,7 @@ public class ShockState : State
 {
     float shockTime = 1.17f;
     GenericAnt owner;
+
     public ShockState(GenericAnt owner)
     {
         this.owner = owner;
@@ -82,6 +89,22 @@ public class ShockState : State
         shockTime = 1.17f;
         owner.shockBar.SetActive(false);
     }
+
+    public void loadData(GenericAntData saveableData)
+    {
+        shockTime = saveableData.shockTimeLeft;
+        owner.shockBar.SetActive(saveableData.bShockBarActiveState);
+
+        if (saveableData.bShockBarActiveState)//if the shockbar was visible when saved, reset it to where it left from
+            owner.shockBar.GetComponent<Animator>().Play("Show", 0, saveableData.shockBarCurrAntimNormTime);
+    }
+
+    public void saveData(GenericAntData saveableData)
+    {
+        saveableData.shockTimeLeft = shockTime;
+        saveableData.bShockBarActiveState = owner.shockBar.activeSelf;
+        saveableData.shockBarCurrAntimNormTime = saveableData.bShockBarActiveState ? owner.shockBar.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime : 0;
+    }
 }
 /// <summary>
 /// When seen player and moving towards it
@@ -89,7 +112,7 @@ public class ShockState : State
 public class InvestigateState : State
 {
     protected GenericAnt owner;
-    float lostPlayerTime = 10.0f;
+    protected float lostPlayerTime = 10.0f;
 
     protected Node topNode;
     public InvestigateState(GenericAnt owner) //also initilize any behaviour tree used on the state as well
@@ -170,6 +193,18 @@ public class InvestigateState : State
         owner.shockBar.SetActive(false);
         lostPlayerTime = 0;
     }
+
+    public virtual void saveData(GenericAntData saveableData)
+    {
+        saveableData.investigateStateLostPlayerTime = lostPlayerTime;
+        topNode.saveData(saveableData);
+    }
+
+    public virtual void loadData(GenericAntData saveableData)
+    {
+        lostPlayerTime = saveableData.investigateStateLostPlayerTime;
+        topNode.loadData(saveableData);
+    }
 }
 /// <summary>
 /// when within certain distance of player can begin attacking
@@ -178,8 +213,6 @@ public class AttackState : State
 {
     float attackTime = 2;
     GenericAnt owner;
-    Quaternion headNormRote;
-
     protected bool attackDone = false;
     public AttackState(GenericAnt owner) //also initilize any behaviour tree used on the state as well
     {
@@ -190,8 +223,12 @@ public class AttackState : State
         owner.sfxManager.AntAttack();
         attackTime = 2;
         //headNormRote = owner.headTransform.rotation;
-////        owner.headTransform.LookAt(GameManager1.playerObj.transform);
-        owner.anim.SetTrigger("Attack");
+        ////        owner.headTransform.LookAt(GameManager1.playerObj.transform);
+        if (!owner.anim.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.AntAttack"))
+        {
+            owner.anim.SetTrigger("Attack");
+            
+        }
         attackDone = false;
     }
 
@@ -200,7 +237,7 @@ public class AttackState : State
         attackTime -= Time.deltaTime;
         if (attackTime <= owner.attackAnimLength)//when finished attacking add any damage to the appropriate segment
         {
-            if (owner.NearSegment(owner.transform.position) && !attackDone)
+            if (owner.NearSegment(owner.transform.position) && !attackDone && owner.nextPosTransform != null)
             {
                 GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
 
@@ -217,6 +254,18 @@ public class AttackState : State
     {
         attackTime = 2;
         //owner.headTransform.rotation = headNormRote;
+    }
+
+    public virtual void saveData(GenericAntData saveableData)
+    {
+        saveableData.bAttackDone = attackDone;
+        saveableData.currAttackTime = attackTime;
+    }
+
+    public virtual void loadData(GenericAntData saveableData)
+    {
+        attackDone = saveableData.bAttackDone;
+        attackTime = saveableData.currAttackTime;
     }
 }
 
@@ -267,6 +316,18 @@ public class DamageState : State
     {
         damageTime = 1.7f;
     }
+
+    public void loadData(GenericAntData saveableData)
+    {
+        damageTime = saveableData.currDamageTime;
+        topNode.loadData(saveableData);
+    }
+
+    public void saveData(GenericAntData saveableData)
+    {
+        saveableData.currDamageTime = damageTime;
+        topNode.saveData(saveableData);
+    }
 }
 
 /// <summary>
@@ -283,7 +344,9 @@ public class DeadState : State
     public void enter()
     {
         deadTime = 3;
-        owner.anim.SetTrigger("Dead");
+        if (!owner.anim.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.AntDead"))
+            owner.anim.SetTrigger("Dead");
+        Debug.Log("Guard is now dead");
     }
 
     public virtual void execute()
@@ -305,6 +368,16 @@ public class DeadState : State
     {
         deadTime = 3;
     }
+
+    public void saveData(GenericAntData saveableData)
+    {
+        saveableData.currDeadTime = deadTime;
+    }
+
+    public void loadData(GenericAntData saveableData)
+    {
+        deadTime = saveableData.currDeadTime;
+    }
 }
 
 
@@ -314,7 +387,7 @@ public class DeadState : State
 public class HunterAttack : AttackState
 {
     HunterAnt owner;
-    float shootDelay = 0.5f;
+    float shootDelay = 0.25f;
     public HunterAttack(GenericAnt owner) : base(owner) //also initilize any behaviour tree used on the state as well
     {
         this.owner = owner.gameObject.GetComponent<HunterAnt>();
@@ -322,7 +395,7 @@ public class HunterAttack : AttackState
     public override void enter()
     {
         owner = owner.gameObject.GetComponent<HunterAnt>();
-        shootDelay = 0.25f;
+        shootDelay = 0.5f;
         owner.anim.SetTrigger("Idle");
     }
 
@@ -343,6 +416,22 @@ public class HunterAttack : AttackState
     public override void exit()
     {
         shootDelay = 0.5f;
+    }
+
+    public override void loadData(GenericAntData saveableData)
+    {
+        base.loadData(saveableData);
+        ////HunterAntData hunterAntData = saveableData as HunterAntData;
+        ////shootDelay = hunterAntData.currShootDelay;
+    }
+
+    public override void saveData(GenericAntData saveableData)
+    {
+        base.saveData(saveableData);
+      ////  HunterAntData hunterAntData = saveableData as HunterAntData;
+      ////  hunterAntData.currShootDelay = shootDelay;
+        //not 100% sure this will work correctly though
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }
 
@@ -382,6 +471,17 @@ public class HunterInvestigate : InvestigateState
         return base.checkAttack() && !owner.isFleeing;
     }
 
+    public override void saveData(GenericAntData saveableData)
+    {
+        saveableData.investigateStateLostPlayerTime = lostPlayerTime;
+        topNode.saveData(saveableData);
+    }
+
+    public override void loadData(GenericAntData saveableData)
+    {
+        lostPlayerTime = saveableData.investigateStateLostPlayerTime;
+        topNode.loadData(saveableData);
+    }
 }
 
 /// <summary>
@@ -420,7 +520,7 @@ public class GuardDead : DeadState
 /// </summary>
 public class GuardAttack : AttackState
 {
-    float attackTime = 1.25f;
+    float attackTime = 2.5f;
     GenericAnt owner;
     public GuardAttack(GenericAnt owner) : base(owner) //also initilize any behaviour tree used on the state as well
     {
@@ -439,8 +539,10 @@ public class GuardAttack : AttackState
         {
             if (owner.NearSegment(owner.transform.position) && !attackDone)
             {
-                GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
-                GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
+                if (owner.nextPosTransform != null)
+                    GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
+                if (owner.nextPosTransform != null)
+                    GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
                 attackDone = true;
             }
             if (attackTime <= 0)
@@ -452,6 +554,18 @@ public class GuardAttack : AttackState
     {
         base.exit();
         attackTime = 2.5f;
+    }
+
+    public override void saveData(GenericAntData saveableData)
+    {
+        saveableData.currAttackTime = attackTime;
+        saveableData.bAttackDone = attackDone;
+    }
+
+    public override void loadData(GenericAntData saveableData)
+    {
+        attackTime = saveableData.currAttackTime;
+        attackDone = saveableData.bAttackDone;
     }
 }
 
@@ -473,6 +587,16 @@ public class GuardInvestigate : InvestigateState
         RepeatUntilFail repeatUntilFail = new RepeatUntilFail(moveSequence);
 
         topNode = new Sequence(new List<Node> { determineAttackSeg, repeatUntilFail });
+    }
+
+    public override void saveData(GenericAntData saveableData)
+    {
+        topNode.saveData(saveableData);
+    }
+
+    public override void loadData(GenericAntData saveableData)
+    {
+        topNode.loadData(saveableData);
     }
 }
 
@@ -503,6 +627,7 @@ public class DasherInvestigate : InvestigateState
         owner.animMultiplier = dashOwner.tempAnimSpeed;
         base.exit();
     }
+    ///////for dasher ant not sure actually need to save these values here, probs better in the default dasher ant class instead
 }
 
 /// <summary>
@@ -520,16 +645,7 @@ public class BombAttack : AttackState
     {
         timeTilExplode = 4;
         //attach to the players segment
-
-        Vector3 oldLocalPos = owner.transform.localPosition;
-        Quaternion oldLocalRot = owner.transform.localRotation;
-        Vector3 oldLocalScale = owner.transform.localScale;
-        owner.transform.parent = owner.nextPosTransform.GetChild(0);//, true);
-
-        //owner.transform.rotation = oldLocalRot;
-        //owner.transform.position = oldLocalPos;
-        //owner.transform.localScale = oldLocalScale;
-
+        owner.transform.parent = owner.nextPosTransform.GetChild(0);
         owner.transform.GetChild(0).GetComponent<Collider>().enabled = false;
 
         owner.anim.SetTrigger("Core"); //play the explode animation
@@ -541,10 +657,14 @@ public class BombAttack : AttackState
         //owner.transform.localScale += new Vector3(4-timeTilExplode, 4-timeTilExplode, 4-timeTilExplode);
         if (timeTilExplode <= 0 && owner.transform.parent.parent.CompareTag("PlayerSegment"))//when finished explode, need to add a check to ensure its near the player
         {
-            GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
-            GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
-            GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
-            GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
+            if (owner.nextPosTransform != null)
+                GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
+            if (owner.nextPosTransform != null)
+                GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
+            if (owner.nextPosTransform != null)
+                GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
+            if (owner.nextPosTransform != null)
+                GameManager1.mCentipedeBody.RemoveSegment(100, owner.nextPosTransform.position);
 
             owner.transform.parent = null;
             owner.stateMachine.changeState(owner.stateMachine.Dead);
@@ -555,6 +675,9 @@ public class BombAttack : AttackState
     {
         base.exit();
     }
+
+
+    /////////when get to it add in the data for saving the bombs state stuff
 }
 
 
@@ -587,6 +710,16 @@ public class SpawnInState : State
 
     public void exit()
     {
-        waitTime = 0.45f;
+        waitTime = 1;
+    }
+
+    public void loadData(GenericAntData saveableData)
+    {
+        waitTime = saveableData.spawnInWaitTime;
+    }
+
+    public void saveData(GenericAntData saveableData)
+    {
+        saveableData.spawnInWaitTime = waitTime;
     }
 }
