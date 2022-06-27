@@ -57,6 +57,7 @@ public abstract class Weapon : MonoBehaviour
 
 		// Is this Weapon In-Range?
 		bCanFire &= MMathStatics.HasReached(BarrelEndSocket.position, Position, Range);
+		Debug.Log(bCanFire);
 
 		if (bCanFire)
 			TimeLastFired = FireRate;
