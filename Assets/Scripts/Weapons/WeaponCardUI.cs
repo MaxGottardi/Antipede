@@ -169,6 +169,12 @@ public class WeaponCardUI : MonoBehaviour
 			WeaponsInventory.Add(PickedUp, AUII);
 			UpdateText(ref AUII);
 
+
+			//If anyone asks, i didnt write this
+			//I swear i know how to code
+			NewCard.transform.localScale = new Vector3(0.5f, 0.6f, 0.5f);
+			NewCard.transform.position = new Vector2(NewCard.transform.position.x - 75f, NewCard.transform.position.y - 20.0f);
+
 			return NewCard;
 		}
 	}
