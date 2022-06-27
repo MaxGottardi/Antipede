@@ -49,7 +49,8 @@ public class Projectile : MonoBehaviour
 		else if (collision.gameObject.CompareTag("Play") && !hasSeenChanged)
 		{
 			hasSeenChanged = true;
-			SceneManager.LoadScene("Environment Test");
+			SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
+			//SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
 		}
 		else if (collision.gameObject.CompareTag("Back") && !hasSeenChanged)
 		{
