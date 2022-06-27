@@ -6,6 +6,7 @@ public class CallBackup : Node
 {
     float runTime = 2;
     bool playedAudio = false;
+    Tween backupRingTween = null;
 
     public CallBackup(GenericAnt blackboard)
     {
@@ -16,6 +17,8 @@ public class CallBackup : Node
     {
         base.init();
 
+        backupRingTween = new Tween(Vector3.zero, new Vector3(blackboard.backupRingScale, blackboard.backupRingScale, blackboard.backupRingScale), Quaternion.identity, 
+            Quaternion.identity, Time.time, 2);
         runTime = 2;
         blackboard.anim.SetTrigger("Backup");
         blackboard.callingBackup = true;
@@ -58,6 +61,8 @@ public class CallBackup : Node
         }
         else
         {
+            blackboard.backupRing.transform.localScale = backupRingTween.UpdatePosition();
+
             runTime -= Time.deltaTime;
             return NodeState.Running;
         }

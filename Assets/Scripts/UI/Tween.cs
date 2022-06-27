@@ -67,4 +67,30 @@ public class Tween
             return Vector3.Lerp(StartPos, EndPos, 1 - (n1 * (timeFraction -= 2.625f / d1) * timeFraction + 0.984375f));
         }
     }
+    public Vector3 UpdatePositionEaseOutCirc()
+    {
+        float timeFraction = (Time.time - StartTime) / Duration;
+        timeFraction = Mathf.Clamp(timeFraction, 0.0f, 1.0f);
+        timeFraction = Mathf.Sqrt(1 - timeFraction * timeFraction);
+        Debug.Log(timeFraction);
+        return Vector3.Lerp(StartPos, EndPos, 1 - timeFraction);
+    }
+    public Vector3 UpdatePositionEaseInCubic()
+    {
+        float timeFraction = (Time.time - StartTime) / Duration;
+        timeFraction = Mathf.Clamp(timeFraction, 0.0f, 1.0f);
+        timeFraction = 3 * Mathf.Pow(timeFraction, 3);
+        Debug.Log(timeFraction);
+        return Vector3.Lerp(StartPos, EndPos, timeFraction);
+        //5f * NATURAL_LOG_OF_2 * end * Mathf.Pow(2f, 1f - 10f * value);
+    }
+
+    public Vector3 UpdatePositionEaseOutExp()
+    {
+        float timeFraction = (Time.time - StartTime) / Duration;
+        timeFraction = Mathf.Clamp(timeFraction, 0.0f, 1.0f);
+        timeFraction = (-Mathf.Pow(2, -10 * timeFraction) + 1);
+        return Vector3.Lerp(StartPos, EndPos, timeFraction);
+        //5f * NATURAL_LOG_OF_2 * end * Mathf.Pow(2f, 1f - 10f * value);
+    }
 }

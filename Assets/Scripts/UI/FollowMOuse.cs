@@ -24,7 +24,7 @@ public class FollowMOuse : MonoBehaviour
 		{
 			if (gameObject.CompareTag("Play"))
 			{
-				SceneManager.LoadScene("Environment Test");
+				SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
 			}
 			else if (gameObject.CompareTag("Credits"))
 			{

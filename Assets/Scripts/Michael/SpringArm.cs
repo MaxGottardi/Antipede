@@ -30,6 +30,10 @@ public class SpringArm : MonoBehaviour
 	[HideInInspector, SerializeField] Vector3 DefaultCameraRotation;
 	float OrbitSensitivity = 1f;
 	Vector2 PreviousMouseDragPosition;
+	Vector3 GimbalRotationInherited;
+	Vector3 CameraRotationInherited;
+	Vector2 PreviousMousePanPosition;
+	Vector3 OriginalTargetOffset;
 
 	[Header("Collisions")]
 	[SerializeField] LayerMask OnlyCollideWith;
@@ -74,12 +78,18 @@ public class SpringArm : MonoBehaviour
 		DefaultGimbalRotation = GimbalRotation;
 		DefaultCameraRotation = CameraRotation;
 
+		GimbalRotationInherited = DefaultGimbalRotation;
+		CameraRotationInherited = DefaultCameraRotation;
+
+		OriginalTargetOffset = TargetOffset;
+
 		DefaultProjection = MInput.MainCamera.projectionMatrix;
 	}
 
 	void Update()
 	{
 		UpdateRotationOnMouse();
+		PanCameraOnMouse();
 
 		if (Input.GetKeyDown(SettingsVariables.keyDictionary["ChangeCam"]))
 			bInheritRotation = !bInheritRotation;
@@ -92,8 +102,16 @@ public class SpringArm : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		Camera.position = Vector3.Lerp(Camera.position, TargetPosition, PositionalLagStrength);
-		Camera.rotation = Quaternion.Slerp(Camera.rotation, TargetRotation, RotationalLagStrength);
+		if (SettingsVariables.boolDictionary["bCamFollow"])
+		{
+			Camera.position = Vector3.Lerp(Camera.position, TargetPosition, PositionalLagStrength);
+			Camera.rotation = Quaternion.Slerp(Camera.rotation, TargetRotation, RotationalLagStrength);
+		}
+		else
+        {
+			Camera.position = TargetPosition;
+			Camera.rotation = TargetRotation;
+		}
 
 		PlaceCamera();
 	}
@@ -106,8 +124,9 @@ public class SpringArm : MonoBehaviour
 	void PlaceCamera()
 	{
 		// Where the Spring Arm will point towards.
-		Vector3 ArmDirection;
+		Vector3 ArmDirection = Vector3.one;
 		Vector3 FinalPosition;
+		Quaternion FinalRotation = Quaternion.Euler(CameraRotation);
 
 		if (!bInheritRotation)
 		{
@@ -123,7 +142,6 @@ public class SpringArm : MonoBehaviour
 
 			// Ground's XZ and Up's Y will be used to define the direction of the Spring Arm.
 			ArmDirection = new Vector3(Ground.x, Up.y, Ground.z).normalized;
-
 #if UNITY_EDITOR
 			if (bDrawRotationalLines)
 			{
@@ -137,13 +155,20 @@ public class SpringArm : MonoBehaviour
 		{
 			// Rotates the Camera around Target, given the Gimbal Rotation's Pitch (Y).
 			// As a side-effect, this also inherits the Yaw.
-			Quaternion InheritRotation = Quaternion.AngleAxis(DefaultGimbalRotation.y, Target.right);
+			Quaternion InheritRotation = Quaternion.AngleAxis(GimbalRotationInherited.y, Target.right);
 			ArmDirection = (InheritRotation * Target.forward).normalized;
 
 			// Look at the Target, but add the CameraRotation's custom Pitch setting from the Inspector.
 			// (-) Pitches towards global up. (+) Pitches towards global down.
-			Camera.LookAt(TargetPos());
-			Camera.localEulerAngles -= new Vector3(DefaultCameraRotation.x, 0, 0);
+			//if (!Input.GetMouseButton(1))
+			//{
+			//	Camera.LookAt(TargetPos());
+			//	Camera.localEulerAngles -= new Vector3(DefaultCameraRotation.x, 0, 0);
+			//}
+			//else
+			//{
+			FinalRotation = GetInheritedRotation();
+			//}
 		}
 
 		// If the Spring Arm will collider with something:
@@ -152,7 +177,6 @@ public class SpringArm : MonoBehaviour
 
 		// Make the Position and Rotation for Lag.
 		FinalPosition = TargetPos() - (Distance * ArmDirection);
-		Quaternion FinalRotation = Quaternion.Euler(CameraRotation);
 
 		SetPositionAndRotation(FinalPosition, FinalRotation);
 	}
@@ -169,7 +193,9 @@ public class SpringArm : MonoBehaviour
 		if (bViewToTargetBlocked)
 		{
 			Vector3 Point = Hit.point - FOV.direction;
-			SetPositionAndRotation(Point, Quaternion.Euler(CameraRotation));
+			SetPositionAndRotation(Point, bInheritRotation
+				? GetInheritedRotation()
+				: Quaternion.Euler(CameraRotation));
 		}
 
 		return bViewToTargetBlocked;
@@ -195,11 +221,32 @@ public class SpringArm : MonoBehaviour
 
 	Vector3 TargetPos() => Target.position + TargetOffset * Target.up.y;
 
+	Quaternion GetInheritedRotation()
+	{
+		return Quaternion.Euler(new Vector3(GetInheritedPitch() + GimbalRotationInherited.y - CameraRotationInherited.x, CameraRotationInherited.y + GetInheritedYaw()));
+	}
+
+	float GetInheritedPitch()
+	{
+		float TargetPitch = Target.localEulerAngles.x;
+		if (TargetPitch < 0f)
+			TargetPitch = 360f - TargetPitch;
+		return TargetPitch;
+	}
+
+	float GetInheritedYaw()
+	{
+		float TargetYaw = Target.localEulerAngles.y;
+		if (TargetYaw < 0f)
+			TargetYaw = 360f - TargetYaw;
+		return TargetYaw;
+	}
+
 	void ScrollDistance()
 	{
 		if (bEnableScrollToDistance)
 		{
-			Distance += Input.mouseScrollDelta.y * -SettingsVariables.sliderDictionary["zoomSpeed"];
+			Distance += Input.mouseScrollDelta.y * -SettingsVariables.sliderDictionary["zoomSpeed"] / 100; //convert to a range between 0 - 2 instead of 0-200
 			Distance = Mathf.Clamp(Distance, 1, 30);
 		}
 	}
@@ -208,20 +255,20 @@ public class SpringArm : MonoBehaviour
 	{
 		bInheritRotation = InSettings.bInheritRotation;
 		OrbitSensitivity = InSettings.CameraMouseSensitivity /* * 2f + Vector3.kEpsilon*/;
-		SettingsVariables.sliderDictionary["camRotSpeed"] = OrbitSensitivity;
+		SettingsVariables.sliderDictionary["camRotSpeed"] = OrbitSensitivity * 100; //convert to a range of 0 - 200
 	}
 
 	void UpdateRotationOnMouse()
 	{
-		if (!bInheritRotation)
+		Vector3 MousePosition = Input.mousePosition;
+
+		if (Input.GetMouseButton(1))
 		{
-			Vector3 MousePosition = Input.mousePosition;
+			float DeltaX = (MousePosition.x - PreviousMouseDragPosition.x) * SettingsVariables.sliderDictionary["camRotSpeed"] / 100; //set to a range between 0 - 2
+			float DeltaY = (MousePosition.y - PreviousMouseDragPosition.y) * SettingsVariables.sliderDictionary["camRotSpeed"] / 100;
 
-			if (Input.GetMouseButton(1))
+			if (!bInheritRotation)
 			{
-				float DeltaX = (MousePosition.x - PreviousMouseDragPosition.x) * SettingsVariables.sliderDictionary["camRotSpeed"];
-				float DeltaY = (MousePosition.y - PreviousMouseDragPosition.y) * SettingsVariables.sliderDictionary["camRotSpeed"];
-
 				GimbalRotation.x += DeltaX;
 				CameraRotation.y += DeltaX;
 
@@ -230,15 +277,47 @@ public class SpringArm : MonoBehaviour
 					GimbalRotation.y -= DeltaY;
 					CameraRotation.x -= DeltaY;
 				}
-
 			}
+			else
+			{
+				CameraRotationInherited.y += DeltaX;
 
-			PreviousMouseDragPosition = MousePosition;
+				if (GimbalRotationInherited.y - DeltaY < 70 && GimbalRotationInherited.y - DeltaY >= -70)
+				{
+					GimbalRotationInherited.y -= DeltaY;
+				}
+			}
 		}
+		else
+		{
+			GimbalRotationInherited = DefaultGimbalRotation;
+			CameraRotationInherited = DefaultCameraRotation;
+		}
+
+		PreviousMouseDragPosition = MousePosition;
 	}
 
-	// Use custom projection matrix to align portal camera's near clip plane with the surface of the portal
-	// Note that this affects precision of the depth buffer, which can cause issues with effects like screenspace AO			// Learning resource:
+	void PanCameraOnMouse()
+	{
+		Vector3 MousePosition = Input.mousePosition;
+
+		if (Input.GetMouseButton(2))
+		{
+			float DeltaX = (MousePosition.x - PreviousMousePanPosition.x) * SettingsVariables.sliderDictionary["camRotSpeed"];
+			float DeltaY = (MousePosition.y - PreviousMousePanPosition.y) * SettingsVariables.sliderDictionary["camRotSpeed"];
+
+			// Ensure 'Right' and 'Up' is relative to the Camera.
+			TargetOffset -= DeltaX * Time.deltaTime * Camera.right + DeltaY * Time.deltaTime * Camera.up;
+			TargetOffset = Vector3.ClampMagnitude(TargetOffset, 5f);
+		}
+		else
+		{
+			TargetOffset = Vector3.Lerp(TargetOffset, OriginalTargetOffset, .2f);
+		}
+
+		PreviousMousePanPosition = MousePosition;
+	}
+
 	void ComputeProjection()
 	{
 		if (bUseCustomProjection && Distance > 3)

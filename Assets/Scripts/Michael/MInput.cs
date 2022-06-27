@@ -7,6 +7,7 @@ public class MInput : MonoBehaviour
 	CentipedeMovement movement;
 	public LayerMask BiteLayer;
 	public GameObject hitParticles;
+	Transform head;
 
 	bool doneAttack = false, attackRequested = false;
 	public static Camera MainCamera;
@@ -15,7 +16,9 @@ public class MInput : MonoBehaviour
 	SFXManager sfxManager;
 
 	bool bIsPaused = false;
-    private void Awake()
+	bool bHasHalvedSpeed = false, bHasAttackActivated = false, bForwardActivated = false;
+
+	private void Awake()
     {
 		MainCamera = Camera.main;
 	}
@@ -23,6 +26,7 @@ public class MInput : MonoBehaviour
 	{
 		body = GetComponent<MCentipedeBody>();
 		movement = GetComponent<CentipedeMovement>();
+		head = transform.GetChild(0);
 
 		if (GameObject.Find("SFXMAnager"))
 			sfxManager = GameObject.Find("SFXMAnager").GetComponent<SFXManager>();
@@ -38,74 +42,117 @@ public class MInput : MonoBehaviour
 
 		Vector3 rayPos = new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z);
 		Debug.DrawRay(rayPos, transform.forward * 2, Color.red);
-		if (Time.timeScale > 0.1f && (Input.GetKeyDown(SettingsVariables.keyDictionary["Fire"]) || attackRequested))
+		if (Input.GetKeyDown(SettingsVariables.keyDictionary["Fire"]) && SettingsVariables.boolDictionary["bAttackToggle"])
+		{
+			if (bHasAttackActivated)
+			{
+				bHasAttackActivated = false;
+				attackRequested = false;
+			}
+			else
+				bHasAttackActivated = true;
+			Debug.Log("Update attqd" + bHasAttackActivated);
+		}
+		if (Time.timeScale > 0.1f && (Input.GetKeyDown(SettingsVariables.keyDictionary["Fire"]) || attackRequested || SettingsVariables.boolDictionary["bAttackToggle"] && bHasAttackActivated))
 		{
 			if (!doneAttack)
 			{
 				DoAttack();
 				doneAttack = true;
 				attackRequested = false;
-				Invoke("wait", 0.5f);
+				Invoke("AttackWait", 0.5f);
 			}
 			else if (!attackRequested)
 				attackRequested = true;
 
 		}
 
+#if UNITY_EDITOR
 		if (Input.GetKeyDown(KeyCode.J))
 		{
-			//body.AddSegment();
+			body.AddSegment();
 		}
 		else if (Input.GetKeyDown(KeyCode.H))
 		{
-			//body.RemoveSegment(100, transform.position);
+			body.RemoveSegment(100, transform.position);
 		}
 
 		if (Input.GetKeyDown(KeyCode.K))
 		{
-			//body.IncreaseSpeed(100.0f);
+			body.IncreaseSpeed(100.0f);
 		}
 		else if (Input.GetKeyDown(KeyCode.L))
 		{
-			//body.DecreaseSpeed(100.0f);
+			body.DecreaseSpeed(100.0f);
 		}
+#endif
 
 		if (Input.GetKeyDown(SettingsVariables.keyDictionary["HalveSpeed"]))
 		{
-			PreSlowShift = body.MovementSpeed;
-			body.ChangeSpeedDirectly(PreSlowShift * .5f);
+			if(!bHasHalvedSpeed)
+            {
+				PreSlowShift = body.MovementSpeed;
+				body.ChangeSpeedDirectly(PreSlowShift * .5f);
+			}
+			if (SettingsVariables.boolDictionary["bHalveSpeedToggle"])
+			{
+				if (!bHasHalvedSpeed)
+					bHasHalvedSpeed = true;
+				else
+				{
+					body.ChangeSpeedDirectly(PreSlowShift); //as key has already been pressed, release it
+					bHasHalvedSpeed = false;
+				}
+			}
 		}
-		else if (Input.GetKeyUp(SettingsVariables.keyDictionary["HalveSpeed"]))
+		else if (Input.GetKeyUp(SettingsVariables.keyDictionary["HalveSpeed"]) && !SettingsVariables.boolDictionary["bHalveSpeedToggle"])
 		{
 			body.ChangeSpeedDirectly(PreSlowShift);
 		}
 
-		float Horizontal = Input.GetAxisRaw("Horizontal");
+		if(Input.GetButtonDown("Vertical") && SettingsVariables.boolDictionary["bForwardMoveToggle"])
+        {
+			if (bForwardActivated)
+			{
+				bForwardActivated = false;
+			}
+			else
+				bForwardActivated = true;
+		}
+		float Horizontal = Input.GetAxis("Horizontal");
+
 		float Vertical = Input.GetAxisRaw("Vertical");
+		if (Vertical == 0 && bForwardActivated && SettingsVariables.boolDictionary["bForwardMoveToggle"])
+			Vertical = 1;
 
 		movement.Set(ref Horizontal, ref Vertical, ref body);
-		if (Horizontal != 0 || Vertical != 0)
+		if ((Horizontal != 0 || bForwardActivated)|| Vertical != 0)
 			if (sfxManager != null && Time.timeScale > 0)
 				sfxManager.Walk();
-	}
 
-	public void AnimationMovementHorizontal(float Horizontal)
-	{
-		float Vertical = 0;
-		movement.Set(ref Horizontal, ref Vertical, ref body);
-		//if (Horizontal != 0 || Vertical != 0)
-		//	if (sfxManager != null && Time.timeScale > 0)
-		//		sfxManager.Walk();
+		AccessibilityDisabledActive();
 	}
-	public void AnimationMovementVertical(float Vertical)
-	{
-		float Horizontal = 0;
-		movement.Set(ref Horizontal, ref Vertical, ref body);
-		//if (Horizontal != 0 || Vertical != 0)
-		//	if (sfxManager != null && Time.timeScale > 0)
-		//		sfxManager.Walk();
+	/// <summary>
+	/// if the accessibility key setting has been disabled while it is currently active, deactivate it
+	/// </summary>
+	void AccessibilityDisabledActive()
+    {
+		if(bForwardActivated && !SettingsVariables.boolDictionary["bForwardMoveToggle"])
+        {
+			bForwardActivated = false;
+        }
+		if (!SettingsVariables.boolDictionary["bAttackToggle"] && bHasAttackActivated)
+		{
+			bHasAttackActivated = false;
+			attackRequested = false;
+		}
+		
+		if (!SettingsVariables.boolDictionary["bHalveSpeedToggle"] && bHasHalvedSpeed) //deactivate the halve speed if it was active when the setting was turned off
+		{
+				body.ChangeSpeedDirectly(PreSlowShift);
+				bHasHalvedSpeed = false;
+		}
 	}
-
 	void LateUpdate()
 	{
 		if (bIsPaused)
@@ -178,21 +225,21 @@ public class MInput : MonoBehaviour
 		if(seenTail)
         {
 			tarant.DecreaseHealth(2);
-			Instantiate(hitParticles, tarant.gameObject.transform.position, Quaternion.identity);
+			Instantiate(hitParticles, head.transform.position + head.transform.right*1.5f, Quaternion.identity);
 		}
 		else if(seenTarant)
         {
 			tarant.DecreaseHealth(1);
-			Instantiate(hitParticles, tarant.gameObject.transform.position, Quaternion.identity);
+			Instantiate(hitParticles, head.transform.position + head.transform.right*1.5f, Quaternion.identity);
 		}
 		else if (closestAnt != null) //only reduce health on the closest ant hit
 		{
 			closestAnt.ReduceHealth(100);
-			Instantiate(hitParticles, closestAnt.transform.position, Quaternion.identity);
+			Instantiate(hitParticles, head.transform.position + head.transform.right*1.5f, Quaternion.identity);
 		}
 
 	}
-	void wait()
+	void AttackWait()
 	{
 		doneAttack = false;
 	}

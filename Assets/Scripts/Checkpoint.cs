@@ -99,6 +99,7 @@ public class Checkpoint : MonoBehaviour
 		}
 	}
 
+	/// <summary>Adds the <see cref="Weapon"/>s that were previously attached before reaching the Checkpoint to <see cref="WeaponCardUI"/>.</summary>
 	public void SpawnBackupWeapons()
 	{
 		// Comment this loop to maintain the Weapon Cards in the UI.

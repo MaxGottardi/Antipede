@@ -53,11 +53,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bdae4191d613b34c9a674358c094e66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Owner: {fileID: 0}
+  WeaponsComponent: {fileID: 0}
   BarrelEndSocket: {fileID: 6709167618267762565}
   ProjectileObject: {fileID: -6691305767071978364, guid: 1c3134078b4a73246a1939f8175f203f, type: 3}
   weaponPickup: {fileID: 1514110319033228670, guid: c44599717f7f3ae4eaad352f1b1a4650, type: 3}
   isAntGun: 0
+  FireRate: 0.1
+  Range: 60
   Art: {fileID: 2800000, guid: d9527d15841a1f84b91d6adfdf9f60b8, type: 3}
   ArtMaterial: {fileID: 2100000, guid: ca7c4994f181da84a8ba38ab232f4a8e, type: 2}
   TextColour: {r: 0.3529412, g: 0.80392164, b: 0.9058824, a: 1}

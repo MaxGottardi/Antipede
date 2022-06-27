@@ -24,6 +24,8 @@ public class MCentipedeWeapons : MonoBehaviour
 	Vector3 MouseToWorld;
 	bool bHasLineOfSight;
 
+	bool bIsFireActive = false;
+
 	void Start()
 	{
 		// Body = GetComponent<MCentipedeBody>();
@@ -38,7 +40,16 @@ public class MCentipedeWeapons : MonoBehaviour
 		{
 			bHasLineOfSight = HasLineOfSight();
 
-			if (bHasLineOfSight && Input.GetMouseButtonDown(0))
+			//if enabled set the toggle for automatically firing when the mouse key is pressed
+			if (Input.GetMouseButtonDown(0) && SettingsVariables.boolDictionary["bWeaponToggle"])
+			{
+				if (bIsFireActive)
+					bIsFireActive = false;
+				else
+					bIsFireActive = true;
+			}
+
+			if (bHasLineOfSight && (Input.GetMouseButton(0) || bIsFireActive && SettingsVariables.boolDictionary["bWeaponToggle"]))
 			{
 				if (!bUsePropagationDelay)
 				{
@@ -47,13 +58,17 @@ public class MCentipedeWeapons : MonoBehaviour
 				}
 				else
 				{
-					StartCoroutine(IE_Fire());
+					StartCoroutine(FireWithPropagation());
 				}
 			}
 		}
 
 		if (HUD)
 			UpdateWeaponHUD();
+
+		//if auto firing and the toggle is disabled, stop auto firing
+		if (bIsFireActive && !SettingsVariables.boolDictionary["bWeaponToggle"])
+			bIsFireActive = false;
 	}
 
 	static Vector3 ZeroVector = Vector3.zero;
@@ -88,7 +103,7 @@ public class MCentipedeWeapons : MonoBehaviour
 			MouseToWorld != Vector3.zero; // There is nothing under the mouse. The mouse is pointing at the sky / nothing.
 	}
 
-	IEnumerator IE_Fire()
+	IEnumerator FireWithPropagation()
 	{
 		// If an InvalidOperationException is thrown here. It's because either the player has
 		// dragged a Weapon onto a Segment while firing.

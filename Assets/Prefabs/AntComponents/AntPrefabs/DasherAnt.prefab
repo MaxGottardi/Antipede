@@ -81,13 +81,14 @@ MonoBehaviour:
   FollowingNodes: FarmerNode
   groundOffset: 0.05
   backGroundCheckOffset: 0.75
-  maxSightDist: 8
+  maxSightDist: 11
   shortSightDist: 1.7
   largeViewAnlge: 27
   shortViewAngle: 180
   chanceSpawnHelpers: 2
-  maxBackupDist: 7.5
-  backupCallDist: 80
+  maxBackupDist: 180
+  backupCallDist: 115
+  backupRingScale: 140
   spawnedHelp:
   - {fileID: 1768346567234793843}
   - {fileID: 1768346567234793843}
@@ -266,6 +267,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2898114516813716898, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315396748602138855, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315396748602138855, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315396748602138855, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_LocalScale.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3461953863393772765, guid: d03430b02136fae41a430a78a3a68665, type: 3}
@@ -594,6 +607,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8395566384454598168, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9040950338240070818, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

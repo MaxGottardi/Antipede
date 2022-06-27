@@ -1,32 +1,57 @@
 using UnityEngine;
 
+/// <summary>
+/// The central class that handles Segment logic.
+/// <br></br>
+/// <br>Anything related to a Centipede's Segment can be accessed from here.</br>
+/// <br><br>Includes:</br></br>
+/// <br>The <see cref="MCentipedeWeapons"/> component this Segment belongs to. This is the Centipede.</br>
+/// <br>The attached <see cref="global::Weapon"/>.</br>
+/// <br>Handles Segment Following and Movement.</br>
+/// </summary>
+/// <remarks>
+/// Not mentioned is the <see cref="FABRIK"/> component, which is unrelated to MSegment.
+/// </remarks>
 public class MSegment : MonoBehaviour
 {
-	public Transform ForwardNeighbour;
+	static AnimationCurve AccelerationCurve;
+
+	[Header("Follow Settings.")]
+	[ReadOnly] public Transform ForwardNeighbour;
+	[ReadOnly] public float FollowSpeed, MaxTurnDegreesPerFrame;
 	Rigidbody rb;
-	public float FollowSpeed, MaxTurnDegreesPerFrame;
 	float Distance;
 	CentipedeMovement Reference;
-	static AnimationCurve AccelerationCurve;
 	float AccelerationTime = 0f;
 
-	public LayerMask segmentLayer;
-	//public bool beingAttacked = false;
-
+	[Header("Weapons Settings.")]
 	public bool bIgnoreFromWeapons;
-	Transform WeaponSocket;
 	public Weapon Weapon;
+	Transform WeaponSocket;
 
-	MCentipedeWeapons Owner;
 	public float health = 100;
-
 	public int numAttacking = 0; //does this segment has a player locked on for attacking
 
+	MCentipedeWeapons Owner;
 	bool bDetached = false;
 	float TimeDetached = 0f;
 
+	/*
+	                               -- Dynamic Segment-Terrain Alignment --
+
+	If there are problems with the Segments, especially, but not limited to, when going over Terrain,
+	switch K_bUseDynamicAlignment to false and see if it fixes it, otherwise the problem is elsewhere.
+
+	Alternatively, increase / decrease kErrorAngle or kFrameSkips.
+
+	Note that the Centipede has it's own implementation.
+
+	*/
+	const bool  K_bUseDynamicAlignment = true; // True to use Dynamic Segment-Terrain Alignment.
+	const float kErrorAngle            = 5f;   // An angle difference > this degrees will trigger Alignment.
+	const int   kFrameSkips            = 10;   // Skip this many frames before checking if this Segment needs realigning.
+
 	/// <summary>Initialises this Segment to follow ForwardNeighbour at FollowSpeed and turning at MaxTurnDegreesPerFrame.</summary>
-	/// <remarks>MaxTurnDegreesPerFrame will be multiplied to try and prevent disconnection. Increase as needed.</remarks>
 	/// <param name="Owner">The Weapons Component this Segment belongs to. The Centipede.</param>
 	/// <param name="Reference">The Centipede's Movement Component to judge the rate of acceleration and deceleration.</param>
 	/// <param name="ForwardNeighbour">The Transform to follow when the body moves.</param>
@@ -40,7 +65,7 @@ public class MSegment : MonoBehaviour
 		SetForwardNeighbour(ForwardNeighbour);
 		rb = GetComponent<Rigidbody>();
 		this.FollowSpeed = FollowSpeed;
-		this.MaxTurnDegreesPerFrame = MaxTurnDegreesPerFrame * 20;
+		this.MaxTurnDegreesPerFrame = MaxTurnDegreesPerFrame;
 		this.Distance = Distance;
 
 		this.Reference = Reference;
@@ -54,9 +79,9 @@ public class MSegment : MonoBehaviour
 	bool bHasRayAligned = false;
 	Vector3 SurfaceNormal;
 
+	/// <summary>Segment Movement.</summary>
 	void FixedUpdate()
 	{
-		
 		if (bDetached)
 		{
 			rb.AddTorque(transform.up * 50f);
@@ -65,17 +90,22 @@ public class MSegment : MonoBehaviour
 			return;
 		}
 
-		if (!MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance, out float SquareDistance))
+		if (!MMathStatics.HasReached(transform.position, ForwardNeighbour.position, Distance * 1.25f, out float SquareDistance))
 		{
 			if (ForwardNeighbour)
 			{
-				if (Reference.AccelerationTime > 0f)
-				{
-					AccelerationTime += Time.deltaTime;
-				}
 
-				MMathStatics.HomeTowards(rb, ForwardNeighbour, EvaluateAcceleration(FollowSpeed), MaxTurnDegreesPerFrame);
-				bHasRayAligned = false;
+				AccelerationTime = Reference.AccelerationTime;
+
+				if (K_bUseDynamicAlignment && Time.frameCount % kFrameSkips == 0 && NeedsAlignment(out RaycastHit Terrain))
+				{
+					Align(ref Terrain);
+				}
+				else
+				{
+					MMathStatics.HomeTowards(rb, ForwardNeighbour, EvaluateAcceleration(FollowSpeed), MaxTurnDegreesPerFrame);
+					bHasRayAligned = false;
+				}
 
 				AccelerationTime = Mathf.Clamp(AccelerationTime, Distance, 1f);
 			}
@@ -132,6 +162,29 @@ public class MSegment : MonoBehaviour
 		return AccelRate * Scalar;
 	}
 
+	bool NeedsAlignment(out RaycastHit Terrain)
+	{
+		Ray R = new Ray(transform.position, -transform.up);
+		if (Physics.Raycast(R, out Terrain, 1, 256))
+		{
+			return Vector3.Angle(transform.up, Terrain.normal) > kErrorAngle;
+		}
+
+		return false;
+	}
+
+	void Align(ref RaycastHit Terrain)
+	{
+		if (!Terrain.collider)
+			return;
+
+		Vector3 Normal = Terrain.normal;
+
+		transform.rotation = Quaternion.FromToRotation(transform.up, Normal) * transform.rotation;
+	}
+
+	/// <summary>Overrides <see cref="AccelerationTime"/>.</summary>
+	/// <param name="Time">New Acceleration Time.</param>
 	public void InjectAccelerationTime(float Time)
 	{
 		AccelerationTime = Time;
@@ -158,10 +211,10 @@ public class MSegment : MonoBehaviour
 
 		Weapon AttachedWeapon = Instantiate(Weapon, WeaponSocket.position, WeaponSocket.rotation);
 		this.Weapon = AttachedWeapon;
-		this.Weapon.Owner = GetOwner();
+		this.Weapon.WeaponsComponent = GetWeaponsComponent();
 
 		AttachedWeapon.transform.SetParent(WeaponSocket);
-		AttachedWeapon.OnAttatch();
+		AttachedWeapon.OnAttach(this);
 
 		Owner.SegmentsWithWeapons.Add(this);
 
@@ -170,10 +223,18 @@ public class MSegment : MonoBehaviour
 
 	public void ReplaceWeapon(Weapon NewWeapon)
 	{
+		DetachWeapon();
+
+		// Reregister this Segment into Weapons.
+		SetWeapon(NewWeapon);
+	}
+
+	public void DetachWeapon()
+	{
 		Weapon WeaponNow = Weapon;
 
 		// Deregister this Segment from Weapons.
-		Deregister();
+		DeregisterWeapon();
 
 		Debug.Assert(WeaponNow != null, "Trying to replace a Segment's Weapon, but no Weapon is attached!");
 
@@ -200,22 +261,23 @@ public class MSegment : MonoBehaviour
 		WNRB.AddTorque(Force * 5000);
 
 		// Enable physics collisions.
-		WNRB.gameObject.AddComponent<BoxCollider>();
+		BoxCollider BC = WNRB.gameObject.AddComponent<BoxCollider>();
+		BC.center = Vector3.zero;
+		BC.size = Vector3.one;
 
 		WeaponNow.Deregister();
 		Destroy(Weapon.gameObject, 5f);
-
-		// Reregister this Segment into Weapons.
-		SetWeapon(NewWeapon);
 	}
 
+	/// <param name="Socket">Outs the Weapon Socket.</param>
+	/// <returns>True if there is a Weapon Socket.</returns>
 	public bool TryGetWeaponSocket(out Transform Socket)
 	{
 		Socket = WeaponSocket;
 		return Socket;
 	}
 
-	public MCentipedeWeapons GetOwner()
+	public MCentipedeWeapons GetWeaponsComponent()
 	{
 		return Owner;
 	}
@@ -226,11 +288,7 @@ public class MSegment : MonoBehaviour
 		return health <= 0;
 	}
 
-	public void ForceRealign()
-	{
-		transform.rotation = ForwardNeighbour.rotation;
-	}
-
+	/// <summary>Destroy anything that makes this Segment an <see cref="MSegment"/>.</summary>
 	void DetachGameFunctions()
 	{
 		// If this Rigidbody is no longer required to simulate physics,
@@ -252,9 +310,10 @@ public class MSegment : MonoBehaviour
 		}
 	}
 
+	/// <summary>Visually fling this Segment off the Centipede line.</summary>
 	public void Detach()
 	{
-		Deregister();
+		DeregisterWeapon();
 		bDetached = true;
 		TimeDetached = Time.time;
 
@@ -280,14 +339,16 @@ public class MSegment : MonoBehaviour
 
 		// Disable FABRIK.
 		Destroy(GetComponent<FABRIK>());
+
 		gameObject.tag = "Untagged";
+
 		// Deregister and ignore Weapon commands (if any).
 		if (Weapon)
 			Weapon.Deregister();
 	}
 
 	/// <summary>Make this Segment ignore Weapon commands.</summary>
-	void Deregister()
+	void DeregisterWeapon()
 	{
 		if (Owner)
 			// If this doesn't fix the InvalidOperationException problem, then idk.
@@ -296,6 +357,7 @@ public class MSegment : MonoBehaviour
 		Owner.SegmentsWithWeapons.Remove(this);
 	}
 
+	// Shorthand conversions.
 	public static implicit operator Transform(MSegment s) => s.transform;
 	public static implicit operator Weapon(MSegment s) => s.Weapon;
 }

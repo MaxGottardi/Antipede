@@ -24,15 +24,16 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 	}
 
 	[Tooltip("The Weapon that will be attached to the Centipede.")]
-	public Weapon Attachment;
+	[ReadOnly] public Weapon Attachment;
 
-	public TextMeshProUGUI AttachUI;
+	[ReadOnly] public TextMeshProUGUI AttachUI;
 
 	/// <summary>The Weapon currently being dragged; if it exists.</summary>
 	Weapon DraggingAttachment;
 
 	Vector3 PointUnderMouse;
 	RaycastHit Hit;
+	MSegment Segment;
 
 	RectTransform RT;
 	Rect R;
@@ -142,7 +143,7 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 	{
 		// ...
 
-		if (TryGetSegment(ref Hit, out MSegment Segment)                // If the GameObject under the mouse has a Segment.
+		if (TryGetSegment(ref Hit, out Segment)                // If the GameObject under the mouse has a Segment.
 			&& !Segment.bIgnoreFromWeapons                          // If the Segment is NOT ignoring Weapons.
 			&& Segment.TryGetWeaponSocket(out Transform Socket))    // If the Segment has a Weapon Socket.
 		{
@@ -150,16 +151,17 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 			DraggingAttachment.transform.rotation = Socket.rotation;
 			DraggingAttachment.transform.parent = Socket;
 
-			//AttachUI.gameObject.SetActive(true);
-			//AttachUI.text = (Weapon)Segment == null ? "Attach!" : "Replace";
-			//AttachUI.rectTransform.position = Input.mousePosition + Vector3.up * 75f;
+			AttachUI.gameObject.SetActive(true);
+			AttachUI.text = (Weapon)Segment == null ? "Attach!" : "Replace";
+			AttachUI.rectTransform.position = Input.mousePosition + Vector3.up * 75f; // Mouse Position because I want to
+												  // avoid deprojecting WorldToScreen.
 		}
 		else
 		{
 			DraggingAttachment.transform.position = Hit.point;
 
 			DraggingAttachment.transform.parent = null;
-			//AttachUI.gameObject.SetActive(false);
+			AttachUI.gameObject.SetActive(false);
 		}
 	}
 
@@ -167,7 +169,7 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 	{
 		// ...
 
-		if (TryGetSegment(ref Hit, out MSegment Segment))
+		if (Segment)
 		{
 			if (!Segment.bIgnoreFromWeapons)
 			{
@@ -186,7 +188,7 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 
 		Destroy(DraggingAttachment.gameObject);
 		DraggingAttachment = null;
-		//AttachUI.gameObject.SetActive(false);
+		AttachUI.gameObject.SetActive(false);
 	}
 
 	static Vector3 CameraToWorld(out RaycastHit Hit)

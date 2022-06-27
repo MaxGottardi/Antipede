@@ -95,6 +95,7 @@ public partial class MCentipedeBody : MonoBehaviour
 
 		if (newPlayer)
 		{
+			// Ensure Custom Segments spawn at the correctly when restarting from a Checkpoint.
 			for (byte i = 0; i < CustomSegments.Count; ++i)
 			{
 
@@ -118,10 +119,9 @@ public partial class MCentipedeBody : MonoBehaviour
 		}
 	}
 
-	private void Update()
+	void Update()
 	{
-
-		if (slowed == true)
+		if (slowed)
 		{
 			slowTimer += Time.deltaTime;
 			if (slowTimer >= 5)
@@ -132,34 +132,22 @@ public partial class MCentipedeBody : MonoBehaviour
 				slowed = false;
 			}
 		}
-
-		//		Debug.Log(shieldActive);
-		//Debug.Log(Segments.Count);
-		//		Debug.Log(U2I(SegmentsInfo.End));
-		/*if (Input.GetKeyDown(KeyCode.Y)) {
-			sfxManager.ActivateShield();
-			shieldActive = true;
-        }
-		if (Input.GetKeyUp(KeyCode.Y))
-        {
-			sfxManager.DeactivateShield();
-			shieldActive = false;
-        }*/
-
 	}
 
+	/// <summary>Adds a Segment to the back of the Centipede.</summary>
+	/// <remarks>
+	/// First-level Abstraction.
+	/// <br></br>
+	/// This is the preparation phase for adding a Segment.
+	/// </remarks>
+	/// <returns>The <see cref="MSegment"/> that was added, or null if something failed.</returns>
 	public MSegment AddSegment()
 	{
-		if (slowed == true)
-		{
-			IncreaseSpeed(5);
-		}
-		else if (slowed == false)
-		{
-			IncreaseSpeed(10);
-		}
+		IncreaseSpeed(slowed ? 5 : 10);
+
 		if (GameManager1.uiButtons)
 			GameManager1.uiButtons.AddSegment();
+
 		float Z = NumberOfSegments * SegmentsInfo.SegmentScale.z + DeltaZ;
 
 		MSegment AddedSegment;
@@ -168,11 +156,11 @@ public partial class MCentipedeBody : MonoBehaviour
 		{
 			Transform End = GetLast();
 
-			Vector3 Displacement = SegmentsInfo.SegmentScale.z * -End.forward;
+			Vector3 Displacement = kBufferZone * SegmentsInfo.SegmentScale.z * -End.forward;
 			Tail.position += Displacement;
 
-			foreach (MSegment C in CustomSegments)
-				C.transform.position += Displacement;
+			for (byte i = 0; i < CustomSegments.Count; ++i)
+				CustomSegments[i].transform.position = (i + 1) * Displacement + Tail.position;
 
 			Quaternion Rot = MMathStatics.DirectionToQuat(((Transform)GetLast(1)).position, End.position);
 
@@ -201,6 +189,15 @@ public partial class MCentipedeBody : MonoBehaviour
 		return null;
 	}
 
+	/// <summary>Adds a Segment to the back of the Centipede.</summary>
+	/// <remarks>
+	/// Second-level Abstraction.
+	/// <br></br>
+	/// This is where an <see cref="MSegment"/> gets instantiated, added, and fully registered to the Centipede.
+	/// </remarks>
+	/// <param name="Z">The Z-Axis gap between the first Segment to be added and <see cref="Head"/>.</param>
+	/// <param name="Rot">The Rotation to orient the new Segment to face a previously added Segment.</param>
+	/// <returns>The <see cref="MSegment"/> that was added, or null if something failed.</returns>
 	MSegment AddSegment(float Z, Quaternion Rot)
 	{
 		// Inherit Centipede's rotation.
@@ -234,17 +231,15 @@ public partial class MCentipedeBody : MonoBehaviour
 		return Seg;
 	}
 
-	public void RemoveSegment(float healthReduction, Vector3 particalPos)//MSegment deadSegment)
+	/// <summary>Removes or damages <see cref="GetLast"/>.</summary>
+	/// <param name="healthReduction">The health to deduct from <see cref="GetLast"/>.</param>
+	/// <param name="particalPos">Where should the damage particles spawn?</param>
+	public void RemoveSegment(float healthReduction, Vector3 particalPos)
 	{
 		if (!shieldActive && Segments != null && Segments.Count > 0)
 		{
-			//		Debug.Log("Killing Player");
-
-			//Segments.Remove(Segments[Segments.Count - 1]);
-
 			if (Segments.Count <= 0)
 				return;
-
 
 			MSegment lastSegment = GetLast();
 
@@ -255,34 +250,25 @@ public partial class MCentipedeBody : MonoBehaviour
 			{
 				if (GameManager1.uiButtons != null)
 					GameManager1.uiButtons.RemoveSegment();
-				if (slowed == true)
-				{
-					DecreaseSpeed(5);
-				}
-				else if (slowed == false)
-				{
-					DecreaseSpeed(10);
-				}
+
+				DecreaseSpeed(slowed ? 5 : 10);
 
 				Instantiate(DamageParticles, particalPos, Quaternion.identity);
 
-				//Destroy(lastSegment.gameObject);
+				// Fling!
 				lastSegment.Detach();
 
-				//int nextIndex = 1;
-				//while (segmentIndex + nextIndex < Segments.Count - 1 && !Segments[segmentIndex + nextIndex]) //if multiple in a row get destroyed at same time, prevents it from bugging out
-				//	nextIndex++;
-				//if (segmentIndex + nextIndex < Segments.Count - 1)
-				//	Segments[segmentIndex + nextIndex].ForwardNeighbour = lastSegment.ForwardNeighbour;
-
+				// Remove this Segment.
 				Segments.RemoveAt(Segments.Count - 1);
 				--NumberOfSegments;
+				SegmentsInfo.RemoveSegment();
+
+				// Camera feedback for losing a Segment. (Goes forward, SpringArm will return it to normal)
 				GameManager1.cameraController.gameObject.transform.position += GameManager1.cameraController.gameObject.transform.forward * 2;
 
+				// Update the Tail's new ForwardNeighbour.
 				int lastSegIndex = Segments.Count - 1;
 				TailSegment.SetForwardNeighbour(Segments[lastSegIndex]);
-
-				SegmentsInfo.RemoveSegment();
 
 				// Ensure the Tail is properly 'attached' to the end Segment.
 				Transform newLast = GetLast();
@@ -290,8 +276,7 @@ public partial class MCentipedeBody : MonoBehaviour
 				Tail.position = NewPos;
 
 				for (byte i = 0; i < CustomSegments.Count; ++i)
-					CustomSegments[i].transform.position = NewPos - (i * FollowDistance * newLast.forward) * kBufferZone;
-
+					CustomSegments[i].transform.position = NewPos - ((i + 1) * FollowDistance * newLast.forward) * kBufferZone;
 			}
 
 			// Make the check after removing a Segment.
@@ -299,20 +284,31 @@ public partial class MCentipedeBody : MonoBehaviour
 			{
 				foreach (GameObject checkpoint in checkPoints)
 				{
-					if (checkpoint.TryGetComponent(out Checkpoint Checkpoint) && Checkpoint.backupPlayerExists == true)
+					if (checkpoint.TryGetComponent(out Checkpoint Checkpoint) && Checkpoint.backupPlayerExists)
 					{
+						// Call Construct on the new Centipede.
 						newPlayer.gameObject.SetActive(true);
+
+						// Reset its position from underground.
 						newPlayer.transform.position = new Vector3(newPlayer.transform.position.x, newPlayer.transform.position.y + 5, newPlayer.transform.position.z);
 						newPlayer.name = "Centipede";
 
 						backupPlayerExists = true;
 
+						// Give back the Weapons.
 						Checkpoint.SpawnBackupWeapons();
+
+						// Reset the Camera Target.
 						SpringArm.Instance.Target = newPlayer.transform;
 
+						// Because the Centipede is considered dead at 1 Segment remaining,
+						// ensure the 0'th Segment is destroyed as well.
 						Destroy(Segments[0].gameObject);
+
+						// Destroy this (dead) Centipede.
 						Destroy(gameObject);
 
+						// Mark the Player as having NOT gone through a Checkpoint.
 						Checkpoint.backupPlayerExists = false;
 					}
 				}
@@ -419,6 +415,7 @@ public partial class MCentipedeBody : MonoBehaviour
 	void OnGUI()
 	{
 		GUI.Label(new Rect(10, 25, 250, 150), "Movement Speed: " + MovementSpeed);
+		GUI.Label(new Rect(10, 55, 250, 150), "Number of Segments: " + NumberOfSegments);
 	}
 
 #endif

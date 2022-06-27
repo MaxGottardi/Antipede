@@ -46,8 +46,9 @@ public class GenericAnt : MonoBehaviour
 
     [Header("Backup Calling")]
     public float chanceSpawnHelpers; //the percentage chance determining number of ants to spawn as backup
-    public float maxBackupDist;
-    public float backupCallDist = 7.5f;
+    public float maxBackupDist; //the distance away from the player it can call backup from
+    public float backupCallDist = 7.5f; //once calling backup, the distance from the current location other ants will be notified
+    public float backupRingScale = 32;
     public GameObject[] spawnedHelp;
     [HideInInspector]public ShuffleBag<GameObject> spawnedHelpBag;
     public bool isHelper = false;
@@ -63,7 +64,7 @@ public class GenericAnt : MonoBehaviour
     public float health = 100;
     [HideInInspector]public float maxHealth;
     public GameObject leftAntenna, rightAntenna;
-    ShuffleBag<bool> healthBag;
+    ShuffleBag<bool> healthBag; //the shuffle bag for the ant damage state
     [Range(0,1)]
     public float minFleeChance;
     //public float minFleeX = 10, maxFleeX = 15, minFleeZ = 10, maxFleeZ = 15;
@@ -155,13 +156,6 @@ public class GenericAnt : MonoBehaviour
         return (distAway < shortSightDist && Vector3.Angle(transform.forward, dirToPoint) < shortViewAngle / 2 || Vector3.Angle(transform.forward, dirToPoint) < largeViewAnlge / 2);
     }
 
-    ////void OnDrawGizmosSelected()
-    ////{
-    ////    // Draw a yellow sphere at the transform's position
-    ////    Gizmos.color = Color.yellow;
-    ////    Gizmos.DrawSphere(transform.position, 7.5f);
-    ////}
-
 
     /// <summary>
     /// called whenever this ant takes damage
@@ -223,6 +217,9 @@ public class GenericAnt : MonoBehaviour
         Handles.color = Color.red;
         Handles.DrawLine(transform.position, transform.position + shortViewAngle01 * shortSightDist);
         Handles.DrawLine(transform.position, transform.position + shortViewAngle02 * shortSightDist);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(transform.position, backupCallDist);
     }
 #endif
     private Vector3 DirectionFromAngle(float eulerY, float anglesInDegrees)

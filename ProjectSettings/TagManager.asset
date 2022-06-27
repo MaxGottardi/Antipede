@@ -32,6 +32,8 @@ TagManager:
   - backup
   - SFXM
   - ParentWeb
+  - Projectile
+  - Graphics
   layers:
   - Default
   - TransparentFX
