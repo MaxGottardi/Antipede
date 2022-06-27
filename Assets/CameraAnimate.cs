@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CameraAnimate : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class CameraAnimate : MonoBehaviour
     [SerializeField]Quaternion creditsRot, mainRot, settingsRot;
     public GameObject mainMenuObj, creditsObj, settingsObj;
     GameObject currActive = null, newActive;
-    float duration = .25f;
+    float duration = .5f;
 
     bool nearGoal = false;
     private void Start()

@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Web : MonoBehaviour
+public class Web : MonoBehaviour, IDataInterface
 {
     public bool isShot = false;
-    private float despawnTimer;
+    public float despawnTimer;
     private GameObject player;
 
     // Start is called before the first frame update
@@ -38,5 +38,23 @@ public class Web : MonoBehaviour
         {
             player.GetComponent<MCentipedeBody>().tempSlowSpeed();
         }
+    }
+
+    public void LoadData(SaveableData saveableData)
+    {
+        //as this web exists in the scene when loading in from a save, destroy it
+        Destroy(gameObject);
+    }
+
+    public void SaveData(ref SaveableData saveableData)
+    {
+        WebData webData = new WebData();
+        webData.bWebIsShot = isShot;
+        webData.webDespawnTimer = despawnTimer;
+        webData.webPosition = transform.position;
+        webData.webRotation = transform.rotation;
+        webData.webVelocity = gameObject.GetComponent<Rigidbody>().velocity;
+
+        saveableData.cobwebData.list.Add(webData);
     }
 }

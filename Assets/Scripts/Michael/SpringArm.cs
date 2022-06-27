@@ -107,8 +107,16 @@ public class SpringArm : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		Camera.position = Vector3.Lerp(Camera.position, TargetPosition, PositionalLagStrength);
-		Camera.rotation = Quaternion.Slerp(Camera.rotation, TargetRotation, RotationalLagStrength);
+		if (SettingsVariables.boolDictionary["bCamFollow"])
+		{
+			Camera.position = Vector3.Lerp(Camera.position, TargetPosition, PositionalLagStrength);
+			Camera.rotation = Quaternion.Slerp(Camera.rotation, TargetRotation, RotationalLagStrength);
+		}
+		else
+        {
+			Camera.position = TargetPosition;
+			Camera.rotation = TargetRotation;
+		}
 
 		PlaceCamera();
 	}
@@ -225,7 +233,7 @@ public class SpringArm : MonoBehaviour
 	{
 		if (bEnableScrollToDistance)
 		{
-			Distance += Input.mouseScrollDelta.y * (bInvertZ ? -1f : 1f) * -SettingsVariables.sliderDictionary["zoomSpeed"];
+			Distance += Input.mouseScrollDelta.y * (bInvertZ ? -1f : 1f) * -SettingsVariables.sliderDictionary["zoomSpeed"] / 100;
 
 			Distance = Mathf.Clamp(Distance, 1, 30);
 		}
@@ -235,7 +243,7 @@ public class SpringArm : MonoBehaviour
 	{
 		bInheritRotation = InSettings.bInheritRotation;
 		OrbitSensitivity = InSettings.CameraMouseSensitivity /* * 2f + Vector3.kEpsilon*/;
-		SettingsVariables.sliderDictionary["camRotSpeed"] = OrbitSensitivity;
+		SettingsVariables.sliderDictionary["camRotSpeed"] = OrbitSensitivity * 100; //convert to a range of 0 - 200
 	}
 
 	void UpdateRotationOnMouse()
@@ -244,8 +252,8 @@ public class SpringArm : MonoBehaviour
 
 		if (Input.GetMouseButton(1))
 		{
-			float DeltaX = (MousePosition.x - PreviousMouseDragPosition.x) * SettingsVariables.sliderDictionary["camRotSpeed"];
-			float DeltaY = (MousePosition.y - PreviousMouseDragPosition.y) * SettingsVariables.sliderDictionary["camRotSpeed"];
+			float DeltaX = (MousePosition.x - PreviousMouseDragPosition.x) * SettingsVariables.sliderDictionary["camRotSpeed"] / 100; //set to a range between 0 - 2
+			float DeltaY = (MousePosition.y - PreviousMouseDragPosition.y) * SettingsVariables.sliderDictionary["camRotSpeed"] / 100;
 
 			DetermineInverse(ref DeltaX, ref DeltaY);
 

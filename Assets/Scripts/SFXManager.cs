@@ -89,8 +89,11 @@ public class SFXManager : MonoBehaviour
 
     public void CollectLarvae()
     {
-        sourcePlayer.clip = larvaeSFX;
-        sourcePlayer.Play();
+        if (sourcePlayer != null)
+        {
+            sourcePlayer.clip = larvaeSFX;
+            sourcePlayer.Play();
+        }
     }
 
     public void CollectPowerup()

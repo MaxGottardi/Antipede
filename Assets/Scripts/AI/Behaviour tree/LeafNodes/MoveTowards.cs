@@ -7,8 +7,6 @@ public class MoveTowards : Node
     float previousDistToNode = 0;
     Quaternion forwardOffset;
     bool doDistCheck;
-
-    float groundY; //currrent ground position
     public MoveTowards(GenericAnt blackboard, bool doDistCheck)
     {
         this.blackboard = blackboard;
@@ -206,12 +204,23 @@ public class MoveTowards : Node
         return upSmooth;
     }
 
-    void MoveToGround()
+    public override void saveData(GenericAntData saveableData)
     {
-        Vector3 groundPoint = blackboard.transform.position;
-        groundPoint.y = groundY;
+        base.saveData(saveableData);
 
-        float fallStep = Time.deltaTime * 5;
-        blackboard.transform.position = Vector3.MoveTowards(blackboard.transform.position, groundPoint, fallStep);
+        saveableData.moveTowardsPrevDistToNode.list.Add(previousDistToNode);
+        saveableData.moveTowardsForwardOffset.list.Add(forwardOffset);
+
+    }
+
+    public override void loadData(GenericAntData saveableData)
+    {
+        base.loadData(saveableData);
+
+        forwardOffset = saveableData.moveTowardsForwardOffset.list[0];
+        saveableData.moveTowardsForwardOffset.list.RemoveAt(0);
+        
+        previousDistToNode = saveableData.moveTowardsPrevDistToNode.list[0];
+        saveableData.moveTowardsPrevDistToNode.list.RemoveAt(0);
     }
 }

@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+   public enum EAntType
+    { 
+    farmer,
+        hunter,
+        guard,
+        bomb,
+        dasher
+    }
 /// <summary>The base class for an ant.</summary>
-public class GenericAnt : MonoBehaviour
+public class GenericAnt : MonoBehaviour, IDataInterface
 {
-    [HideInInspector] public Vector3 avoidanceDir;
-    [HideInInspector]public float avoidanceUpdateFreqCurr = -1, waitTimeAvoidance = 0.1f;
-
-
+ 
+    public EAntType antType;
+    //none saved, probs not required as should be fine updating on first frame spawns in
     [HideInInspector] public Transform nextPosTransform;
     [HideInInspector] public List<Vector3> pathToNextPos;
     [HideInInspector] public Vector3 nextPosVector;
@@ -46,8 +53,9 @@ public class GenericAnt : MonoBehaviour
 
     [Header("Backup Calling")]
     public float chanceSpawnHelpers; //the percentage chance determining number of ants to spawn as backup
-    public float maxBackupDist;
-    public float backupCallDist = 7.5f;
+    public float maxBackupDist; //the distance away from the player it can call backup from
+    public float backupCallDist = 7.5f; //once calling backup, the distance from the current location other ants will be notified
+    public float backupRingScale = 32;
     public GameObject[] spawnedHelp;
     [HideInInspector]public ShuffleBag<GameObject> spawnedHelpBag;
     public bool isHelper = false;
@@ -59,43 +67,43 @@ public class GenericAnt : MonoBehaviour
     public Transform headTransform;
 
     [Header("Damage Settings")]
-    [SerializeField] bool[] damageStageChance; //out of 10 bites it recives how many of them will go into the damage stage
+    [SerializeField] public bool[] damageStageChance; //out of 10 bites it recives how many of them will go into the damage stage
     public float health = 100;
     [HideInInspector]public float maxHealth;
     public GameObject leftAntenna, rightAntenna;
-    ShuffleBag<bool> healthBag;
+    public ShuffleBag<bool> healthBag; //the shuffle bag for the ant damage state
     [Range(0,1)]
     public float minFleeChance;
-    //public float minFleeX = 10, maxFleeX = 15, minFleeZ = 10, maxFleeZ = 15;
-    //[HideInInspector] public Vector3 fleePoint;
 
     [Header("Audio Settings")]
     public AudioSource audioSource;
 
     public virtual void Start()
     {
-        avoidanceDir = transform.forward;
-        sfxManager = FindObjectOfType<SFXManager>();
+        //if (healthBag == null) //if this is not yet set, then it means it hasn't run start, otherwise do run the start method. this required to be called before setting the ants data on its spawning in
+        {
+            sfxManager = FindObjectOfType<SFXManager>();
 
-        backupRing.SetActive(false);
-        healthBag = new ShuffleBag<bool>();
-        healthBag.shuffleList = damageStageChance;
+            backupRing.SetActive(false);
+            healthBag = new ShuffleBag<bool>();
+            healthBag.shuffleList = damageStageChance;
 
-        spawnedHelpBag = new ShuffleBag<GameObject>();
-        spawnedHelpBag.shuffleList = spawnedHelp;
+            spawnedHelpBag = new ShuffleBag<GameObject>();
+            spawnedHelpBag.shuffleList = spawnedHelp;
 
-        maxHealth = health;
-        pathToNextPos = new List<Vector3>();
-        anim = transform.GetChild(0).gameObject.GetComponent<Animator>();
-        audioSource = transform.GetChild(0).gameObject.GetComponent<AudioSource>();
-        anim.SetFloat("SpeedMultiplier", animMultiplier);
-        //anim.SetTrigger("Walk");
-        nodesList = GameObject.FindGameObjectsWithTag(FollowingNodes);
-        stateMachine = new StateMachine(this);
-        if (isHelper)
-            stateMachine.changeState(stateMachine.SpawnIn);
-        else
-            stateMachine.changeState(stateMachine.Movement);
+            maxHealth = health;
+            pathToNextPos = new List<Vector3>();
+            anim = transform.GetChild(0).gameObject.GetComponent<Animator>();
+            audioSource = transform.GetChild(0).gameObject.GetComponent<AudioSource>();
+            anim.SetFloat("SpeedMultiplier", animMultiplier);
+            //anim.SetTrigger("Walk");
+            nodesList = GameObject.FindGameObjectsWithTag(FollowingNodes);
+            stateMachine = new StateMachine(this);
+            if (isHelper)
+                stateMachine.changeState(stateMachine.SpawnIn);
+            else
+                stateMachine.changeState(stateMachine.Movement);
+        }
     }
 
     // Update is called once per frame
@@ -105,7 +113,11 @@ public class GenericAnt : MonoBehaviour
         if (GameManager1.playerObj != null && Vector3.Distance(transform.position, GameManager1.playerObj.transform.position) <= 200)
             stateMachine.Update();
         else
+        {
             anim.SetTrigger("Idle");
+        }
+        ////anim.Play("Base Layer.AntAttack", 0, 0.5f);
+
 
         //headTransform.localPosition = new Vector3(100, 100, 100);// = (blackboard.nextPosVector - blackboard.transform.position).normalized;
         //Debug.Log(headTransform.localPosition);
@@ -155,13 +167,6 @@ public class GenericAnt : MonoBehaviour
         return (distAway < shortSightDist && Vector3.Angle(transform.forward, dirToPoint) < shortViewAngle / 2 || Vector3.Angle(transform.forward, dirToPoint) < largeViewAnlge / 2);
     }
 
-    ////void OnDrawGizmosSelected()
-    ////{
-    ////    // Draw a yellow sphere at the transform's position
-    ////    Gizmos.color = Color.yellow;
-    ////    Gizmos.DrawSphere(transform.position, 7.5f);
-    ////}
-
 
     /// <summary>
     /// called whenever this ant takes damage
@@ -173,19 +178,7 @@ public class GenericAnt : MonoBehaviour
         {
             health -= amount;
 
-            //needs to be a value between 30 and 150
-            ///curr hea
-            float healthRatio = health / maxHealth;
-            //new_value = ( (old_value - old_min) / (old_max - old_min) ) * (new_max - new_min) + new_min
-            float currRote = health > 0 ? healthRatio * (30 - 150) + 150 : 150;
-            float currChildRote = health > 0 ? healthRatio * (0 - 70) + 70 : 70;
-
-            leftAntenna.transform.localRotation = Quaternion.Euler(currRote, leftAntenna.transform.localRotation.y, leftAntenna.transform.localRotation.z);
-            rightAntenna.transform.localRotation = Quaternion.Euler(currRote, rightAntenna.transform.localRotation.y, rightAntenna.transform.localRotation.z);
-
-            leftAntenna.transform.GetChild(0).localRotation = Quaternion.Euler(currChildRote, leftAntenna.transform.GetChild(0).localRotation.y, leftAntenna.transform.GetChild(0).localRotation.z);
-            rightAntenna.transform.GetChild(0).localRotation = Quaternion.Euler(currChildRote, rightAntenna.transform.GetChild(0).localRotation.y, rightAntenna.transform.GetChild(0).localRotation.z);
-
+            AssignAntennaPositions();
             if (health <= 0)
             {
                 Destroy(transform.GetChild(0).GetComponent<Collider>());
@@ -202,6 +195,22 @@ public class GenericAnt : MonoBehaviour
                 stateMachine.changeState(stateMachine.Investigate);
             }
         }
+    }
+
+    public void AssignAntennaPositions()
+    {
+        //needs to be a value between 30 and 150
+        float healthRatio = health / maxHealth;
+        //new_value = ( (old_value - old_min) / (old_max - old_min) ) * (new_max - new_min) + new_min
+        float currRote = health > 0 ? healthRatio * (30 - 150) + 150 : 150;
+        float currChildRote = health > 0 ? healthRatio * (0 - 70) + 70 : 70;
+
+        leftAntenna.transform.localRotation = Quaternion.Euler(currRote, 0, 21.5f);
+        rightAntenna.transform.localRotation = Quaternion.Euler(currRote, 0, 21.5f);
+
+        leftAntenna.transform.GetChild(0).localRotation = Quaternion.Euler(currChildRote, 0, 0);
+        rightAntenna.transform.GetChild(0).localRotation = Quaternion.Euler(currChildRote, 0, 0);
+
     }
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
@@ -223,6 +232,9 @@ public class GenericAnt : MonoBehaviour
         Handles.color = Color.red;
         Handles.DrawLine(transform.position, transform.position + shortViewAngle01 * shortSightDist);
         Handles.DrawLine(transform.position, transform.position + shortViewAngle02 * shortSightDist);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(transform.position, backupCallDist);
     }
 #endif
     private Vector3 DirectionFromAngle(float eulerY, float anglesInDegrees)
@@ -273,5 +285,38 @@ public class GenericAnt : MonoBehaviour
             if (segment != null && segment.numAttacking > 0)
                 segment.numAttacking--;
         }
+    }
+
+    public void LoadData(SaveableData saveableData)
+    {
+        //not required, but must be kept anyway
+    }
+
+    public virtual void SaveData(ref SaveableData saveableData)
+    {
+        //use as a base for inheritance
+    }
+
+    public string SaveAntStateName()
+    {        
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.Walk"))
+            return "Base Layer.Walk"; 
+        
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.AntBackupCall"))
+            return "Base Layer.AntBackupCall"; 
+        
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.AntAttack"))
+            return "Base Layer.AntAttack";
+
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.AntDead"))
+            return "Base Layer.AntDead"; 
+
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.AntDaze"))
+            return "Base Layer.AntDaze"; 
+        
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.CoreExpandAnim"))
+            return "Base Layer.CoreExpandAnim";
+
+        return "Base Layer.Idle"; //the default state
     }
 }

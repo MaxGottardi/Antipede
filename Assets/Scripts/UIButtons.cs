@@ -11,6 +11,8 @@ public class UIButtons : MonoBehaviour
     public GameObject moveUI, CamUI, pauseUI, attackUI, shootUI, addWeaponUI, speedUI;
     public Text pauseTxt, camChangeTxt, attackTxt, speedTxt;
 
+    //the UI for number of parent parts left to collect
+
 #if UNITY_EDITOR
         // Skips needing the click begin and continue because I'm lazy.
         // -- This is developer only and won't be included in an actual build. -- \\

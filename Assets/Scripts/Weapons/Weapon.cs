@@ -21,7 +21,7 @@ public abstract class Weapon : MonoBehaviour
 	public GameObject weaponPickup;
 	public bool isAntGun = false;
 	[SerializeField, Tooltip("This Weapon can fire at this rate per second."), Min(0)] float FireRate = .1f;
-	protected float TimeLastFired = 0;
+	[HideInInspector]public float TimeLastFired = 0;
 	[SerializeField, Tooltip("The Range of this Weapon"), Min(1)] float Range = 100f;
 
 	[Header("Weapon Card UI References.")]

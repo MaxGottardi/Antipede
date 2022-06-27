@@ -54,9 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5bd5509f7756f0439eeaa7b864265d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avoidanceDir: {x: 0, y: 0, z: 0}
-  avoidanceUpdateFreqCurr: -1
-  waitTimeAvoidance: 0.1
+  antType: 3
   nextPosTransform: {fileID: 0}
   pathToNextPos: []
   nextPosVector: {x: 0, y: 0, z: 0}
@@ -82,13 +80,14 @@ MonoBehaviour:
   FollowingNodes: HunterNode
   groundOffset: 0.1
   backGroundCheckOffset: 1.5
-  maxSightDist: 5
+  maxSightDist: 8
   shortSightDist: 1.7
   largeViewAnlge: 60
   shortViewAngle: 180
   chanceSpawnHelpers: 2
-  maxBackupDist: 7.5
+  maxBackupDist: 75
   backupCallDist: 80
+  backupRingScale: 32
   spawnedHelp:
   - {fileID: 1933701853150098644}
   - {fileID: 1933701853150098644}
@@ -5315,6 +5314,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3315396748602138855, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315396748602138855, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315396748602138855, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3461953863393772765, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.000000021863684
@@ -5657,6 +5668,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8395566384454598168, guid: d03430b02136fae41a430a78a3a68665, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9040950338240070818, guid: d03430b02136fae41a430a78a3a68665, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

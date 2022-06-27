@@ -28,6 +28,8 @@ public class MCentipedeWeapons : MonoBehaviour
 	Vector3 MouseToWorld;
 	bool bHasLineOfSight;
 
+	bool bIsFireActive = false;
+
 	void Start()
 	{
 		// Body = GetComponent<MCentipedeBody>();
@@ -42,7 +44,16 @@ public class MCentipedeWeapons : MonoBehaviour
 		{
 			bHasLineOfSight = HasLineOfSight();
 
-			if (bHasLineOfSight && Input.GetMouseButton(0))
+			//if enabled set the toggle for automatically firing when the mouse key is pressed
+			if (Input.GetMouseButtonDown(0) && SettingsVariables.boolDictionary["bWeaponToggle"])
+			{
+				if (bIsFireActive)
+					bIsFireActive = false;
+				else
+					bIsFireActive = true;
+			}
+
+			if (bHasLineOfSight && (Input.GetMouseButton(0) || bIsFireActive && SettingsVariables.boolDictionary["bWeaponToggle"]))
 			{
 				if (!bUsePropagationDelay)
 				{
@@ -66,6 +77,10 @@ public class MCentipedeWeapons : MonoBehaviour
 		if (HUD)
 			UpdateWeaponHUD();
 #endif
+
+		//if auto firing and the toggle is disabled, stop auto firing
+		if (bIsFireActive && !SettingsVariables.boolDictionary["bWeaponToggle"])
+			bIsFireActive = false;
 	}
 
 	static Vector3 ZeroVector = Vector3.zero;
