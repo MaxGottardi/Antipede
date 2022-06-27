@@ -230,24 +230,29 @@ public class SaveableData
 
 
     //the cameras stuff
+    [SerializeField] public Vector3 camPos;
+    [SerializeField] public Quaternion camRot;
+    [SerializeField] public float scrollDistance;
 
+    //////////go add in the ability to create and save from the main menu, which shouldn't be too hard
 
     //stuff for the centipede input and remembering when something was pressed
+    /// <summary>
+    /// /////////unsure if required
+    /// </summary>
 
 
-    //the UI elements, such as
+    //the UI elements, specifically the weapon cards holding and the new UI counter thing
 
 
     //everything else, such as which tutorial screens have been seen yet or not
 
 
-    //i guess all the bullets in the scene as well as the particles(detached segments?probs not required)
-
-
-    //stuff for registering if only temporarily 
+    //i guess all the bullets in the scene(detached segments?probs not required)
 
 
     //the current time in an audio source as well as the audio clip playing, save them both
+    ///////////////like the ants ai not needed or even should be(at least at the moment)
 
     //add a constructor to initilize the default values
     public SaveableData()

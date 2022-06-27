@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class SpringArm : MonoBehaviour
+public class SpringArm : MonoBehaviour, IDataInterface
 {
 
 #if UNITY_EDITOR
@@ -375,5 +375,20 @@ public class SpringArm : MonoBehaviour
 		if (Camera && Target)
 			Debug.DrawLine(TargetPos(), Camera.position, Color.red);
 	}
+
+
 #endif
+	public void LoadData(SaveableData saveableData)
+    {
+		transform.position = saveableData.camPos;
+		transform.rotation = saveableData.camRot;
+		Distance = saveableData.scrollDistance;
+    }
+
+    public void SaveData(ref SaveableData saveableData)
+    {
+		saveableData.camPos = transform.position;
+		saveableData.camRot = transform.rotation;
+		saveableData.scrollDistance = Distance;
+    }
 }
