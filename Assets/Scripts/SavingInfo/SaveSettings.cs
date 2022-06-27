@@ -106,6 +106,11 @@ public class SaveSettings : MonoBehaviour
         PlayerPrefs.SetFloat(value, SettingsVariables.sliderDictionary[value]);
     }
 
+    public static void SaveInt(string value)
+    {
+        PlayerPrefs.SetInt(value, SettingsVariables.intDictionary[value]);
+    }
+
     public static void SaveKey(string value)
     {
         PlayerPrefs.SetInt(value, (int)SettingsVariables.keyDictionary[value]);

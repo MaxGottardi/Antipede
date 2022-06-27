@@ -102,8 +102,16 @@ public class SpringArm : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		Camera.position = Vector3.Lerp(Camera.position, TargetPosition, PositionalLagStrength);
-		Camera.rotation = Quaternion.Slerp(Camera.rotation, TargetRotation, RotationalLagStrength);
+		if (SettingsVariables.boolDictionary["bCamFollow"])
+		{
+			Camera.position = Vector3.Lerp(Camera.position, TargetPosition, PositionalLagStrength);
+			Camera.rotation = Quaternion.Slerp(Camera.rotation, TargetRotation, RotationalLagStrength);
+		}
+		else
+        {
+			Camera.position = TargetPosition;
+			Camera.rotation = TargetRotation;
+		}
 
 		PlaceCamera();
 	}

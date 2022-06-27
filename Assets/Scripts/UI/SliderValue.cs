@@ -6,6 +6,7 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class SliderValue : MonoBehaviour
 {
@@ -47,11 +48,16 @@ public class SliderValue : MonoBehaviour
         else if (gameObject.name == "BrightnessMultiplierSlider")
             slider.value = SettingsVariables.sliderDictionary["brightnessMultiplier"];
 
+        //graphics
+        else if (gameObject.name == "FovSlider")
+            slider.value = SettingsVariables.sliderDictionary["camFOV"];
 
         text.text = slider.value.ToString() + endUnit;//"F2"
 
         AdjustBrightness();
         AdjustFog();
+        if(SceneManager.GetActiveScene().name != "MainMenu")
+        AdjustCamFOV();
     }
 
     // Update is called once per frame
@@ -95,5 +101,10 @@ public class SliderValue : MonoBehaviour
     {
         float newValue = 0.05f * SettingsVariables.sliderDictionary["fogPercentage"] / 100;
         RenderSettings.fogDensity = Mathf.Clamp(newValue, 0.0f, 0.05f);
+    }
+
+    public void AdjustCamFOV()
+    {
+        Camera.main.fieldOfView = SettingsVariables.sliderDictionary["camFOV"];
     }
 }

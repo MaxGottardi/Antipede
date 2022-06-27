@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Rendering.PostProcessing;
 
 public class UIManager : MonoBehaviour
 {
@@ -26,6 +27,12 @@ public class UIManager : MonoBehaviour
 
     [Header("Graphics Toggles")]
     public Toggle solidBackToggle;
+    public Toggle motionBlurToggle;
+    public Toggle glowToggle;
+    public Toggle vSyncToggle;
+    public Toggle camFollowToggle;
+
+    PostProcessVolume postProcessVolume;
 
     enum MaterialIDEnum
     {
@@ -37,11 +44,30 @@ public class UIManager : MonoBehaviour
     public Material antennaMat, spiderMat, spiderSliderMat;
     public Image antennaImg, spiderImg;
 
+    [Header("Dropdowns")]
+    public TMP_Dropdown viewModeDropDown;
+    public TMP_Dropdown shadowDropDown;
+    public TMP_Dropdown textureDropDown;
+
+    [Header("ColorBtns")]
     //colour buttons
-    public Button blackBtn, whiteBtn, lGrayBtn, dGrayBtn, redBtn, yellowBtn, orangeBtn, lGreenBtn, greenBtn, cyanBtn, blueBtn, purpleBtn;
+    public Button blackBtn;
+    public Button whiteBtn;
+    public Button lGrayBtn;
+    public Button dGrayBtn;
+    public Button redBtn;
+    public Button yellowBtn;
+    public Button orangeBtn;
+    public Button lGreenBtn;
+    public Button greenBtn;
+    public Button cyanBtn;
+    public Button blueBtn;
+    public Button purpleBtn;
     public Texture2D blackTxture, whiteTxture, lGrayTxture, dGrayTxture, redTxture, yellowTxture, orangeTxture, lGreenTxture, greenTxture, cyanTxture, blueTxture, purpleTxture;
     void Awake()
     {
+        postProcessVolume = Camera.main.GetComponent<PostProcessVolume>();
+
         soundPanel = GameObject.Find("SoundPanel");
         otherPanel = GameObject.Find("OtherPanel");
         controlsPanel = GameObject.Find("ControlsPanel");
@@ -92,8 +118,41 @@ public class UIManager : MonoBehaviour
         //graphics toggles
         solidBackToggle.isOn = SettingsVariables.boolDictionary["bSolidTxtBackgrounds"];
         if (solidBackToggle.isOn)
-            solidBackToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Enabled";
+            solidBackToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Enabled"; 
+        
+        camFollowToggle.isOn = SettingsVariables.boolDictionary["bCamFollow"];
+        if (camFollowToggle.isOn)
+            camFollowToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Enabled";
 
+        motionBlurToggle.isOn = SettingsVariables.boolDictionary["bMotionBlur"];
+        if (motionBlurToggle.isOn)
+            motionBlurToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Enabled";
+        EnableMotionBlur();
+
+        glowToggle.isOn = SettingsVariables.boolDictionary["bItemGlow"];
+        if (glowToggle.isOn)
+            glowToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Enabled";
+        EnableGlow();
+
+        vSyncToggle.isOn = SettingsVariables.boolDictionary["bVSync"];
+        if (vSyncToggle.isOn)
+            vSyncToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Enabled";
+        EnableVSync();
+
+        viewModeDropDown.value = SettingsVariables.intDictionary["ViewMode"];
+        AdjustViewMode();
+        viewModeDropDown.captionText.text = viewModeDropDown.options[SettingsVariables.intDictionary["ViewMode"]].text;
+        viewModeDropDown.RefreshShownValue();
+
+        shadowDropDown.value = SettingsVariables.intDictionary["ShadowRes"];
+        AdjustShadows();
+        shadowDropDown.captionText.text = shadowDropDown.options[SettingsVariables.intDictionary["ShadowRes"]].text;
+        shadowDropDown.RefreshShownValue();
+
+        textureDropDown.value = SettingsVariables.intDictionary["TextureRes"];
+        AdjustTextures();
+        textureDropDown.captionText.text = shadowDropDown.options[SettingsVariables.intDictionary["TextureRes"]].text;
+        textureDropDown.RefreshShownValue();
     }
 
     /// <summary>
@@ -165,9 +224,25 @@ public class UIManager : MonoBehaviour
         GameObject selectedObj = EventSystem.current.currentSelectedGameObject;
         if (selectedObj != null)
         {
-            bool toggleValue = EventSystem.current.currentSelectedGameObject.GetComponent<Toggle>().isOn;
+            bool toggleValue = selectedObj.GetComponent<Toggle>().isOn;
             SettingsVariables.boolDictionary[component] = toggleValue;
             SaveSettings.SaveBool(component);
+
+        }
+    }
+
+    /// <summary>
+    /// saves the new dropdown value
+    /// </summary>
+    /// <param name="component">the saved value to update</param>
+    public void ChangeInt(string component)
+    {
+        GameObject selectedObj = EventSystem.current.currentSelectedGameObject;
+        if (selectedObj != null)
+        {
+            int dropdownValue = selectedObj.transform.parent.parent.parent.parent.gameObject.GetComponent<TMP_Dropdown>().value; //as when a dropdown changes the selected item is not the parent, move up the higherachy to it
+            SettingsVariables.intDictionary[component] = dropdownValue;
+            SaveSettings.SaveInt(component);
 
         }
     }
@@ -302,5 +377,83 @@ public class UIManager : MonoBehaviour
             TextMeshProUGUI text = selectedObj.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
             text.text = section.activeSelf ? "[Collapse]" : "[Expand]";
         }
+    }
+
+    public void AdjustViewMode()
+    {
+        switch (viewModeDropDown.value)
+        {
+            case 1:
+                Screen.fullScreenMode = FullScreenMode.Windowed;
+                break;
+            case 2:
+                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+                break;
+            default://case 0
+                Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+                break;
+        }
+    }
+
+    public void AdjustShadows()
+    {
+        switch (shadowDropDown.value)
+        {
+            case 0:
+                QualitySettings.shadows = ShadowQuality.All;
+                QualitySettings.shadowResolution = ShadowResolution.VeryHigh;
+                break;
+            case 1:
+                QualitySettings.shadows = ShadowQuality.All;
+                QualitySettings.shadowResolution = ShadowResolution.High;
+                break;
+            case 2:
+                QualitySettings.shadows = ShadowQuality.All;
+                QualitySettings.shadowResolution = ShadowResolution.Medium;
+                break;
+            case 3:
+                QualitySettings.shadows = ShadowQuality.All;
+                QualitySettings.shadowResolution = ShadowResolution.Low;
+                break;
+            default://case 4
+                QualitySettings.shadows = ShadowQuality.Disable;
+                break;
+        }
+    }
+    public void AdjustTextures()
+    {
+        switch (textureDropDown.value)
+        {
+            case 0:
+                QualitySettings.masterTextureLimit = 0;
+                break;
+            case 1:
+                QualitySettings.masterTextureLimit = 1;
+                break;
+            case 2:
+                QualitySettings.masterTextureLimit = 2;
+                break;
+            default://case 4
+                QualitySettings.masterTextureLimit = 3;
+                break;
+        }
+    }
+
+    public void EnableMotionBlur()
+    {
+        postProcessVolume.profile.GetSetting<MotionBlur>().enabled.value = SettingsVariables.boolDictionary["bMotionBlur"];
+    }
+
+    public void EnableGlow()
+    {
+        postProcessVolume.profile.GetSetting<Bloom>().enabled.value = SettingsVariables.boolDictionary["bItemGlow"];
+    }
+
+    public void EnableVSync()
+    {
+        if (SettingsVariables.boolDictionary["bVSync"])
+            QualitySettings.vSyncCount = 1;
+        else
+            QualitySettings.vSyncCount = 0;
     }
 }

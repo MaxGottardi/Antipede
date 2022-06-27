@@ -15,9 +15,20 @@ public static class SettingsVariables
             {"bWeaponToggle",  LoadBools("bWeaponToggle", false) },
             {"bForwardMoveToggle",  LoadBools("bForwardMoveToggle", false) },
 
-            {"bSolidTxtBackgrounds",  LoadBools("bSolidTxtBackgrounds", false) }
-        };
+            {"bSolidTxtBackgrounds",  LoadBools("bSolidTxtBackgrounds", false) },
 
+
+            {"bMotionBlur",  LoadBools("bMotionBlur", true) },
+            {"bItemGlow",  LoadBools("bItemGlow", true) },
+            {"bVSync",  LoadBools("bVSync", true) },
+            {"bCamFollow",  LoadBools("bCamFollow", true) }
+        };
+    public static Dictionary<string, int> intDictionary = new Dictionary<string, int>()
+    {
+        { "ViewMode", LoadInts("ViewMode")},
+        { "ShadowRes", LoadInts("ShadowRes", 1)},
+        { "TextureRes", LoadInts("TextureRes", 0)}
+    };
     public static Dictionary<string, float> sliderDictionary = new Dictionary<string, float>()
         {
             //sound
@@ -32,6 +43,10 @@ public static class SettingsVariables
             //lighting
             {"fogPercentage", LoadFloats("fogPercentage", 100) },
             {"brightnessMultiplier", LoadFloats("brightnessMultiplier", 0) },
+
+            //graphics
+            {"camFOV", LoadFloats("camFOV", 60) },
+
 
             //colours
             {"antennaColourR", LoadFloats("antennaColourR", 255/255) },            
@@ -69,6 +84,14 @@ public static class SettingsVariables
     {
         if (PlayerPrefs.HasKey(item))
             return PlayerPrefs.GetFloat(item);
+        else
+            return defaultValue;
+
+    }
+    static int LoadInts(string item, int defaultValue = 0)
+    {
+        if (PlayerPrefs.HasKey(item))
+            return PlayerPrefs.GetInt(item);
         else
             return defaultValue;
 
