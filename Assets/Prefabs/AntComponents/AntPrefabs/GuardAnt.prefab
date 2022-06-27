@@ -166,9 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e134888c7f459004c9f52a716e3504c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avoidanceDir: {x: 0, y: 0, z: 0}
-  avoidanceUpdateFreqCurr: -1
-  waitTimeAvoidance: 0.1
+  antType: 0
   nextPosTransform: {fileID: 0}
   pathToNextPos: []
   nextPosVector: {x: 0, y: 0, z: 0}
@@ -220,6 +218,7 @@ MonoBehaviour:
   chanceSpawnHelpers: 0
   maxBackupDist: 7.5
   backupCallDist: 80
+  backupRingScale: 32
   spawnedHelp:
   - {fileID: 1768346567234793843, guid: f2979dff33818664381e12b6ce518823, type: 3}
   isHelper: 0
@@ -234,6 +233,16 @@ MonoBehaviour:
   rightAntenna: {fileID: 7924855639672096187}
   minFleeChance: 0
   audioSource: {fileID: 0}
+  parentParts:
+  - {fileID: 2249745141605134200, guid: ccec0973f0abc3a4b9d702083c4b4c14, type: 3}
+  - {fileID: 2249745141605134200, guid: ccec0973f0abc3a4b9d702083c4b4c14, type: 3}
+  - {fileID: 2249745141605134200, guid: ccec0973f0abc3a4b9d702083c4b4c14, type: 3}
+  - {fileID: 2249745141605134200, guid: ccec0973f0abc3a4b9d702083c4b4c14, type: 3}
+  - {fileID: 2249745141605134200, guid: ccec0973f0abc3a4b9d702083c4b4c14, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1001 &5886298893699072678
 PrefabInstance:
   m_ObjectHideFlags: 0

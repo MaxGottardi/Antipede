@@ -9,7 +9,7 @@ using UnityEngine.Rendering.PostProcessing;
 public class UIManager : MonoBehaviour
 {
     public static GameObject soundPanel, otherPanel, controlsPanel, graphicsPanel;
-    public static GameObject RebindKeyPanel;
+    [SerializeField] public static GameObject RebindKeyPanel;
     [HideInInspector] public GameObject PauseElementsHolder, colourPicker;
 
     public static bool enableKeyChange = false;

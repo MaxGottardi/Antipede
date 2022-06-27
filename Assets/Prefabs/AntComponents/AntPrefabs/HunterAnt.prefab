@@ -171,7 +171,10 @@ MonoBehaviour:
   - {fileID: 692776519300176809, guid: c8bac3e7493054f44b5db96606925168, type: 3}
   - {fileID: 5645349024952512263, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
   - {fileID: 5645349024952512263, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+  - {fileID: 4066411363957430124, guid: 300e834a871c8ca4e9b72b89cdde0b59, type: 3}
+  - {fileID: 4066411363957430124, guid: 300e834a871c8ca4e9b72b89cdde0b59, type: 3}
   - {fileID: 5645349024952512263, guid: 61d0affc515ed8648896a539880facb3, type: 3}
+  - {fileID: 5645349024952512263, guid: 6780d73850f566e43a23244590ba7e4f, type: 3}
   weaponClass: {fileID: 0}
   shieldCardPrefab: {fileID: 4263386421578837108, guid: 10a9f069bfcdf694d99b6198a7698aaf, type: 3}
   launcherCardPrefab: {fileID: 1332047328893984492, guid: 6b7749803109491469fe9d0fdcbc1863, type: 3}

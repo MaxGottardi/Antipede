@@ -4116,6 +4116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1323003405}
   - component: {fileID: 1323003404}
+  - component: {fileID: 1323003406}
   m_Layer: 0
   m_Name: TimeLine
   m_TagString: Untagged
@@ -4168,6 +4169,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1323003406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323003403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98258b0b214d6b646b38ad4f553c14cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startTime: 0
 --- !u!1001 &1330018677
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5647,6 +5661,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: a566ffab5c0b6a14d9b73f3a26693c0a, type: 2}
+  antennaMat: {fileID: 0}
+  spiderMat: {fileID: 0}
+  spiderSliderMat: {fileID: 0}
 --- !u!114 &1742923919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5776,7 +5793,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294959103
   m_RenderingPath: 3
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

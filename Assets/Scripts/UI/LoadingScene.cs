@@ -23,7 +23,7 @@ public class LoadingScene : MonoBehaviour
     public void BeginGame()
     {
         prevScene = "MainMenu";
-        nextScene = "Environment Test";
+        nextScene = "IntroCutScene";
         reverse = false;
         tween = new Tween(new Vector3(0, 1, 1), new Vector3(1, 1, 1), Quaternion.identity, Quaternion.identity, Time.time, animDuration);
         loadTxtObj.SetActive(true);
@@ -40,7 +40,10 @@ public class LoadingScene : MonoBehaviour
             {
                 tweenLeftObj.transform.localScale = new Vector3(1.1f, 1, 1);
                 tweenRightObj.transform.localScale = new Vector3(1.1f, 1, 1);
-                cam.SetActive(true);
+                if (cam != null)
+                {
+                    cam.SetActive(true);
+                }
                 reverse = true;
                 StartCoroutine(LoadSceneAsync());
             }
@@ -66,7 +69,7 @@ public class LoadingScene : MonoBehaviour
         }
         SceneManager.UnloadSceneAsync(prevScene);
 
-        tween = new Tween(new Vector3(1, 1, 1), new Vector3(0, 0, 0), Quaternion.identity, Quaternion.identity, Time.time, animDuration);
-        cam.SetActive(false);
+        //tween = new Tween(new Vector3(1, 1, 1), new Vector3(0, 0, 0), Quaternion.identity, Quaternion.identity, Time.time, animDuration);
+        //cam.SetActive(false);
     }
 }
