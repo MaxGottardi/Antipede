@@ -113,20 +113,20 @@ public class WeaponCardUI : MonoBehaviour
 	public static void RemoveAll()
 	{
 		int C = WeaponsInventory.Count;
-		KeyValuePair<Weapon, AttachmentUIInfo>[] ForUpdatAndRemove = new KeyValuePair<Weapon, AttachmentUIInfo>[C];
+		KeyValuePair<Weapon, AttachmentUIInfo>[] ForUpdateAndRemove = new KeyValuePair<Weapon, AttachmentUIInfo>[C];
 		int U = 0;
 
 		foreach (KeyValuePair<Weapon, AttachmentUIInfo> WAUII in WeaponsInventory)
 		{
-			ForUpdatAndRemove[U++] = WAUII;
+			ForUpdateAndRemove[U++] = WAUII;
 		}
 
 		for (int i = 0; i < C; ++i)
 		{
-			AttachmentUIInfo T = ForUpdatAndRemove[i].Value;
+			AttachmentUIInfo T = ForUpdateAndRemove[i].Value;
 			T.Remaining = 0;
-			WeaponsInventory[ForUpdatAndRemove[i].Key] = T;
-			Sub(ForUpdatAndRemove[i].Key);
+			WeaponsInventory[ForUpdateAndRemove[i].Key] = T;
+			Sub(ForUpdateAndRemove[i].Key);
 		}
 	}
 
@@ -134,8 +134,8 @@ public class WeaponCardUI : MonoBehaviour
 	{
 		if (WeaponsInventory.ContainsKey(PickedUp))
 		{
-			Debug.Log("1");
 			// If the Picked Up Weapon already has Inventory, add another to the Inventory.
+
 			AttachmentUIInfo AUII = WeaponsInventory[PickedUp];
 			AUII.Remaining++;
 			UpdateText(ref AUII);
@@ -145,7 +145,6 @@ public class WeaponCardUI : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log("2");
 			// This Weapon does NOT exist in the Inventory; add it.
 
 			// Get the relevant information to calculate Card positions.
@@ -170,17 +169,6 @@ public class WeaponCardUI : MonoBehaviour
 			WeaponsInventory.Add(PickedUp, AUII);
 			UpdateText(ref AUII);
 
-			// Update the colour of the Card to match the Weapon GameObject.
-			//			Color WeaponColour = AUII.WeaponAttachment.Attachment.GetComponent<MeshRenderer>().sharedMaterial.color;
-			//			AUII.Background.color = new Color(WeaponColour.r, WeaponColour.g, WeaponColour.b, Alpha);
-
-
-
-			//If anyone asks, i didnt write this
-			//I swear i know how to code
-			NewCard.transform.localScale = new Vector3(0.5f, 0.6f, 0.5f);
-			NewCard.transform.position = new Vector2(NewCard.transform.position.x - 75f, NewCard.transform.position.y - 20.0f);
-
 			return NewCard;
 		}
 	}
@@ -199,7 +187,6 @@ public class WeaponCardUI : MonoBehaviour
 
 	void UpdateText(ref AttachmentUIInfo AUII)
 	{
-		Debug.Log("updatetext");
 		//AUII.Update(AUII.WeaponAttachment.Attachment.name + "\nx" + AUII.Remaining);
 		AUII.Update("x" + AUII.Remaining);
 	}

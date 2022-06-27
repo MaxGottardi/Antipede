@@ -6,14 +6,14 @@ public class GameManager1 : MonoBehaviour
 {
     public static GameObject playerObj;
     public static MCentipedeBody mCentipedeBody;
-    public static CameraController cameraController;
+    public static Transform cameraController;
     public static GenerateGrid generateGrid;
     public static UIButtons uiButtons;
     private void Awake()
     {
         playerObj = GameObject.Find("Centipede");
         mCentipedeBody = playerObj.GetComponent<MCentipedeBody>();
-        cameraController = Camera.main.gameObject.GetComponent<CameraController>();
+        cameraController = Camera.main.transform;
         generateGrid = gameObject.GetComponent<GenerateGrid>();
         uiButtons = gameObject.GetComponent<UIButtons>();
 

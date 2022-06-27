@@ -100054,7 +100054,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bUsePropagationDelay: 1
   PropagationDelay: 0.1
-  HUD: {fileID: 0}
   SegmentsWithWeapons: []
 --- !u!114 &1694827723
 MonoBehaviour:
@@ -124105,7 +124104,6 @@ GameObject:
   - component: {fileID: 2140053271}
   - component: {fileID: 2140053270}
   - component: {fileID: 2140053269}
-  - component: {fileID: 2140053268}
   - component: {fileID: 2140053267}
   - component: {fileID: 2140053266}
   - component: {fileID: 2140053265}
@@ -124218,19 +124216,6 @@ MonoBehaviour:
   - {fileID: 891430116}
   - {fileID: 655308611}
   - {fileID: 649516745}
---- !u!114 &2140053268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2140053264}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54e5c331f26edf643a409c5c9ac4eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerHead: {fileID: 0}
 --- !u!81 &2140053269
 AudioListener:
   m_ObjectHideFlags: 0

@@ -31,7 +31,6 @@ public class CollisionManager : MonoBehaviour
         }
         else if (other.CompareTag("Health"))
         {
-            HealthComponent health = player.GetComponent<HealthComponent>();
             //health.IncreaseHealth(10);
             player.AddSegment();
             player.AddSegment();
@@ -41,7 +40,6 @@ public class CollisionManager : MonoBehaviour
         }
         else if (other.CompareTag("Larvae"))
         {
-            HealthComponent health = player.GetComponent<HealthComponent>();
             //health.IncreaseHealth(10);
             player.AddSegment();
             Destroy(other.gameObject);

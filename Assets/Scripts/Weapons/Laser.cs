@@ -12,6 +12,8 @@ public class Laser : Weapon
 
 	*/
 
+	/// Projectile is <see cref="XLine"/>
+
 	public override Projectile Fire(Vector3 Position)
 	{
 		/* - Original code by Yingfa.

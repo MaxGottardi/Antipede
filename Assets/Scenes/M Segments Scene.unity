@@ -8645,6 +8645,10 @@ MonoBehaviour:
   shootUI: {fileID: 0}
   addWeaponUI: {fileID: 0}
   speedUI: {fileID: 0}
+  pauseTxt: {fileID: 0}
+  camChangeTxt: {fileID: 0}
+  attackTxt: {fileID: 0}
+  speedTxt: {fileID: 0}
   Dev_Story_Skip: {fileID: 0}
   speedIncrease: 0
   segmentIncrease: 0
@@ -9676,6 +9680,7 @@ MonoBehaviour:
   bEnable90DegreeInclines: 0
   bInterpolateHillClimb: 0
   InterpTime: 0.2
+  CourseCorrectionMethod: 1
 --- !u!1001 &785983973
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12270,10 +12275,8 @@ MonoBehaviour:
   ForwardNeighbour: {fileID: 0}
   FollowSpeed: 0
   MaxTurnDegreesPerFrame: 0
-  segmentLayer:
-    serializedVersion: 2
-    m_Bits: 0
   bIgnoreFromWeapons: 0
+  Weapon: {fileID: 0}
   health: 100
   numAttacking: 0
 --- !u!54 &978763723
@@ -21451,9 +21454,7 @@ GameObject:
   - component: {fileID: 1800499859}
   - component: {fileID: 1800499858}
   - component: {fileID: 1800499857}
-  - component: {fileID: 1800499860}
   - component: {fileID: 1800499861}
-  - component: {fileID: 1800499862}
   - component: {fileID: 1800499863}
   m_Layer: 0
   m_Name: Camera
@@ -21527,19 +21528,6 @@ Transform:
   m_Father: {fileID: 785625938}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 47.016, y: 0, z: 0}
---- !u!114 &1800499860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1800499856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54e5c331f26edf643a409c5c9ac4eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerHead: {fileID: 1289053976}
 --- !u!114 &1800499861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21552,25 +21540,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a673be972ee63bc49a04aafaee4ea310, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!95 &1800499862
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1800499856}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 292146916c3c66c49bd18c2e11ba081b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &1800499863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21604,8 +21573,6 @@ GameObject:
   - component: {fileID: 1805762207}
   - component: {fileID: 1805762206}
   - component: {fileID: 1805762204}
-  - component: {fileID: 1805762211}
-  - component: {fileID: 1805762205}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -21638,6 +21605,9 @@ MonoBehaviour:
   ScrollSensitivity: 0
   DefaultGimbalRotation: {x: 0, y: 0, z: 0}
   DefaultCameraRotation: {x: 0, y: 0, z: 0}
+  bInvertX: 0
+  bInvertY: 0
+  bInvertZ: 0
   OnlyCollideWith:
     serializedVersion: 2
     m_Bits: 0
@@ -21647,19 +21617,6 @@ MonoBehaviour:
   Plane: {fileID: 0}
   NearClipDistance: 0
   DistanceLimit: 0
---- !u!114 &1805762205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1805762203}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54e5c331f26edf643a409c5c9ac4eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerHead: {fileID: 0}
 --- !u!81 &1805762206
 AudioListener:
   m_ObjectHideFlags: 0
@@ -21725,25 +21682,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1805762211
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1805762203}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &1818866597
 PrefabInstance:
   m_ObjectHideFlags: 0

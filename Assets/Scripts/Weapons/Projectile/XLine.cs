@@ -1,16 +1,22 @@
-﻿using System.Collections;
+﻿//#define FIRE_NORMALLY_AS_YINGFA_INITIALLY_DESIGNED_IT_TO_BE
+
+#if !FIRE_NORMALLY_AS_YINGFA_INITIALLY_DESIGNED_IT_TO_BE
+using System.Collections;
+#endif
 using UnityEngine;
 
 public class XLine : Projectile
 {
+	/// Weapon is <see cref="Laser"/>
+
+	[Header(nameof(XLine) + " References.")]
+
 	public GameObject Line;
-	public GameObject FXef;//激光击中物体的粒子效果
-			       // Particle effect of laser hitting object
+	public GameObject FXef;  //激光击中物体的粒子效果
+				 // Particle effect of laser hitting object
 
-	[SerializeField] bool bFireNormallyAsYingfaInitiallyDesignedItToBe;
-
-	Vector3 Sc;// 变换大小
-		   // Transform size.
+	Vector3 Sc;  // 变换大小
+		     // Transform size.
 
 	// If = 12, it means a 12th of a second.
 	const float kFractionOfASecond = 12f;
@@ -28,22 +34,20 @@ public class XLine : Projectile
 		Sc.x = 0.5f;
 		Sc.z = 0.5f;
 
-		if (bFireNormallyAsYingfaInitiallyDesignedItToBe)
-		{
-			float Distance = Vector3.Distance(transform.position, Position);
-			Sc.y = Distance;
+#if FIRE_NORMALLY_AS_YINGFA_INITIALLY_DESIGNED_IT_TO_BE
+		float Distance = Vector3.Distance(transform.position, Position);
+		Sc.y = Distance;
 
-			FXef.transform.position = Position;
-			Line.transform.localScale = Sc;
+		FXef.transform.position = Position;
+		Line.transform.localScale = Sc;
 
-			const float kActualFraction = 2 * (1 / kFractionOfASecond);
-			Destroy(Line, kActualFraction);
-			Destroy(FXef, kActualFraction);
-		}
-		else
-		{
-			StartCoroutine(FireLaser(Position));
-		}
+		const float kActualFraction = 2 * (1 / kFractionOfASecond);
+		Destroy(Line, kActualFraction);
+		Destroy(FXef, kActualFraction);
+
+#else
+		StartCoroutine(FireLaser(Position));
+#endif
 
 		/* - Block commented out by MW.
 		 * - We don't need to raycast every frame to determine the position of the laser;
@@ -76,9 +80,9 @@ public class XLine : Projectile
 		*/
 	}
 
+#if !FIRE_NORMALLY_AS_YINGFA_INITIALLY_DESIGNED_IT_TO_BE
 	IEnumerator FireLaser(Vector3 Position)
 	{
-
 		Sc.z = Vector3.Distance(transform.position, Position);
 
 		float t = 0f;
@@ -102,9 +106,9 @@ public class XLine : Projectile
 				GA.ReduceHealth(10);
 				Instantiate(bloodParticles, Hit.point + Vector3.up * 0.5f, Quaternion.identity);
 			}
-			else if(Hit.collider.gameObject.CompareTag("Tarantula") && Hit.collider.gameObject.TryGetComponent(out Tarantula tarantula)
+			else if (Hit.collider.gameObject.CompareTag("Tarantula") && Hit.collider.gameObject.TryGetComponent(out Tarantula tarantula)
 				&& tarantula.healthSlider.value >= .5f)
-            {
+			{
 				tarantula.DecreaseHealth(1);
 				Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 			}
@@ -134,4 +138,5 @@ public class XLine : Projectile
 		// Destroy this laser after 2 * kFractions Of A Second.
 		Destroy(gameObject);
 	}
+#endif
 }

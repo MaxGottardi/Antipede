@@ -1,8 +1,18 @@
+//#define OVERRIDE_FIRE_RATE
+
 using UnityEngine;
 
 /// <summary>The base class for a weapon.</summary>
 public abstract class Weapon : MonoBehaviour
 {
+	/// Links because I'm too lazy to go through the folder structure.
+	/// <see cref="Gun"/>
+	/// <see cref="Launcher"/>
+	/// <see cref="Shield"/>
+	/// <see cref="Laser"/>
+	/// 
+	/// <see cref="Projectile"/>
+
 	[HideInInspector] public MCentipedeWeapons WeaponsComponent;
 
 	[Header("Base Weapon Settings.")]
@@ -25,7 +35,7 @@ public abstract class Weapon : MonoBehaviour
 	protected MSegment Owner;
 
 	//                                          | UI    | PLAYER | W. PICKUP | BOUNDARY
-	public const int kIgnoreFromWeaponRaycasts = 1 << 5 | 1 << 6 | 1 << 9 | 1 << 11;
+	public const int kIgnoreFromWeaponRaycasts = 1 << 5 | 1 << 6 | 1 << 9    | 1 << 11;
 
 	[SerializeField, ReadOnly] public SFXManager sfxManager;
 
@@ -51,13 +61,22 @@ public abstract class Weapon : MonoBehaviour
 	/// </returns>
 	protected bool CanFire(Vector3 Position)
 	{
+#if OVERRIDE_FIRE_RATE
+		bool bCanFire = true;
+#else
 		// Has this Weapon cooled down?
 		bool bCanFire = bIsRegistered && Time.time - TimeLastFired > FireRate;
+#endif
 
 		// Is this Weapon In-Range?
-		bCanFire &= MMathStatics.HasReached(BarrelEndSocket.position, Position, Range);
+		bCanFire &= InRange(ref Position);
 
 		return bCanFire;
+	}
+
+	protected bool InRange(ref Vector3 Position)
+	{
+		return MMathStatics.HasReached(BarrelEndSocket.position, Position, Range);
 	}
 
 	/// <summary>Make this Weapon look towards where it is firing.</summary>

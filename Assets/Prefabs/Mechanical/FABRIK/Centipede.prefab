@@ -2480,7 +2480,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bUsePropagationDelay: 1
   PropagationDelay: 0.1
-  HUD: {fileID: 0}
   SegmentsWithWeapons: []
 --- !u!114 &8912492245561955170
 MonoBehaviour:
@@ -2567,6 +2566,7 @@ MonoBehaviour:
   bEnable90DegreeInclines: 0
   bInterpolateHillClimb: 1
   InterpTime: 0.2
+  MBody: {fileID: 0}
   CourseCorrectionMethod: 1
 --- !u!1 &8912492245564701803
 GameObject:
@@ -3394,8 +3394,8 @@ MeshRenderer:
   m_Materials:
   - {fileID: 6326233545876464289, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
   - {fileID: 9160598548591195316, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
-  - {fileID: 2045606763913226539, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
-  - {fileID: 223529688975709923, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
+  - {fileID: 2100000, guid: 8ffb0f632e8d0bb48aa6ff43eb7600ab, type: 2}
+  - {fileID: 2100000, guid: e3a73044f21f21141936683ca70c7efe, type: 2}
   - {fileID: -7301279310005317288, guid: cdc5814e575392e4f834b3c705b5448e, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0

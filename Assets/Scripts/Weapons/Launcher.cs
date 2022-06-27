@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class Launcher : Weapon
 {
-
+	/// Projectile is <see cref="LaunchedProjectile"/>
+	
 	[Header(nameof(Launcher) + " Settings.")]
 	[Tooltip("Minimum launch height.")] public float LaunchHeight;
 
@@ -40,7 +41,7 @@ public class Launcher : Weapon
 		if (!bIsRegistered)
 			return;
 
-		if (Direction == Vector3.zero || !CanFire(Direction))
+		if (Direction == Vector3.zero || !InRange(ref Direction))
 		{
 			ClearArc();
 			return;

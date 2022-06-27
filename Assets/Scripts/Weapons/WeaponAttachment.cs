@@ -1,10 +1,14 @@
+#define WITH_MOUSE_HOVER_ANIMATIONS
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+#if WITH_MOUSE_HOVER_ANIMATIONS
 using UnityEngine.UI;
+#endif
 
 /// <summary>Class that holds a reference to a pickup-able/droppable <see cref="Weapon"/> in the game.</summary>
-public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class WeaponAttachment : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
 	static Camera PrivateCamera;
 
@@ -35,15 +39,26 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 	RaycastHit Hit;
 	MSegment Segment;
 
-	RectTransform RT;
-	Rect R;
+	/// <summary><see langword="True"/> to disable <see cref="MInput.MouseToWorldCoords"/> by making it return <see cref="Vector3.zero"/>.</summary>
+	public static bool bDisableWeaponFiring = false;
+
 	bool bIsMouseHovering = false;
-	float t = 0;
+
+#if WITH_MOUSE_HOVER_ANIMATIONS
+	RectTransform RT;
+
+	Rect R;
+
+	// Positions when increasing size.
 	Vector3 OriginalPosition;
 	Vector3 LerpTargetPosition;
+
+	// Alpha-channels only.
 	RawImage RI;
 	Color OriginalColour;
 	Color LerpTargetColour;
+	
+	// Original and Current Widths and Heights.
 	Vector2 OWH;
 	Vector2 WH;
 
@@ -56,9 +71,6 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 
 	public void CalculateTargets()
 	{
-		if (!K_bAnimateMouseHovering)
-			return;
-
 		RT = (RectTransform)transform;
 		R = RT.rect;
 
@@ -73,15 +85,11 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 		LerpTargetColour = new Color(OriginalColour.r, OriginalColour.g, OriginalColour.b, 1f);
 	}
 
+	float t = 0;
 	Vector2 SizeNow;
-	// Set to false if you don't the Cards to animate.
-	const bool K_bAnimateMouseHovering = true;
 
 	void Update()
 	{
-		if (!K_bAnimateMouseHovering)
-			return;
-
 		if (bIsMouseHovering)
 		{
 			t += Time.deltaTime * 5;
@@ -109,25 +117,26 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 
 		t = Mathf.Clamp01(t);
 	}
+#else
+	public void CalculateTargets() { }
+#endif // WITH_MOUSE_HOVER_ANIMATIONS
 
 	void LateUpdate()
 	{
 		PointUnderMouse = CameraToWorld(out Hit);
 	}
 
-	#region Maybe Unused Events
+	public void OnPointerEnter(PointerEventData EventData)
+	{
+		bIsMouseHovering = true;
+		bDisableWeaponFiring = true;
+	}
 
-	public void OnPointerClick(PointerEventData EventData) { }
-
-	public void OnPointerDown(PointerEventData EventData) { }
-
-	public void OnPointerEnter(PointerEventData EventData) { bIsMouseHovering = true; }
-
-	public void OnPointerExit(PointerEventData EventData) { bIsMouseHovering = false; }
-
-	public void OnPointerUp(PointerEventData EventData) { }
-
-	#endregion
+	public void OnPointerExit(PointerEventData EventData)
+	{
+		bIsMouseHovering = false;
+		bDisableWeaponFiring = false;
+	}
 
 	public void OnBeginDrag(PointerEventData EventData)
 	{
@@ -163,6 +172,8 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 			DraggingAttachment.transform.parent = null;
 			AttachUI.gameObject.SetActive(false);
 		}
+
+		bDisableWeaponFiring = true;
 	}
 
 	public void OnEndDrag(PointerEventData EventData)
@@ -189,6 +200,7 @@ public class WeaponAttachment : MonoBehaviour, IPointerClickHandler, IPointerDow
 		Destroy(DraggingAttachment.gameObject);
 		DraggingAttachment = null;
 		AttachUI.gameObject.SetActive(false);
+		bDisableWeaponFiring = false;
 	}
 
 	static Vector3 CameraToWorld(out RaycastHit Hit)

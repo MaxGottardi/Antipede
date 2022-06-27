@@ -293,7 +293,7 @@ public partial class MCentipedeBody : MonoBehaviour
 				SegmentsInfo.RemoveSegment();
 
 				// Camera feedback for losing a Segment. (Goes forward, SpringArm will return it to normal)
-				GameManager1.cameraController.gameObject.transform.position += GameManager1.cameraController.gameObject.transform.forward * 2;
+				GameManager1.cameraController.position += GameManager1.cameraController.forward * 2;
 
 				// Update the Tail's new ForwardNeighbour.
 				int lastSegIndex = Segments.Count - 1;
@@ -363,14 +363,6 @@ public partial class MCentipedeBody : MonoBehaviour
 	{
 		DetermineSpeed(value);
 	}
-
-#if UNITY_EDITOR
-	[System.Obsolete("Do not call SetSpeed(). See ChangeSpeedDirectly(), or make a new function.")]
-	public void SetSpeed(float value)
-	{
-		throw new System.NotImplementedException("Do not call SetSpeed(). See ChangeSpeedDirectly(), or make a new function.");
-	}
-#endif
 
 	void DetermineSpeed(float Speed)
 	{
