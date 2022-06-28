@@ -17,17 +17,13 @@ public class Launcher : Weapon
 	{
 		if (CanFire(Position))
 		{
-			if (sfxManager)
-			{
-				sfxManager.ShootLauncher();
-			}
-
 			Vector3 Velocity = LaunchVelocity;
 			if (!MMathStatics.DiagnosticCheckNaN(LaunchVelocity))
 			{
 				Projectile LaunchedProjectile = InstantiateProjectile();
 				LaunchedProjectile.Initialise(isAntGun);
 				LaunchedProjectile.Launch(Velocity);
+				sfxManager.ShootLauncher(LaunchedProjectile.gameObject);
 
 				return LaunchedProjectile;
 			}

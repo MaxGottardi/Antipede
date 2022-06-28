@@ -142,29 +142,49 @@ public class SFXManager : MonoBehaviour
         sourceShield.Stop();
     }
 
-    public void ShootGun()
+    public void ShootGun(GameObject Source)
     {
-        sourceWeapon.clip = gunShootSFX;
-        sourceWeapon.Play();
+        //sourceWeapon.clip = gunShootSFX;
+        //sourceWeapon.Play();
+
+        // Play sounds with overlap.
+        AudioSource AS = Source.AddComponent<AudioSource>();
+        AS.clip = gunShootSFX;
+        AS.Play();
     }
 
-    public void ShootLauncher()
+    public void ShootLauncher(GameObject Source)
     {
         sourceWeapon2.clip = launcherShootSFX;
         sourceWeapon2.Play();
+
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Environment Test")
+        {
+                // Play sounds with overlap, but only when in the actual game.
+                AudioSource AS = Source.AddComponent<AudioSource>();
+                AS.clip = launcherShootSFX;
+                AS.Play();
+        }
     }
 
-    public void ActivateLazer()
+    public void ActivateLazer(GameObject Source)
     {
-        sourceLazer.clip = lazerSFX;
-        if (!sourceLazer.isPlaying)
-        {
-            sourceLazer.Play();
-        }
+        //sourceLazer.clip = lazerSFX;
+        //if (!sourceLazer.isPlaying)
+        //{
+        //    sourceLazer.Play();
+        //}
+
+        // Play sounds with overlap. Also fixes looping issue.
+        AudioSource AS = Source.AddComponent<AudioSource>();
+        AS.clip = lazerSFX;
+        AS.Play();
     }
 
     public void DeactivateLaser()
     {
+        // Sometimes this isn't called when there are two or more Lasers attached;
+        // the Laser just keeps looping and playing.
         if (sourceLazer.isPlaying)
         {
             sourceLazer.Stop();

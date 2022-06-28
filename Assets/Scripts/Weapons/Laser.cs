@@ -28,10 +28,10 @@ public class Laser : Weapon
 
 		if (CanFire(Position))
 		{
-			sfxManager.ActivateLazer();
 			Projectile Laser = InstantiateProjectile();
 			Laser.Initialise(isAntGun);
 			Laser.Launch(Position);
+			sfxManager.ActivateLazer(Laser.gameObject);
 			
 		}
 

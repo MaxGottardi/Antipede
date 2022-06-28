@@ -12,10 +12,9 @@ public class Gun : Weapon
 		if (!CanFire(Direction))
 			return null;
 
-		//sfxManager.ShootGun();
-		sfxManager.ShootGun();
 		Projectile StraightProjectile = InstantiateProjectile();
 		StraightProjectile.Initialise(isAntGun);
+		sfxManager.ShootGun(StraightProjectile.gameObject);
 
 		// Ignore the Direction param. For a Gun, we don't need it.
 		if (isAntGun)

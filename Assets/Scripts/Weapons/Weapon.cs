@@ -1,5 +1,3 @@
-//#define OVERRIDE_FIRE_RATE
-
 using UnityEngine;
 
 /// <summary>The base class for a weapon.</summary>
@@ -61,12 +59,8 @@ public abstract class Weapon : MonoBehaviour
 	/// </returns>
 	protected bool CanFire(Vector3 Position)
 	{
-#if OVERRIDE_FIRE_RATE
-		bool bCanFire = true;
-#else
 		// Has this Weapon cooled down?
 		bool bCanFire = bIsRegistered && Time.time - TimeLastFired > FireRate;
-#endif
 
 		// Is this Weapon In-Range?
 		bCanFire &= InRange(ref Position);
