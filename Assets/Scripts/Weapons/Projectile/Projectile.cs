@@ -197,8 +197,8 @@ public class Projectile : MonoBehaviour
 			{
 				Destroy(gameObject);
 			}
-
-			bIgnoreAllCollions = true;
+			if (!collision.gameObject.CompareTag("Projectile"))
+				bIgnoreAllCollions = true;
 		}
 	}
 

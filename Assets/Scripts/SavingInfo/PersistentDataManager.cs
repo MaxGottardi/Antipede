@@ -31,7 +31,7 @@ public class PersistentDataManager : MonoBehaviour
 
     private void Start()
     {
-        if (SceneManager.GetActiveScene().name == "Environment Test")
+        if (SceneManager.GetActiveScene().name != "MainMenu")
         {
             if (bIsNewGame)
                 NewGame();
