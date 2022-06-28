@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Tarantula: MonoBehaviour, IDataInterface
 {
@@ -47,6 +48,8 @@ public class Tarantula: MonoBehaviour, IDataInterface
 
     [SerializeField] SFXManager sfxManager;
     [SerializeField] GameObject shieldEffect;
+
+    [SerializeField] GameObject gateToDestroy;
     // Start is called before the first frame update
     void Awake()
     {
@@ -105,7 +108,11 @@ public class Tarantula: MonoBehaviour, IDataInterface
                 {   //if the tarantula is close enough to the nest it will follow the player
                     if (distToNest < nestArea)
                     {
-                        GameManager1.uiButtons.SpiderInfo();
+                        if (SceneManager.GetActiveScene().name != "BossOnly3")
+                        {
+                            //Dont display UI in Bossonly scene
+                            GameManager1.uiButtons.SpiderInfo();
+                        }
                         ChasePlayer();
                         ShootWeb();
                         SpawnAnts();
@@ -186,6 +193,11 @@ public class Tarantula: MonoBehaviour, IDataInterface
                 if (numTarantulasLeft <= 0)
                     Win();
                 Destroy(gameObject);
+            }
+            if (gateToDestroy != null)
+            {
+                //Destroy(gateToDestroy);
+                gateToDestroy.GetComponent<WallMovement>().SetMovable();
             }
         }
     }

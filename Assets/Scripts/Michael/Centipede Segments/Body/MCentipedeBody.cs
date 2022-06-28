@@ -51,7 +51,7 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 
 	public const float kBufferZone = 1.5f;
 
-	const float kMaxSpeed = 750;
+	const float kMaxSpeed = 950;
 	const float kDefaultSpeed = 150;
 
 	public float slowTimer;
@@ -153,15 +153,24 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
         {
 			foreach (Tarantula t in nests)
             {
-				float f = Vector3.Distance(t.transform.position, Head.transform.position);
-				if (f < smallestDistance)
-                {
-					smallestDistance = f;
-                }
+				if (t != null)
+				{
+					float f = Vector3.Distance(t.transform.position, Head.transform.position);
+					if (f < smallestDistance)
+					{
+						smallestDistance = f;
+					}
+				}
             }
+			return smallestDistance;
+        }
+		else
+        {
+			Debug.Log("YOU WON!!!!!!!!");
+			return 0;
         }
 
-		return smallestDistance;
+		//return 0;
     }
 
 	/// <summary>Adds a Segment to the back of the Centipede.</summary>
