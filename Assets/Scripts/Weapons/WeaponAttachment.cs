@@ -168,6 +168,7 @@ public class WeaponAttachment : MonoBehaviour, IPointerEnterHandler, IPointerExi
 		else
 		{
 			DraggingAttachment.transform.position = Hit.point;
+			DraggingAttachment.transform.up = Hit.normal;
 
 			DraggingAttachment.transform.parent = null;
 			AttachUI.gameObject.SetActive(false);
