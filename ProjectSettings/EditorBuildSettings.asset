@@ -18,6 +18,12 @@ EditorBuildSettings:
     path: Assets/Scenes/IntroCutScene.unity
     guid: 1bdd6554b99576c4fb273d2764681d7f
   - enabled: 1
+    path: Assets/Scenes/DavidGameModes/BossOnly3.unity
+    guid: c81d3d716528d2c4e8713a2d84a88327
+  - enabled: 1
+    path: Assets/Scenes/DavidGameModes/Intermediate.unity
+    guid: c2f6327ada2be0f4288896b7d98a95e1
+  - enabled: 1
     path: Assets/Scenes/Environment Test.unity
     guid: ca8ddf1e9df084f4ba97b71d33f2b9fd
   - enabled: 0
