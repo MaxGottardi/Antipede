@@ -7,7 +7,7 @@ public class GuardAnt : GenericAnt
     public static ShuffleBag<GameObject> parentBag;
     [SerializeField] GameObject[] parentParts;
 
-    GameObject heldPart;
+    public GameObject heldPart;
 
     public override void Start()
     {
@@ -31,13 +31,25 @@ public class GuardAnt : GenericAnt
     void SpawnPart()
     {
         heldPart = parentBag.getNext();
-        if(heldPart != null)
+        if (heldPart != null)
         {
             heldPart = Instantiate(heldPart, headTransform);
             heldPart.transform.localRotation = Quaternion.Euler(0.4f, -90, -170);
             heldPart.transform.localScale /= 1.5f;
             heldPart.transform.localPosition = new Vector3(0, 1.3f, -0);
         }
+    }
+
+    public void LoadSaveSpawnPart()
+    {
+        heldPart = parentBag.getNext();
+        while (heldPart == null)
+            heldPart = parentBag.getNext();
+        
+        heldPart = Instantiate(heldPart, headTransform);
+        heldPart.transform.localRotation = Quaternion.Euler(0.4f, -90, -170);
+        heldPart.transform.localScale /= 1.5f;
+        heldPart.transform.localPosition = new Vector3(0, 1.3f, -0);
     }
 
     public void DropParentSeg()
@@ -55,7 +67,7 @@ public class GuardAnt : GenericAnt
         ////also save if holding a part or not
         if (stateMachine.currState != stateMachine.Dead)
         {
-            GenericAntData genericAntData = new GenericAntData();
+            GuardAntData genericAntData = new GuardAntData();
 
             //general data for the ants
             genericAntData.antPosition = transform.position;
@@ -80,6 +92,8 @@ public class GuardAnt : GenericAnt
             genericAntData.damageStateOrder = damageStageChance;
             genericAntData.damageStateCurrPos = healthBag.currPos;
             genericAntData.health = health;
+
+            genericAntData.bHoldingParent = heldPart == null ? false : true;
 
 
             stateMachine.saveData(genericAntData);

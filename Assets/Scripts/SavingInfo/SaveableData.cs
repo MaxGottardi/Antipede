@@ -129,6 +129,11 @@ public class FarmerAntData : GenericAntData
 {
     [SerializeField] public bool bHoldingLarvae;
 }
+[System.Serializable]
+public class GuardAntData : GenericAntData
+{
+    [SerializeField] public bool bHoldingParent;
+}
 
 [System.Serializable]
 public class DasherAntData : GenericAntData
@@ -149,12 +154,13 @@ public class BombAntData : GenericAntData
 public class SaveableData
 {
     //all data from the game which is needed to be saved
-
+    [SerializeField] public SerializableDictionary<int, bool> bParentPartActive;
     //camera stuff like its pos, rotation and current zoom level
 
     //centipede data to be saved
     [SerializeField] public Vector3 centipedeHeadPosition, centipedeTailBeginSegmentPosition;
     [SerializeField] public Quaternion centipedeHeadRotation, centipedeTailBeginSegmentRotation;
+    [SerializeField] public int parentPartsCollected;
 
     //length of the list is the number of segments required
     [SerializeField] public SerializableList<Vector3> centipedeSegmentPosition, centipedeCustomSegmentPositon;
@@ -181,6 +187,7 @@ public class SaveableData
     /// </summary>
     [SerializeField] public int numSpidersLeft;
     [SerializeField] public SerializableDictionary<int, SpiderData> spiderData;
+    [SerializeField] public SerializableDictionary<int, bool> wallMove;
     /// //////////////////////////////////Issue is that if destroyed and the player loads back in a save while still in the same scene, it will not spawn in a new spider to replace it
     //////////////////as well any audio sources playing time should be saved
 
@@ -195,7 +202,7 @@ public class SaveableData
 
 
     //all the guard ants
-    [SerializeField] public SerializableList<GenericAntData> guardAntData;
+    [SerializeField] public SerializableList<GuardAntData> guardAntData;
 
 
     //all the dasher ants
@@ -285,9 +292,10 @@ public class SaveableData
         speedApplePos = new SerializableList<Vector3>();
 
         spiderData = new SerializableDictionary<int, SpiderData>();
+        wallMove = new SerializableDictionary<int, bool>();
         cobwebData = new SerializableList<WebData>();
 
-        guardAntData = new SerializableList<GenericAntData>();
+        guardAntData = new SerializableList<GuardAntData>();
         dasherAntData = new SerializableList<DasherAntData>();
         farmerAntData = new SerializableList<FarmerAntData>();
         larvaePos = new SerializableList<Vector3>();
@@ -303,6 +311,8 @@ public class SaveableData
         laserCards = new SerializableList<Vector3>();
 
         weaponUICards = new SerializableDictionary<int, int>();
+
+        bParentPartActive = new SerializableDictionary<int, bool>();
     }
 
     /// <summary>
@@ -436,7 +446,7 @@ public class SaveableData
                 hunterAnt.Add(item);
         }
 
-        LoadAnt<GenericAntData>(ref guardAnt, ref guardAntData, "Assets/Prefabs/AntComponents/AntPrefabs/GuardAnt.prefab");
+        LoadAnt<GuardAntData>(ref guardAnt, ref guardAntData, "Assets/Prefabs/AntComponents/AntPrefabs/GuardAnt.prefab");
         LoadAnt<DasherAntData>(ref dasherAnt, ref dasherAntData, "Assets/Prefabs/AntComponents/AntPrefabs/DasherAnt.prefab");
         LoadAnt<FarmerAntData>(ref farmerAnt, ref farmerAntData, "Assets/Prefabs/AntComponents/AntPrefabs/FarmerAnt.prefab");
         LoadAnt<HunterAntData>(ref hunterAnt, ref hunterAntData, "Assets/Prefabs/AntComponents/AntPrefabs/HunterAnt.prefab");
@@ -517,61 +527,79 @@ public class SaveableData
         ///////genericAnt.anim.Play(genericAntData.currAnimName, 0, genericAntData.currAnimNormTime);
 
         ////for each ant type load in the info specific to it as well, if it has any
-        if (genericAnt as DasherAnt)
-        {
-            Debug.Log("Loading in the dasher ant data");
-            DasherAnt dasherAnt = genericAnt as DasherAnt;
-
-            DasherAntData dasherAntData = genericAntData as DasherAntData;
-            dasherAnt.tempAnimSpeed = dasherAntData.tempAnimSpeed;
-            dasherAnt.tempRoteSpeed = dasherAntData.tempRotSpeed;
-            dasherAnt.tempSpeed = dasherAntData.tempSpeed;
-
-            dasherAnt.Speed = dasherAntData.speed;
-            dasherAnt.animMultiplier = dasherAntData.animSpeed;
-            dasherAnt.rotSpeed = dasherAntData.rotSpeed;
-        }
-
-        else if (genericAnt as FarmerAnt)
+        if (genericAnt as GuardAnt)
         {
             Debug.Log("Loading in the Farmer ant data");
-            FarmerAnt farmerAnt = genericAnt as FarmerAnt;
+            GuardAnt guardAnt = genericAnt as GuardAnt;
 
-            FarmerAntData farmerAntData = genericAntData as FarmerAntData;
-            if (farmerAntData.bHoldingLarvae)
+            GuardAntData guardAntData = genericAntData as GuardAntData;
+            if (guardAntData.bHoldingParent)
             {
-                if (farmerAnt.Larvae == null)
-                    farmerAnt.AddLarvae();
-            }
-            else if (farmerAnt.Larvae != null)
-            {
-                MonoBehaviour.Destroy(farmerAnt.Larvae);
-                farmerAnt.Larvae = null;
-            }
-        }
-        else if (genericAnt as HunterAnt)
-        {
-            Debug.Log("Loading in the Farmer ant data");
-            HunterAnt hunterAnt = genericAnt as HunterAnt;
+                if (guardAnt.heldPart == null)
+                    guardAnt.LoadSaveSpawnPart();
 
-            HunterAntData hunterAntData = genericAntData as HunterAntData;
-            if (hunterAnt.weaponClass != null) //destroy any weapon which currently exists on the ant
-                MonoBehaviour.Destroy(hunterAnt.weaponClass.gameObject);
-
-            //spawn in the appropriate, saved weapon
-            if (hunterAntData.heldWeapon == (int)EWeaponType.empty)
-                hunterAnt.PickWeapon(null);
-            else
-            {
-                hunterAnt.PickWeapon(IntToWeapon(hunterAntData.heldWeapon).gameObject);
-                //for the spawned in weapon assign the appropriate values for its things like shooting and stuff/////////////////////////
+                else if (guardAnt.heldPart != null)
+                {
+                    MonoBehaviour.Destroy(guardAnt.heldPart);
+                    guardAnt.heldPart = null;
+                }
             }
-        }
-        else if (genericAnt as BombAnt)
-        {
-            if (genericAnt.transform.parent != null) //if the bomb ant is attached to a segment, detach it
-                genericAnt.transform.parent = null;
-            genericAnt.gameObject.transform.GetChild(0).gameObject.GetComponent<Collider>().enabled = true;
+            else if (genericAnt as DasherAnt)
+            {
+                Debug.Log("Loading in the dasher ant data");
+                DasherAnt dasherAnt = genericAnt as DasherAnt;
+
+                DasherAntData dasherAntData = genericAntData as DasherAntData;
+                dasherAnt.tempAnimSpeed = dasherAntData.tempAnimSpeed;
+                dasherAnt.tempRoteSpeed = dasherAntData.tempRotSpeed;
+                dasherAnt.tempSpeed = dasherAntData.tempSpeed;
+
+                dasherAnt.Speed = dasherAntData.speed;
+                dasherAnt.animMultiplier = dasherAntData.animSpeed;
+                dasherAnt.rotSpeed = dasherAntData.rotSpeed;
+            }
+
+            else if (genericAnt as FarmerAnt)
+            {
+                Debug.Log("Loading in the Farmer ant data");
+                FarmerAnt farmerAnt = genericAnt as FarmerAnt;
+
+                FarmerAntData farmerAntData = genericAntData as FarmerAntData;
+                if (farmerAntData.bHoldingLarvae)
+                {
+                    if (farmerAnt.Larvae == null)
+                        farmerAnt.AddLarvae();
+                }
+                else if (farmerAnt.Larvae != null)
+                {
+                    MonoBehaviour.Destroy(farmerAnt.Larvae);
+                    farmerAnt.Larvae = null;
+                }
+            }
+            else if (genericAnt as HunterAnt)
+            {
+                Debug.Log("Loading in the Farmer ant data");
+                HunterAnt hunterAnt = genericAnt as HunterAnt;
+
+                HunterAntData hunterAntData = genericAntData as HunterAntData;
+                if (hunterAnt.weaponClass != null) //destroy any weapon which currently exists on the ant
+                    MonoBehaviour.Destroy(hunterAnt.weaponClass.gameObject);
+
+                //spawn in the appropriate, saved weapon
+                if (hunterAntData.heldWeapon == (int)EWeaponType.empty)
+                    hunterAnt.PickWeapon(null);
+                else
+                {
+                    hunterAnt.PickWeapon(IntToWeapon(hunterAntData.heldWeapon).gameObject);
+                    //for the spawned in weapon assign the appropriate values for its things like shooting and stuff/////////////////////////
+                }
+            }
+            else if (genericAnt as BombAnt)
+            {
+                if (genericAnt.transform.parent != null) //if the bomb ant is attached to a segment, detach it
+                    genericAnt.transform.parent = null;
+                genericAnt.gameObject.transform.GetChild(0).gameObject.GetComponent<Collider>().enabled = true;
+            }
         }
     }
 

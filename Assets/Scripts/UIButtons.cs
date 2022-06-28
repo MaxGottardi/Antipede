@@ -27,8 +27,8 @@ public class UIButtons : MonoBehaviour, IDataInterface
 
     public void Win()
     {
-        Time.timeScale = 0;
-        winWindow.SetActive(true);
+        //Time.timeScale = 0;
+        //winWindow.SetActive(true);
     }
 
     // Start is called before the first frame update

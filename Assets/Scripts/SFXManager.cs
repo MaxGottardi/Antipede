@@ -158,7 +158,8 @@ public class SFXManager : MonoBehaviour
         sourceWeapon2.clip = launcherShootSFX;
         sourceWeapon2.Play();
 
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Environment Test")
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Environment Test" || UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "BossOnly3"
+            || UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Intermediate")
         {
                 // Play sounds with overlap, but only when in the actual game.
                 AudioSource AS = Source.AddComponent<AudioSource>();

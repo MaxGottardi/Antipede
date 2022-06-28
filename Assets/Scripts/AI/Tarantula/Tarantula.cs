@@ -308,7 +308,10 @@ public class Tarantula: MonoBehaviour, IDataInterface
     public void Win()
     {
         //Show Canvas with you won
-        GameManager1.uiButtons.Win();
+        if (GameManager1.mCentipedeBody.currCollectedParentParts == GameManager1.mCentipedeBody.maxParentParts)
+            SceneManager.LoadScene("WinScene");
+        else
+            SceneManager.LoadScene("NearWinScene");
     }
 
     public void LoadData(SaveableData saveableData)

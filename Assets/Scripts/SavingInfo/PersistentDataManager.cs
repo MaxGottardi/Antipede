@@ -45,6 +45,14 @@ public class PersistentDataManager : MonoBehaviour
             StartCoroutine(AutoSave());
         }
     }
+
+    public void OnApplicationQuit()
+    {
+        if (SceneManager.GetActiveScene().name != "MainMenu")
+        {
+            SaveGame();
+        }
+    }
     IEnumerator LoadGameFromSave()
     {
         yield return new WaitForEndOfFrame();
@@ -152,6 +160,9 @@ public class PersistentDataManager : MonoBehaviour
     /// </summary>
     public void SaveGame()
     {
+        if (directoryName == null)
+            return;
+
         saveableData.ResetData();
         foreach (IDataInterface dataObj in ObjsDataSaveable())
         {
@@ -186,21 +197,21 @@ public class PersistentDataManager : MonoBehaviour
         }
     }
 
-    public void Update()
-    {
-        //test functionality, change to buttons later
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log("Saving current game state");
-            SaveGame();
-        }
-        if (Input.GetKeyDown(KeyCode.O) && Time.timeScale > 0.5f)
-        {
-            Debug.Log("Loading in game from a save");
-            LoadGame();
-            StartCoroutine(TempPaused(1f));
-        }
-    }
+    ////public void Update()
+    ////{
+    ////    //test functionality, change to buttons later
+    ////    ////////if (Input.GetKeyDown(KeyCode.P))
+    ////    ////////{
+    ////    ////////    Debug.Log("Saving current game state");
+    ////    ////////    SaveGame();
+    ////    ////////}
+    ////    ////////if (Input.GetKeyDown(KeyCode.O) && Time.timeScale > 0.5f)
+    ////    ////////{
+    ////    ////////    Debug.Log("Loading in game from a save");
+    ////    ////////    LoadGame();
+    ////    ////////    StartCoroutine(TempPaused(1f));
+    ////    ////////}
+    ////}
     IEnumerator TempPaused(float waitTime)
     {
         Time.timeScale = 0;

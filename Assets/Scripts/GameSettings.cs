@@ -86,6 +86,10 @@ public class GameSettings : MonoBehaviour
 
 	public void ToMain()
     {
+		if (SceneManager.GetActiveScene().name == "Environment Test" || SceneManager.GetActiveScene().name == "BossOnly3"
+					|| SceneManager.GetActiveScene().name == "Intermediate")
+			Camera.main.GetComponent<PersistentDataManager>().SaveGame();
+
 		Time.timeScale = 1;
         LoadingScene.nextScene = "MainMenu";
         LoadingScene.prevScene = SceneManager.GetActiveScene().name;

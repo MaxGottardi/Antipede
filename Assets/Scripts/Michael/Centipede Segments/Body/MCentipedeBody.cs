@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// The central class that handles Centipede logic.
@@ -22,6 +23,7 @@ using UnityEngine;
 [RequireComponent(typeof(MCentipedeEvents))]
 public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 {
+	public Text parentPartUI;
 	[Header("Construction References.")]
 
 	public Transform Head;
@@ -72,7 +74,11 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 	public Tarantula[] nests;
 	public int multiplier;
 
-
+	public void AddParentPartUI()
+    {
+		currCollectedParentParts++;
+		parentPartUI.text = "Parts Collected: " + currCollectedParentParts.ToString() + "/" + maxParentParts.ToString();
+	}
 	void Start()
 	{
 		multiplier = 0;
@@ -474,6 +480,10 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 	//loading the data for the centipede
 	void IDataInterface.LoadData(SaveableData saveableData)
     {
+		currCollectedParentParts = saveableData.parentPartsCollected;
+		if(parentPartUI != null)
+			parentPartUI.text = "Parts Collected: " + currCollectedParentParts.ToString() + "/" + maxParentParts.ToString();
+
 		//by using add and remove segment, determine the number of segments to add or remove based on the number the player initially starts with
 		int numSegments = saveableData.centipedeSegmentPosition.list.Count;
 		if(numSegments < Segments.Count)
@@ -578,6 +588,8 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 
 	void IDataInterface.SaveData(SaveableData saveableData)
     {
+		saveableData.parentPartsCollected = currCollectedParentParts;
+
 		//head values
 		saveableData.centipedeHeadPosition = transform.position;
 		saveableData.centipedeHeadRotation = transform.rotation;

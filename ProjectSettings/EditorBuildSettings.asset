@@ -35,4 +35,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LoadingScene.unity
     guid: c62d258e7ac463240bdf4d25bfb541d0
+  - enabled: 1
+    path: Assets/Scenes/WinScene.unity
+    guid: a3a0568d08b168b4eba3cfe13dee3dd0
+  - enabled: 1
+    path: Assets/Scenes/NearWinScene.unity
+    guid: 2cdb2ecd7d620d34d9fb913e4db32cc8
   m_configObjects: {}

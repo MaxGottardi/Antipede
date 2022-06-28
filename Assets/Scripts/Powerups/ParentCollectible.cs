@@ -2,16 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParentCollectible : MonoBehaviour
+public class ParentCollectible : MonoBehaviour, IDataInterface
 {
+    public bool bDoSaveData;
+    public int ID;
     public static ShuffleBag<GameObject> shuffleBag;
     [SerializeField] GameObject[] parentParts;
 
     [SerializeField]GameObject DestroyParticles;
 
     Tween adjustScaleTween;
+
+    GameObject childUI;
     void Start()
     {
+        if (bDoSaveData)
+            childUI = transform.GetChild(0).gameObject;
         if (shuffleBag == null)
         {
             shuffleBag = new ShuffleBag<GameObject>();
@@ -37,8 +43,8 @@ public class ParentCollectible : MonoBehaviour
             GetComponent<Collider>().enabled = false;
         GetComponent<MeshRenderer>().enabled = false;
         adjustScaleTween = new Tween(transform.localScale, Vector3.zero, Time.time, 3);
-
-        GameManager1.mCentipedeBody.currCollectedParentParts++;
+        bDoSaveData = false;
+        GameManager1.mCentipedeBody.AddParentPartUI();
         Debug.Log(GameManager1.mCentipedeBody.currCollectedParentParts);
         Instantiate(DestroyParticles, transform.position, Quaternion.identity);
     }
@@ -57,6 +63,34 @@ public class ParentCollectible : MonoBehaviour
 
             if (transform.localScale.x < 0.05f)
                 Destroy(gameObject);
+        }
+
+        if(bDoSaveData)
+        {
+            if (Vector3.Distance(transform.position, GameManager1.playerObj.transform.position) < 20)
+            {
+                if (!childUI.activeSelf)
+                    childUI.SetActive(true);
+            }
+            else if (childUI.activeSelf)
+                childUI.SetActive(false);
+        }
+    }
+
+    public void LoadData(SaveableData saveableData)
+    {
+        if(bDoSaveData)
+        {
+            if (!saveableData.bParentPartActive.dictionary.ContainsKey(ID))
+                Destroy(gameObject);
+        }
+    }
+
+    public void SaveData(SaveableData saveableData)
+    {
+        if(bDoSaveData)
+        {
+            saveableData.bParentPartActive.dictionary.Add(ID, true);
         }
     }
 }

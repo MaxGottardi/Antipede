@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WallMovement : MonoBehaviour
+public class WallMovement : MonoBehaviour, IDataInterface
 {
-
+    public int ID;
     public Vector3 startPosition;
     bool doMove;
 
@@ -31,5 +31,21 @@ public class WallMovement : MonoBehaviour
     public void SetMovable()
     {
         doMove = true;
+    }
+
+    public void LoadData(SaveableData saveableData)
+    {
+        doMove = saveableData.wallMove.dictionary[ID];
+        if (doMove)
+        {
+            Vector3 pos = gameObject.transform.position;
+            pos.y -= 20f;
+            gameObject.transform.position = pos;
+        }
+    }
+
+    public void SaveData(SaveableData saveableData)
+    {
+        saveableData.wallMove.dictionary.Add(ID, doMove);
     }
 }
