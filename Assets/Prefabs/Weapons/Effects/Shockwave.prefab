@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 109590912624951486}
   - component: {fileID: 109590912624951485}
   - component: {fileID: 5420484685001908674}
+  - component: {fileID: -7631365541862942923}
   m_Layer: 0
   m_Name: Shockwave
   m_TagString: Untagged
@@ -4893,6 +4894,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FaceMethod: 0
+--- !u!114 &-7631365541862942923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109590912624951484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 753222480d0b32c47b054c21bb289394, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SFX: {fileID: 4565320499430525156, guid: 350cc8cc2e529844fb5585faa20da851, type: 3}
 --- !u!1 &572079729164655705
 GameObject:
   m_ObjectHideFlags: 0

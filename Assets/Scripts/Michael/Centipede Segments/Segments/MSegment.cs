@@ -26,13 +26,13 @@ public class MSegment : MonoBehaviour
 	CentipedeMovement Reference;
 	float AccelerationTime = 0f;
 
-	[Header("Weapons Settings.")]
+	[Header("Weapons Settings and References.")]
 	public bool bIgnoreFromWeapons;
-	public Weapon Weapon;
+	[ReadOnly] public Weapon Weapon;
 	Transform WeaponSocket;
 
-	public float health = 100;
-	public int numAttacking = 0; //the number of ants locked on for attacking this segment
+	[ReadOnly] public float health = 100;
+	[ReadOnly] public int numAttacking = 0; //the number of ants locked on for attacking this segment
 
 	MCentipedeWeapons Owner;
 	bool bDetached = false;

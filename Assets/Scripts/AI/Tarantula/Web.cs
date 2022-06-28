@@ -46,7 +46,7 @@ public class Web : MonoBehaviour, IDataInterface
         Destroy(gameObject);
     }
 
-    public void SaveData(ref SaveableData saveableData)
+    public void SaveData(SaveableData saveableData)
     {
         WebData webData = new WebData();
         webData.bWebIsShot = isShot;

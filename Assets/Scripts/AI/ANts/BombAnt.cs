@@ -12,7 +12,7 @@ public class BombAnt : GenericAnt
     }
 
     // Update is called once per frame
-    public override void SaveData(ref SaveableData saveableData)
+    public override void SaveData(SaveableData saveableData)
     {
         if (stateMachine.currState != stateMachine.Dead)
         {

@@ -34,6 +34,8 @@ TagManager:
   - ParentWeb
   - Projectile
   - Graphics
+  - NewGame
+  - LoadSelected
   layers:
   - Default
   - TransparentFX
@@ -49,8 +51,8 @@ TagManager:
   - Boundary
   - Post Processing
   - Minimap
-  - 
-  - 
+  - EnemySafeProjectile
+  - PlayerSafeProjectile
   - 
   - 
   - 

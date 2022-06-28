@@ -15,8 +15,10 @@ public class Flame : Weapon
 
 		sfxManager.ShootFlame();
 		Projectile StraightProjectile = InstantiateProjectile();
-		StraightProjectile.Initialise(isAntGun, true);
-		
+		if (isAntGun)//prevent the guns bullets colliding with the ant
+			StraightProjectile.Initialise(isAntGun, transform.parent.parent.parent.parent.parent.gameObject.GetComponent<Collider>());
+		else
+			StraightProjectile.Initialise(isAntGun, null); sfxManager.ShootGun(StraightProjectile.gameObject);
 		// Ignore the Direction param. For a Gun, we don't need it.
 		if (isAntGun)
 			StraightProjectile.Launch(transform.GetChild(0).GetChild(0).GetChild(0).forward * LaunchSpeed / 4.5f);

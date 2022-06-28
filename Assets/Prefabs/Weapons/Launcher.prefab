@@ -148,12 +148,13 @@ MonoBehaviour:
   weaponPickup: {fileID: 2037037131742102110, guid: 64aa98e693a3b624487ff2c3ebebce86, type: 3}
   isAntGun: 0
   FireRate: 1
+  TimeLastFired: 0
   Range: 100
   Art: {fileID: 2800000, guid: 048ae40ed4ecc254f9536814ae7c7e3b, type: 3}
   ArtMaterial: {fileID: 2100000, guid: 9ec0d4aff6543a24ab41a2bf46c8e1d9, type: 2}
   TextColour: {r: 0.19215688, g: 0.9960785, b: 0.22352943, a: 1}
   sfxManager: {fileID: 0}
-  LaunchHeight: 0
+  LaunchHeight: 1
 --- !u!1001 &458721776021495644
 PrefabInstance:
   m_ObjectHideFlags: 0

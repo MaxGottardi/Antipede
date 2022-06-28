@@ -67,7 +67,6 @@ public class CollisionManager : MonoBehaviour
             if (other.gameObject.GetComponent<WeaponPickup>().isShield)
             {
                 player.IncreaseSpeed(50.0f);
-                GameManager1.uiButtons.SpeedUI();
                 GameManager1.uiButtons.AddSpeed();
             }
             if (other.gameObject.GetComponent<WeaponPickup>().isLauncher)
@@ -75,14 +74,12 @@ public class CollisionManager : MonoBehaviour
                 player.AddSegment();
                 player.AddSegment();
                 player.IncreaseSpeed(50.0f);
-                GameManager1.uiButtons.SpeedUI();
                 GameManager1.uiButtons.AddSpeed();
             }
             if (other.gameObject.GetComponent<WeaponPickup>().isLaser)
             {
                 player.AddSegment();
                 player.IncreaseSpeed(100.0f);
-                GameManager1.uiButtons.SpeedUI();
                 GameManager1.uiButtons.AddSpeed();
                 GameManager1.uiButtons.AddSpeed();
             }
@@ -92,7 +89,6 @@ public class CollisionManager : MonoBehaviour
                 player.AddSegment();
                 player.AddSegment();
                 player.IncreaseSpeed(150.0f);
-                GameManager1.uiButtons.SpeedUI();
                 GameManager1.uiButtons.AddSpeed();
                 GameManager1.uiButtons.AddSpeed();
                 GameManager1.uiButtons.AddSpeed();
@@ -102,7 +98,6 @@ public class CollisionManager : MonoBehaviour
                 player.AddSegment();
                 player.AddSegment();
                 player.IncreaseSpeed(100.0f);
-                GameManager1.uiButtons.SpeedUI();
                 GameManager1.uiButtons.AddSpeed();
                 GameManager1.uiButtons.AddSpeed();
             }

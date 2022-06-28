@@ -7,13 +7,13 @@ public class CameraAnimate : MonoBehaviour
 {
     Tween tween = null;
     // Start is called before the first frame update
-    [SerializeField]Vector3 creditsPos, mainPos, settingsPos;
-    [SerializeField]Quaternion creditsRot, mainRot, settingsRot;
-    public GameObject mainMenuObj, creditsObj, settingsObj;
+    [SerializeField]Vector3 creditsPos, mainPos, settingsPos, savePos;
+    [SerializeField]Quaternion creditsRot, mainRot, settingsRot, saveRot;
+    public GameObject mainMenuObj, creditsObj, settingsObj, saveObj;
     GameObject currActive = null, newActive;
     float duration = .5f;
 
-    bool nearGoal = false;
+    bool nearGoal = false; //when tweening, is the camera near the goal obj yet or not
     private void Start()
     {
         transform.position = mainPos;
@@ -32,6 +32,13 @@ public class CameraAnimate : MonoBehaviour
         tween = new Tween(transform.position, mainPos, transform.rotation, mainRot, Time.time, duration);
         newActive = mainMenuObj;
         mainMenuObj.SetActive(true);
+        nearGoal = false;
+    }
+    public void MoveToSave()
+    {
+        tween = new Tween(transform.position, savePos, transform.rotation, saveRot, Time.time, duration);
+        newActive = saveObj;
+        saveObj.SetActive(true);
         nearGoal = false;
     }
     public void MoveToSettings()

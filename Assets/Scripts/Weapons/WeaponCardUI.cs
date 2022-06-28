@@ -169,7 +169,7 @@ public class WeaponCardUI : MonoBehaviour
 			WeaponsInventory.Add(PickedUp, AUII);
 			UpdateText(ref AUII);
 
-
+			/* -- Adjust the Width and Height in the Template Weapon Card instead. -- */
 			//If anyone asks, i didnt write this
 			//I swear i know how to code
 			//NewCard.transform.localScale = new Vector3(0.5f, 0.6f, 0.5f);

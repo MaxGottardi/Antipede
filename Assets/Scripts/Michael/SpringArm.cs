@@ -252,8 +252,8 @@ public class SpringArm : MonoBehaviour, IDataInterface
 
 		if (Input.GetMouseButton(1))
 		{
-			float DeltaX = (MousePosition.x - PreviousMouseDragPosition.x) * SettingsVariables.sliderDictionary["camRotSpeed"] / 100; //set to a range between 0 - 2
-			float DeltaY = (MousePosition.y - PreviousMouseDragPosition.y) * SettingsVariables.sliderDictionary["camRotSpeed"] / 100;
+			float DeltaX = (MousePosition.x - PreviousMouseDragPosition.x) * SettingsVariables.sliderDictionary["camRotSpeed"] * .01f; //set to a range between 0 - 2
+			float DeltaY = (MousePosition.y - PreviousMouseDragPosition.y) * SettingsVariables.sliderDictionary["camRotSpeed"] * .01f;
 
 			DetermineInverse(ref DeltaX, ref DeltaY);
 
@@ -304,8 +304,8 @@ public class SpringArm : MonoBehaviour, IDataInterface
 
 		if (Input.GetMouseButton(2))
 		{
-			float DeltaX = (MousePosition.x - PreviousMousePanPosition.x) * SettingsVariables.sliderDictionary["camRotSpeed"];
-			float DeltaY = (MousePosition.y - PreviousMousePanPosition.y) * SettingsVariables.sliderDictionary["camRotSpeed"];
+			float DeltaX = (MousePosition.x - PreviousMousePanPosition.x) * SettingsVariables.sliderDictionary["camRotSpeed"] * .01f;
+			float DeltaY = (MousePosition.y - PreviousMousePanPosition.y) * SettingsVariables.sliderDictionary["camRotSpeed"] * .01f;
 
 			// Ensure 'Right' and 'Up' is relative to the Camera.
 			TargetOffset -= DeltaX * Time.deltaTime * Camera.right + DeltaY * Time.deltaTime * Camera.up;
@@ -385,7 +385,7 @@ public class SpringArm : MonoBehaviour, IDataInterface
 		Distance = saveableData.scrollDistance;
     }
 
-    public void SaveData(ref SaveableData saveableData)
+    public void SaveData(SaveableData saveableData)
     {
 		saveableData.camPos = transform.position;
 		saveableData.camRot = transform.rotation;

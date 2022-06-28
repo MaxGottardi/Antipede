@@ -28,10 +28,14 @@ public class Laser : Weapon
 
 		if (CanFire(Position))
 		{
-			sfxManager.ActivateLazer();
 			Projectile Laser = InstantiateProjectile();
-			Laser.Initialise(isAntGun);
+			if (isAntGun) //prevents the gun from having its bullets collide with the ant
+				Laser.Initialise(isAntGun, transform.parent.parent.parent.parent.parent.gameObject.GetComponent<Collider>());
+			else
+				Laser.Initialise(isAntGun, null);
+
 			Laser.Launch(Position);
+			sfxManager.ActivateLazer(Laser.gameObject);
 			
 		}
 

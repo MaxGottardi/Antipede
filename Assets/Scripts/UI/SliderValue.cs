@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 
 public class SliderValue : MonoBehaviour
 {
+    public Camera mainCamera;
     Slider slider;
     public TextMeshProUGUI text;
 
@@ -56,8 +57,8 @@ public class SliderValue : MonoBehaviour
 
         AdjustBrightness();
         AdjustFog();
-        if(SceneManager.GetActiveScene().name != "MainMenu")
-        AdjustCamFOV();
+        if (SceneManager.GetActiveScene().name != "MainMenu" && mainCamera != null)
+            AdjustCamFOV();
     }
 
     // Update is called once per frame
@@ -105,6 +106,6 @@ public class SliderValue : MonoBehaviour
 
     public void AdjustCamFOV()
     {
-        Camera.main.fieldOfView = SettingsVariables.sliderDictionary["camFOV"];
+        mainCamera.fieldOfView = SettingsVariables.sliderDictionary["camFOV"];
     }
 }

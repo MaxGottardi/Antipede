@@ -1,3 +1,5 @@
+//#define WITH_FRAME_LIMITS
+
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -40,8 +42,10 @@ public class FABRIK : MonoBehaviour
 	/// <summary>True if this Leg is still.</summary>
 	bool bHasStopped;
 
+#if WITH_FRAME_LIMITS
 	bool bFrameLimiterActive;
 	bool bUpdateOneLastTime;
+#endif
 
 	void Start()
 	{
@@ -73,6 +77,7 @@ public class FABRIK : MonoBehaviour
 		}
 #endif
 
+#if WITH_FRAME_LIMITS
 		bFrameLimiterActive = MMathStatics.FPS() < 30;
 
 		if (bFrameLimiterActive)
@@ -85,6 +90,7 @@ public class FABRIK : MonoBehaviour
 
 			return;
 		}
+#endif
 
 		// FABRIK will not execute if this Leg is too far from the Camera.
 		if (IsTooFarFromCamera())
@@ -98,7 +104,9 @@ public class FABRIK : MonoBehaviour
 		ThisFramePosition = transform.position;
 		ThisFrameEulers = transform.eulerAngles;
 
+#if WITH_FRAME_LIMITS
 		bUpdateOneLastTime = false;
+#endif
 
 		if (HasMovedSinceLastFrame())
 		{
@@ -244,7 +252,7 @@ public class FABRIK : MonoBehaviour
 #endif
 	}
 
-	#region FABRIK Utils
+#region FABRIK Utils
 
 	void RunFABRIK(Vector3[] Joints, Vector3 Root, Vector3 Target, Vector3 RelativeBias)
 	{
@@ -291,7 +299,7 @@ public class FABRIK : MonoBehaviour
 
 	Vector3 GetRelativeXYZ(float X, float Y, float Z) => transform.right * X + transform.up * Y + transform.forward * Z;
 
-	#endregion
+#endregion
 
 	/// <returns>True if the distance between this and the Camera exceeds <see cref="kCameraDistanceThreshold"/>.</returns>
 	bool IsTooFarFromCamera()

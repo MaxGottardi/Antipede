@@ -241,6 +241,9 @@ MonoBehaviour:
   bloodParticles: {fileID: 3612848425264099771, guid: e16bd8ac4022a2447880058a8ae4a7cb, type: 3}
   DamageAmount: 40
   tarantDamage: 2
+  isFlame: 0
+  enemyCollisionCounter: 0
+  body: {fileID: 0}
   Shockwave: {fileID: 109590912624951486, guid: caf21d49f8d1ad24fa7eff7b340eda11, type: 3}
   ExplosionRadius: 5
 --- !u!1 &8116467111339866537
