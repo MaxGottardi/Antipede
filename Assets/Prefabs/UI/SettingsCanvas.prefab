@@ -2286,6 +2286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d052f1954d53b4bad8795216057595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
   text: {fileID: 4306266487373744397}
   audioMixer: {fileID: 0}
   endUnit: 
@@ -8319,7 +8320,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 93, y: -137.79001}
+  m_AnchoredPosition: {x: 103, y: -137.79001}
   m_SizeDelta: {x: 186, y: 48.09}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &5185763945639655936
@@ -15921,8 +15922,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8132925154825442023}
   m_HandleRect: {fileID: 2821867432111248988}
   m_Direction: 2
-  m_Value: 0.99999636
-  m_Size: 0.9087009
+  m_Value: 0.9999993
+  m_Size: 0.6559614
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -17955,6 +17956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d052f1954d53b4bad8795216057595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
   text: {fileID: 577023941003317969}
   audioMixer: {fileID: 0}
   endUnit: 
@@ -23801,7 +23803,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PauseElementsHolder: {fileID: 0}
-  colourPicker: {fileID: 0}
   forwardTxt: {fileID: 8036119113913176495}
   leftTxt: {fileID: 8036119112861214952}
   rightTxt: {fileID: 8036119113341498868}
@@ -24327,6 +24328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d052f1954d53b4bad8795216057595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
   text: {fileID: 8036119114237956156}
   audioMixer: {fileID: 0}
   endUnit: '%'
@@ -25399,6 +25401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d052f1954d53b4bad8795216057595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
   text: {fileID: 8036119113482255056}
   audioMixer: {fileID: 0}
   endUnit: '%'
@@ -25592,6 +25595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d052f1954d53b4bad8795216057595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
   text: {fileID: 8036119112806349865}
   audioMixer: {fileID: 24100000, guid: a566ffab5c0b6a14d9b73f3a26693c0a, type: 2}
   endUnit: 
@@ -25968,6 +25972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d052f1954d53b4bad8795216057595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
   text: {fileID: 8036119113381110068}
   audioMixer: {fileID: 24100000, guid: a566ffab5c0b6a14d9b73f3a26693c0a, type: 2}
   endUnit: 
@@ -27020,6 +27025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d052f1954d53b4bad8795216057595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
   text: {fileID: 8036119112995568768}
   audioMixer: {fileID: 24100000, guid: a566ffab5c0b6a14d9b73f3a26693c0a, type: 2}
   endUnit: 
@@ -30101,6 +30107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d052f1954d53b4bad8795216057595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
   text: {fileID: 5938084625440422197}
   audioMixer: {fileID: 0}
   endUnit: '%'

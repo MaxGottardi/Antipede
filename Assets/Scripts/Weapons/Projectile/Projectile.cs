@@ -122,11 +122,12 @@ public class Projectile : MonoBehaviour
 			}
 			else if (collision.gameObject.CompareTag("NewGame") && !hasSeenChanged)
 			{
-				hasSeenChanged = true;
-				LoadingScene.nextScene = "IntroCutScene";
-				LoadingScene.prevScene = "MainMenu";
-				PersistentDataManager.bIsNewGame = true;
-				SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
+				//hasSeenChanged = true;
+				GameObject.Find("SavingObjs").GetComponent<PersistentDataManager>().AbleMakeNewSaveGame();
+				//LoadingScene.nextScene = "IntroCutScene";
+				//LoadingScene.prevScene = "MainMenu";
+				//PersistentDataManager.bIsNewGame = true;
+				//SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
 			}
 			else if (collision.gameObject.CompareTag("Back") && !hasSeenChanged)
 			{
@@ -135,6 +136,7 @@ public class Projectile : MonoBehaviour
 				if (UIManager.enableKeyChange)
 				{
 					UIManager.RebindKeyPanel.SetActive(false);
+					UIManager.colourPicker.SetActive(false);
 					UIManager.enableKeyChange = false;
 				}
 				//SceneManager.LoadScene("MainMenu");
@@ -153,6 +155,7 @@ public class Projectile : MonoBehaviour
 				UIManager.graphicsPanel.SetActive(false);
 
 				UIManager.RebindKeyPanel.SetActive(false);
+				UIManager.colourPicker.SetActive(false);
 				UIManager.enableKeyChange = false;
 			}
 			else if (collision.gameObject.CompareTag("Graphics"))
@@ -163,6 +166,7 @@ public class Projectile : MonoBehaviour
 				UIManager.graphicsPanel.SetActive(true);
 
 				UIManager.RebindKeyPanel.SetActive(false);
+				UIManager.colourPicker.SetActive(false);
 				UIManager.enableKeyChange = false;
 			}
 			else if (collision.gameObject.CompareTag("Other"))
@@ -171,6 +175,7 @@ public class Projectile : MonoBehaviour
 				UIManager.otherPanel.SetActive(true);
 				UIManager.controlsPanel.SetActive(false);
 				UIManager.RebindKeyPanel.SetActive(false);
+				UIManager.colourPicker.SetActive(false);
 				UIManager.graphicsPanel.SetActive(false);
 
 				UIManager.enableKeyChange = false;
@@ -183,6 +188,7 @@ public class Projectile : MonoBehaviour
 				UIManager.graphicsPanel.SetActive(false);
 
 				UIManager.RebindKeyPanel.SetActive(false);
+				UIManager.colourPicker.SetActive(false);
 				UIManager.enableKeyChange = false;
 			}
 			else if (collision.gameObject.CompareTag("Settings") && !hasSeenChanged)

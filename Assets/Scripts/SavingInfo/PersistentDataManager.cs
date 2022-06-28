@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System.IO;
+using TMPro;
 //does the handling of the saving and loading of the games data
 //only ever have one of these in the scene at one time. only this is required to be added for the entire saving to function correctly
 public class PersistentDataManager : MonoBehaviour
@@ -19,8 +20,11 @@ public class PersistentDataManager : MonoBehaviour
     string dataFileName = "SaveFile"; //the name to call the save file
 
     [Header("Stuff for Setting the save UI")]
-    public GameObject saveButtonPrefab;
+    public GameObject saveButtonPrefab, newSaveUI;
     public Transform saveButtonParent;
+    public TMP_InputField saveNameInput;
+    public TMP_Dropdown gameModeDropdown;
+    public TMP_Text warningTxt;
 
     private void Awake()
     {
@@ -36,13 +40,26 @@ public class PersistentDataManager : MonoBehaviour
             if (bIsNewGame)
                 NewGame();
             else
-                LoadGame();
+                StartCoroutine(LoadGameFromSave());
+
+            StartCoroutine(AutoSave());
         }
+    }
+    IEnumerator LoadGameFromSave()
+    {
+        yield return new WaitForEndOfFrame();
+        LoadGame();
+    }
+    IEnumerator AutoSave()
+    {
+        yield return new WaitForSeconds(60);
+        SaveGame();
+        StartCoroutine(AutoSave());
     }
     public void NewGame()
     {
         saveableData = new SaveableData();
-
+        Time.timeScale = 0;
         saveableData.centipedeSegmentPosition = new SerializableList<Vector3>();
         saveableData.centipedeSegmentRotation = new SerializableList<Quaternion>();
         saveableData.centipedeSegmentHealth = new SerializableList<float>();
@@ -146,6 +163,7 @@ public class PersistentDataManager : MonoBehaviour
 
         saveableData.SaveLarvae();
         saveableData.SaveWeaponCards();
+        saveableData.gameSceneLoaded = LoadingScene.gameSceneLoad;
 
         string fullPath = Path.Combine(dataDirectory, directoryName, dataFileName);//this accounts for different paths having different path seperators
         try
@@ -173,13 +191,11 @@ public class PersistentDataManager : MonoBehaviour
         //test functionality, change to buttons later
         if (Input.GetKeyDown(KeyCode.P))
         {
-            directoryName = "SaveFile";
             Debug.Log("Saving current game state");
             SaveGame();
         }
         if (Input.GetKeyDown(KeyCode.O) && Time.timeScale > 0.5f)
         {
-            saveableData = LoadSaveFile("SaveFile");
             Debug.Log("Loading in game from a save");
             LoadGame();
             StartCoroutine(TempPaused(1f));
@@ -236,7 +252,7 @@ public class PersistentDataManager : MonoBehaviour
             {
                 Destroy(saveButtonParent.GetChild(i).gameObject);
             }
-
+            newSaveUI.SetActive(false);
             Dictionary<string, SaveableData> allSaveFiles = LoadAllSaves();
             foreach (KeyValuePair<string, SaveableData> item in allSaveFiles)
             {
@@ -245,5 +261,47 @@ public class PersistentDataManager : MonoBehaviour
                 saveUIData.InitilizeData(item.Key, item.Value);
             }
         }
+    }
+
+    public void AbleMakeNewSaveGame()
+    {
+        newSaveUI.SetActive(true);
+    }
+    public void CancelMakeNewSave()
+    {
+        newSaveUI.SetActive(false);
+    }
+
+    public void StartNewSaveGame()
+    {
+        directoryName = saveNameInput.text;
+        if (directoryName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0 || string.IsNullOrWhiteSpace(directoryName))
+        {
+            warningTxt.gameObject.SetActive(true);
+            warningTxt.text = "!!! Invalid Elements Found in Filename";
+            return;
+        }
+        if(Directory.Exists(Path.Combine(dataDirectory, directoryName)))
+        {
+            warningTxt.gameObject.SetActive(true);
+            warningTxt.text = "!!! Filename Already Exists, Pick Another";
+            return;
+        }
+        switch (gameModeDropdown.value)
+        {
+            case 0:
+                LoadingScene.gameSceneLoad = "Environment Test";
+                break;
+            case 1:
+                LoadingScene.gameSceneLoad = "Intermediate";
+                break;
+            default:
+                LoadingScene.gameSceneLoad = "BossOnly3";
+                break;
+        }
+        LoadingScene.nextScene = "IntroCutScene";
+        LoadingScene.prevScene = "MainMenu";
+        bIsNewGame = true;
+        SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
     }
 }

@@ -29,11 +29,20 @@ public class FollowMOuse : MonoBehaviour
 			}
 			else if (gameObject.CompareTag("NewGame"))
 			{
-				LoadingScene.nextScene = "IntroCutScene";
-				LoadingScene.prevScene = "MainMenu";
-				PersistentDataManager.bIsNewGame = true;
-				SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
+				//hasSeenChanged = true;
+				GameObject.Find("SavingObjs").GetComponent<PersistentDataManager>().AbleMakeNewSaveGame();
+				//LoadingScene.nextScene = "IntroCutScene";
+				//LoadingScene.prevScene = "MainMenu";
+				//PersistentDataManager.bIsNewGame = true;
+				//SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
 			}
+			////////////////else if (gameObject.CompareTag("NewGame"))
+			////////////////{
+			////////////////	LoadingScene.nextScene = "IntroCutScene";
+			////////////////	LoadingScene.prevScene = "MainMenu";
+			////////////////	PersistentDataManager.bIsNewGame = true;
+			////////////////	SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
+			////////////////}
 			else if (gameObject.CompareTag("Credits"))
 			{
 				Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToCredits();
@@ -49,6 +58,7 @@ public class FollowMOuse : MonoBehaviour
 				if (UIManager.enableKeyChange)
 				{
 					UIManager.RebindKeyPanel.SetActive(false);
+					UIManager.colourPicker.SetActive(false);
 					UIManager.enableKeyChange = false;
 				}
 				//SceneManager.LoadScene("MainMenu");
@@ -61,6 +71,7 @@ public class FollowMOuse : MonoBehaviour
 				UIManager.graphicsPanel.SetActive(false);
 
 				UIManager.RebindKeyPanel.SetActive(false);
+				UIManager.colourPicker.SetActive(false);
 				UIManager.enableKeyChange = false;
 			}
 			else if (gameObject.CompareTag("Other"))
@@ -69,6 +80,7 @@ public class FollowMOuse : MonoBehaviour
 				UIManager.otherPanel.SetActive(true);
 				UIManager.controlsPanel.SetActive(false);
 				UIManager.RebindKeyPanel.SetActive(false);
+				UIManager.colourPicker.SetActive(false);
 				UIManager.graphicsPanel.SetActive(false);
 
 				UIManager.enableKeyChange = false;
@@ -81,6 +93,7 @@ public class FollowMOuse : MonoBehaviour
 				UIManager.graphicsPanel.SetActive(false);
 
 				UIManager.RebindKeyPanel.SetActive(false);
+				UIManager.colourPicker.SetActive(false);
 				UIManager.enableKeyChange = false;
 			}
 			else if (gameObject.CompareTag("Graphics"))
@@ -91,6 +104,7 @@ public class FollowMOuse : MonoBehaviour
 				UIManager.graphicsPanel.SetActive(true);
 
 				UIManager.RebindKeyPanel.SetActive(false);
+				UIManager.colourPicker.SetActive(false);
 				UIManager.enableKeyChange = false;
 			}
 			else if (gameObject.CompareTag("Settings"))

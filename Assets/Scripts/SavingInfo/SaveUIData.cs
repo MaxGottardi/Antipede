@@ -20,7 +20,8 @@ public class SaveUIData : MonoBehaviour
 
     public void OnClick()
     {
-        LoadingScene.nextScene = "Environment Test";
+        LoadingScene.gameSceneLoad = saveableData.gameSceneLoaded;
+        LoadingScene.nextScene = saveableData.gameSceneLoaded;
         LoadingScene.prevScene = "MainMenu";
         PersistentDataManager.saveableData = saveableData;
         PersistentDataManager.directoryName = directoryName;

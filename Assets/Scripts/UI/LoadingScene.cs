@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LoadingScene : MonoBehaviour
 {
-    public static string prevScene, nextScene;
+    public static string prevScene, nextScene, gameSceneLoad;
     Tween tween;
     public float animDuration = 2;
     public GameObject loadTxtObj, tweenLeftObj, tweenRightObj, cam;

@@ -249,6 +249,10 @@ public class SaveableData
     [SerializeField] public bool bSeenSpeed, bSeenAttack, bSeenShot, bSeenSpider;
 
 
+    ///the scene to load to
+    [SerializeField] public string gameSceneLoaded;
+
+
     //i guess all the bullets in the scene(detached segments?probs not required)
 
 

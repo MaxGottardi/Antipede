@@ -28,7 +28,7 @@ public class xdd : MonoBehaviour
 
     IEnumerator LoadSceneAsync()
     {
-        AsyncOperation loadScene = SceneManager.LoadSceneAsync("Environment Test");
+        AsyncOperation loadScene = SceneManager.LoadSceneAsync(LoadingScene.gameSceneLoad);
         while (!loadScene.isDone)
         {
             yield return null;

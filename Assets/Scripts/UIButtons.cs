@@ -98,7 +98,6 @@ public class UIButtons : MonoBehaviour, IDataInterface
         if (SettingsVariables.boolDictionary["bPlayTutorial"])
         {
             tutWindow.SetActive(true);
-            Time.timeScale = 0;
             moveUI.SetActive(true);
             pauseUI.SetActive(true);
             CamUI.SetActive(true);

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameSettings : MonoBehaviour
 {
@@ -82,6 +83,14 @@ public class GameSettings : MonoBehaviour
 		SettingsElementsHolder.SetActive(bShow);
 		PauseElementsHolder.SetActive(!bShow);
 	}
+
+	public void ToMain()
+    {
+		Time.timeScale = 1;
+        LoadingScene.nextScene = "MainMenu";
+        LoadingScene.prevScene = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
+    }
 
 	public void SetInheritRotation(bool bInheritRotation)
 	{
