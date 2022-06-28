@@ -50,18 +50,18 @@ public class CardManager : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetKey(KeyCode.Tab))
-		{
-			ShowOverlay(true);
-			Time.timeScale = 0.5f;
-			Time.fixedDeltaTime = 0.02F * Time.timeScale;
-		}
-		else if (Input.GetKeyUp(KeyCode.Tab))
-		{
-			ShowOverlay(false);
-			Time.timeScale = 1;
-			Time.fixedDeltaTime = 0.02F;
-		}
+		////////////////////////////////////if (Input.GetKey(KeyCode.Tab))
+		////////////////////////////////////{
+		////////////////////////////////////	ShowOverlay(true);
+		////////////////////////////////////	Time.timeScale = 0.5f;
+		////////////////////////////////////	Time.fixedDeltaTime = 0.02F * Time.timeScale;
+		////////////////////////////////////}
+		////////////////////////////////////else if (Input.GetKeyUp(KeyCode.Tab))
+		////////////////////////////////////{
+		////////////////////////////////////	ShowOverlay(false);
+		////////////////////////////////////	Time.timeScale = 1;
+		////////////////////////////////////	Time.fixedDeltaTime = 0.02F;
+		////////////////////////////////////}
 
 	}
 

@@ -60,15 +60,19 @@ public abstract class Weapon : MonoBehaviour
 	protected bool CanFire(Vector3 Position)
 	{
 		// Has this Weapon cooled down?
-		bool bCanFire = bIsRegistered && Time.time - TimeLastFired > FireRate;
-
+		bool bCanFire = bIsRegistered && TimeLastFired < 0;
+		Debug.Log(TimeLastFired);
 		// Is this Weapon In-Range?
 		bCanFire &= InRange(ref Position);
 
 		return bCanFire;
 	}
-
-	protected bool InRange(ref Vector3 Position)
+    private void Update()
+    {
+        if(TimeLastFired > 0)
+			TimeLastFired -= Time.deltaTime;
+	}
+    protected bool InRange(ref Vector3 Position)
 	{
 		return MMathStatics.HasReached(BarrelEndSocket.position, Position, Range);
 	}
@@ -92,7 +96,7 @@ public abstract class Weapon : MonoBehaviour
 	/// <returns>The newly spawned <see cref="Projectile"/> object for <see cref="Projectile.Launch(Vector3)"/>.</returns>
 	protected Projectile InstantiateProjectile()
 	{
-		TimeLastFired = Time.time;
+		TimeLastFired = FireRate;
 
 		return Instantiate(ProjectileObject, BarrelEndSocket.position, transform.rotation);
 	}

@@ -173,11 +173,13 @@ public class PersistentDataManager : MonoBehaviour
         //test functionality, change to buttons later
         if (Input.GetKeyDown(KeyCode.P))
         {
+            directoryName = "SaveFile";
             Debug.Log("Saving current game state");
             SaveGame();
         }
         if (Input.GetKeyDown(KeyCode.O) && Time.timeScale > 0.5f)
         {
+            saveableData = LoadSaveFile("SaveFile");
             Debug.Log("Loading in game from a save");
             LoadGame();
             StartCoroutine(TempPaused(1f));

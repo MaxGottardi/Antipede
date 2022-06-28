@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIButtons : MonoBehaviour
+public class UIButtons : MonoBehaviour, IDataInterface
 {
     public GameObject tutWindow, winWindow, spiderWindow;
 
@@ -20,7 +20,7 @@ public class UIButtons : MonoBehaviour
         public GameObject Dev_Story_Skip;
 #endif
 
-        bool seenSpeed = false, seenAttack = false, seenShoot = false, seenSpider = false;
+    public bool seenSpeed = false, seenAttack = false, seenShoot = false, seenSpider = false;
 
     public int speedIncrease = 0, segmentIncrease = 0, segmentDegrease = 0;
     public Text speedInfo, segAddInfo, segDecreaseInfo;
@@ -110,6 +110,7 @@ public class UIButtons : MonoBehaviour
             moveUI.SetActive(false);
             pauseUI.SetActive(false);
             CamUI.SetActive(false);
+            Time.timeScale = 1;
         }
     }
 
@@ -183,5 +184,24 @@ public class UIButtons : MonoBehaviour
         attackTxt.text = SettingsVariables.keyDictionary["Fire"].ToString();
         camChangeTxt.text = SettingsVariables.keyDictionary["ChangeCam"].ToString();
         speedTxt.text = SettingsVariables.keyDictionary["HalveSpeed"].ToString();
+    }
+
+    public void LoadData(SaveableData saveableData)
+    {
+        seenAttack = saveableData.bSeenAttack;
+        seenShoot = saveableData.bSeenShot;
+        seenSpeed = saveableData.bSeenSpeed;
+        seenSpider = saveableData.bSeenSpider;
+
+        Continue();
+        Debug.Log("Loading up the UI Settings");
+    }
+
+    public void SaveData(SaveableData saveableData)
+    {
+        saveableData.bSeenAttack = seenAttack;
+        saveableData.bSeenShot = seenShoot;
+        saveableData.bSeenSpeed = seenSpeed;
+        saveableData.bSeenSpider = seenSpider;
     }
 }

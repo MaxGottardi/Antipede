@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class WeaponCardUI : MonoBehaviour
+public class WeaponCardUI : MonoBehaviour, IDataInterface
 {
 	public static WeaponCardUI Instance;
 
@@ -30,23 +30,20 @@ public class WeaponCardUI : MonoBehaviour
 				"\nInstance is: " + Instance.name + ".\tDuplicate is: " + name);
 			Destroy(gameObject);
 		}
-	}
 
-	void Start()
-	{
 		WeaponsInventory = new Dictionary<Weapon, AttachmentUIInfo>();
 		Alpha = TemplateCard.GetComponent<RawImage>().color.a;
 	}
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Slash) && Input.GetKey(KeyCode.RightShift))
-		{
-			foreach (Weapon W in WeaponCheats)
-			{
-				Add(W);
-			}
-		}
+		////////if (Input.GetKeyDown(KeyCode.Slash) && Input.GetKey(KeyCode.RightShift))
+		////////{
+		////////	foreach (Weapon W in WeaponCheats)
+		////////	{
+		////////		Add(W);
+		////////	}
+		////////}
 	}
 
 	/// <summary>Add Weapon to the Inventory.</summary>
@@ -197,7 +194,29 @@ public class WeaponCardUI : MonoBehaviour
 		AUII.Update("x" + AUII.Remaining);
 	}
 
-	struct AttachmentUIInfo
+    public void LoadData(SaveableData saveableData)
+    {
+		RemoveAll();
+
+        foreach (KeyValuePair<int, int> item in saveableData.weaponUICards.dictionary)
+        {
+			Weapon weapon = saveableData.IntToWeapon(item.Key);
+			for(int i = 0; i < item.Value; i++)
+            {
+				Add(weapon);
+            }
+        }
+    }
+
+    public void SaveData(SaveableData saveableData)
+    {
+        foreach (KeyValuePair<Weapon, AttachmentUIInfo> item in WeaponsInventory)
+        {
+			saveableData.weaponUICards.dictionary.Add(saveableData.WeaponToInt(item.Key), item.Value.Remaining);
+        }
+    }
+
+    struct AttachmentUIInfo
 	{
 		/// <summary>The number of this type of Weapon in the Inventory.</summary>
 		public int Remaining;

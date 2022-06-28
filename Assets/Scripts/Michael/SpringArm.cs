@@ -101,8 +101,8 @@ public class SpringArm : MonoBehaviour, IDataInterface
 
 		ScrollDistance();
 
-		if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.Backslash))
-			bUseCustomProjection = !bUseCustomProjection;
+		//if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.Backslash))
+			//bUseCustomProjection = !bUseCustomProjection;
 	}
 
 	void FixedUpdate()
@@ -383,6 +383,7 @@ public class SpringArm : MonoBehaviour, IDataInterface
 		transform.position = saveableData.camPos;
 		transform.rotation = saveableData.camRot;
 		Distance = saveableData.scrollDistance;
+		bInheritRotation = saveableData.bInheritRotation;
     }
 
     public void SaveData(SaveableData saveableData)
@@ -390,5 +391,6 @@ public class SpringArm : MonoBehaviour, IDataInterface
 		saveableData.camPos = transform.position;
 		saveableData.camRot = transform.rotation;
 		saveableData.scrollDistance = Distance;
+		saveableData.bInheritRotation = bInheritRotation;
     }
 }

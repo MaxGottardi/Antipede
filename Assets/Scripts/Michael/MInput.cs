@@ -16,7 +16,7 @@ public class MInput : MonoBehaviour
 	SFXManager sfxManager;
 
 	bool bIsPaused = false;
-	bool bHasHalvedSpeed = false, bHasAttackActivated = false, bForwardActivated = false;
+	public bool bHasHalvedSpeed = false, bHasAttackActivated = false, bForwardActivated = false;
 
 	private void Awake()
     {

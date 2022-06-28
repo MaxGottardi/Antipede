@@ -233,19 +233,20 @@ public class SaveableData
     [SerializeField] public Vector3 camPos;
     [SerializeField] public Quaternion camRot;
     [SerializeField] public float scrollDistance;
-
-    //////////go add in the ability to create and save from the main menu, which shouldn't be too hard
+    [SerializeField] public bool bInheritRotation;
 
     //stuff for the centipede input and remembering when something was pressed
+    [SerializeField] public bool bHasAttackActivated, bHalveSpeedActive, bForwardActive;
+    [SerializeField] public float preSlowShift; //the speed of the player before it was slowed with the shift key
     /// <summary>
     /// /////////unsure if required
     /// </summary>
 
-
     //the UI elements, specifically the weapon cards holding and the new UI counter thing
-
+    [SerializeField] public SerializableDictionary<int, int> weaponUICards; //saves the type of weapon and the number collected
 
     //everything else, such as which tutorial screens have been seen yet or not
+    [SerializeField] public bool bSeenSpeed, bSeenAttack, bSeenShot, bSeenSpider;
 
 
     //i guess all the bullets in the scene(detached segments?probs not required)
@@ -296,6 +297,8 @@ public class SaveableData
         launcherCards = new SerializableList<Vector3>();
         shieldCards = new SerializableList<Vector3>();
         laserCards = new SerializableList<Vector3>();
+
+        weaponUICards = new SerializableDictionary<int, int>();
     }
 
     /// <summary>
@@ -699,7 +702,5 @@ public class SaveableData
             GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/ShieldCard.prefab", typeof(GameObject));
             MonoBehaviour.Instantiate(obj, cardPos, Quaternion.identity);
         }
-
-
     }
 }
