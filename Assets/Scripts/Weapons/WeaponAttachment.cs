@@ -143,9 +143,6 @@ public class WeaponAttachment : MonoBehaviour, IPointerEnterHandler, IPointerExi
 		// ...
 
 		DraggingAttachment = Instantiate(Attachment, PointUnderMouse, Quaternion.identity);
-		////MeshRenderer MR = DraggingAttachment.GetComponent<MeshRenderer>();
-		////Color RGB = MR.material.color;
-		////MR.material.color = new Color(RGB.r, RGB.g, RGB.b, .5f);
 	}
 
 	public void OnDrag(PointerEventData EventData)

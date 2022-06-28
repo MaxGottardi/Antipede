@@ -675,6 +675,8 @@ public class CentipedeMovement : MonoBehaviour
 		}
 	}
 
+	/* Redundant - FPS is now longer tracked in Editor.
+	
 	float ft = 0, FPS_NOW;
 
 	void OnGUI()
@@ -691,6 +693,7 @@ public class CentipedeMovement : MonoBehaviour
 
 		//GUI.Label(new Rect(10, 40, 350, 150), "Acceleration Time: " + AccelerationTime);
 	}
+	*/
 
 	void OnValidate()
 	{
