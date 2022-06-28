@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LoadingScene : MonoBehaviour
 {
-    public string prevScene, nextScene;
+    public static string prevScene, nextScene;
     Tween tween;
     public float animDuration = 2;
     public GameObject loadTxtObj, tweenLeftObj, tweenRightObj, cam;
@@ -17,13 +17,11 @@ public class LoadingScene : MonoBehaviour
         ////tweenLeftObj.transform.localScale = new Vector3(0, 1, 1);
         ////tweenRightObj.transform.localScale = new Vector3(0, 1, 1);
 
-        BeginGame();
+        ChangeScene();
     }
 
-    public void BeginGame()
+    public void ChangeScene()
     {
-        prevScene = "MainMenu";
-        nextScene = "IntroCutScene";
         reverse = false;
         tween = new Tween(new Vector3(0, 1, 1), new Vector3(1, 1, 1), Quaternion.identity, Quaternion.identity, Time.time, animDuration);
         loadTxtObj.SetActive(true);

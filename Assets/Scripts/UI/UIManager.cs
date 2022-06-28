@@ -194,6 +194,15 @@ public class UIManager : MonoBehaviour
         otherPanel.SetActive(false);
         soundPanel.SetActive(false);
         controlsPanel.SetActive(true);
+        graphicsPanel.SetActive(false);
+        AssignValues();
+    }
+    public void GameGraphics()
+    {
+        otherPanel.SetActive(false);
+        soundPanel.SetActive(false);
+        controlsPanel.SetActive(false);
+        graphicsPanel.SetActive(true);
         AssignValues();
     }
     public void GameAudio()
@@ -201,6 +210,7 @@ public class UIManager : MonoBehaviour
         otherPanel.SetActive(false);
         soundPanel.SetActive(true);
         controlsPanel.SetActive(false);
+        graphicsPanel.SetActive(false);
         AssignValues();
     }
     public void GameOther()
@@ -208,12 +218,13 @@ public class UIManager : MonoBehaviour
         otherPanel.SetActive(true);
         soundPanel.SetActive(false);
         controlsPanel.SetActive(false);
+        graphicsPanel.SetActive(false);
         AssignValues();
     }
     public void GameBack(GameObject obj)
     {
-        obj.SetActive(false);
-        PauseElementsHolder.SetActive(true);
+        gameObject.SetActive(false);
+        obj.SetActive(true);
     }
 
     public void ChangeKey(string key)

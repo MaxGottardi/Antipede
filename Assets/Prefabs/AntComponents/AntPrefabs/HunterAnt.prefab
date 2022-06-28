@@ -163,7 +163,7 @@ MonoBehaviour:
   rightAntenna: {fileID: 4122662952654073600}
   minFleeChance: 0.1
   audioSource: {fileID: 0}
-  weaponPos: {x: 0.55, y: 0.7, z: 0}
+  weaponPos: {x: 0.375, y: 0.7, z: 0}
   weaponParent: {fileID: 3852577907258305728}
   weapons:
   - {fileID: 692776519300176809, guid: c8bac3e7493054f44b5db96606925168, type: 3}

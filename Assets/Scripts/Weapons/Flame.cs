@@ -15,7 +15,7 @@ public class Flame : Weapon
 
 		sfxManager.ShootFlame();
 		Projectile StraightProjectile = InstantiateProjectile();
-		StraightProjectile.Initialise(isAntGun, true);
+		StraightProjectile.Initialise(isAntGun, true, transform.parent.parent.parent.parent.parent.gameObject.GetComponent<Collider>());
 		
 		// Ignore the Direction param. For a Gun, we don't need it.
 		if (isAntGun)

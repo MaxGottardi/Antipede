@@ -152,12 +152,15 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 		if (nests.Length > 0)
         {
 			foreach (Tarantula t in nests)
-            {
-				float f = Vector3.Distance(t.transform.position, Head.transform.position);
-				if (f < smallestDistance)
-                {
-					smallestDistance = f;
-                }
+			{
+				if (t != null)
+				{
+					float f = Vector3.Distance(t.transform.position, Head.transform.position);
+					if (f < smallestDistance)
+					{
+						smallestDistance = f;
+					}
+				}
             }
         }
 
@@ -567,7 +570,7 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 		slowTimer = saveableData.centipedeSlowedTimer;
 	}
 
-	void IDataInterface.SaveData(ref SaveableData saveableData)
+	void IDataInterface.SaveData(SaveableData saveableData)
     {
 		//head values
 		saveableData.centipedeHeadPosition = transform.position;

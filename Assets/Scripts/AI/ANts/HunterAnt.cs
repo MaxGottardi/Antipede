@@ -82,14 +82,14 @@ public class HunterAnt : GenericAnt
         }
         weapon.transform.localPosition = weaponPos;
         weapon.transform.localScale *= 2;
-        weapon.transform.up = new Vector3(-90, 0, 0);
+        weapon.transform.localRotation = new Quaternion(-0.474147886f, -0.524579644f, -0.474147886f, 0.524579704f);
 
         weaponClass = weapon.transform.GetComponent<Weapon>();
         weaponClass.isAntGun = true;
-        weaponClass.LookAt(transform.forward);
+        ////weaponClass.LookAt(transform.forward);
     }
 
-    public override void SaveData(ref SaveableData saveableData)
+    public override void SaveData(SaveableData saveableData)
     {
         if (stateMachine.currState != stateMachine.Dead)
         {

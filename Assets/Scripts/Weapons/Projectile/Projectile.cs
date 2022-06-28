@@ -31,18 +31,32 @@ public class Projectile : MonoBehaviour
 	[SerializeField] MCentipedeBody body;
 
 	/// <remarks>Use as Awake/Start method.</remarks>
-	public virtual void Initialise(bool isEnemyProjectile)
+	public virtual void Initialise(bool isEnemyProjectile, Collider firedObjCollider)
 	{
 		body = Object.FindObjectOfType<MCentipedeBody>();
 		enemyCollisionCounter = 0;
 		this.isEnemyProjectile = isEnemyProjectile;
+		if(isEnemyProjectile && TryGetComponent(out Collider collider)) //ignore collison with the object that fires the bullet
+        {
+			Physics.IgnoreCollision(collider, firedObjCollider);
+        }
+		////////////////////////if(isEnemyProjectile)
+  ////////////////////////      {
+		////////////////////////	int safeEnemyLayer = LayerMask.NameToLayer("EnemySafeProjectile");
+		////////////////////////	gameObject.layer = safeEnemyLayer;
+  ////////////////////////      }
+		////////////////////////else
+  ////////////////////////      {
+		////////////////////////	int safePlayerLayer = LayerMask.NameToLayer("PlayerSafeProjectile");
+		////////////////////////	gameObject.layer = safePlayerLayer;
+		////////////////////////}
 		rb = GetComponent<Rigidbody>();
 		Destroy(gameObject, 10f);
 	}
 
-	public virtual void Initialise(bool isEnemyProjectile, bool isFlame)
+	public virtual void Initialise(bool isEnemyProjectile, bool isFlame, Collider firedObjCollider)
 	{
-		Initialise(isEnemyProjectile);
+		Initialise(isEnemyProjectile, firedObjCollider);
 
 		this.isFlame = isFlame;
 	}
@@ -96,16 +110,26 @@ public class Projectile : MonoBehaviour
 		}
 		else if (collision.gameObject.CompareTag("Play") && !hasSeenChanged)
 		{
-			hasSeenChanged = true;
-			SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
+			Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToSave();
+
+			//hasSeenChanged = true;
+			//SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
 			//SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
 		}
+		else if (collision.gameObject.CompareTag("NewGame") && !hasSeenChanged)
+		{
+            hasSeenChanged = true;
+			LoadingScene.nextScene = "IntroCutScene";
+			LoadingScene.prevScene = "MainMenu";
+			PersistentDataManager.bIsNewGame = true;
+			SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
+        }
 		else if (collision.gameObject.CompareTag("Back") && !hasSeenChanged)
 		{
 			hasSeenChanged = true;
 			Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToMainMenu();
-			if(UIManager.enableKeyChange)
-            {
+			if (UIManager.enableKeyChange)
+			{
 				UIManager.RebindKeyPanel.SetActive(false);
 				UIManager.enableKeyChange = false;
 			}

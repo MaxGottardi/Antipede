@@ -21,7 +21,7 @@ public class DasherAnt : GenericAnt
         stateMachine.Investigate = new DasherInvestigate(this);
     }
 
-    public override void SaveData(ref SaveableData saveableData)
+    public override void SaveData(SaveableData saveableData)
     {
         if (stateMachine.currState != stateMachine.Dead)
         {

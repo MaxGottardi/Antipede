@@ -19,7 +19,8 @@ public class LaunchedProjectile : Projectile
 		base.OnCollisionEnter(collision);
 
 		// Do not show Shockwave when hitting another Projectile || The scene is not the actual Game.
-		if (!collision.gameObject.CompareTag("Projectile") && SceneManager.GetActiveScene().name == "Environment Test")
+		if (!collision.gameObject.CompareTag("Projectile") && SceneManager.GetActiveScene().name == "Environment Test"
+			&& (!isEnemyProjectile && collision.gameObject.CompareTag("Enemy") || isEnemyProjectile && !collision.gameObject.CompareTag("Enemy")))
 		{
 			ParticleSystem ShockwaveParticles = Instantiate(Shockwave, transform.position, Quaternion.identity);
 

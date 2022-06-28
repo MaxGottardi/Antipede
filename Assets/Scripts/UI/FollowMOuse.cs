@@ -24,6 +24,14 @@ public class FollowMOuse : MonoBehaviour
 		{
 			if (gameObject.CompareTag("Play"))
 			{
+				Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToSave();
+				//SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
+			}
+			else if (gameObject.CompareTag("NewGame"))
+			{
+				LoadingScene.nextScene = "IntroCutScene";
+				LoadingScene.prevScene = "MainMenu";
+				PersistentDataManager.bIsNewGame = true;
 				SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
 			}
 			else if (gameObject.CompareTag("Credits"))
@@ -50,6 +58,7 @@ public class FollowMOuse : MonoBehaviour
 				UIManager.soundPanel.SetActive(true);
 				UIManager.otherPanel.SetActive(false);
 				UIManager.controlsPanel.SetActive(false);
+				UIManager.graphicsPanel.SetActive(false);
 
 				UIManager.RebindKeyPanel.SetActive(false);
 				UIManager.enableKeyChange = false;
@@ -60,6 +69,8 @@ public class FollowMOuse : MonoBehaviour
 				UIManager.otherPanel.SetActive(true);
 				UIManager.controlsPanel.SetActive(false);
 				UIManager.RebindKeyPanel.SetActive(false);
+				UIManager.graphicsPanel.SetActive(false);
+
 				UIManager.enableKeyChange = false;
 			}
 			else if (gameObject.CompareTag("Controls"))
@@ -67,6 +78,17 @@ public class FollowMOuse : MonoBehaviour
 				UIManager.soundPanel.SetActive(false);
 				UIManager.otherPanel.SetActive(false);
 				UIManager.controlsPanel.SetActive(true);
+				UIManager.graphicsPanel.SetActive(false);
+
+				UIManager.RebindKeyPanel.SetActive(false);
+				UIManager.enableKeyChange = false;
+			}
+			else if (gameObject.CompareTag("Graphics"))
+			{
+				UIManager.soundPanel.SetActive(false);
+				UIManager.otherPanel.SetActive(false);
+				UIManager.controlsPanel.SetActive(false);
+				UIManager.graphicsPanel.SetActive(true);
 
 				UIManager.RebindKeyPanel.SetActive(false);
 				UIManager.enableKeyChange = false;

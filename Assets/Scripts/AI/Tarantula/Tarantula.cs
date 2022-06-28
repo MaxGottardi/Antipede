@@ -331,7 +331,7 @@ public class Tarantula: MonoBehaviour, IDataInterface
         animator[currClipName].normalizedTime = spiderData.spiderCurAnimTime;
     }
 
-    public void SaveData(ref SaveableData saveableData)
+    public void SaveData(SaveableData saveableData)
     {
         SpiderData spiderData = new SpiderData();
         spiderData.spiderHealth = health;

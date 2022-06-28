@@ -50,7 +50,7 @@ public class GuardAnt : GenericAnt
         }
     }
 
-    public override void SaveData(ref SaveableData saveableData)
+    public override void SaveData(SaveableData saveableData)
     {
         ////also save if holding a part or not
         if (stateMachine.currState != stateMachine.Dead)

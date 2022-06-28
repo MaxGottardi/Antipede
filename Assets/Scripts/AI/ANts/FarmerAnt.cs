@@ -63,7 +63,7 @@ public class FarmerAnt : GenericAnt
         base.ReduceHealth(amount);
     }
 
-    public override void SaveData(ref SaveableData saveableData)
+    public override void SaveData(SaveableData saveableData)
     {
         if (stateMachine.currState != stateMachine.Dead)
         {
