@@ -204,19 +204,21 @@ public class PersistentDataManager : MonoBehaviour
     public Dictionary<string, SaveableData> LoadAllSaves()
     {
         Dictionary<string, SaveableData> foundSaves = new Dictionary<string, SaveableData>();
-
-        IEnumerable<DirectoryInfo> dirInfos = new DirectoryInfo(dataDirectory).EnumerateDirectories(); //loops over all directories in the specified location
-        foreach (DirectoryInfo item in dirInfos)
+        if (Directory.Exists(dataDirectory))
         {
-            string saveName = item.Name;
-
-            string fullPath = Path.Combine(dataDirectory, saveName, dataFileName);
-            if(File.Exists(fullPath)) //checks if the save file exists in the directory, if it doesn't ignore it
+            IEnumerable<DirectoryInfo> dirInfos = new DirectoryInfo(dataDirectory).EnumerateDirectories(); //loops over all directories in the specified location
+            foreach (DirectoryInfo item in dirInfos)
             {
-                SaveableData saveableData = LoadSaveFile(saveName);
-                if(saveableData != null)
+                string saveName = item.Name;
+
+                string fullPath = Path.Combine(dataDirectory, saveName, dataFileName);
+                if (File.Exists(fullPath)) //checks if the save file exists in the directory, if it doesn't ignore it
                 {
-                    foundSaves.Add(saveName, saveableData);
+                    SaveableData saveableData = LoadSaveFile(saveName);
+                    if (saveableData != null)
+                    {
+                        foundSaves.Add(saveName, saveableData);
+                    }
                 }
             }
         }

@@ -60,8 +60,7 @@ public abstract class Weapon : MonoBehaviour
 	protected bool CanFire(Vector3 Position)
 	{
 		// Has this Weapon cooled down?
-		bool bCanFire = bIsRegistered && TimeLastFired < 0;
-		Debug.Log(TimeLastFired);
+		bool bCanFire = bIsRegistered && TimeLastFired <= 0;
 		// Is this Weapon In-Range?
 		bCanFire &= InRange(ref Position);
 
@@ -69,7 +68,7 @@ public abstract class Weapon : MonoBehaviour
 	}
     private void Update()
     {
-        if(TimeLastFired > 0)
+        if(TimeLastFired >= 0)
 			TimeLastFired -= Time.deltaTime;
 	}
     protected bool InRange(ref Vector3 Position)

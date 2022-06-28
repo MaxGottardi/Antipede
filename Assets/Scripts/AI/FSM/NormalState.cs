@@ -346,7 +346,6 @@ public class DeadState : State
         deadTime = 3;
         if (!owner.anim.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.AntDead"))
             owner.anim.SetTrigger("Dead");
-        Debug.Log("Guard is now dead");
     }
 
     public virtual void execute()
