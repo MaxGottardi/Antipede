@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -16982,7 +16982,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1271563217535339371, guid: 7a5c63d39cdea75439799aaaaff2979e, type: 3}
       propertyPath: m_RootOrder
-      value: 559
+      value: 564
       objectReference: {fileID: 0}
     - target: {fileID: 1271563217535339371, guid: 7a5c63d39cdea75439799aaaaff2979e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -55870,11 +55870,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1094888793}
   m_LocalRotation: {x: 0.1305262, y: 0, z: 0, w: 0.9914449}
-  m_LocalPosition: {x: 131, y: 6.00138, z: 108.316574}
+  m_LocalPosition: {x: 131, y: 5.37138, z: 108.316574}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 36, y: 0, z: 0}
 --- !u!1001 &1095848162
 PrefabInstance:
@@ -95071,6 +95071,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8022780834397384911, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -5.699951
+      objectReference: {fileID: 0}
     - target: {fileID: 8036119112838258694, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -95137,7 +95141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8036119113242394523, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8036119113242394523, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: m_SizeDelta.x
@@ -95552,8 +95556,12 @@ PrefabInstance:
       value: 2.5211
       objectReference: {fileID: 0}
     - target: {fileID: 8036119114839959485, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8036119114839959485, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 54.500015
+      value: 54.5
       objectReference: {fileID: 0}
     - target: {fileID: 8036119114891463370, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: m_AnchorMax.x
@@ -107338,7 +107346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TemplateCard: {fileID: 8785330127099431165, guid: 5e642c782cb4e394bb92f7ef663d3d01, type: 3}
-  PaddingBetweenCards: -50
+  PaddingBetweenCards: 10
   AttachUI: {fileID: 575765532}
   WeaponCheats:
   - {fileID: 2239036073940972491, guid: 61d0affc515ed8648896a539880facb3, type: 3}
