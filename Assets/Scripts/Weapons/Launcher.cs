@@ -21,7 +21,10 @@ public class Launcher : Weapon
 			if (!MMathStatics.DiagnosticCheckNaN(LaunchVelocity))
 			{
 				Projectile LaunchedProjectile = InstantiateProjectile();
-				LaunchedProjectile.Initialise(isAntGun);
+				if (transform.parent.parent != null && isAntGun)
+					LaunchedProjectile.Initialise(isAntGun, transform.parent.parent.parent.parent.parent.gameObject.GetComponent<Collider>());
+				else//must be on the main menu so cancel
+					LaunchedProjectile.Initialise(isAntGun, null);
 				LaunchedProjectile.Launch(Velocity);
 				sfxManager.ShootLauncher(LaunchedProjectile.gameObject);
 

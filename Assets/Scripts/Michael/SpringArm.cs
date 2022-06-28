@@ -385,7 +385,7 @@ public class SpringArm : MonoBehaviour, IDataInterface
 		Distance = saveableData.scrollDistance;
     }
 
-    public void SaveData(ref SaveableData saveableData)
+    public void SaveData(SaveableData saveableData)
     {
 		saveableData.camPos = transform.position;
 		saveableData.camRot = transform.rotation;

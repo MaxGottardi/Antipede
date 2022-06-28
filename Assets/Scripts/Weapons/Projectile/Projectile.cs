@@ -28,6 +28,8 @@ public class Projectile : MonoBehaviour
 	public bool isFlame = false;
 	public int enemyCollisionCounter;
 
+	bool bIgnoreAllCollions = false; //if hit something, say the terrain or something then ignore all collisions and do not give damage
+
 	[SerializeField] MCentipedeBody body;
 
 	/// <remarks>Use as Awake/Start method.</remarks>
@@ -71,130 +73,133 @@ public class Projectile : MonoBehaviour
 	protected virtual void OnCollisionEnter(Collision collision)
 	{
 		//Destroy(this);
-		if (isFlame && !isEnemyProjectile && collision.gameObject.CompareTag("Enemy") && collision.transform.parent.gameObject.GetComponent<GuardAnt>() == null)
-        {
-			body.IncreaseMultiplier();
-			enemyCollisionCounter++;
-			if (enemyCollisionCounter == 3)
-            {
-				//collide and destroy
+		if (!bIgnoreAllCollions)
+		{
+			if (isFlame && !isEnemyProjectile && collision.gameObject.CompareTag("Enemy") && collision.transform.parent.gameObject.GetComponent<GuardAnt>() == null)
+			{
+				body.IncreaseMultiplier();
+				enemyCollisionCounter++;
+				if (enemyCollisionCounter == 3)
+				{
+					//collide and destroy
+					collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(DamageAmount);
+					Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
+					Destroy(gameObject);
+				}
+				else
+				{
+					//collide and return
+					collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(DamageAmount);
+					Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
+					return;
+				}
+			}
+			if (!isEnemyProjectile && collision.gameObject.CompareTag("Enemy") && collision.transform.parent.gameObject.GetComponent<GuardAnt>() == null)
+			{
+				body.IncreaseMultiplier();
 				collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(DamageAmount);
 				Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 				Destroy(gameObject);
 			}
-			else
-            {
-				//collide and return
-				collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(DamageAmount);
-				Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
-				return;
-			}
-        }
-		if (!isEnemyProjectile && collision.gameObject.CompareTag("Enemy") && collision.transform.parent.gameObject.GetComponent<GuardAnt>() == null)
-		{
-			body.IncreaseMultiplier();
-			collision.transform.parent.gameObject.GetComponent<GenericAnt>().ReduceHealth(DamageAmount);
-			Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
-			Destroy(gameObject);
-		}
-		if (!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula")
-			&& collision.gameObject.TryGetComponent(out Tarantula T) && T.healthSlider.value >= .5f)
-		{
-			body.IncreaseMultiplier();
-			T.DecreaseHealth(tarantDamage);
-			Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
-		}
-		else if (collision.gameObject.CompareTag("Quit"))
-		{
-			Application.Quit();
-		}
-		else if (collision.gameObject.CompareTag("Play") && !hasSeenChanged)
-		{
-			Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToSave();
-
-			//hasSeenChanged = true;
-			//SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
-			//SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
-		}
-		else if (collision.gameObject.CompareTag("NewGame") && !hasSeenChanged)
-		{
-            hasSeenChanged = true;
-			LoadingScene.nextScene = "IntroCutScene";
-			LoadingScene.prevScene = "MainMenu";
-			PersistentDataManager.bIsNewGame = true;
-			SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
-        }
-		else if (collision.gameObject.CompareTag("Back") && !hasSeenChanged)
-		{
-			hasSeenChanged = true;
-			Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToMainMenu();
-			if (UIManager.enableKeyChange)
+			if (!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula")
+				&& collision.gameObject.TryGetComponent(out Tarantula T) && T.healthSlider.value >= .5f)
 			{
+				body.IncreaseMultiplier();
+				T.DecreaseHealth(tarantDamage);
+				Instantiate(bloodParticles, transform.position + Vector3.up * 0.5f, Quaternion.identity);
+			}
+			else if (collision.gameObject.CompareTag("Quit"))
+			{
+				Application.Quit();
+			}
+			else if (collision.gameObject.CompareTag("Play") && !hasSeenChanged)
+			{
+				Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToSave();
+
+				//hasSeenChanged = true;
+				//SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
+				//SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
+			}
+			else if (collision.gameObject.CompareTag("NewGame") && !hasSeenChanged)
+			{
+				hasSeenChanged = true;
+				LoadingScene.nextScene = "IntroCutScene";
+				LoadingScene.prevScene = "MainMenu";
+				PersistentDataManager.bIsNewGame = true;
+				SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
+			}
+			else if (collision.gameObject.CompareTag("Back") && !hasSeenChanged)
+			{
+				hasSeenChanged = true;
+				Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToMainMenu();
+				if (UIManager.enableKeyChange)
+				{
+					UIManager.RebindKeyPanel.SetActive(false);
+					UIManager.enableKeyChange = false;
+				}
+				//SceneManager.LoadScene("MainMenu");
+			}
+			else if (collision.gameObject.CompareTag("Credits") && !hasSeenChanged)
+			{
+				hasSeenChanged = true;
+				Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToCredits();
+				//SceneManager.LoadScene("Credits");
+			}
+			else if (collision.gameObject.CompareTag("Sound"))
+			{
+				UIManager.soundPanel.SetActive(true);
+				UIManager.otherPanel.SetActive(false);
+				UIManager.controlsPanel.SetActive(false);
+				UIManager.graphicsPanel.SetActive(false);
+
 				UIManager.RebindKeyPanel.SetActive(false);
 				UIManager.enableKeyChange = false;
 			}
-			//SceneManager.LoadScene("MainMenu");
-		}
-		else if (collision.gameObject.CompareTag("Credits") && !hasSeenChanged)
-		{
-			hasSeenChanged = true;
-			Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToCredits();
-			//SceneManager.LoadScene("Credits");
-		}
-		else if (collision.gameObject.CompareTag("Sound"))
-		{
-			UIManager.soundPanel.SetActive(true);
-			UIManager.otherPanel.SetActive(false);
-			UIManager.controlsPanel.SetActive(false);
-			UIManager.graphicsPanel.SetActive(false);
+			else if (collision.gameObject.CompareTag("Graphics"))
+			{
+				UIManager.soundPanel.SetActive(false);
+				UIManager.otherPanel.SetActive(false);
+				UIManager.controlsPanel.SetActive(false);
+				UIManager.graphicsPanel.SetActive(true);
 
-			UIManager.RebindKeyPanel.SetActive(false);
-			UIManager.enableKeyChange = false;
-		}
-		else if (collision.gameObject.CompareTag("Graphics"))
-		{
-			UIManager.soundPanel.SetActive(false);
-			UIManager.otherPanel.SetActive(false);
-			UIManager.controlsPanel.SetActive(false);
-			UIManager.graphicsPanel.SetActive(true);
+				UIManager.RebindKeyPanel.SetActive(false);
+				UIManager.enableKeyChange = false;
+			}
+			else if (collision.gameObject.CompareTag("Other"))
+			{
+				UIManager.soundPanel.SetActive(false);
+				UIManager.otherPanel.SetActive(true);
+				UIManager.controlsPanel.SetActive(false);
+				UIManager.RebindKeyPanel.SetActive(false);
+				UIManager.graphicsPanel.SetActive(false);
 
-			UIManager.RebindKeyPanel.SetActive(false);
-			UIManager.enableKeyChange = false;
-		}
-		else if (collision.gameObject.CompareTag("Other"))
-		{
-			UIManager.soundPanel.SetActive(false);
-			UIManager.otherPanel.SetActive(true);
-			UIManager.controlsPanel.SetActive(false);
-			UIManager.RebindKeyPanel.SetActive(false);
-			UIManager.graphicsPanel.SetActive(false);
+				UIManager.enableKeyChange = false;
+			}
+			else if (collision.gameObject.CompareTag("Controls"))
+			{
+				UIManager.soundPanel.SetActive(false);
+				UIManager.otherPanel.SetActive(false);
+				UIManager.controlsPanel.SetActive(true);
+				UIManager.graphicsPanel.SetActive(false);
 
-			UIManager.enableKeyChange = false;
-		}
-		else if (collision.gameObject.CompareTag("Controls"))
-		{
-			UIManager.soundPanel.SetActive(false);
-			UIManager.otherPanel.SetActive(false);
-			UIManager.controlsPanel.SetActive(true);
-			UIManager.graphicsPanel.SetActive(false);
+				UIManager.RebindKeyPanel.SetActive(false);
+				UIManager.enableKeyChange = false;
+			}
+			else if (collision.gameObject.CompareTag("Settings") && !hasSeenChanged)
+			{
+				hasSeenChanged = true;
+				Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToSettings();
+				//SceneManager.LoadScene("SettingsScene");
+			}
+			else if (collision.gameObject.layer != LayerMask.NameToLayer("Projectile") && (SceneManager.GetActiveScene().name == "MainMenu" || SceneManager.GetActiveScene().name == "SettingsScene"))
+				Destroy(this);
+			if (!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula"))
+			{
+				Destroy(gameObject);
+			}
 
-			UIManager.RebindKeyPanel.SetActive(false);
-			UIManager.enableKeyChange = false;
+			bIgnoreAllCollions = true;
 		}
-		else if (collision.gameObject.CompareTag("Settings") && !hasSeenChanged)
-		{
-			hasSeenChanged = true;
-			Camera.main.gameObject.GetComponent<CameraAnimate>().MoveToSettings();
-			//SceneManager.LoadScene("SettingsScene");
-		}
-		else if (collision.gameObject.layer != LayerMask.NameToLayer("Projectile") && (SceneManager.GetActiveScene().name == "MainMenu" || SceneManager.GetActiveScene().name == "SettingsScene"))
-			Destroy(this);
-		if (!isEnemyProjectile && collision.gameObject.CompareTag("Tarantula"))
-		{
-			Destroy(gameObject);
-		}
-
-
 	}
 
     private void OnTriggerEnter(Collider other)

@@ -51,8 +51,8 @@ TagManager:
   - Boundary
   - Post Processing
   - Minimap
-  - 
-  - 
+  - EnemySafeProjectile
+  - PlayerSafeProjectile
   - 
   - 
   - 
