@@ -233,7 +233,7 @@ public class SpringArm : MonoBehaviour, IDataInterface
 	{
 		if (bEnableScrollToDistance)
 		{
-			Distance += Input.mouseScrollDelta.y * (bInvertZ ? -1f : 1f) * -SettingsVariables.sliderDictionary["zoomSpeed"] / 100;
+			Distance += Input.mouseScrollDelta.y * (SettingsVariables.boolDictionary["bInvertZoom"] ? -1f : 1f) * -SettingsVariables.sliderDictionary["zoomSpeed"] / 100;
 
 			Distance = Mathf.Clamp(Distance, 1, 30);
 		}
@@ -289,9 +289,9 @@ public class SpringArm : MonoBehaviour, IDataInterface
 
 	void DetermineInverse(ref float DeltaX, ref float DeltaY)
 	{
-		if (bInvertX)
+		if (SettingsVariables.boolDictionary["bInvertOrbit"])
 			Inverse(ref DeltaX);
-		else if (bInvertY)
+		else if (SettingsVariables.boolDictionary["bInvertOrbit"])
 			Inverse(ref DeltaY);
 
 		static void Inverse(ref float F) => F *= -1f;

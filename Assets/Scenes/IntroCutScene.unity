@@ -235,6 +235,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1403000032361879941, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1403000032361879941, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1403000032361879941, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1403000032361879941, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1994991460684027233, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -513,7 +529,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6325059631389322917, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000019008055
+      value: 0.000057786725
       objectReference: {fileID: 0}
     - target: {fileID: 6333603488464712833, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1049,7 +1065,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8036119113928121481, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000048209626
+      value: -0.000091552734
       objectReference: {fileID: 0}
     - target: {fileID: 8036119114001989440, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -6826,11 +6842,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -79.172
       objectReference: {fileID: 0}
+    - target: {fileID: 4070592134389656538, guid: 3eac7928ca1b1f84383a1356da0b91bd, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4070592134389656540, guid: 3eac7928ca1b1f84383a1356da0b91bd, type: 3}
       propertyPath: m_Name
       value: Nest (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4070592134389656540, guid: 3eac7928ca1b1f84383a1356da0b91bd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4070592135064387451, guid: 3eac7928ca1b1f84383a1356da0b91bd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9181522069407397704, guid: 3eac7928ca1b1f84383a1356da0b91bd, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}

@@ -31,6 +31,8 @@ public class UIManager : MonoBehaviour
     public Toggle glowToggle;
     public Toggle vSyncToggle;
     public Toggle camFollowToggle;
+    public Toggle zoomInvertToggle;
+    public Toggle orbitToggleInvert;
 
     PostProcessVolume postProcessVolume;
 
@@ -123,6 +125,15 @@ public class UIManager : MonoBehaviour
         if (forwardMoveToggle.isOn)
             forwardMoveToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Toggle";
 
+
+        //cam toggles
+        orbitToggleInvert.isOn = SettingsVariables.boolDictionary["bInvertOrbit"];
+        if (orbitToggleInvert.isOn)
+            orbitToggleInvert.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Enabled"; 
+        zoomInvertToggle.isOn = SettingsVariables.boolDictionary["bInvertZoom"];
+        if (zoomInvertToggle.isOn)
+            zoomInvertToggle.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Enabled";
+
         //graphics toggles
         solidBackToggle.isOn = SettingsVariables.boolDictionary["bSolidTxtBackgrounds"];
         if (solidBackToggle.isOn)
@@ -195,6 +206,10 @@ public class UIManager : MonoBehaviour
         soundPanel.SetActive(false);
         controlsPanel.SetActive(true);
         graphicsPanel.SetActive(false);
+
+        enableKeyChange = false;
+        colourPicker.SetActive(false);
+        RebindKeyPanel.SetActive(false);
         AssignValues();
     }
     public void GameGraphics()
@@ -203,6 +218,9 @@ public class UIManager : MonoBehaviour
         soundPanel.SetActive(false);
         controlsPanel.SetActive(false);
         graphicsPanel.SetActive(true);
+        enableKeyChange = false;
+        colourPicker.SetActive(false);
+        RebindKeyPanel.SetActive(false);
         AssignValues();
     }
     public void GameAudio()
@@ -211,6 +229,9 @@ public class UIManager : MonoBehaviour
         soundPanel.SetActive(true);
         controlsPanel.SetActive(false);
         graphicsPanel.SetActive(false);
+        enableKeyChange = false;
+        colourPicker.SetActive(false);
+        RebindKeyPanel.SetActive(false);
         AssignValues();
     }
     public void GameOther()
@@ -219,11 +240,17 @@ public class UIManager : MonoBehaviour
         soundPanel.SetActive(false);
         controlsPanel.SetActive(false);
         graphicsPanel.SetActive(false);
+        enableKeyChange = false;
+        colourPicker.SetActive(false);
+        RebindKeyPanel.SetActive(false);
         AssignValues();
     }
     public void GameBack(GameObject obj)
     {
         gameObject.SetActive(false);
+        enableKeyChange = false;
+        colourPicker.SetActive(false);
+        RebindKeyPanel.SetActive(false);
         obj.SetActive(true);
     }
 

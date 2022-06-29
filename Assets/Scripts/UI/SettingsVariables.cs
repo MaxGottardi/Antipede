@@ -21,7 +21,11 @@ public static class SettingsVariables
             {"bMotionBlur",  LoadBools("bMotionBlur", true) },
             {"bItemGlow",  LoadBools("bItemGlow", true) },
             {"bVSync",  LoadBools("bVSync", true) },
-            {"bCamFollow",  LoadBools("bCamFollow", true) }
+            {"bCamFollow",  LoadBools("bCamFollow", true) },
+
+
+            {"bInvertZoom",  LoadBools("bInvertZoom", false) },
+            {"bInvertOrbit",  LoadBools("bInvertOrbit", false) }
         };
     public static Dictionary<string, int> intDictionary = new Dictionary<string, int>()
     {

@@ -9,6 +9,10 @@ using TMPro;
 //only ever have one of these in the scene at one time. only this is required to be added for the entire saving to function correctly
 public class PersistentDataManager : MonoBehaviour
 {
+    public GameObject webPrefab, guncardPrefab, laserCardPrefab, launchercardPrefab, flameCardPrefab, shieldcardPrefab,
+    guardPrefab, farmerantPrefab, hunterantPrefab, bombantPrefab, dasherantprefab, shieldprefab, gunprefab, flamerprefab, launcherprefab, laserprefab,
+    larvaePrefab, redapplePrefab, greenapplePrefab;
+
     public static SaveableData saveableData; //the data which is getting saved
     public static string directoryName; //the name to call the folder saving to
     public static bool bIsNewGame = true;
@@ -67,6 +71,7 @@ public class PersistentDataManager : MonoBehaviour
     public void NewGame()
     {
         saveableData = new SaveableData();
+        saveableData.persistentDataManager = this;
         Time.timeScale = 0;
         saveableData.centipedeSegmentPosition = new SerializableList<Vector3>();
         saveableData.centipedeSegmentRotation = new SerializableList<Quaternion>();
@@ -128,27 +133,33 @@ public class PersistentDataManager : MonoBehaviour
     public void LoadGame()
     {
         //load in the games data
+        saveableData.persistentDataManager = this;
 
         foreach (IDataInterface dataObj in ObjsDataSaveable())
         {
             dataObj.LoadData(saveableData);
         }
         SerializableList<Quaternion> emptyList = new SerializableList<Quaternion>(); //used for items with no saved rotation
-        saveableData.LoadApple(GameObject.FindGameObjectsWithTag("Health"), ref saveableData.healthApplePos, "Assets/Prefabs/RedApple.prefab", ref emptyList);
-        saveableData.LoadApple(GameObject.FindGameObjectsWithTag("Speed"), ref saveableData.speedApplePos, "Assets/Prefabs/GreenApple.prefab", ref emptyList);
-        saveableData.LoadApple(GameObject.FindGameObjectsWithTag("Larvae"), ref saveableData.larvaePos, "Assets/Prefabs/Larvae.prefab", ref saveableData.larvaeRot);
+        saveableData.LoadApple(GameObject.FindGameObjectsWithTag("Health"), ref saveableData.healthApplePos, redapplePrefab, ref emptyList);
+        saveableData.LoadApple(GameObject.FindGameObjectsWithTag("Speed"), ref saveableData.speedApplePos, greenapplePrefab, ref emptyList);
+        saveableData.LoadApple(GameObject.FindGameObjectsWithTag("Larvae"), ref saveableData.larvaePos, larvaePrefab, ref saveableData.larvaeRot);
 
         Tarantula.numTarantulasLeft = saveableData.numSpidersLeft;
         saveableData.LoadCobwebs();
         saveableData.LoadAllAnts();
-        FarmerAnt.larvaeBag.shuffleList = saveableData.useLarvaeBag;
+        if (FarmerAnt.larvaeBag != null && FarmerAnt.larvaeBag.shuffleList.Length > 0)
+            FarmerAnt.larvaeBag.shuffleList = saveableData.useLarvaeBag;
+
         FarmerAnt.larvaeBag.currPos = saveableData.farmerAntCurrBagPos;
 
         //assign the appropriate values to the shuffle list
-        HunterAnt.weaponsBag.currPos = saveableData.hunterAntCurrBagPos;
-        for (int i = 0; i < saveableData.hunterAntWeaponBag.Length; i++)
+        if (HunterAnt.weaponsBag != null && HunterAnt.weaponsBag.shuffleList.Length > 0)
         {
-            HunterAnt.weaponsBag.shuffleList[i] = saveableData.IntToWeapon(saveableData.hunterAntWeaponBag[i]).gameObject;
+            HunterAnt.weaponsBag.currPos = saveableData.hunterAntCurrBagPos;
+            for (int i = 0; i < saveableData.hunterAntWeaponBag.Length; i++)
+            {
+                HunterAnt.weaponsBag.shuffleList[i] = saveableData.IntToWeapon(saveableData.hunterAntWeaponBag[i]).gameObject;
+            }
         }
 
         saveableData.LoadWeaponCards();

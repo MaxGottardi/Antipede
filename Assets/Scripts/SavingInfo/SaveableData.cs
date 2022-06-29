@@ -153,6 +153,8 @@ public class BombAntData : GenericAntData
 [System.Serializable]
 public class SaveableData
 {
+    public PersistentDataManager persistentDataManager;
+
     //all data from the game which is needed to be saved
     [SerializeField] public SerializableDictionary<int, bool> bParentPartActive;
     //camera stuff like its pos, rotation and current zoom level
@@ -348,19 +350,19 @@ public class SaveableData
         switch (weapon)
         {
             case (int)EWeaponType.shield:
-                GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Weapons/Shield.prefab", typeof(GameObject));
+                GameObject obj = persistentDataManager.shieldprefab;//(GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Weapons/Shield.prefab", typeof(GameObject));
                 return obj.GetComponent<Weapon>();
             case (int)EWeaponType.laser:
-                GameObject obj1 = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Weapons/Laser.prefab", typeof(GameObject));
+                GameObject obj1 = persistentDataManager.laserprefab;//(GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Weapons/Laser.prefab", typeof(GameObject));
                 return obj1.GetComponent<Weapon>();
             case (int)EWeaponType.launcher:
-                GameObject obj2 = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Weapons/Launcher.prefab", typeof(GameObject));
+                GameObject obj2 = persistentDataManager.launcherprefab;//(GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Weapons/Launcher.prefab", typeof(GameObject));
                 return obj2.GetComponent<Weapon>();
             case (int)EWeaponType.gun:
-                GameObject obj3 = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Weapons/Gun.prefab", typeof(GameObject));
+                GameObject obj3 = persistentDataManager.gunprefab;//(GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Weapons/Gun.prefab", typeof(GameObject));
                 return obj3.GetComponent<Weapon>();
             case (int)EWeaponType.flame:
-                GameObject obj4 = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Weapons/Flamer.prefab", typeof(GameObject));
+                GameObject obj4 = persistentDataManager.flamerprefab;//(GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Weapons/Flamer.prefab", typeof(GameObject));
                 return obj4.GetComponent<Weapon>();
             default:
                 return null;
@@ -395,7 +397,7 @@ public class SaveableData
     /// <param name="apple">the list of all objects either moving or spawning in</param>
     /// <param name="applePos">the list of positions to use</param>
     /// <param name="assetPath">the file path to the prefab</param>
-    public void LoadApple(GameObject[] apple, ref SerializableList<Vector3> applePos, string assetPath, ref SerializableList<Quaternion> appleRot)
+    public void LoadApple(GameObject[] apple, ref SerializableList<Vector3> applePos, GameObject assetPath, ref SerializableList<Quaternion> appleRot)
     {
         //GameObject[] apple = GameObject.FindGameObjectsWithTag(tag);
         int i = 0;
@@ -409,7 +411,7 @@ public class SaveableData
             }
             else //apple does not exist in the scene when it should, so spawn in a new apple
             {
-                GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath(assetPath, typeof(GameObject));
+                GameObject obj = assetPath;//(GameObject)AssetDatabase.LoadAssetAtPath(assetPath, typeof(GameObject));
                 MonoBehaviour.Instantiate(obj, applePos.list[i], rot);
                 Debug.Log("Loading in a new Apple");
             }
@@ -446,11 +448,11 @@ public class SaveableData
                 hunterAnt.Add(item);
         }
 
-        LoadAnt<GuardAntData>(ref guardAnt, ref guardAntData, "Assets/Prefabs/AntComponents/AntPrefabs/GuardAnt.prefab");
-        LoadAnt<DasherAntData>(ref dasherAnt, ref dasherAntData, "Assets/Prefabs/AntComponents/AntPrefabs/DasherAnt.prefab");
-        LoadAnt<FarmerAntData>(ref farmerAnt, ref farmerAntData, "Assets/Prefabs/AntComponents/AntPrefabs/FarmerAnt.prefab");
-        LoadAnt<HunterAntData>(ref hunterAnt, ref hunterAntData, "Assets/Prefabs/AntComponents/AntPrefabs/HunterAnt.prefab");
-        LoadAnt<BombAntData>(ref bombAnt, ref bombAntData, "Assets/Prefabs/AntComponents/AntPrefabs/BombAnt.prefab");
+        LoadAnt<GuardAntData>(ref guardAnt, ref guardAntData, persistentDataManager.guardPrefab);//"Assets/Prefabs/AntComponents/AntPrefabs/GuardAnt.prefab");
+        LoadAnt<DasherAntData>(ref dasherAnt, ref dasherAntData, persistentDataManager.dasherantprefab);//);"Assets/Prefabs/AntComponents/AntPrefabs/DasherAnt.prefab");
+        LoadAnt<FarmerAntData>(ref farmerAnt, ref farmerAntData, persistentDataManager.farmerantPrefab);//"Assets/Prefabs/AntComponents/AntPrefabs/FarmerAnt.prefab"); ;
+        LoadAnt<HunterAntData>(ref hunterAnt, ref hunterAntData, persistentDataManager.hunterantPrefab);//"Assets/Prefabs/AntComponents/AntPrefabs/HunterAnt.prefab");
+        LoadAnt<BombAntData>(ref bombAnt, ref bombAntData, persistentDataManager.bombantPrefab);// "Assets/Prefabs/AntComponents/AntPrefabs/BombAnt.prefab");
     }
 
     /// <summary>
@@ -460,7 +462,7 @@ public class SaveableData
     /// <param name="antObjs">all the gameobjects in the scene for the selected ant type</param>
     /// <param name="antData">the ants data for the selected type</param>
     /// <param name="assetPath">the file location of the ants prefab</param>
-    public void LoadAnt<T> (ref List<GameObject> antObjs, ref SerializableList<T> antData, string assetPath) where T : GenericAntData
+    public void LoadAnt<T> (ref List<GameObject> antObjs, ref SerializableList<T> antData, GameObject assetPath) where T : GenericAntData
     {
         int i = 0;
 //        Debug.Log(antData.list.Count + "num objs to create " + antObjs.Count);
@@ -476,7 +478,7 @@ public class SaveableData
             }
             else //ant does not exist in the scene when it should, so spawn in a new apple
             {
-                GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath(assetPath, typeof(GameObject));
+                GameObject obj = assetPath;//(GameObject)AssetDatabase.LoadAssetAtPath(assetPath, typeof(GameObject));
                 GameObject spawnedObj = MonoBehaviour.Instantiate(obj, antData.list[i].antPosition, antData.list[i].antRotation);
 
                 GenericAnt genericAnt = spawnedObj.GetComponent<GenericAnt>();
@@ -605,7 +607,7 @@ public class SaveableData
 
     public void LoadCobwebs()
     {
-        GameObject prefab = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Web.prefab", typeof(GameObject));
+        GameObject prefab = persistentDataManager.webPrefab;//(GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Web.prefab", typeof(GameObject));
         foreach (WebData web in cobwebData.list)
         {
             GameObject obj = MonoBehaviour.Instantiate(prefab, web.webPosition, web.webRotation);
@@ -711,27 +713,27 @@ public class SaveableData
 
         foreach (Vector3 cardPos in gunCards.list)
         {
-            GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/GunCard.prefab", typeof(GameObject));
+            GameObject obj = persistentDataManager.guncardPrefab;//(GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/GunCard.prefab", typeof(GameObject));
             MonoBehaviour.Instantiate(obj, cardPos, Quaternion.identity);
         }
         foreach (Vector3 cardPos in flameCards.list)
         {
-            GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/FlameCard.prefab", typeof(GameObject));
+            GameObject obj = persistentDataManager.flameCardPrefab;//(GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/FlameCard.prefab", typeof(GameObject));
             MonoBehaviour.Instantiate(obj, cardPos, Quaternion.identity);
         }
         foreach (Vector3 cardPos in laserCards.list)
         {
-            GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/LaserCard.prefab", typeof(GameObject));
+            GameObject obj = persistentDataManager.laserCardPrefab;//(GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/LaserCard.prefab", typeof(GameObject));
             MonoBehaviour.Instantiate(obj, cardPos, Quaternion.identity);
         }
         foreach (Vector3 cardPos in launcherCards.list)
         {
-            GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/LauncherCard.prefab", typeof(GameObject));
+            GameObject obj = persistentDataManager.launchercardPrefab;///(GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/LauncherCard.prefab", typeof(GameObject));
             MonoBehaviour.Instantiate(obj, cardPos, Quaternion.identity);
         }
         foreach (Vector3 cardPos in shieldCards.list)
         {
-            GameObject obj = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/ShieldCard.prefab", typeof(GameObject));
+            GameObject obj = persistentDataManager.shieldcardPrefab;//(GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card Prefabs/ShieldCard.prefab", typeof(GameObject));
             MonoBehaviour.Instantiate(obj, cardPos, Quaternion.identity);
         }
     }

@@ -5,6 +5,7 @@ using UnityEditor;
 
 public class FarmerAnt : GenericAnt
 {
+    public GameObject larvaePrefab;
     [Header("Larvae")]
     [SerializeField] public GameObject Larvae;
     Collider larvaeCollider;
@@ -37,7 +38,7 @@ public class FarmerAnt : GenericAnt
 
     public void AddLarvae()
     {
-        GameObject larvaeObj = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Larvae.prefab", typeof(GameObject));
+        GameObject larvaeObj = larvaePrefab;//(GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Larvae.prefab", typeof(GameObject));
 
         GameObject spawnedLarvae = Instantiate(larvaeObj, headTransform);
         spawnedLarvae.tag = "Untagged"; //no tag so when doing a find obj by tag these will not show up 

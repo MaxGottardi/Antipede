@@ -4388,7 +4388,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6325059631389322917, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000019008055
+      value: 0.00047251923
       objectReference: {fileID: 0}
     - target: {fileID: 6333603488464712833, guid: 09ec3940d1982f24b96a062405fdfec1, type: 3}
       propertyPath: m_AnchorMax.y
@@ -11989,6 +11989,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af5b8c5bf06d1f4aab23ccfcf5f3ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentPartUI: {fileID: 0}
   Head: {fileID: 443230231}
   Tail: {fileID: 2048920680}
   DamageParticles: {fileID: 0}
@@ -17836,6 +17837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af5b8c5bf06d1f4aab23ccfcf5f3ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentPartUI: {fileID: 0}
   Head: {fileID: 1654110751}
   Tail: {fileID: 620104304}
   DamageParticles: {fileID: 0}
@@ -24409,6 +24411,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b03c214696ee6d1409b5a5e0b083e9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  webPrefab: {fileID: 6720338317755177176, guid: 44fad2d894d45f14ead715b79725c82a, type: 3}
+  guncardPrefab: {fileID: 1728774939834552395, guid: ba9d407944d4f284c97a36e9f38b7ef8, type: 3}
+  laserCardPrefab: {fileID: 24611930172040355, guid: 04b8f75dfd5eb4c499aed0e1c0bb3c3e, type: 3}
+  launchercardPrefab: {fileID: 1332047328893984492, guid: 6b7749803109491469fe9d0fdcbc1863, type: 3}
+  flameCardPrefab: {fileID: 4417545337916853528, guid: 48a373f7d7bf2d4489e5f402f0942b4d, type: 3}
+  shieldcardPrefab: {fileID: 4263386421578837108, guid: 10a9f069bfcdf694d99b6198a7698aaf, type: 3}
+  guardPrefab: {fileID: 8856138776421195210, guid: d7784141bda4f62498b4168dbab60047, type: 3}
+  farmerantPrefab: {fileID: 8531618194261706558, guid: e7cb6bb3f621a8a408fb3579d5d91f34, type: 3}
+  hunterantPrefab: {fileID: 3326833427437991793, guid: 6fc6a1dedbd0cc2459ce10194ae2db20, type: 3}
+  bombantPrefab: {fileID: 1933701853150098644, guid: 140d3819dabc74b45b9dd6ba3e8c4206, type: 3}
+  dasherantprefab: {fileID: 1768346567234793843, guid: f2979dff33818664381e12b6ce518823, type: 3}
+  shieldprefab: {fileID: 692776519300176809, guid: c8bac3e7493054f44b5db96606925168, type: 3}
+  gunprefab: {fileID: 5645349024952512263, guid: 61d0affc515ed8648896a539880facb3, type: 3}
+  flamerprefab: {fileID: 5645349024952512263, guid: 6780d73850f566e43a23244590ba7e4f, type: 3}
+  launcherprefab: {fileID: 5645349024952512263, guid: c2e4d477c2125a047a9938ca8222505b, type: 3}
+  laserprefab: {fileID: 4066411363957430124, guid: 300e834a871c8ca4e9b72b89cdde0b59, type: 3}
+  larvaePrefab: {fileID: 3658501623764678317, guid: 7b95122c35e34c64887020f05597a625, type: 3}
+  redapplePrefab: {fileID: 8615284476910464822, guid: fe096ccce5abcff428122e3319f31553, type: 3}
+  greenapplePrefab: {fileID: 2108470324304560770, guid: 0e5869c6f5cf32f4682f5d8cc5573a3b, type: 3}
   saveButtonPrefab: {fileID: 0}
   newSaveUI: {fileID: 0}
   saveButtonParent: {fileID: 0}
@@ -38843,6 +38864,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af5b8c5bf06d1f4aab23ccfcf5f3ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentPartUI: {fileID: 0}
   Head: {fileID: 2059226446}
   Tail: {fileID: 1223960218}
   DamageParticles: {fileID: 1983914251257026005, guid: 9ed20eb1978768643b467b5f79d27218, type: 3}
