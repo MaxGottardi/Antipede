@@ -4,20 +4,49 @@ using UnityEngine;
 
 public class GetNextNode : Node
 { //find next position on the map to move towards
-    public GetNextNode(GenericAnt blackboard)
+    bool isFleeing = false; //if is fleeing then run slightly different code
+    public GetNextNode(GenericAnt blackboard, bool isFleeing = false)
     {
         this.blackboard = blackboard;
+
+        this.isFleeing = isFleeing;
     }
+
     public override NodeState evaluate()
     {
-        doInit();
-
-        if (blackboard.nextPosTransform.gameObject.GetComponent<NodeReferences>()) //here would, when using proper pathfinding, would be getting the nodes position as well as the path to it
+        if (blackboard.nextPosTransform)
         {
-            blackboard.nextPosTransform = blackboard.nextPosTransform.gameObject.GetComponent<NodeReferences>().nextNode.transform;
-            Debug.Log("Getting New Node");
-            return NodeState.Success;
+            if (blackboard.pathToNextPos.Count <= 0)
+            {
+                if (blackboard.nextPosTransform.gameObject.GetComponent<NodeReferences>() && !isFleeing) //here would, when using proper pathfinding, would be getting the nodes position as well as the path to it
+                    blackboard.nextPosTransform = blackboard.nextPosTransform.gameObject.GetComponent<NodeReferences>().nextNode.transform;
+
+                blackboard.pathToNextPos = GameManager1.generateGrid.APathfinding(blackboard.transform.position, blackboard.nextPosTransform.position);//generate the new path
+            }
+            //blackboard.nextPosVector = blackboard.pathToNextPos[blackboard.pathToNextPos.Count - 1]
+            //blackboard.pathToNextPos.RemoveAt(blackboard.pathToNextPos.Count - 1)
+            if (blackboard.pathToNextPos.Count > 0) //here would, when using proper pathfinding, would be getting the nodes position as well as the path to it
+            {
+                //Debug.Log("Getting Next Node");
+                blackboard.nextPosVector = blackboard.pathToNextPos[blackboard.pathToNextPos.Count - 1];
+                blackboard.pathToNextPos.RemoveAt(blackboard.pathToNextPos.Count - 1);
+                if (blackboard.pathToNextPos.Count <= 0) //as no new tiles to move towards can safely say move towards the final goal
+                    blackboard.nextPosVector = blackboard.nextPosTransform.position;
+                return NodeState.Success;
+            }
         }
-        return NodeState.Failure;
+        return NodeState.Failure; //no node or path could be found
+    }
+
+    public override void loadData(GenericAntData saveableData)
+    {
+        base.loadData(saveableData);
+        //no data to load
+    }
+
+    public override void saveData(GenericAntData saveableData)
+    {
+        base.saveData(saveableData);
+        //not required as the data is set when this class is initilized and never changed
     }
 }

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: d16cdc6658ba2dd42a8ee7edd8ffcdb8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - Owner: {instanceID: 0}
+  - BarrelEndSocket: {instanceID: 0}
+  - ProjectileObject: {instanceID: 0}
+  - weaponPickup: {instanceID: 0}
+  - sfxManager: {instanceID: 0}
+  - centipede: {fileID: 4271346648809204056, guid: d038f55146cfd5a4c9bed2931ccb343a, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

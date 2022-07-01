@@ -9,7 +9,33 @@ TagManager:
   - PlayerSegment
   - FarmerNode
   - Enemy
+  - GuardNode
+  - HunterNode
   - Weapon Pickup
+  - Tarantula
+  - Speed
+  - Health
+  - BossTrigger
+  - CaveTrigger
+  - Larvae
+  - Card
+  - Play
+  - Credits
+  - Quit
+  - Settings
+  - TarantulaTail
+  - Back
+  - Sound
+  - Controls
+  - Other
+  - CheckPoint
+  - backup
+  - SFXM
+  - ParentWeb
+  - Projectile
+  - Graphics
+  - NewGame
+  - LoadSelected
   layers:
   - Default
   - TransparentFX
@@ -18,15 +44,15 @@ TagManager:
   - Water
   - UI
   - Player
-  - Enemy
+  - Biteable
   - Ground
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Weapon Pickup
+  - Projectile
+  - Boundary
+  - Post Processing
+  - Minimap
+  - EnemySafeProjectile
+  - PlayerSafeProjectile
   - 
   - 
   - 

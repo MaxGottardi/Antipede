@@ -13,9 +13,7 @@ public class Inverter : Node //invert the value recieved
 
     public override NodeState evaluate()
     {
-        doInit();
-
-        switch (child.evaluate())
+        switch (child.execute())
         {
             case NodeState.Running:
                 nodeState = NodeState.Running;
@@ -34,5 +32,17 @@ public class Inverter : Node //invert the value recieved
             end();
         //as all children were either running or a success
         return nodeState;
+    }
+
+    public override void loadData(GenericAntData saveableData)
+    {
+        base.loadData(saveableData);
+        child.loadData(saveableData);
+    }
+
+    public override void saveData(GenericAntData saveableData)
+    {
+        base.saveData(saveableData);
+        child.saveData(saveableData);
     }
 }

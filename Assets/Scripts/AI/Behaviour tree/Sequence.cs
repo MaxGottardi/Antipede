@@ -13,11 +13,9 @@ public class Sequence : Node
 
     public override NodeState evaluate() 
     {
-        doInit();
-
         while (currChild < children.Count)// && nodeState != NodeState.Running)
         {
-            switch (children[currChild].evaluate())
+            switch (children[currChild].execute())
             {
                 case NodeState.Running:
                     nodeState = NodeState.Running;
@@ -39,5 +37,39 @@ public class Sequence : Node
         end();
         currChild = 0;
         return nodeState;
+    }
+
+    public override void interupt() //force any all nodes to stop any execution
+    {
+        base.interupt();
+
+        currChild = 0;
+        foreach (Node childNode in children)
+        {
+            childNode.interupt();
+        }
+    }
+
+    public override void loadData(GenericAntData saveableData)
+    {
+        base.loadData(saveableData);
+        currChild = saveableData.aISequenceChildCounts.list[0];//as always adding to the end of the list, when reach this script it should be the first one
+        saveableData.aISequenceChildCounts.list.RemoveAt(0);//as used no longer needed so remove it, making the next element in the list the first one
+        for (int i = 0; i < children.Count; i++)
+        {
+            children[i].loadData(saveableData);
+        }
+    }
+
+    public override void saveData(GenericAntData saveableData)
+    {
+        base.saveData(saveableData);
+        saveableData.aISequenceChildCounts.list.Add(currChild);
+        for (int i = 0; i < children.Count; i++)
+        {
+            children[i].saveData(saveableData);
+        }
+
+        ////need some way to tell it which selector gets which curr child value
     }
 }

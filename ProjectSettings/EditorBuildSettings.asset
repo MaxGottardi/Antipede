@@ -11,7 +11,34 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/M Segments Scene.unity
     guid: 84fe410c013d9944db0e606daf305a25
+  - enabled: 1
+    path: Assets/Scenes/IntroCutScene.unity
+    guid: 1bdd6554b99576c4fb273d2764681d7f
+  - enabled: 1
+    path: Assets/Scenes/DavidGameModes/BossOnly3.unity
+    guid: c81d3d716528d2c4e8713a2d84a88327
+  - enabled: 1
+    path: Assets/Scenes/DavidGameModes/Intermediate.unity
+    guid: c2f6327ada2be0f4288896b7d98a95e1
+  - enabled: 1
+    path: Assets/Scenes/Environment Test.unity
+    guid: ca8ddf1e9df084f4ba97b71d33f2b9fd
+  - enabled: 0
+    path: Assets/Scenes/SettingsScene.unity
+    guid: 3146abdaf44e1f6499402a8ec952c96b
+  - enabled: 0
+    path: Assets/Scenes/Credits.unity
+    guid: cc686efd78872ff45a24a192e71431a8
+  - enabled: 1
+    path: Assets/Scenes/LoadingScene.unity
+    guid: c62d258e7ac463240bdf4d25bfb541d0
+  - enabled: 1
+    path: Assets/Scenes/WinScene.unity
+    guid: a3a0568d08b168b4eba3cfe13dee3dd0
+  - enabled: 1
+    path: Assets/Scenes/NearWinScene.unity
+    guid: 2cdb2ecd7d620d34d9fb913e4db32cc8
   m_configObjects: {}

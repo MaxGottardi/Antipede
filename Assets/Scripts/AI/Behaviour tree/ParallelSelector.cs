@@ -13,11 +13,9 @@ public class ParallelSelector : Node
 
     public override NodeState evaluate()
     {
-        doInit();
-
         foreach (var node in children) //for each child node
         {
-            switch (node.evaluate()) //issue as every frame still updating the tree, only want to do when complete the tree and everything fails
+            switch (node.execute()) //issue as every frame still updating the tree, only want to do when complete the tree and everything fails
                                      //basically here just execture node until it returns a value
             {
                 case NodeState.Running:
@@ -37,6 +35,34 @@ public class ParallelSelector : Node
         nodeState = NodeState.Failure;
         end();
         return nodeState; //everything didn't execute as whole lot failed
+    }
+
+    public override void interupt() //force any all nodes to stop any execution
+    {
+        base.interupt();
+
+        foreach (Node childNode in children)
+        {
+            childNode.interupt();
+        }
+    }
+
+    public override void loadData(GenericAntData saveableData)
+    {
+        base.loadData(saveableData);
+        for (int i = 0; i < children.Count; i++)
+        {
+            children[i].loadData(saveableData);
+        }
+    }
+
+    public override void saveData(GenericAntData saveableData)
+    {
+        base.saveData(saveableData);
+        for (int i = 0; i < children.Count; i++)
+        {
+            children[i].saveData(saveableData);
+        }
     }
 }
 

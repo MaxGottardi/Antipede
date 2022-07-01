@@ -26,6 +26,16 @@ public partial class MCentipedeBody : MonoBehaviour, IEnumerable<MSegment>
 		return Segments.ToArray();
 	}
 
+	public MSegment GetAbsoluteLast()
+	{
+		if (CustomSegments != null && CustomSegments.Count > 0)
+		{
+			return CustomSegments[CustomSegments.Count - 1];
+		}
+
+		return GetLast() ?? Tail.GetComponent<MSegment>();
+	}
+
 	public IEnumerator<MSegment> GetEnumerator()
 	{
 		return ((IEnumerable<MSegment>)Segments).GetEnumerator();

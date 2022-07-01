@@ -38,28 +38,28 @@ public class GameManager : MonoBehaviour
             fpsCount = 0;
         }
         //Spawns a new segment
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            foreach (int i in numSegments)
-            {
-                tailEnd = GameObject.Find(newSegNum.ToString());              
-                if (tailEnd == null)
-                {
-                    GameObject newSeg;
-                    int tailSeg = newSegNum - 1;
-                    newSeg = Instantiate(cloneSeg, GameObject.Find(tailSeg.ToString()).transform.position, GameObject.Find(tailSeg.ToString()).transform.rotation);
-                    newSeg.name = newSegNum.ToString();
-                    //Debug.Log(tailSeg);
-                    GameObject.Find(tailSeg.ToString()).GetComponent<SegmentMovement>().CheckForNextSeg();
-                    break;
-                }
-                else if (tailEnd != null) 
-                {
-                    tailEnd = null;
-                    newSegNum++;
-                }
+        ////////////////////////if (Input.GetKeyDown(KeyCode.Space))
+        ////////////////////////{
+        ////////////////////////    foreach (int i in numSegments)
+        ////////////////////////    {
+        ////////////////////////        tailEnd = GameObject.Find(newSegNum.ToString());              
+        ////////////////////////        if (tailEnd == null)
+        ////////////////////////        {
+        ////////////////////////            GameObject newSeg;
+        ////////////////////////            int tailSeg = newSegNum - 1;
+        ////////////////////////            newSeg = Instantiate(cloneSeg, GameObject.Find(tailSeg.ToString()).transform.position, GameObject.Find(tailSeg.ToString()).transform.rotation);
+        ////////////////////////            newSeg.name = newSegNum.ToString();
+        ////////////////////////            //Debug.Log(tailSeg);
+        ////////////////////////            GameObject.Find(tailSeg.ToString()).GetComponent<SegmentMovement>().CheckForNextSeg();
+        ////////////////////////            break;
+        ////////////////////////        }
+        ////////////////////////        else if (tailEnd != null) 
+        ////////////////////////        {
+        ////////////////////////            tailEnd = null;
+        ////////////////////////            newSegNum++;
+        ////////////////////////        }
                 
-            }
-        }
+        ////////////////////////    }
+        ////////////////////////}
     }
 }

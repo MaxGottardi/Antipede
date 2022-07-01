@@ -8,15 +8,12 @@ public partial class MCentipedeBody : MonoBehaviour
 
 	void Awake()
 	{
-		Listener = GetComponent<MCentipedeEvents>();
-		Head.GetComponent<MCentipedeSegmentEvents>().Initialise(Listener);
-		Tail.GetComponent<MCentipedeSegmentEvents>().Initialise(Listener);
+		SegmentsInfo = new SegmentsInformation(Head.localScale, Tail.localScale, ((Transform)Segment).localScale);
 	}
 
 	void Construct()
 	{
 		Segments = new List<MSegment>();
-		SegmentsInfo = new SegmentsInformation(Head.localScale, Tail.localScale, ((Transform)Segment).localScale);
 
 		// Set the positions of the segments.
 		DeltaZ = (SegmentsInfo.HeadScale.z + SegmentsInfo.SegmentScale.z) * .5f;
@@ -34,6 +31,9 @@ public partial class MCentipedeBody : MonoBehaviour
 
 				AddSegment(Z, ParentRotation);
 			}
+
+			for (int i = 0; i < CustomSegments.Count; ++i)
+				CustomSegments[i].transform.position = Tail.position + (SegmentsInfo.SegmentScale.z * (i + 1) * -Tail.forward);
 		}
 		else
 		{

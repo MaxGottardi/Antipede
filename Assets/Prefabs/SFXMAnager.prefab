@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1219999055021066793
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7276808285746946701}
+  - component: {fileID: 606088553577666546}
+  m_Layer: 0
+  m_Name: SFXMAnager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7276808285746946701
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219999055021066793}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 167.01314, y: 13.238089, z: 117.94404}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &606088553577666546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219999055021066793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5a80b30622793440a630e22c7ba42f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sourceMusic: {fileID: 0}
+  sourcePlayer: {fileID: 0}
+  sourceDamage: {fileID: 0}
+  sourceWeapon: {fileID: 0}
+  sourceShield: {fileID: 0}
+  menuMusic: {fileID: 0}
+  loadingMusic: {fileID: 8300000, guid: 3b036dd4fb02bbf4b91d129186a8f3a6, type: 3}
+  mainMusic: {fileID: 8300000, guid: 3b4e371cec09b1c4bb16b565c67ffcc9, type: 3}
+  caveMusic: {fileID: 8300000, guid: 6da006b24e713c64586799dc4d0bc0a5, type: 3}
+  bossMusic: {fileID: 8300000, guid: 7c43407967c2bd643a7a3acbd58b19c9, type: 3}
+  larvaeSFX: {fileID: 8300000, guid: bf4c2a5cee3bc0846aaa936277473ef3, type: 3}
+  powerupSFX: {fileID: 8300000, guid: cf8aa793ccf697e429be7425fcb8e349, type: 3}
+  specialSFX: {fileID: 8300000, guid: dc2220ceb89c9da4a961a81311c5882b, type: 3}
+  shieldSFX: {fileID: 8300000, guid: 85c9404b6ec3c8743a23636541f54356, type: 3}
+  damageSFX: {fileID: 8300000, guid: b1b886ebb0cdebe4ea65bdc89e12b164, type: 3}
+  walkSFX: {fileID: 8300000, guid: 288dd0da2db808d4cbec78871683cf7d, type: 3}
