@@ -238,7 +238,8 @@ public partial class MCentipedeBody : MonoBehaviour, IDataInterface
 	/// <remarks>
 	/// Second-level Abstraction.
 	/// <br></br>
-	/// This is where an <see cref="MSegment"/> gets instantiated, added, and fully registered to the Centipede.
+	/// This is where an <see cref="MSegment"/> gets instantiated, added, and fully 
+	/// ed to the Centipede.
 	/// </remarks>
 	/// <param name="Z">The Z-Axis gap between the first Segment to be added and <see cref="Head"/>.</param>
 	/// <param name="Rot">The Rotation to orient the new Segment to face a previously added Segment.</param>

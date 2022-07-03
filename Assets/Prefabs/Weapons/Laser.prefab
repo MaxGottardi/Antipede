@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4066411363957430126}
   - component: {fileID: 7557095601471252499}
   - component: {fileID: 4066411363957430125}
+  - component: {fileID: 6432368406778423534}
   m_Layer: 0
   m_Name: Laser
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 4066411363957430124}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 102696457781806532}
   m_Father: {fileID: 0}
@@ -93,11 +94,31 @@ MonoBehaviour:
   weaponPickup: {fileID: 4066411363957430124, guid: 28f8dce9adef5a6408117be8b9cb0716, type: 3}
   isAntGun: 0
   FireRate: 0.02
+  TimeLastFired: 0
   Range: 750
   Art: {fileID: 2800000, guid: 6180f81f869928f48bba749d3433f949, type: 3}
   ArtMaterial: {fileID: 2100000, guid: c58f2fb5ab553884082363eeb38eb263, type: 2}
   TextColour: {r: 0.82745105, g: 0.30588236, b: 1, a: 1}
   sfxManager: {fileID: 0}
+--- !u!95 &6432368406778423534
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4066411363957430124}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2f1a5c5422757c04680f1e2162c9b4e6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &107398449788008392
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -173,6 +194,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 23381532795455468, guid: 6d4258013fee5bf4594ec920e34e94d6, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7c32507c5512f4247b60384d34d94ebb, type: 2}
+    - target: {fileID: 23424253620636052, guid: 6d4258013fee5bf4594ec920e34e94d6, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7c32507c5512f4247b60384d34d94ebb, type: 2}
+    - target: {fileID: 23761702416492694, guid: 6d4258013fee5bf4594ec920e34e94d6, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7c32507c5512f4247b60384d34d94ebb, type: 2}
+    - target: {fileID: 1838718983637921201, guid: 6d4258013fee5bf4594ec920e34e94d6, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7c32507c5512f4247b60384d34d94ebb, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d4258013fee5bf4594ec920e34e94d6, type: 3}
 --- !u!4 &102696457781806532 stripped
