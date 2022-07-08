@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 8371528959018863702}
   - component: {fileID: 8371528959018863696}
   - component: {fileID: 7121114345129098424}
-  m_Layer: 0
+  - component: {fileID: 8112881017843946183}
+  m_Layer: 7
   m_Name: StartWeb
-  m_TagString: Untagged
+  m_TagString: ParentWeb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 8371528959018863699}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 130.46, y: 0.49, z: 119.7}
-  m_LocalScale: {x: 3, y: 2, z: 3}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -96,3 +97,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 0.4502176, z: 2.0000005}
   m_Center: {x: 0, y: 0.038960457, z: -0.000000059604645}
+--- !u!114 &8112881017843946183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8371528959018863699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b62b6e4e64b56849be26033c78eadc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bDoSaveData: 0
+  isStartWeb: 1
+  ID: -1
+  parentParts: []
+  DestroyParticles: {fileID: 244562512174868391, guid: 02677034b62395b49a98b983ea1f8785, type: 3}

@@ -89,6 +89,8 @@ public class SpringArm : MonoBehaviour, IDataInterface
 		OriginalTargetOffset = TargetOffset;
 
 		DefaultProjection = MInput.MainCamera.projectionMatrix;
+
+		bInheritRotation = !bInheritRotation;
 	}
 
 	void Update()
