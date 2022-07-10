@@ -9,13 +9,8 @@ public class GuardAnt : GenericAnt
 
     public GameObject heldPart;
 
-    public override void Start()
+    public override void Awake()
     {
-        base.Start();
-        stateMachine.Attack = new GuardAttack(this);
-        stateMachine.Investigate = new GuardInvestigate(this);
-        stateMachine.Dead = new GuardDead(this);
-
         if (!isHelper) //only spawn in a part on the inital guards, non on any more which spawn in later
         {
             if (parentBag == null)
@@ -25,6 +20,11 @@ public class GuardAnt : GenericAnt
             }
             SpawnPart();
         }
+        
+        base.Awake();
+        stateMachine.Attack = new GuardAttack(this);
+        stateMachine.Investigate = new GuardInvestigate(this);
+        stateMachine.Dead = new GuardDead(this);
     }
 
     //spawn in parent components

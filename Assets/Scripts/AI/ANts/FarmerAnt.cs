@@ -14,7 +14,7 @@ public class FarmerAnt : GenericAnt
     public static ShuffleBag<bool> larvaeBag;
 
     // Start is called before the first frame update
-    public override void Start()
+    public override void Awake()
     {
         if (larvaeBag == null)
         {
@@ -23,7 +23,7 @@ public class FarmerAnt : GenericAnt
         }
         ShouldSpawnLarvae();
 
-        base.Start();
+        base.Awake();
     }
 
     void ShouldSpawnLarvae()

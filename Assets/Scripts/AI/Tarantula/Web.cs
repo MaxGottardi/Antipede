@@ -40,10 +40,13 @@ public class Web : MonoBehaviour, IDataInterface
         }
     }
 
-    public void LoadData(SaveableData saveableData)
+    public void LoadData(SaveableData saveableData, bool bIsNewGame)
     {
-        //as this web exists in the scene when loading in from a save, destroy it
-        Destroy(gameObject);
+        if (!bIsNewGame)
+        {
+            //as this web exists in the scene when loading in from a save, destroy it
+            Destroy(gameObject);
+        }
     }
 
     public void SaveData(SaveableData saveableData)

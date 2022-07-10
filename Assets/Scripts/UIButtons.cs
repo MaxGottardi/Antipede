@@ -198,15 +198,18 @@ public class UIButtons : MonoBehaviour, IDataInterface
         speedTxt.text = SettingsVariables.keyDictionary["HalveSpeed"].ToString();
     }
 
-    public void LoadData(SaveableData saveableData)
+    public void LoadData(SaveableData saveableData, bool bIsNewGame)
     {
-        seenAttack = saveableData.bSeenAttack;
-        seenShoot = saveableData.bSeenShot;
-        seenSpeed = saveableData.bSeenSpeed;
-        seenSpider = saveableData.bSeenSpider;
+        if (!bIsNewGame)
+        {
+            seenAttack = saveableData.bSeenAttack;
+            seenShoot = saveableData.bSeenShot;
+            seenSpeed = saveableData.bSeenSpeed;
+            seenSpider = saveableData.bSeenSpider;
 
-        Continue();
-        Debug.Log("Loading up the UI Settings");
+            Continue();
+            Debug.Log("Loading up the UI Settings");
+        }
     }
 
     public void SaveData(SaveableData saveableData)

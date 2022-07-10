@@ -6,7 +6,7 @@ public class MInput : MonoBehaviour
 	MCentipedeBody body;
 	CentipedeMovement movement;
 	public LayerMask BiteLayer;
-	public GameObject hitParticles;
+	public GameObject hitParticles, tarBackHitParticles;
 	Transform head;
 
 	bool doneAttack = false, attackRequested = false;
@@ -227,7 +227,7 @@ public class MInput : MonoBehaviour
 		if (seenTail)
 		{
 			tarant.DecreaseHealth(2);
-			Instantiate(hitParticles, head.transform.position + head.transform.right*1.5f, Quaternion.identity);
+			Instantiate(tarBackHitParticles, head.transform.position + head.transform.right*1.5f, Quaternion.identity);
 		}
 		else if (seenTarant)
 		{

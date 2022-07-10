@@ -824,7 +824,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: (Hold*)
+  m_Text: (Hold)
 --- !u!1 &8293488643754080429
 GameObject:
   m_ObjectHideFlags: 0
@@ -1151,6 +1151,7 @@ GameObject:
   - component: {fileID: 8293488644014870866}
   - component: {fileID: 8293488644014870864}
   - component: {fileID: 8293488644014870867}
+  - component: {fileID: 7398599436918269791}
   m_Layer: 5
   m_Name: Text (2)
   m_TagString: Untagged
@@ -1174,7 +1175,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 252.89998, y: 100.4}
+  m_AnchoredPosition: {x: 293, y: 100.4}
   m_SizeDelta: {x: 141.96, y: 50.4101}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8293488644014870864
@@ -1212,13 +1213,28 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 49
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: (Hold*)
+--- !u!114 &7398599436918269791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8293488644014870869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b90c1abfa3f2c364884f763cfbf95e89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultTxt: (Hold*)
+  enabledTxt: (Toggle*)
+  settingName: bForwardMoveToggle
 --- !u!1 &8293488644039863234
 GameObject:
   m_ObjectHideFlags: 0
@@ -1721,7 +1737,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 249, y: 126}
+  m_AnchoredPosition: {x: 229, y: 126}
   m_SizeDelta: {x: 66.66668, y: 33.333336}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8293488644205662785
@@ -1906,6 +1922,7 @@ GameObject:
   - component: {fileID: 8293488644237960129}
   - component: {fileID: 8293488644237960143}
   - component: {fileID: 8293488644237960142}
+  - component: {fileID: 1511201178011998403}
   m_Layer: 5
   m_Name: Text (2)
   m_TagString: Untagged
@@ -1929,7 +1946,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 120.46802, y: 62.000015}
+  m_AnchoredPosition: {x: 83, y: 62.000015}
   m_SizeDelta: {x: 141.96, y: 422.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8293488644237960143
@@ -1967,13 +1984,28 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 49
-    m_Alignment: 4
+    m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: (Hold*)
+--- !u!114 &1511201178011998403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8293488644237960128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b90c1abfa3f2c364884f763cfbf95e89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultTxt: (Hold*)
+  enabledTxt: (Toggle*)
+  settingName: bWeaponToggle
 --- !u!1 &8293488644365065033
 GameObject:
   m_ObjectHideFlags: 0
@@ -2846,6 +2878,7 @@ GameObject:
   - component: {fileID: 8293488645128526059}
   - component: {fileID: 8293488645128526057}
   - component: {fileID: 8293488645128526056}
+  - component: {fileID: 1534748065653917196}
   m_Layer: 5
   m_Name: Text (2)
   m_TagString: Untagged
@@ -2914,6 +2947,21 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: (Hold*)
+--- !u!114 &1534748065653917196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8293488645128526058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b90c1abfa3f2c364884f763cfbf95e89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultTxt: (Hold*)
+  enabledTxt: (Toggle*)
+  settingName: bHalveSpeedToggle
 --- !u!1 &8293488645151183746
 GameObject:
   m_ObjectHideFlags: 0
@@ -2925,6 +2973,7 @@ GameObject:
   - component: {fileID: 8293488645151183747}
   - component: {fileID: 8293488645151183745}
   - component: {fileID: 8293488645151183744}
+  - component: {fileID: 4215102482280345756}
   m_Layer: 5
   m_Name: Text (2)
   m_TagString: Untagged
@@ -2948,7 +2997,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 343, y: 126.999985}
+  m_AnchoredPosition: {x: 359, y: 126.999985}
   m_SizeDelta: {x: 141.96, y: 422.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8293488645151183745
@@ -2986,13 +3035,28 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 49
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: (Tap*)
+--- !u!114 &4215102482280345756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8293488645151183746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b90c1abfa3f2c364884f763cfbf95e89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultTxt: (Tap*)
+  enabledTxt: (Toggle*)
+  settingName: bAttackToggle
 --- !u!1 &8293488645400343534
 GameObject:
   m_ObjectHideFlags: 0
@@ -3088,7 +3152,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8293488645548758397
 RectTransform:
   m_ObjectHideFlags: 0

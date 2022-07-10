@@ -5,9 +5,9 @@ using UnityEngine;
 public class BombAnt : GenericAnt
 {
     // Start is called before the first frame update
-    public override void Start()
+    public override void Awake()
     {
-        base.Start();
+        base.Awake();
         stateMachine.Attack = new BombAttack(this);
     }
 
@@ -25,7 +25,6 @@ public class BombAnt : GenericAnt
             //current time in animation and current state
             genericAntData.currAnimNormTime = anim.GetCurrentAnimatorStateInfo(0).normalizedTime % 1; //need the modulo as state info normalize time is in the form(num times played).(curr % of way through this playthrough)
 
-            Debug.Log(genericAntData.currAnimNormTime + "Set Normed Time");
             genericAntData.currAnimName = SaveAntStateName();
 
             genericAntData.callBackupWait = callBackupWait;

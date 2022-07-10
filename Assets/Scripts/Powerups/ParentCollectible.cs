@@ -85,9 +85,9 @@ public class ParentCollectible : MonoBehaviour, IDataInterface
         }
     }
 
-    public void LoadData(SaveableData saveableData)
+    public void LoadData(SaveableData saveableData, bool bIsNewGame)
     {
-        if(bDoSaveData)
+        if(bDoSaveData && !bIsNewGame)
         {
             if (!saveableData.bParentPartActive.dictionary.ContainsKey(ID))
                 Destroy(gameObject);

@@ -194,18 +194,21 @@ public class WeaponCardUI : MonoBehaviour, IDataInterface
 		AUII.Update("x" + AUII.Remaining);
 	}
 
-    public void LoadData(SaveableData saveableData)
+    public void LoadData(SaveableData saveableData, bool bIsNewGame)
     {
-		RemoveAll();
+		if (!bIsNewGame)
+		{
+			RemoveAll();
 
-        foreach (KeyValuePair<int, int> item in saveableData.weaponUICards.dictionary)
-        {
-			Weapon weapon = saveableData.IntToWeapon(item.Key);
-			for(int i = 0; i < item.Value; i++)
-            {
-				Add(weapon);
-            }
-        }
+			foreach (KeyValuePair<int, int> item in saveableData.weaponUICards.dictionary)
+			{
+				Weapon weapon = saveableData.IntToWeapon(item.Key);
+				for (int i = 0; i < item.Value; i++)
+				{
+					Add(weapon);
+				}
+			}
+		}
     }
 
     public void SaveData(SaveableData saveableData)

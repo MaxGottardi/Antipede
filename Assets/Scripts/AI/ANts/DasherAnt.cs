@@ -11,9 +11,9 @@ public class DasherAnt : GenericAnt
 
     [HideInInspector] public float tempSpeed, tempRoteSpeed, tempAnimSpeed;
 
-    public override void Start()
+    public override void Awake()
     {
-        base.Start();
+        base.Awake();
         tempSpeed = Speed;
         tempRoteSpeed = rotSpeed;
         tempAnimSpeed = animMultiplier;
