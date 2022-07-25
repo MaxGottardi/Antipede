@@ -104,7 +104,7 @@ public class PersistentDataManager : MonoBehaviour
     }
 
 
-    public SaveableData LoadSaveFile(string saveName)
+    public SaveableData LoadSaveFile(string saveName, bool restoreBackup)
     {
         string fullPath = Path.Combine(dataDirectory, saveName, dataFileName);//this accounts for different paths having different path seperators
         if (File.Exists(fullPath))
@@ -125,8 +125,10 @@ public class PersistentDataManager : MonoBehaviour
             }
             catch (System.Exception e)
             {
-
+                //something, such as the save file being corrupt occured, so load in the backup
                 Debug.Log("failed to load, specified path could not be found: " + fullPath + "/" + e);
+                if (AttemptLoadBackup(fullPath) && restoreBackup)
+                    return LoadSaveFile(saveName, false);
             }
         }
         return null; //no save file found
@@ -191,6 +193,7 @@ public class PersistentDataManager : MonoBehaviour
         saveableData.gameSceneLoaded = LoadingScene.gameSceneLoad;
 
         string fullPath = Path.Combine(dataDirectory, directoryName, dataFileName);//this accounts for different paths having different path seperators
+        string backupPath = fullPath + ".bak";//.bak is the common method used for identifying a save file
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));//if the specified directory does not exist create it
@@ -204,10 +207,37 @@ public class PersistentDataManager : MonoBehaviour
                     writer.Write(dataToSave); //save the specified data to the file
                 }
             }
+            //check if the data is corrupt or not
+            SaveableData saveableDataChecker = LoadSaveFile(directoryName, false);
+            if (saveableDataChecker != null)
+                File.Copy(fullPath, backupPath, true);//save a backup version of the file
+            else //guess try saving again here?
+                Debug.Log("Failed to make the backup as the save file is corrupted");
         }
         catch (System.Exception e)
         {
             Debug.Log("Error saving file to specified path: " + fullPath + "/" + e);
+        }
+    }
+
+    bool AttemptLoadBackup(string fullPath)
+    {
+        string backupPath = fullPath + ".bak";
+        try
+        {
+            if (File.Exists(backupPath))
+            {
+                File.Copy(backupPath, fullPath, true);//copy the backup to the original full path file
+                Debug.LogWarning("Backup of " + fullPath + " loaded in");
+                return true;
+            }
+            else
+                return false;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("backup " + backupPath + " is also corrupt, failed to load in");
+            return false;
         }
     }
 
@@ -255,7 +285,7 @@ public class PersistentDataManager : MonoBehaviour
                 string fullPath = Path.Combine(dataDirectory, saveName, dataFileName);
                 if (File.Exists(fullPath)) //checks if the save file exists in the directory, if it doesn't ignore it
                 {
-                    SaveableData saveableData = LoadSaveFile(saveName);
+                    SaveableData saveableData = LoadSaveFile(saveName, true);
                     if (saveableData != null)
                     {
                         SaveFileInfo saveFileInfo = new SaveFileInfo();
@@ -263,6 +293,15 @@ public class PersistentDataManager : MonoBehaviour
                         saveFileInfo.lastPlayedTime = File.GetLastWriteTime(fullPath).ToString();
 
                         foundSaves.Add(saveName, saveFileInfo);
+                    }
+                    else
+                    {
+                        //save file errored out so load it in with a warning
+                        SaveFileInfo corruptSaveInfo = new SaveFileInfo();
+                        corruptSaveInfo.saveableData = null;
+                        corruptSaveInfo.lastPlayedTime = "neded";
+
+                        foundSaves.Add(saveName, corruptSaveInfo);
                     }
                 }
             }

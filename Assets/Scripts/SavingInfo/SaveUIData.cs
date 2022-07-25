@@ -14,10 +14,18 @@ public class SaveUIData : MonoBehaviour
     public void InitilizeData(string dirName, SaveFileInfo saveFileInfo)
     {
         this.directoryName = dirName;
-        this.saveableData = saveFileInfo.saveableData;
         saveNameTxt.text = directoryName;
-        modeTxt.text = "Game Mode: " + setModetxt(saveableData.gameSceneLoaded);
-        lastPlayedTimeTxt.text = "Last Played: " + saveFileInfo.lastPlayedTime;
+        if (saveFileInfo.saveableData != null)
+        {
+            this.saveableData = saveFileInfo.saveableData;
+            modeTxt.text = "Game Mode: " + setModetxt(saveableData.gameSceneLoaded);
+            lastPlayedTimeTxt.text = "Last Played: " + saveFileInfo.lastPlayedTime;
+        }
+        else
+        {
+            modeTxt.text = "!!!Warning Fill Corrupt, Cannot Load";
+            lastPlayedTimeTxt.text = "";
+        }
     }
     string setModetxt(string sceneName)
     {
@@ -31,13 +39,16 @@ public class SaveUIData : MonoBehaviour
     }
     public void OnClick()
     {
-        LoadingScene.gameSceneLoad = saveableData.gameSceneLoaded;
-        LoadingScene.nextScene = saveableData.gameSceneLoaded;
-        LoadingScene.prevScene = "MainMenu";
-        PersistentDataManager.saveableData = saveableData;
-        PersistentDataManager.directoryName = directoryName;
-        PersistentDataManager.bIsNewGame = false;
-        SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
+        if (saveableData != null)
+        {
+            LoadingScene.gameSceneLoad = saveableData.gameSceneLoaded;
+            LoadingScene.nextScene = saveableData.gameSceneLoaded;
+            LoadingScene.prevScene = "MainMenu";
+            PersistentDataManager.saveableData = saveableData;
+            PersistentDataManager.directoryName = directoryName;
+            PersistentDataManager.bIsNewGame = false;
+            SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
+        }
     }
     public void DestroySave()
     {
