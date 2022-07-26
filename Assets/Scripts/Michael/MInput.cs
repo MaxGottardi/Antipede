@@ -6,7 +6,7 @@ public class MInput : MonoBehaviour
 	MCentipedeBody body;
 	CentipedeMovement movement;
 	public LayerMask BiteLayer;
-	public GameObject hitParticles;
+	public GameObject hitParticles, tarBackHitParticles;
 	Transform head;
 
 	bool doneAttack = false, attackRequested = false;
@@ -16,7 +16,7 @@ public class MInput : MonoBehaviour
 	SFXManager sfxManager;
 
 	bool bIsPaused = false;
-	public bool bHasHalvedSpeed = false, bHasAttackActivated = false, bForwardActivated = false;
+	public bool bHasHalvedSpeed = false, bHasAttackActivated = false, bForwardActivated = false, bHasStartedMovement = false;
 
 	private void Awake()
     {
@@ -38,7 +38,7 @@ public class MInput : MonoBehaviour
 
 	void Update()
 	{
-		if (bIsPaused)
+		if (bIsPaused || Time.timeScale == 0)
 			return;
 
 		Vector3 rayPos = new Vector3(transform.position.x, transform.position.y + 0.3f, transform.position.z);
@@ -58,6 +58,7 @@ public class MInput : MonoBehaviour
 		{
 			if (!doneAttack)
 			{
+				bHasStartedMovement = true;
 				DoAttack();
 				doneAttack = true;
 				attackRequested = false;
@@ -87,50 +88,51 @@ public class MInput : MonoBehaviour
 			body.DecreaseSpeed(100.0f);
 		}
 #endif
-
-		if (Input.GetKeyDown(SettingsVariables.keyDictionary["HalveSpeed"]))
+		if (bHasStartedMovement)
 		{
-			if(!bHasHalvedSpeed)
-            {
-				PreSlowShift = body.MovementSpeed;
-				body.ChangeSpeedDirectly(PreSlowShift * .5f);
-			}
-			if (SettingsVariables.boolDictionary["bHalveSpeedToggle"])
+			if (Input.GetKeyDown(SettingsVariables.keyDictionary["HalveSpeed"]))
 			{
 				if (!bHasHalvedSpeed)
-					bHasHalvedSpeed = true;
-				else
 				{
-					body.ChangeSpeedDirectly(PreSlowShift); //as key has already been pressed, release it
-					bHasHalvedSpeed = false;
+					PreSlowShift = body.MovementSpeed;
+					body.ChangeSpeedDirectly(PreSlowShift * .5f);
+				}
+				if (SettingsVariables.boolDictionary["bHalveSpeedToggle"])
+				{
+					if (!bHasHalvedSpeed)
+						bHasHalvedSpeed = true;
+					else
+					{
+						body.ChangeSpeedDirectly(PreSlowShift); //as key has already been pressed, release it
+						bHasHalvedSpeed = false;
+					}
 				}
 			}
-		}
-		else if (Input.GetKeyUp(SettingsVariables.keyDictionary["HalveSpeed"]) && !SettingsVariables.boolDictionary["bHalveSpeedToggle"])
-		{
-			body.ChangeSpeedDirectly(PreSlowShift);
-		}
-
-		if(Input.GetButtonDown("Vertical") && SettingsVariables.boolDictionary["bForwardMoveToggle"])
-        {
-			if (bForwardActivated)
+			else if (Input.GetKeyUp(SettingsVariables.keyDictionary["HalveSpeed"]) && !SettingsVariables.boolDictionary["bHalveSpeedToggle"])
 			{
-				bForwardActivated = false;
+				body.ChangeSpeedDirectly(PreSlowShift);
 			}
-			else
-				bForwardActivated = true;
+
+			if (Input.GetButtonDown("Vertical") && SettingsVariables.boolDictionary["bForwardMoveToggle"])
+			{
+				if (bForwardActivated)
+				{
+					bForwardActivated = false;
+				}
+				else
+					bForwardActivated = true;
+			}
+			float Horizontal = Input.GetAxis("Horizontal");
+
+			float Vertical = Input.GetAxisRaw("Vertical");
+			if (Vertical == 0 && bForwardActivated && SettingsVariables.boolDictionary["bForwardMoveToggle"])
+				Vertical = 1;
+
+			movement.Set(ref Horizontal, ref Vertical, ref body);
+			if ((Horizontal != 0 || bForwardActivated) || Vertical != 0)
+				if (sfxManager != null && Time.timeScale > 0)
+					sfxManager.Walk();
 		}
-		float Horizontal = Input.GetAxis("Horizontal");
-
-		float Vertical = Input.GetAxisRaw("Vertical");
-		if (Vertical == 0 && bForwardActivated && SettingsVariables.boolDictionary["bForwardMoveToggle"])
-			Vertical = 1;
-
-		movement.Set(ref Horizontal, ref Vertical, ref body);
-		if ((Horizontal != 0 || bForwardActivated)|| Vertical != 0)
-			if (sfxManager != null && Time.timeScale > 0)
-				sfxManager.Walk();
-
 		AccessibilityDisabledActive();
 	}
 	/// <summary>
@@ -197,8 +199,7 @@ public class MInput : MonoBehaviour
 		foreach (Collider nearbyColliders in colliders)
 		{//im not really sure why this works for differentiating between the tail and the rest of the body
 		 //but it does so im rolling with it (especially because it wasnt working before)
-			
-			if(nearbyColliders.gameObject.CompareTag("ParentWeb"))
+			if (nearbyColliders.gameObject.CompareTag("ParentWeb"))
             {
 				nearbyColliders.gameObject.GetComponent<ParentCollectible>().Collect();
             }
@@ -226,7 +227,7 @@ public class MInput : MonoBehaviour
 		if (seenTail)
 		{
 			tarant.DecreaseHealth(2);
-			Instantiate(hitParticles, head.transform.position + head.transform.right*1.5f, Quaternion.identity);
+			Instantiate(tarBackHitParticles, head.transform.position + head.transform.right*1.5f, Quaternion.identity);
 		}
 		else if (seenTarant)
 		{

@@ -57,7 +57,7 @@ public class Tarantula: MonoBehaviour, IDataInterface
         nest = rotationPoint.transform.parent.gameObject;
         sfxManager = FindObjectOfType<SFXManager>();
     }
-    void Start()
+    void InitilizeScript()
     {
         health = maxHealth;
         healthSlider = gameObject.transform.Find("Canvas").gameObject.transform.Find("Slider").gameObject.GetComponent<Slider>();
@@ -108,11 +108,7 @@ public class Tarantula: MonoBehaviour, IDataInterface
                 {   //if the tarantula is close enough to the nest it will follow the player
                     if (distToNest < nestArea)
                     {
-                        if (SceneManager.GetActiveScene().name != "BossOnly3")
-                        {
-                            //Dont display UI in Bossonly scene
-                            GameManager1.uiButtons.SpiderInfo();
-                        }
+                        GameManager1.uiButtons.SpiderInfo();
                         ChasePlayer();
                         ShootWeb();
                         SpawnAnts();
@@ -190,7 +186,7 @@ public class Tarantula: MonoBehaviour, IDataInterface
             if (deathTimer >= 2)
             {
                 numTarantulasLeft--;
-                if (numTarantulasLeft <= 0)
+                if (numTarantulasLeft <= 0 || SceneManager.GetActiveScene().name == "BossOnly3" || SceneManager.GetActiveScene().name == "Intermediate")
                     Win();
                 Destroy(gameObject);
             }
@@ -314,36 +310,40 @@ public class Tarantula: MonoBehaviour, IDataInterface
             SceneManager.LoadScene("NearWinScene");
     }
 
-    public void LoadData(SaveableData saveableData)
+    public void LoadData(SaveableData saveableData, bool bIsNewGame)
     {
-        if(!saveableData.spiderData.dictionary.ContainsKey(idValue))
-        {//as the key was not saved, it means it must have been destroyed before the saving occured so delete it
-            Destroy(nest);
-            return;
+        InitilizeScript();
+        if (!bIsNewGame)
+        {
+            if (!saveableData.spiderData.dictionary.ContainsKey(idValue))
+            {//as the key was not saved, it means it must have been destroyed before the saving occured so delete it
+                Destroy(nest);
+                return;
+            }
+            SpiderData spiderData = saveableData.spiderData.dictionary[idValue];
+            //also loading in of the players save
+
+            health = spiderData.spiderHealth;
+            healthSlider.value = CalculateHealth();
+
+            deathTimer = spiderData.spiderDeathTimer;
+            attackTimer = spiderData.spiderAttackTimer;
+            shootTimer = spiderData.spiderShootTimer;
+            shootAnimTimer = spiderData.spiderShootAnimTimer;
+            spawnAntTimer = spiderData.spiderSpawnAntTimer;
+
+            dying = spiderData.spiderDying;
+            tarantulaMoving = spiderData.spiderMoving;
+            attackingPlayer = spiderData.spiderAttackPlayer;
+            shooting = spiderData.spiderShooting;
+
+            rotationPoint.transform.position = spiderData.spiderPosition;
+            rotationPoint.transform.rotation = spiderData.spiderRotation;
+
+            currClipName = spiderData.spiderCurAnimClip;
+            animator.Play(currClipName);
+            animator[currClipName].normalizedTime = spiderData.spiderCurAnimTime;
         }
-        SpiderData spiderData = saveableData.spiderData.dictionary[idValue];
-        //also loading in of the players save
-
-        health = spiderData.spiderHealth;
-        healthSlider.value = CalculateHealth();
-
-        deathTimer = spiderData.spiderDeathTimer;
-        attackTimer = spiderData.spiderAttackTimer;
-        shootTimer = spiderData.spiderShootTimer;
-        shootAnimTimer = spiderData.spiderShootAnimTimer;
-        spawnAntTimer = spiderData.spiderSpawnAntTimer;
-
-        dying = spiderData.spiderDying;
-        tarantulaMoving = spiderData.spiderMoving;
-        attackingPlayer = spiderData.spiderAttackPlayer;
-        shooting = spiderData.spiderShooting;
-
-        rotationPoint.transform.position = spiderData.spiderPosition;
-        rotationPoint.transform.rotation = spiderData.spiderRotation;
-
-        currClipName = spiderData.spiderCurAnimClip;
-        animator.Play(currClipName);
-        animator[currClipName].normalizedTime = spiderData.spiderCurAnimTime;
     }
 
     public void SaveData(SaveableData saveableData)

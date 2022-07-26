@@ -2445,6 +2445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af5b8c5bf06d1f4aab23ccfcf5f3ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentPartUI: {fileID: 0}
   Head: {fileID: 8912492247213838006}
   Tail: {fileID: 2874354198161984264}
   DamageParticles: {fileID: 1983914251257026005, guid: 9ed20eb1978768643b467b5f79d27218, type: 3}
@@ -2464,8 +2465,13 @@ MonoBehaviour:
   Segments: []
   slowTimer: 0
   slowed: 0
+  maxParentParts: 14
+  currCollectedParentParts: 0
   DeathScreen: {fileID: 0}
   shieldActive: 0
+  distanceToNest: 0
+  nests: []
+  multiplier: 0
 --- !u!114 &8912492245561955171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2509,6 +2515,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   hitParticles: {fileID: 3612848425264099771, guid: e16bd8ac4022a2447880058a8ae4a7cb, type: 3}
+  tarBackHitParticles: {fileID: 3612848425264099771, guid: f4bbea177a328914187f6efe6c3591f8, type: 3}
+  bHasHalvedSpeed: 0
+  bHasAttackActivated: 0
+  bForwardActivated: 0
+  bHasStartedMovement: 0
 --- !u!114 &8912492245561955168
 MonoBehaviour:
   m_ObjectHideFlags: 0

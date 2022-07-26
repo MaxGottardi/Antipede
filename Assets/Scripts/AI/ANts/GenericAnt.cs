@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Threading.Tasks;
 
-   public enum EAntType
+
+public enum EAntType
     { 
     farmer,
         hunter,
@@ -78,7 +80,7 @@ public class GenericAnt : MonoBehaviour, IDataInterface
     [Header("Audio Settings")]
     public AudioSource audioSource;
 
-    public virtual void Start()
+    public virtual async void Awake()
     {
         //if (healthBag == null) //if this is not yet set, then it means it hasn't run start, otherwise do run the start method. this required to be called before setting the ants data on its spawning in
         {
@@ -99,7 +101,11 @@ public class GenericAnt : MonoBehaviour, IDataInterface
             //anim.SetTrigger("Walk");
             nodesList = GameObject.FindGameObjectsWithTag(FollowingNodes);
             stateMachine = new StateMachine(this);
-            if (isHelper)
+
+            while (!PersistentDataManager.bGameInitFinished) //in theory wait until its true(ants data loaded in)
+                await Task.Yield();
+
+            if (isHelper) //only run this once the ant's data has loaded in
                 stateMachine.changeState(stateMachine.SpawnIn);
             else
                 stateMachine.changeState(stateMachine.Movement);
@@ -288,7 +294,7 @@ public class GenericAnt : MonoBehaviour, IDataInterface
         }
     }
 
-    public void LoadData(SaveableData saveableData)
+    public void LoadData(SaveableData saveableData, bool bIsNewGame)
     {
         //not required, but must be kept anyway
     }

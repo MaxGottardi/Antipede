@@ -15,7 +15,7 @@ public class PersistentDataManager : MonoBehaviour
 
     public static SaveableData saveableData; //the data which is getting saved
     public static string directoryName; //the name to call the folder saving to
-    public static bool bIsNewGame = true;
+    public static bool bIsNewGame = true, bGameInitFinished = false;
 
     List<IDataInterface> dataInterfaces; //stores all objects in the scene which have data requiring to be saved
 
@@ -39,13 +39,15 @@ public class PersistentDataManager : MonoBehaviour
 
     private void Start()
     {
+        bGameInitFinished = false;
         if (SceneManager.GetActiveScene().name != "MainMenu")
         {
             if (bIsNewGame)
                 NewGame();
             else
-                StartCoroutine(LoadGameFromSave());
-
+                LoadGame();
+                //StartCoroutine(LoadGameFromSave());
+            bGameInitFinished = true; //tells all async functions that they can begin
             StartCoroutine(AutoSave());
         }
     }
@@ -73,10 +75,12 @@ public class PersistentDataManager : MonoBehaviour
         saveableData = new SaveableData();
         saveableData.persistentDataManager = this;
         Time.timeScale = 0;
-        saveableData.centipedeSegmentPosition = new SerializableList<Vector3>();
-        saveableData.centipedeSegmentRotation = new SerializableList<Quaternion>();
-        saveableData.centipedeSegmentHealth = new SerializableList<float>();
-        saveableData.centipedeSegmentNumAttacking = new SerializableList<int>();
+
+        //all the specified scripts, initilize them with their default values
+        foreach (IDataInterface dataObj in ObjsDataSaveable()) //for all objects with the load data function, initilize them
+        {
+            dataObj.LoadData(saveableData, true);
+        }
     }
 
     public void DeleteSaveFile(string saveName)
@@ -100,7 +104,7 @@ public class PersistentDataManager : MonoBehaviour
     }
 
 
-    public SaveableData LoadSaveFile(string saveName)
+    public SaveableData LoadSaveFile(string saveName, bool restoreBackup)
     {
         string fullPath = Path.Combine(dataDirectory, saveName, dataFileName);//this accounts for different paths having different path seperators
         if (File.Exists(fullPath))
@@ -121,8 +125,10 @@ public class PersistentDataManager : MonoBehaviour
             }
             catch (System.Exception e)
             {
-
+                //something, such as the save file being corrupt occured, so load in the backup
                 Debug.Log("failed to load, specified path could not be found: " + fullPath + "/" + e);
+                if (AttemptLoadBackup(fullPath) && restoreBackup)
+                    return LoadSaveFile(saveName, false);
             }
         }
         return null; //no save file found
@@ -137,7 +143,7 @@ public class PersistentDataManager : MonoBehaviour
 
         foreach (IDataInterface dataObj in ObjsDataSaveable())
         {
-            dataObj.LoadData(saveableData);
+            dataObj.LoadData(saveableData, false);
         }
         SerializableList<Quaternion> emptyList = new SerializableList<Quaternion>(); //used for items with no saved rotation
         saveableData.LoadApple(GameObject.FindGameObjectsWithTag("Health"), ref saveableData.healthApplePos, redapplePrefab, ref emptyList);
@@ -146,7 +152,6 @@ public class PersistentDataManager : MonoBehaviour
 
         Tarantula.numTarantulasLeft = saveableData.numSpidersLeft;
         saveableData.LoadCobwebs();
-        saveableData.LoadAllAnts();
         if (FarmerAnt.larvaeBag != null && FarmerAnt.larvaeBag.shuffleList.Length > 0)
             FarmerAnt.larvaeBag.shuffleList = saveableData.useLarvaeBag;
 
@@ -161,7 +166,7 @@ public class PersistentDataManager : MonoBehaviour
                 HunterAnt.weaponsBag.shuffleList[i] = saveableData.IntToWeapon(saveableData.hunterAntWeaponBag[i]).gameObject;
             }
         }
-
+        saveableData.LoadAllAnts();
         saveableData.LoadWeaponCards();
 
     }
@@ -188,6 +193,7 @@ public class PersistentDataManager : MonoBehaviour
         saveableData.gameSceneLoaded = LoadingScene.gameSceneLoad;
 
         string fullPath = Path.Combine(dataDirectory, directoryName, dataFileName);//this accounts for different paths having different path seperators
+        string backupPath = fullPath + ".bak";//.bak is the common method used for identifying a save file
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));//if the specified directory does not exist create it
@@ -201,10 +207,37 @@ public class PersistentDataManager : MonoBehaviour
                     writer.Write(dataToSave); //save the specified data to the file
                 }
             }
+            //check if the data is corrupt or not
+            SaveableData saveableDataChecker = LoadSaveFile(directoryName, false);
+            if (saveableDataChecker != null)
+                File.Copy(fullPath, backupPath, true);//save a backup version of the file
+            else //guess try saving again here?
+                Debug.Log("Failed to make the backup as the save file is corrupted");
         }
         catch (System.Exception e)
         {
             Debug.Log("Error saving file to specified path: " + fullPath + "/" + e);
+        }
+    }
+
+    bool AttemptLoadBackup(string fullPath)
+    {
+        string backupPath = fullPath + ".bak";
+        try
+        {
+            if (File.Exists(backupPath))
+            {
+                File.Copy(backupPath, fullPath, true);//copy the backup to the original full path file
+                Debug.LogWarning("Backup of " + fullPath + " loaded in");
+                return true;
+            }
+            else
+                return false;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("backup " + backupPath + " is also corrupt, failed to load in");
+            return false;
         }
     }
 
@@ -239,9 +272,9 @@ public class PersistentDataManager : MonoBehaviour
     /// finds all save files for the game
     /// </summary>
     /// <returns>a dictionary of all save directories</returns>
-    public Dictionary<string, SaveableData> LoadAllSaves()
+    public Dictionary<string, SaveFileInfo> LoadAllSaves()
     {
-        Dictionary<string, SaveableData> foundSaves = new Dictionary<string, SaveableData>();
+        Dictionary<string, SaveFileInfo> foundSaves = new Dictionary<string, SaveFileInfo>();
         if (Directory.Exists(dataDirectory))
         {
             IEnumerable<DirectoryInfo> dirInfos = new DirectoryInfo(dataDirectory).EnumerateDirectories(); //loops over all directories in the specified location
@@ -252,10 +285,23 @@ public class PersistentDataManager : MonoBehaviour
                 string fullPath = Path.Combine(dataDirectory, saveName, dataFileName);
                 if (File.Exists(fullPath)) //checks if the save file exists in the directory, if it doesn't ignore it
                 {
-                    SaveableData saveableData = LoadSaveFile(saveName);
+                    SaveableData saveableData = LoadSaveFile(saveName, true);
                     if (saveableData != null)
                     {
-                        foundSaves.Add(saveName, saveableData);
+                        SaveFileInfo saveFileInfo = new SaveFileInfo();
+                        saveFileInfo.saveableData = saveableData;
+                        saveFileInfo.lastPlayedTime = File.GetLastWriteTime(fullPath).ToString();
+
+                        foundSaves.Add(saveName, saveFileInfo);
+                    }
+                    else
+                    {
+                        //save file errored out so load it in with a warning
+                        SaveFileInfo corruptSaveInfo = new SaveFileInfo();
+                        corruptSaveInfo.saveableData = null;
+                        corruptSaveInfo.lastPlayedTime = "neded";
+
+                        foundSaves.Add(saveName, corruptSaveInfo);
                     }
                 }
             }
@@ -275,8 +321,8 @@ public class PersistentDataManager : MonoBehaviour
                 Destroy(saveButtonParent.GetChild(i).gameObject);
             }
             newSaveUI.SetActive(false);
-            Dictionary<string, SaveableData> allSaveFiles = LoadAllSaves();
-            foreach (KeyValuePair<string, SaveableData> item in allSaveFiles)
+            Dictionary<string, SaveFileInfo> allSaveFiles = LoadAllSaves();
+            foreach (KeyValuePair<string, SaveFileInfo> item in allSaveFiles)
             {
                 GameObject button = Instantiate(saveButtonPrefab, saveButtonParent);
                 SaveUIData saveUIData = button.GetComponent<SaveUIData>();
@@ -326,4 +372,10 @@ public class PersistentDataManager : MonoBehaviour
         bIsNewGame = true;
         SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
     }
+}
+
+public class SaveFileInfo
+{
+    public SaveableData saveableData;
+    public string lastPlayedTime;
 }

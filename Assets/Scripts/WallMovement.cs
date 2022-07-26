@@ -10,7 +10,7 @@ public class WallMovement : MonoBehaviour, IDataInterface
 
 
     // Start is called before the first frame update
-    void Start()
+    void InitilizeScript()
     {
         startPosition = this.gameObject.transform.position;
         doMove = false;
@@ -33,14 +33,18 @@ public class WallMovement : MonoBehaviour, IDataInterface
         doMove = true;
     }
 
-    public void LoadData(SaveableData saveableData)
+    public void LoadData(SaveableData saveableData, bool bIsNewGame)
     {
-        doMove = saveableData.wallMove.dictionary[ID];
-        if (doMove)
+        InitilizeScript();
+        if (!bIsNewGame)
         {
-            Vector3 pos = gameObject.transform.position;
-            pos.y -= 20f;
-            gameObject.transform.position = pos;
+            doMove = saveableData.wallMove.dictionary[ID];
+            if (doMove)
+            {
+                Vector3 pos = gameObject.transform.position;
+                pos.y -= 20f;
+                gameObject.transform.position = pos;
+            }
         }
     }
 

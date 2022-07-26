@@ -231,7 +231,7 @@ public class SpringArm : MonoBehaviour, IDataInterface
 
 	void ScrollDistance()
 	{
-		if (bEnableScrollToDistance)
+		if (bEnableScrollToDistance && Time.timeScale > 0.1f)
 		{
 			Distance += Input.mouseScrollDelta.y * (SettingsVariables.boolDictionary["bInvertZoom"] ? -1f : 1f) * -SettingsVariables.sliderDictionary["zoomSpeed"] / 100;
 
@@ -378,15 +378,20 @@ public class SpringArm : MonoBehaviour, IDataInterface
 
 
 #endif
-	public void LoadData(SaveableData saveableData)
+	public void LoadData(SaveableData saveableData, bool bIsNewGame)
     {
-		transform.position = saveableData.camPos;
-		transform.rotation = saveableData.camRot;
-		Distance = saveableData.scrollDistance;
-		bInheritRotation = saveableData.bInheritRotation;
-    }
+		if (!bIsNewGame)
+		{
+			transform.position = saveableData.camPos;
+			transform.rotation = saveableData.camRot;
+			Distance = saveableData.scrollDistance;
+			bInheritRotation = saveableData.bInheritRotation;
+		}
+		else
+			bInheritRotation = !bInheritRotation;
+	}
 
-    public void SaveData(SaveableData saveableData)
+	public void SaveData(SaveableData saveableData)
     {
 		saveableData.camPos = transform.position;
 		saveableData.camRot = transform.rotation;

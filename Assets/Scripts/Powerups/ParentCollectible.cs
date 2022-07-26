@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ParentCollectible : MonoBehaviour, IDataInterface
 {
-    public bool bDoSaveData;
+    public bool bDoSaveData, isStartWeb;
     public int ID;
     public static ShuffleBag<GameObject> shuffleBag;
     [SerializeField] GameObject[] parentParts;
@@ -16,15 +16,15 @@ public class ParentCollectible : MonoBehaviour, IDataInterface
     GameObject childUI;
     void Start()
     {
-        if (bDoSaveData)
+        if (bDoSaveData && !isStartWeb)
             childUI = transform.GetChild(0).gameObject;
-        if (shuffleBag == null)
+        if (shuffleBag == null && !isStartWeb)
         {
             shuffleBag = new ShuffleBag<GameObject>();
             shuffleBag.shuffleList = parentParts;
         }
-
-        SpawnComponent();
+        if (!isStartWeb)
+            SpawnComponent();
     }
 
     // Update is called once per frame
@@ -39,14 +39,22 @@ public class ParentCollectible : MonoBehaviour, IDataInterface
 
     public void Collect()
     {
-        if (GetComponent<Collider>())
-            GetComponent<Collider>().enabled = false;
-        GetComponent<MeshRenderer>().enabled = false;
-        adjustScaleTween = new Tween(transform.localScale, Vector3.zero, Time.time, 3);
-        bDoSaveData = false;
-        GameManager1.mCentipedeBody.AddParentPartUI();
-        Debug.Log(GameManager1.mCentipedeBody.currCollectedParentParts);
         Instantiate(DestroyParticles, transform.position, Quaternion.identity);
+        if (!isStartWeb)
+        {
+            if (GetComponent<Collider>())
+                GetComponent<Collider>().enabled = false;
+            GetComponent<MeshRenderer>().enabled = false;
+            adjustScaleTween = new Tween(transform.localScale, Vector3.zero, Time.time, 3);
+            bDoSaveData = false;
+            Destroy(childUI);
+            GameManager1.mCentipedeBody.AddParentPartUI();
+        }
+        else
+        {
+            GameManager1.uiButtons.Movement();
+            Destroy(gameObject);
+        }
     }
 
     private void Update()
@@ -65,7 +73,7 @@ public class ParentCollectible : MonoBehaviour, IDataInterface
                 Destroy(gameObject);
         }
 
-        if(bDoSaveData)
+        if (bDoSaveData && childUI != null)
         {
             if (Vector3.Distance(transform.position, GameManager1.playerObj.transform.position) < 20)
             {
@@ -77,9 +85,9 @@ public class ParentCollectible : MonoBehaviour, IDataInterface
         }
     }
 
-    public void LoadData(SaveableData saveableData)
+    public void LoadData(SaveableData saveableData, bool bIsNewGame)
     {
-        if(bDoSaveData)
+        if(bDoSaveData && !bIsNewGame)
         {
             if (!saveableData.bParentPartActive.dictionary.ContainsKey(ID))
                 Destroy(gameObject);

@@ -473,7 +473,7 @@ public class SaveableData
                 antObjs[i].transform.position = antData.list[i].antPosition; //for all ants currently in the scene, move them to one of the preset, saved positions
                 antObjs[i].transform.rotation = antData.list[i].antRotation; //for all ants currently in the scene, move them to one of the preset, saved positions
                 GenericAnt genericAnt = antObjs[i].GetComponent<GenericAnt>();
-                genericAnt.Start(); //reset the ant to its spawned in state
+                //genericAnt.Awake(); //reset the ant to its spawned in state
                 LoadAntData(i, ref antData, ref genericAnt); //assign the appropriate values
             }
             else //ant does not exist in the scene when it should, so spawn in a new apple
@@ -482,7 +482,7 @@ public class SaveableData
                 GameObject spawnedObj = MonoBehaviour.Instantiate(obj, antData.list[i].antPosition, antData.list[i].antRotation);
 
                 GenericAnt genericAnt = spawnedObj.GetComponent<GenericAnt>();
-                genericAnt.Start(); //initilize the ants values
+                //genericAnt.Awake(); //initilize the ants values
                 LoadAntData(i, ref antData, ref genericAnt);//this for some reason bugs out and doesnt set the values if using an ant which is just loaded in
             }
             i++;
@@ -523,15 +523,16 @@ public class SaveableData
         genericAnt.AssignAntennaPositions();
 
 
-        //////////////////////////////////////////As difficult and buggy to implement, do not save the current state of the AI
+        //////////////////////////////////////////As difficult and buggy to implement, do not save the current state of the AI(yet, figure out a solution)
         ///////////AIIntToState(genericAntData.currAIState, ref genericAnt.stateMachine);
         ////////genericAnt.stateMachine.loadData(genericAntData);
         ///////genericAnt.anim.Play(genericAntData.currAnimName, 0, genericAntData.currAnimNormTime);
 
         ////for each ant type load in the info specific to it as well, if it has any
-        if (genericAnt as GuardAnt)
+        Debug.Log("Loading in the generic ant data");
+        if (genericAnt is GuardAnt)
         {
-            Debug.Log("Loading in the Farmer ant data");
+            Debug.Log("Loading in the guard ant data");
             GuardAnt guardAnt = genericAnt as GuardAnt;
 
             GuardAntData guardAntData = genericAntData as GuardAntData;
@@ -546,7 +547,8 @@ public class SaveableData
                     guardAnt.heldPart = null;
                 }
             }
-            else if (genericAnt as DasherAnt)
+        }
+        else if (genericAnt is DasherAnt)
             {
                 Debug.Log("Loading in the dasher ant data");
                 DasherAnt dasherAnt = genericAnt as DasherAnt;
@@ -561,7 +563,7 @@ public class SaveableData
                 dasherAnt.rotSpeed = dasherAntData.rotSpeed;
             }
 
-            else if (genericAnt as FarmerAnt)
+            else if (genericAnt is FarmerAnt)
             {
                 Debug.Log("Loading in the Farmer ant data");
                 FarmerAnt farmerAnt = genericAnt as FarmerAnt;
@@ -578,31 +580,35 @@ public class SaveableData
                     farmerAnt.Larvae = null;
                 }
             }
-            else if (genericAnt as HunterAnt)
+            else if (genericAnt is HunterAnt)
             {
-                Debug.Log("Loading in the Farmer ant data");
+                Debug.Log("Loading in the hunter ant data");
                 HunterAnt hunterAnt = genericAnt as HunterAnt;
 
                 HunterAntData hunterAntData = genericAntData as HunterAntData;
                 if (hunterAnt.weaponClass != null) //destroy any weapon which currently exists on the ant
                     MonoBehaviour.Destroy(hunterAnt.weaponClass.gameObject);
 
+                Debug.Log(hunterAntData.heldWeapon + "the weapon the ant is holding");
                 //spawn in the appropriate, saved weapon
                 if (hunterAntData.heldWeapon == (int)EWeaponType.empty)
+                {
                     hunterAnt.PickWeapon(null);
+                }
                 else
                 {
+                    Debug.Log("wqerfgthewdfrgtfhytgrgthytg" + IntToWeapon(hunterAntData.heldWeapon).gameObject.name);
                     hunterAnt.PickWeapon(IntToWeapon(hunterAntData.heldWeapon).gameObject);
                     //for the spawned in weapon assign the appropriate values for its things like shooting and stuff/////////////////////////
                 }
             }
-            else if (genericAnt as BombAnt)
+            else if (genericAnt is BombAnt)
             {
                 if (genericAnt.transform.parent != null) //if the bomb ant is attached to a segment, detach it
                     genericAnt.transform.parent = null;
                 genericAnt.gameObject.transform.GetChild(0).gameObject.GetComponent<Collider>().enabled = true;
             }
-        }
+        
     }
 
     public void LoadCobwebs()

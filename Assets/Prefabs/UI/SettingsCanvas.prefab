@@ -4081,7 +4081,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0001542713}
+  m_AnchoredPosition: {x: 0, y: 0.000014953562}
   m_SizeDelta: {x: -3.87, y: 125.21}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1596435718348937853
@@ -5296,8 +5296,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7764440647112210357}
   m_HandleRect: {fileID: 9004751204303557752}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.9999998
+  m_Value: 1
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9157,8 +9157,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2152079808773344244}
   m_HandleRect: {fileID: 6340097419148806906}
   m_Direction: 2
-  m_Value: 1.0000024
-  m_Size: 0.70680076
+  m_Value: 1.0000036
+  m_Size: 0.70680165
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -12148,7 +12148,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Attack
+  m_text: 'Bite
 
 '
   m_isRightToLeft: 0
@@ -16167,8 +16167,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8132925154825442023}
   m_HandleRect: {fileID: 2821867432111248988}
   m_Direction: 2
-  m_Value: 0.99999636
-  m_Size: 0.9087009
+  m_Value: 0.99998665
+  m_Size: 0.90870136
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -17791,7 +17791,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Attack
+  m_text: Bite
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 344a7e2ec4fafca4da26bc931d7b9a26, type: 2}
   m_sharedMaterial: {fileID: 5347850528796258261, guid: 344a7e2ec4fafca4da26bc931d7b9a26, type: 2}
@@ -25848,7 +25848,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 8036119112881721598}
   m_Direction: 2
   m_Value: 1.0000006
-  m_Size: 0.70012623
+  m_Size: 0.7001265
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -31194,7 +31194,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 93, y: -330.059}
+  m_AnchoredPosition: {x: 93, y: -178.83899}
   m_SizeDelta: {x: 186, y: 82.71}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3457536995865366138

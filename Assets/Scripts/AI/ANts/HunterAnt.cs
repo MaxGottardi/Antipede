@@ -21,12 +21,8 @@ public class HunterAnt : GenericAnt
 
     public bool isFleeing = false; //is this ant currently moving away from the player or not
     // Start is called before the first frame update
-    public override void Start()
+    public override void Awake()
     {
-        base.Start();
-        stateMachine.Attack = new HunterAttack(this);
-        stateMachine.Dead = new HunterDead(this);
-        stateMachine.Investigate = new HunterInvestigate(this);
         if (weaponsBag == null)
         {
             weaponsBag = new ShuffleBag<GameObject>();
@@ -35,6 +31,11 @@ public class HunterAnt : GenericAnt
         if (weaponClass != null)
             Destroy(weaponClass.gameObject);
         PickWeapon(null);
+
+        base.Awake();
+        stateMachine.Attack = new HunterAttack(this);
+        stateMachine.Dead = new HunterDead(this);
+        stateMachine.Investigate = new HunterInvestigate(this);
     }
 
     // Update is called once per frame
@@ -75,7 +76,9 @@ public class HunterAnt : GenericAnt
     {
         GameObject weapon;
         if (spawnWeapon == null)
+        {
             weapon = Instantiate(weaponsBag.getNext(), weaponParent, false);
+        }
         else
         {
             weapon = Instantiate(spawnWeapon, weaponParent, false);

@@ -29,8 +29,13 @@ public class GameSettings : MonoBehaviour
 
 		OnReceiveInspectorDefaults += ReceiveDefaults;
 		checkPoints = GameObject.FindGameObjectsWithTag("CheckPoint");
-		
-		DefaultState();
+
+		MainPauseCanvas.SetActive(false);
+		SettingsElementsHolder.SetActive(false);
+
+		PauseElementsHolder.SetActive(true);
+
+		OnResume?.Invoke();
 	}
 
 	void Update()
@@ -69,7 +74,6 @@ public class GameSettings : MonoBehaviour
 	public void DefaultState()
 	{
 		Time.timeScale = 1;
-
 		MainPauseCanvas.SetActive(false);
 		SettingsElementsHolder.SetActive(false);
 

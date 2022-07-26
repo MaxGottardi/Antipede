@@ -14,19 +14,20 @@ public class Shield : Weapon
 	public override void Awake()
 	{
 		base.Awake();
-
-		mcb = GameManager1.mCentipedeBody;
 		shieldActive = false;
 	}
-
+    private void Start()
+    {
+		mcb = GameManager1.mCentipedeBody;
+	}
 	void Update()
 	{
 		mcb.shieldActive = shieldActive;
 
-		if (Input.GetKeyDown(KeyCode.Y))
-		{
-			ActivateShield(15.0f);
-		}
+		//if (Input.GetKeyDown(KeyCode.Y))
+		//{
+		//	ActivateShield(15.0f);
+		//}
 
 		if (shieldStartTime > 0)
 		{

@@ -8,7 +8,7 @@ public class UIButtons : MonoBehaviour, IDataInterface
 {
     public GameObject tutWindow, winWindow, spiderWindow;
 
-    public GameObject moveUI, CamUI, pauseUI, attackUI, shootUI, addWeaponUI, speedUI;
+    public GameObject moveUI, CamUI, attackUI, shootUI, addWeaponUI, speedUI;
     public Text pauseTxt, camChangeTxt, attackTxt, speedTxt;
 
     //the UI for number of parent parts left to collect
@@ -20,16 +20,10 @@ public class UIButtons : MonoBehaviour, IDataInterface
         public GameObject Dev_Story_Skip;
 #endif
 
-    public bool seenSpeed = false, seenAttack = false, seenShoot = false, seenSpider = false;
+    public bool seenSpeed = false, seenAttack = false, seenMovement = false, seenShoot = false, seenSpider = false;
 
     public int speedIncrease = 0, segmentIncrease = 0, segmentDegrease = 0;
-    public Text speedInfo, segAddInfo, segDecreaseInfo;
-
-    public void Win()
-    {
-        //Time.timeScale = 0;
-        //winWindow.SetActive(true);
-    }
+    public Text speedInfo, segAddInfo, segDecreaseInfo, tutTitleTxt; 
 
     // Start is called before the first frame update
     public void AddSegment()
@@ -97,19 +91,38 @@ public class UIButtons : MonoBehaviour, IDataInterface
     {
         if (SettingsVariables.boolDictionary["bPlayTutorial"])
         {
-            tutWindow.SetActive(true);
-            moveUI.SetActive(true);
-            pauseUI.SetActive(true);
-            CamUI.SetActive(true);
+            tutWindow.SetActive(false);
+            moveUI.SetActive(false);
+            CamUI.SetActive(false);
             UpdateControlText();
+            Time.timeScale = 0;
+            AttackUI();
         }
         else
         {
             tutWindow.SetActive(false);
             moveUI.SetActive(false);
-            pauseUI.SetActive(false);
             CamUI.SetActive(false);
+            attackUI.SetActive(false);
             Time.timeScale = 1;
+        }
+    }
+
+    public void Movement()
+    {
+        if (!seenMovement && SettingsVariables.boolDictionary["bPlayTutorial"])
+        {
+            UpdateControlText();
+            seenMovement = true;
+            tutWindow.SetActive(true);
+            Time.timeScale = 0;
+            moveUI.SetActive(true);
+            CamUI.SetActive(true);
+            attackUI.SetActive(false);
+            shootUI.SetActive(false);
+            addWeaponUI.SetActive(false);
+            speedUI.SetActive(false);
+            tutTitleTxt.text = "Movement";
         }
     }
 
@@ -122,12 +135,12 @@ public class UIButtons : MonoBehaviour, IDataInterface
             tutWindow.SetActive(true);
             Time.timeScale = 0;
             moveUI.SetActive(false);
-            pauseUI.SetActive(false);
             CamUI.SetActive(false);
             attackUI.SetActive(true);
             shootUI.SetActive(false);
             addWeaponUI.SetActive(false);
             speedUI.SetActive(false);
+            tutTitleTxt.text = "Bite";
         }
     }
 
@@ -150,12 +163,12 @@ public class UIButtons : MonoBehaviour, IDataInterface
             tutWindow.SetActive(true);
             Time.timeScale = 0;
             moveUI.SetActive(false);
-            pauseUI.SetActive(false);
             CamUI.SetActive(false);
             attackUI.SetActive(false);
             shootUI.SetActive(true);
             addWeaponUI.SetActive(true);
             speedUI.SetActive(false);
+            tutTitleTxt.text = "Attach Weapon";
         }
     }
 
@@ -168,12 +181,12 @@ public class UIButtons : MonoBehaviour, IDataInterface
             tutWindow.SetActive(true);
             Time.timeScale = 0;
             moveUI.SetActive(false);
-            pauseUI.SetActive(false);
             CamUI.SetActive(false);
             attackUI.SetActive(false);
             shootUI.SetActive(false);
             addWeaponUI.SetActive(false);
             speedUI.SetActive(true);
+            tutTitleTxt.text = "Halve Speed";
         }
     }
 
@@ -185,15 +198,18 @@ public class UIButtons : MonoBehaviour, IDataInterface
         speedTxt.text = SettingsVariables.keyDictionary["HalveSpeed"].ToString();
     }
 
-    public void LoadData(SaveableData saveableData)
+    public void LoadData(SaveableData saveableData, bool bIsNewGame)
     {
-        seenAttack = saveableData.bSeenAttack;
-        seenShoot = saveableData.bSeenShot;
-        seenSpeed = saveableData.bSeenSpeed;
-        seenSpider = saveableData.bSeenSpider;
+        if (!bIsNewGame)
+        {
+            seenAttack = saveableData.bSeenAttack;
+            seenShoot = saveableData.bSeenShot;
+            seenSpeed = saveableData.bSeenSpeed;
+            seenSpider = saveableData.bSeenSpider;
 
-        Continue();
-        Debug.Log("Loading up the UI Settings");
+            Continue();
+            Debug.Log("Loading up the UI Settings");
+        }
     }
 
     public void SaveData(SaveableData saveableData)
