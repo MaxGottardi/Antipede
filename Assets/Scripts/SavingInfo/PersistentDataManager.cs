@@ -153,10 +153,11 @@ public class PersistentDataManager : MonoBehaviour
         Tarantula.numTarantulasLeft = saveableData.numSpidersLeft;
         saveableData.LoadCobwebs();
         if (FarmerAnt.larvaeBag != null && FarmerAnt.larvaeBag.shuffleList.Length > 0)
+        {
             FarmerAnt.larvaeBag.shuffleList = saveableData.useLarvaeBag;
 
-        FarmerAnt.larvaeBag.currPos = saveableData.farmerAntCurrBagPos;
-
+            FarmerAnt.larvaeBag.currPos = saveableData.farmerAntCurrBagPos;
+        }
         //assign the appropriate values to the shuffle list
         if (HunterAnt.weaponsBag != null && HunterAnt.weaponsBag.shuffleList.Length > 0)
         {
@@ -168,7 +169,7 @@ public class PersistentDataManager : MonoBehaviour
         }
         saveableData.LoadAllAnts();
         saveableData.LoadWeaponCards();
-
+        Time.timeScale = 1;
     }
 
     /// <summary>

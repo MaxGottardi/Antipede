@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CentipedeMovement))]
-public class MInput : MonoBehaviour
+public class MInput : MonoBehaviour, IDataInterface
 {
 	MCentipedeBody body;
 	CentipedeMovement movement;
@@ -256,4 +256,21 @@ public class MInput : MonoBehaviour
 
 		return Hit.point;
 	}
+
+    public void LoadData(SaveableData saveableData, bool bIsNewGame)
+    {
+		if (!bIsNewGame)
+		{
+			bHasStartedMovement = saveableData.bHasStartedMovement;
+			if (bHasStartedMovement)
+				Time.timeScale = 1;
+		}
+		else
+			bHasStartedMovement = false;
+    }
+
+    public void SaveData(SaveableData saveableData)
+    {
+		saveableData.bHasStartedMovement = bHasStartedMovement;
+    }
 }

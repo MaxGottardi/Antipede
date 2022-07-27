@@ -18,12 +18,6 @@ public class GameManager1 : MonoBehaviour
         uiButtons = gameObject.GetComponent<UIButtons>();
 
     }
-
-    private void Start()
-    {
-        if (uiButtons != null)
-            uiButtons.StartUI();
-    }
     
     private void Update()
     {

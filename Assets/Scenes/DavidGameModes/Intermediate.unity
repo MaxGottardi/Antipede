@@ -14503,6 +14503,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   hitParticles: {fileID: 1983914251257026005, guid: 9ed20eb1978768643b467b5f79d27218, type: 3}
+  tarBackHitParticles: {fileID: 0}
   bHasHalvedSpeed: 0
   bHasAttackActivated: 0
   bForwardActivated: 0
@@ -31157,6 +31158,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   hitParticles: {fileID: 0}
+  tarBackHitParticles: {fileID: 0}
   bHasHalvedSpeed: 0
   bHasAttackActivated: 0
   bForwardActivated: 0
@@ -33506,6 +33508,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8112881017843946183, guid: 3bb33259d4a3ec44bbfe6922a7b6037b, type: 3}
+      propertyPath: bDoSaveData
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8371528959018863697, guid: 3bb33259d4a3ec44bbfe6922a7b6037b, type: 3}
       propertyPath: m_RootOrder
       value: 528
@@ -39487,6 +39493,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   hitParticles: {fileID: 0}
+  tarBackHitParticles: {fileID: 0}
   bHasHalvedSpeed: 0
   bHasAttackActivated: 0
   bForwardActivated: 0

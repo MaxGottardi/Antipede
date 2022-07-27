@@ -87,9 +87,9 @@ public class UIButtons : MonoBehaviour, IDataInterface
     }
 
     //below are the functions for enabling and disabling the other UI elements
-    public void StartUI()
+    public void StartUI(bool bIsNewGame)
     {
-        if (SettingsVariables.boolDictionary["bPlayTutorial"])
+        if (SettingsVariables.boolDictionary["bPlayTutorial"] && bIsNewGame)
         {
             tutWindow.SetActive(false);
             moveUI.SetActive(false);
@@ -210,6 +210,7 @@ public class UIButtons : MonoBehaviour, IDataInterface
             Continue();
             Debug.Log("Loading up the UI Settings");
         }
+        StartUI(bIsNewGame);
     }
 
     public void SaveData(SaveableData saveableData)

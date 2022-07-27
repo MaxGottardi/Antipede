@@ -245,7 +245,7 @@ public class SaveableData
     [SerializeField] public bool bInheritRotation;
 
     //stuff for the centipede input and remembering when something was pressed
-    [SerializeField] public bool bHasAttackActivated, bHalveSpeedActive, bForwardActive;
+    [SerializeField] public bool bHasAttackActivated, bHalveSpeedActive, bForwardActive, bHasStartedMovement;
     [SerializeField] public float preSlowShift; //the speed of the player before it was slowed with the shift key
     /// <summary>
     /// /////////unsure if required

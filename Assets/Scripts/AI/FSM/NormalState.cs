@@ -19,13 +19,16 @@ public class MovementState : State
     }
     public void enter()
     {
-        GameObject closestNode = owner.nodesList[0]; //find the next location to move towards
-        foreach (GameObject node in owner.nodesList)
+        if (owner.nodesList.Length > 0)
         {
-            if (Vector3.Distance(node.transform.position, owner.transform.position) < Vector3.Distance(closestNode.transform.position, owner.transform.position))
-                closestNode = node;
+            GameObject closestNode = owner.nodesList[0]; //find the next location to move towards
+            foreach (GameObject node in owner.nodesList)
+            {
+                if (Vector3.Distance(node.transform.position, owner.transform.position) < Vector3.Distance(closestNode.transform.position, owner.transform.position))
+                    closestNode = node;
+            }
+            owner.nextPosTransform = closestNode.transform;
         }
-        owner.nextPosTransform = closestNode.transform;
     }
 
     public void execute()
